@@ -12,7 +12,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
-<body>
+<body  class="min-h-screen bg-slate-50 ">
 
+    <?php include('home_nav.php') ?>
+
+<main  class="max-w-6xl mx-auto">
+
+    <?php
+    $pages = array('narratives', 'announcement');
+    $page = 'land_page';
+    if (isset($_GET['page'])){
+        if (in_array($_GET['page'],$pages)){
+            $page = $_GET['page'];
+        }
+    } ?>
+    <?php include $page.'.php' ?>
+</main>
 </body>
 </html>
