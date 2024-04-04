@@ -7,7 +7,7 @@
                 </div>
             </div>
             <div class="text-center font-bold text-black text-3xl">
-                <h1><a href="index.php">REPOSYNC</a></h1>
+                <h1><a href="#" id="homeLink">REPOSYNC</a></h1>
             </div>
         </div>
         <div>
@@ -15,8 +15,9 @@
                 &#9776;
             </button>
             <nav class="sm:block hidden space-x-8 text-xl" aria-label="main">
-                <a href="index.php?page=narratives" class="font-bold hover:cursor-pointer">Narratives</a>
-                <a href="index.php?page=announcement" class="font-bold hover:cursor-pointer">Announcement</a>
+                <a href="#" id="narrativesLink" class="font-bold hover:cursor-pointer hover:opacity-75">Narratives</a>
+                <a href="#" id="announcementLink" class="font-bold hover:cursor-pointer hover:opacity-75">Announcement</a>
+
                 <div class="relative inline-block ">
                     <button onclick="myFunction()" class="btn btn-success">Login<i class="fa-solid fa-caret-down"></i></button>
                     <div id="myDropdown" class=" transition-all rounded border right-0 mr-5
@@ -37,11 +38,8 @@
             </nav>
 
         </div>
-
     </section>
 </header>
-
-
 <div id="mySidenav" class=" sm:hidden fixed top-0 left-0 h-full w-1/2 bg-gray-600  text-white  transition-transform transform translate-x-[-100%] z-30">
     <div onclick="closeNav()" class="rounded h-6 w-6 foc absolute active:border  right-0">
         <a href="#" class="grid place-items-center mt-1"><i class="fas fa-times"></i></a>
@@ -63,33 +61,3 @@
         </div>
     </section>
 </div>
-
-<script>
-    function openNav() {
-        document.getElementById("mySidenav").style.transform = "translateX(0)";
-    }
-    function closeNav() {
-        document.getElementById("mySidenav").style.transform = "translateX(-100%)";
-    }
-    function toggleNav() {
-        var sideNav = document.getElementById("mySidenav");
-
-        if (sideNav.style.transform === "translateX(0%)") {
-            closeNav();
-        } else {
-            openNav();
-        }
-    }
-
-</script>
-<script>
-    function myFunction() {
-        var dropdown = document.getElementById("myDropdown");
-        if (dropdown.classList.contains("hidden")) {
-            dropdown.classList.remove("hidden");
-        } else {
-            dropdown.classList.add("hidden");
-        }
-    }
-</script>
-
