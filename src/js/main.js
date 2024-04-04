@@ -46,29 +46,36 @@ function navigate(page) {
         })
         .catch(error => console.error('Error fetching content:', error));
 }
+
 function updateActiveLink(page) {
     document.getElementById('narrativesLink').classList.remove('text-black', 'bg-gray-300', 'rounded', 'p-3');
     document.getElementById('announcementLink').classList.remove('text-black', 'bg-gray-300', 'rounded', 'p-3');
+    document.getElementById('homeLink').classList.remove('text-black', 'bg-gray-300', 'rounded', 'p-3');
     if (page === 'narratives') {
         document.getElementById('narrativesLink').classList.add('text-black', 'bg-gray-300', 'rounded', 'p-3');
     } else if (page === 'announcement') {
         document.getElementById('announcementLink').classList.add('text-black', 'bg-gray-300', 'rounded', 'p-3');
     }
 }
+
 document.getElementById('narrativesLink').addEventListener('click', function(event) {
     event.preventDefault();
     navigate('narratives');
 });
+
 document.getElementById('announcementLink').addEventListener('click', function(event) {
     event.preventDefault();
     navigate('announcement');
 });
+
 document.getElementById('homeLink').addEventListener('click', function(event) {
     event.preventDefault();
     navigate('home');
 });
 
-if (urlParams.get('page') === 'narratives') {
+if (!urlParams.get('page')) {
+    navigate('home');
+} else if (urlParams.get('page') === 'narratives') {
     navigate('narratives');
 } else if (urlParams.get('page') === 'announcement') {
     navigate('announcement');

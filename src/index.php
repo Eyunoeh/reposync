@@ -10,10 +10,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
     <title>Document</title>
 </head>
-<body  class="min-h-screen bg-slate-50 ">
-
+<body  class="min-h-screen bg-slate-200 ">
     <?php include('home_nav.php') ?>
     <main class="max-w-6xl mx-auto" id="mainContent">
 

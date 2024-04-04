@@ -1,4 +1,4 @@
-<section id="hero" class="flex flex-col-reverse justify-center sm:flex-row p-6 items-center gap-8 mb-12">
+<div id="hero" class="flex flex-col-reverse justify-center sm:flex-row p-6 items-center gap-8">
     <article class="w-1/2">
         <h2 class="max-w-md ">
             <span class="text-4xl text-center sm:text-5xl
@@ -9,4 +9,4 @@
         </h2>
     </article>
     <img class=" w-[40%] object-fit" src="assets/open-book-clipart-07.png" alt="Rockets dab">
-</section>
+</div>
