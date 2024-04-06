@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,11 +13,10 @@
     <title>Document</title>
 </head>
 <body  class="min-h-screen bg-slate-200">
-    <?php include('home_nav.php') ?>
-    <main class="max-w-6xl mx-auto" id="mainContent">
+<main class="max-w-6xl mx-auto" id="mainContent">
 
-    </main>
-    <script src="js/main.js"></script>
+</main>
+<script src="js/main.js"></script>
 
 </body>
 </html>

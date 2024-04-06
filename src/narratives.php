@@ -20,10 +20,8 @@
                         </div>
 
                     </form>
-
                 </div>
-                <!-- end card header -->
-                <!-- card body  -->
+
                 <div class="    block py-8 pt-6 px-9">
                     <div class="overflow-y-scroll h-96">
                         <table class="w-full my-0 align-middle  border-neutral-200">

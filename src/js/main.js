@@ -14,7 +14,7 @@ function toggleNav() {
     }
 }
 
-function myFunction() {
+function dropdownToggle() {
     var dropdown = document.getElementById("myDropdown");
     if (dropdown.classList.contains("hidden")) {
         dropdown.classList.remove("hidden");
@@ -50,11 +50,14 @@ function navigate(page) {
 function updateActiveLink(page) {
     document.getElementById('narrativesLink').classList.remove('text-black', 'bg-gray-300', 'rounded', 'p-3');
     document.getElementById('announcementLink').classList.remove('text-black', 'bg-gray-300', 'rounded', 'p-3');
-    document.getElementById('homeLink').classList.remove('text-black', 'bg-gray-300', 'rounded', 'p-3');
+    document.getElementById('side-narrativesLink').classList.remove('bg-gray-200', 'text-black');
+    document.getElementById('side-announcementLink').classList.remove('bg-gray-200', 'text-black');
     if (page === 'narratives') {
         document.getElementById('narrativesLink').classList.add('text-black', 'bg-gray-300', 'rounded', 'p-3');
+        document.getElementById('side-narrativesLink').classList.add('bg-gray-200', 'text-black');
     } else if (page === 'announcement') {
         document.getElementById('announcementLink').classList.add('text-black', 'bg-gray-300', 'rounded', 'p-3');
+        document.getElementById('side-announcementLink').classList.add('bg-gray-200', 'text-black');
     }
 }
 
@@ -67,13 +70,21 @@ document.getElementById('announcementLink').addEventListener('click', function(e
     event.preventDefault();
     navigate('announcement');
 });
+document.getElementById('side-narrativesLink').addEventListener('click', function(event) {
+    event.preventDefault();
+    navigate('narratives');
+});
 
+document.getElementById('side-announcementLink').addEventListener('click', function(event) {
+    event.preventDefault();
+    navigate('announcement');
+});
 document.getElementById('homeLink').addEventListener('click', function(event) {
     event.preventDefault();
     navigate('home');
 });
 
-if (!urlParams.get('page')) {
+if (!urlParams.get('display_page')) {
     navigate('home');
 } else if (urlParams.get('page') === 'narratives') {
     navigate('narratives');
