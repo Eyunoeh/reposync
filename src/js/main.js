@@ -48,15 +48,15 @@ function navigate(page) {
 }
 
 function updateActiveLink(page) {
-    document.getElementById('narrativesLink').classList.remove('text-black', 'bg-gray-300', 'rounded', 'p-3');
-    document.getElementById('announcementLink').classList.remove('text-black', 'bg-gray-300', 'rounded', 'p-3');
+    document.getElementById('narrativesLink').classList.remove('text-black', 'bg-gray-300', 'rounded');
+    document.getElementById('announcementLink').classList.remove('text-black', 'bg-gray-300', 'rounded');
     document.getElementById('side-narrativesLink').classList.remove('bg-gray-200', 'text-black');
     document.getElementById('side-announcementLink').classList.remove('bg-gray-200', 'text-black');
     if (page === 'narratives') {
-        document.getElementById('narrativesLink').classList.add('text-black', 'bg-gray-300', 'rounded', 'p-3');
+        document.getElementById('narrativesLink').classList.add('text-black', 'bg-gray-300', 'rounded');
         document.getElementById('side-narrativesLink').classList.add('bg-gray-200', 'text-black');
     } else if (page === 'announcement') {
-        document.getElementById('announcementLink').classList.add('text-black', 'bg-gray-300', 'rounded', 'p-3');
+        document.getElementById('announcementLink').classList.add('text-black', 'bg-gray-300', 'rounded');
         document.getElementById('side-announcementLink').classList.add('bg-gray-200', 'text-black');
     }
 }

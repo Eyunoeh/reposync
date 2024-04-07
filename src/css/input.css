@@ -2,9 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar {
-    display: none;
-}
+
 
 body{
     font-family: 'Open Sans', sans-serif;

@@ -12,9 +12,9 @@
                         focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Search">
                         </div>
                         <div class="w-[40%]">
-                            <select class="w-full h-10 rounded bg-slate-50 font-semibold">
+                            <select class="w-full h-10 rounded bg-slate-50 font-semibold" name="stud_program">
                                 <option>Select Program</option>
-                                <option>BSIT</option>
+                                <option value="">BSIT</option>
                                 <option>BSBM</option>
                             </select>
                         </div>
