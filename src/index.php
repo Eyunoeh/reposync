@@ -19,6 +19,7 @@
 
     </main>
     <script src="js/main.js"></script>
+    <script src="js/router.js"></script>
 
 </body>
 </html>
