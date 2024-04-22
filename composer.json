@@ -1,0 +1,14 @@
+{
+    "name": "xpc/reposync-narrative-management-system",
+    "autoload": {
+        "psr-4": {
+            "Xpc\\ReposyncNarrativeManagementSystem\\": "src/"
+        }
+    },
+    "require": {
+        "spatie/pdf-to-image": "^1.2",
+        "convertapi/convertapi-php": "^2.0",
+      "ext-json": "*",
+        "ext-curl": "*"
+    }
+}
