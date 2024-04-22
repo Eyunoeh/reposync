@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="update 4/23/2024" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution>
+      <executable path="composer" />
+    </execution>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="9a6fbdee-b1b7-4390-a8e8-0a32f67d4cd4" />
+        <option name="url" value="https://github.com/Eyunoeh/reposync.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/convertapi/convertapi-php" />
+      <path value="$PROJECT_DIR$/vendor/spatie/pdf-to-image" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+    </include_path>
+  </component>
+  <component name="ProblemsViewState">
+    <hideBySeverity>
+      <option value="200" />
+      <option value="300" />
+    </hideBySeverity>
+  </component>
+  <component name="ProjectId" id="2ecKpYvq3J7bVxNejoU1HgOVQIV" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/ReposyncNarrativeManagementSystem&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src" />
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\js" />
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\NarrativeReports" />
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\assets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem" />
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="" />
+      <created>1712198618816</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712198618816</updated>
+      <workItem from="1712198621873" duration="13160000" />
+      <workItem from="1712220165727" duration="20447000" />
+      <workItem from="1712241546205" duration="45000" />
+      <workItem from="1712284955041" duration="7479000" />
+      <workItem from="1712365342335" duration="11755000" />
+      <workItem from="1712378070866" duration="2461000" />
+      <workItem from="1712418894777" duration="2747000" />
+      <workItem from="1712448757381" duration="8942000" />
+      <workItem from="1712457873279" duration="11517000" />
+      <workItem from="1712545874919" duration="1584000" />
+      <workItem from="1712559710212" duration="2520000" />
+      <workItem from="1712586252848" duration="3110000" />
+      <workItem from="1712621125058" duration="1280000" />
+      <workItem from="1712622428293" duration="5000" />
+      <workItem from="1712674318697" duration="1315000" />
+      <workItem from="1712712720131" duration="13962000" />
+      <workItem from="1712972379449" duration="9699000" />
+      <workItem from="1712993750621" duration="492000" />
+      <workItem from="1713223690913" duration="4052000" />
+      <workItem from="1713242809858" duration="14326000" />
+      <workItem from="1713284079261" duration="4000" />
+      <workItem from="1713328050867" duration="2575000" />
+      <workItem from="1713404410900" duration="239000" />
+      <workItem from="1713415546873" duration="7000" />
+      <workItem from="1713505719329" duration="296000" />
+      <workItem from="1713617750481" duration="17973000" />
+      <workItem from="1713686939112" duration="11147000" />
+      <workItem from="1713749878385" duration="24648000" />
+      <workItem from="1713790467659" duration="11523000" />
+      <workItem from="1713802041064" duration="1050000" />
+    </task>
+    <task id="LOCAL-00001" summary="home">
+      <created>1712200715647</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1712200715647</updated>
+    </task>
+    <task id="LOCAL-00002" summary="home">
+      <created>1712224331744</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1712224331744</updated>
+    </task>
+    <task id="LOCAL-00003" summary="noReload">
+      <created>1712227150223</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1712227150223</updated>
+    </task>
+    <task id="LOCAL-00004" summary="narrative/nav">
+      <created>1712241106067</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1712241106067</updated>
+    </task>
+    <task id="LOCAL-00005" summary="update 4/6/2024">
+      <created>1712379568835</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1712379568835</updated>
+    </task>
+    <task id="LOCAL-00006" summary="update 4/7/2024">
+      <created>1712463150931</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1712463150931</updated>
+    </task>
+    <task id="LOCAL-00007" summary="update 4/7/2024">
+      <created>1712468984077</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1712468984077</updated>
+    </task>
+    <task id="LOCAL-00008" summary="update 4/7/2024">
+      <created>1712469022399</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1712469022399</updated>
+    </task>
+    <task id="LOCAL-00009" summary="update 4/23/2024">
+      <created>1713802169757</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1713802169757</updated>
+    </task>
+    <task id="LOCAL-00010" summary="update 4/23/2024">
+      <created>1713802712077</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1713802712077</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="home" />
+    <MESSAGE value="noReload" />
+    <MESSAGE value="narrative/nav" />
+    <MESSAGE value="update 4/6/2024" />
+    <MESSAGE value="update 4/7/2024" />
+    <MESSAGE value="update 4/23/2024" />
+    <option name="LAST_COMMIT_MESSAGE" value="update 4/23/2024" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/tailwind.config.js</url>
+          <line>6</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
