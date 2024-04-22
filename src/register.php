@@ -13,22 +13,22 @@
 
     <title>Document</title>
 </head>
-<body  class="bg-white">
-<main class="h-screen mx-auto flex flex-col justify-center items-center sm:flex-row overflow-y-auto">
-    <img class="lg:block hidden object-fit h-3/4 lg:h-[90%] w-full sm:w-auto md:w-[720px] border border-black" src="assets/reposync%20signup%20image-01.jpg" alt="Cookie Image">
-    <div class="card w-full h-full sm:w-96 lg:h-[90%] bg-transparent text-neutral-content border-none md:border rounded-none">
-        <div class="card-body flex flex-col justify-center items-center lg:border-black lg:border">
-            <h2 class="text-2xl text-black font-bold">Sign Up</h2>
-            <section class="lg:overflow-y-auto lg:h-[28rem] scroll-smooth">
+<body  class="bg-slate-100 grid place-items-center">
+<main class="h-screen mx-auto flex  justify-center items-center sm:flex-row overflow-y-auto ">
+    <img id="reg_img" class="hover:cursor-pointer lg:block hidden object-fit h-[32rem] w-full sm:w-auto md:w-[720px] border border-black " src="assets/reposync%20signup%20image-01.jpg" alt="Cookie Image">
+    <div class="bg-white card h-[90vh] w-full  sm:w-96 sm:h-[32rem] bg-transparent text-neutral-content border-none md:border rounded-none">
+        <div class="card-body flex flex-col justify-evenly  items-center lg:border-black lg:border ">
+            <div class="text-center">
+                <h2 class="text-2xl text-black font-bold">Sign Up</h2>
+            </div>
+            <section class="overflow-y-auto max-h-[20rem] scroll-smooth ">
                 <form method="post" id="signup-form">
                     <div class="flex flex-col gap-2 justify-center text-black">
                         <label class="font-bold text-sm">Select Role</label>
                         <select class="w-full h-8 rounded bg-slate-50" name="user_role">
-                            <option value="no_input">-</option>
                             <option value="Student">Student</option>
                             <option value="Adviser">Adviser</option>
                         </select>
-
                         <div class="flex flex-col gap-2">
                             <label class="font-bold text-sm">First Name</label>
                             <input required name="first_name" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Enter your first name">
@@ -53,10 +53,9 @@
                             <label class="font-bold text-sm">School ID</label>
                             <input required name="sch_id" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="0000-00000">
                         </div>
-                        <div class="flex flex-col gap-2">
+                        <div id="program" class="flex flex-col gap-2">
                             <label class="font-bold text-sm">Select Program</label>
                             <select required name="program" class="w-full h-8 rounded bg-slate-50">
-                                <option>-</option>
                                 <option>BSIT</option>
                                 <option>BSBM</option>
                                 <option>BSCpE</option>
@@ -67,73 +66,37 @@
                             <label class="font-bold text-sm">Upload ID</label>
                             <input name="file_sch_id" required type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
                         </div>
-                    </div>
-                    <div class="card-actions flex justify-center mt-4">
-                        <button id="form-submit" class="btn btn-success btn-outline mr-2 h-10 p-3 w-20">Submit</button>
+                        <div id="reg_form" class="flex flex-col gap-2">
+                            <label class="font-bold text-sm">Registration Form</label>
+                            <input name="reg_form" required type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
+                        </div>
                     </div>
                 </form>
             </section>
+            <div class="card-actions flex justify-center mt-4">
+                <button id="sign-up-submit-btn" class="btn btn-success btn-outline mr-2 h-10 p-3 w-20">Submit</button>
+            </div>
         </div>
     </div>
 </main>
+<div id="signup_modal" class="hidden absolute h-[100vh] w-full grid place-items-center bg-black bg-opacity-35">
+    <div class=" card w-96 bg-slate-100  border-black">
+        <div class="card-body items-center text-center">
+            <h2 class="card-title text-slate-600">Check your email</h2>
 
-
-<script>
-    document.getElementById("form-submit").addEventListener("click", function(event) {
-        event.preventDefault();
-        let formData = new FormData(document.getElementById("signup-form"));
-
-        let isValid = true;
-        formData.forEach(function(value, key) {
-            // Skip file inputs
-            if (key === 'file_sch_id') return;
-            if (!value.trim()) {
-                isValid = false;
-                return;
-            }
-        });
-
-        // Check if file input is empty
-        let fileInput = document.querySelector('input[name="file_sch_id"]');
-        if (!fileInput.files || fileInput.files.length === 0) {
-            isValid = false;
-        }
-
-        if (!isValid) {
-            alert("Please fill in all fields and select a file.");
-            return;
-        }
-
-        if (formData.get('password') !== formData.get('conf_password')) {
-            alert("Passwords do not match.");
-            return;
-        }
-
-        $.ajax({
-            url: 'ajax.php?action=signUp',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if (response == 1){
-                    // Show modal success
-                }
-                else {
-                    console.log(response);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    });
-
-</script>
+            <p> Wait for the admin approval</p>
+            <div class="mt-4 card-actions justify-end">
+                <a href="index.php" class="btn btn-success btn-outline">Okay</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loader" class="hidden absolute h-[100vh] w-full grid place-items-center bg-black bg-opacity-35">
+    <span class="loading loading-dots loading-lg text-white"></span>
+</div>
 
 
 
-
-<script src="js/main.js"></script>
+<script src="js/register.js"></script>
 </body>
 </html>

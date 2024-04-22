@@ -1,0 +1,142 @@
+* {
+	box-sizing: border-box;
+  }
+  
+  body {
+	background-color: #FEFBF6;
+	font-family: "Arial", sans-serif;
+	margin-top: 100px;
+  }
+  
+  img {
+	display: block;
+	width: 80%;
+	height: auto;
+	border-radius: 20px;
+  }
+  
+  .main-container {
+	border: 2px solid black;
+	padding: 10px;
+	width: 100%;
+	height: auto;
+	background-color: #FEFBF6;
+	border-radius: 5px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+  }
+  
+  /*.login-form {
+	padding: 20px;
+	background-color: #F9F9F9;
+	border-radius: 20px;
+	height: 66.7vh;
+	border: 2px solid #BCBAB8;
+  }*/
+
+  .container-form {
+	padding: 20px;
+	background-color: #F9F9F9;
+	border-radius: 20px;
+	height: 66.7vh;
+	border: 2px solid #BCBAB8;
+  }
+  
+  h1 {
+
+	color: black;
+	font-size: 32px;
+	font-weight: 300;
+	margin: 80px 80px 10px;
+	text-align: left;
+  }
+
+  h3 {
+	color: black;
+	font-size: medium;
+	text-align: left;
+	padding-left:90px;
+  }
+  
+  form {
+	text-align: center;
+	margin-top: 2px;
+	padding-top: 1rem;
+  }
+  
+  input {
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-radius: 50px;
+	border: 2px solid transparent;
+	text-align: center;
+	width: 70%;
+	font-size: 16px;
+	transition: border .2s, background-color .2s;
+  }
+  
+  form .field {
+	background-color: #F9F9F9;
+	border: 2px solid #BCBAB8;
+	border-radius: 50px;
+	height: 50px;
+  }
+  
+  form .field:focus {
+	border: 2px solid #3498DB;
+  }
+  
+  form .btn {
+	background-color: #76885B;
+	color: white;
+	font-weight: bold;
+	line-height: 25px;
+	cursor: pointer;
+	width: 50%;
+	margin-top: 30px;
+	height: 50px;
+  }
+  
+  form .btn:hover,
+  form .btn:active {
+	background-color: #F9F9F9;
+	border: 2px solid #BCBAB8;
+	border-radius: 50px;
+	color: black;
+  }
+  
+  .pass-link {
+	text-align: center;
+  }
+  
+  .pass-link a:link,
+  .pass-link a:visited {
+	font-size: 12px;
+	color: #777;
+  }
+  
+  @media screen and (max-width: 768px) {
+	.col-6 {
+	  flex: 1 1 100%;
+	  margin-right: 0;
+	}
+  
+	h1 {
+	  font-size: 24px;
+	}
+  
+	input {
+	  width: 100%;
+	}
+  }
+  
+  @media screen and (max-width: 480px) {
+	h1 {
+	  font-size: 20px;
+	}
+  
+	input {
+	  width: 100%;
+	}
+  }

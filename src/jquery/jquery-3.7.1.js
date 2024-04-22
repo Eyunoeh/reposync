@@ -729,7 +729,7 @@ var i,
 	rinputs = /^(?:input|select|textarea|button)$/i,
 	rheader = /^h\d$/i,
 
-	// Easily-parseable/retrievable ID or TAG or CLASS selectors
+	// Easily-parseable/retrievable SchoolID or TAG or CLASS selectors
 	rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
 
 	rsibling = /[+~]/,
@@ -829,7 +829,7 @@ function find( selector, context, results, seed ) {
 			// (excepting DocumentFragment context, where the methods don't exist)
 			if ( nodeType !== 11 && ( match = rquickExpr.exec( selector ) ) ) {
 
-				// ID selector
+				// SchoolID selector
 				if ( ( m = match[ 1 ] ) ) {
 
 					// Document context
@@ -837,7 +837,7 @@ function find( selector, context, results, seed ) {
 						if ( ( elem = context.getElementById( m ) ) ) {
 
 							// Support: IE 9 only
-							// getElementById can match elements by name instead of ID
+							// getElementById can match elements by name instead of SchoolID
 							if ( elem.id === m ) {
 								push.call( results, elem );
 								return results;
@@ -850,7 +850,7 @@ function find( selector, context, results, seed ) {
 					} else {
 
 						// Support: IE 9 only
-						// getElementById can match elements by name instead of ID
+						// getElementById can match elements by name instead of SchoolID
 						if ( newContext && ( elem = newContext.getElementById( m ) ) &&
 							find.contains( context, elem ) &&
 							elem.id === m ) {
@@ -882,7 +882,7 @@ function find( selector, context, results, seed ) {
 				// qSA considers elements outside a scoping root when evaluating child or
 				// descendant combinators, which is not what we want.
 				// In such cases, we work around the behavior by prefixing every selector in the
-				// list with an ID selector referencing the scope context.
+				// list with an SchoolID selector referencing the scope context.
 				// The technique has to be used as well when a leading combinator is used
 				// as such selectors are not recognized by querySelectorAll.
 				// Thanks to Andrew Dupont for this technique.
@@ -893,7 +893,7 @@ function find( selector, context, results, seed ) {
 					newContext = rsibling.test( selector ) && testContext( context.parentNode ) ||
 						context;
 
-					// We can use :scope instead of the ID hack if the browser
+					// We can use :scope instead of the SchoolID hack if the browser
 					// supports it & if we're not changing the context.
 					// Support: IE 11+, Edge 17 - 18+
 					// IE/Edge sometimes throw a "Permission denied" error when
@@ -901,7 +901,7 @@ function find( selector, context, results, seed ) {
 					// eslint-disable-next-line eqeqeq
 					if ( newContext != context || !support.scope ) {
 
-						// Capture the context ID, setting it first if necessary
+						// Capture the context SchoolID, setting it first if necessary
 						if ( ( nid = context.getAttribute( "id" ) ) ) {
 							nid = jQuery.escapeSelector( nid );
 						} else {
@@ -1189,7 +1189,7 @@ function setDocument( node ) {
 		}
 	} );
 
-	// ID filter and find
+	// SchoolID filter and find
 	if ( support.getById ) {
 		Expr.filter.ID = function( id ) {
 			var attrId = id.replace( runescape, funescape );
@@ -2617,7 +2617,7 @@ function select( selector, context, results, seed ) {
 	// (the latter of which guarantees us context)
 	if ( match.length === 1 ) {
 
-		// Reduce context if the leading compound selector is an ID
+		// Reduce context if the leading compound selector is an SchoolID
 		tokens = match[ 0 ] = match[ 0 ].slice( 0 );
 		if ( tokens.length > 2 && ( token = tokens[ 0 ] ).type === "ID" &&
 				context.nodeType === 9 && documentIsHTML && Expr.relative[ tokens[ 1 ].type ] ) {
@@ -4931,7 +4931,7 @@ jQuery.event = {
 			jQuery.find.matchesSelector( documentElement, selector );
 		}
 
-		// Make sure that the handler has a unique ID, used to find/remove it later
+		// Make sure that the handler has a unique SchoolID, used to find/remove it later
 		if ( !handler.guid ) {
 			handler.guid = jQuery.guid++;
 		}

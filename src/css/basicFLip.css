@@ -1,0 +1,32 @@
+/* Basic sample */
+
+body{
+	overflow: hidden;
+	width:100vw;
+	height:100vh;
+
+}
+
+.flipbook-viewport{
+
+	width:100vw;
+	height:100vh;
+}
+
+.flipbook-viewport .container{
+
+}
+
+.flipbook-viewport .flipbook{
+	width:922px;
+	height:600px;
+
+}
+
+.flipbook-viewport .page{
+	width:461px;
+	height:600px;
+	background-color:white;
+	background-repeat:no-repeat;
+	background-size:100% 100%;
+}
