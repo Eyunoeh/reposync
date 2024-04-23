@@ -12,16 +12,13 @@ session_start();
 
                 <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('newNarrative')">New Narrative Report</button>
                 <dialog id="newNarrative" class="modal card bg-black bg-opacity-40">
-                    <div class="modal-box bg-slate-50 min-h-[30rem] w-[80%] h-[30rem] ">
+                    <div class="modal-box bg-slate-50 min-h-[30rem]  h-[30rem] flex flex-col ">
                         <div  class=" card-title sticky">
-
                             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('newNarrative')">✕</button>
-
-
                             <h3 class="font-bold text-center text-lg mb-5">Add Student Narrative Report</h3>
                         </div>
-                        <div class="overflow-auto max-h-[22rem] card-body">
-                            <form id="narrativeReportsForm">
+                        <div class="overflow-auto max-h-[22rem] card-body ">
+                            <form id="narrativeReportsForm"  enctype="multipart/form-data">
                                 <div class="flex flex-col gap-8">
                                     <div class="flex flex-col gap-2">
                                         <div class="flex flex-col gap-2">
@@ -33,24 +30,30 @@ session_start();
                                             <input required name="last_name" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
                                         </div>
                                         <div class="flex flex-col gap-2">
+                                            <label class="font-bold text-sm">School ID</label>
+                                            <input required name="school_id" min="0" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="Type here...">
+                                        </div>
+                                        <div class="flex flex-col gap-2">
                                             <label class="font-bold text-sm">Program</label>
-                                            <input required name="email" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="email" placeholder="Type here...">
+                                            <input required name="program" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
                                         </div>
                                         <div class="flex flex-col gap-2">
                                             <label class="font-bold text-sm">Section</label>
-                                            <input required name="first_name" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
+                                            <input required name="section" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
                                         </div>
                                         <div class="flex flex-col gap-2">
                                             <label class="font-bold text-sm">OJT Adviser</label>
-                                            <input required name="last_name" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
+                                            <input required name="ojt_adviser" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
                                         </div>
                                     </div>
-                                    <input name="file_sch_id" required type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
-                                    <button class="btn btn-neutral btn-outline ">Submit</button>
+                                    <input name="final_report_file" accept="application/pdf" required type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
+                                    <button id="submit_btn" class="btn btn-neutral btn-outline " >Submit</button>
                                 </div>
                             </form>
                         </div>
+                        <p id="loader_narrative" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
                     </div>
+
                 </dialog>
         </div>
         <?php
@@ -58,7 +61,6 @@ session_start();
         ?>
         <div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
             <div class="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
-                <!-- card header -->
                 <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent
                  border-slate-300">
                     <form class="flex w-full justify-between">
@@ -104,5 +106,10 @@ session_start();
             </div>
         </div>
     </div>
+
+
 </div>
+
+
+
 

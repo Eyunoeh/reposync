@@ -72,12 +72,6 @@ document.getElementById('side-announcement').addEventListener('click', function(
     navigate('announcement');
 });
 
-
-
-
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
     var urlParams = new URLSearchParams(window.location.search);
     if (!urlParams.get('page')) {
@@ -150,5 +144,21 @@ function change_stud_table () {
     }
 }
 
+ function add_loader(id){
+    let loader = document.getElementById(id);
+    loader.classList.remove('hidden');
+}
+ function remove_loader(id){
+    let loader = document.getElementById(id);
+    loader.classList.add('hidden');
+}
 
 
+function enable_button(btn_id){
+    let btn = document.getElementById(btn_id);
+    btn.removeAttribute("disabled");
+}
+function disable_button(btn_id){
+    let btn = document.getElementById(btn_id);
+    btn.setAttribute("disabled", "disabled");
+}

@@ -9,6 +9,7 @@
         "spatie/pdf-to-image": "^1.2",
         "convertapi/convertapi-php": "^2.0",
       "ext-json": "*",
-        "ext-curl": "*"
+        "ext-curl": "*",
+      "ext-mysqli": "*"
     }
 }
