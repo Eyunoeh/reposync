@@ -47,6 +47,9 @@
         </div>
     </div>
 </main>
+<div id="loader" class="hidden absolute h-[100vh] w-full grid place-items-center bg-black bg-opacity-35">
+    <span class="loading loading-dots loading-lg text-white"></span>
+</div>
 
 </body>
 <script src="js/login.js">

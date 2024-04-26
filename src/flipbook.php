@@ -36,6 +36,7 @@ function decrypt_data($data, $key) {
             $encrypt_key = 'TheSecretKey#02';
             if (isset($_GET['view'])){
                 $decrypted_narrative_id = decrypt_data($_GET['view'], $encrypt_key);
+
                 if (!$decrypted_narrative_id){
                     header("Location: index.php");
                 }
@@ -45,7 +46,8 @@ function decrypt_data($data, $key) {
                 $stmt->execute();
                 $result = $stmt->get_result();
                 if ($row = $result->fetch_assoc()) {
-                    $path = 'NarrativeReports_Images/' . $row['first_name'] . "_" . $row['last_name'] . "_" . $row['program'] . "_" . $row['section'];
+                    $path = 'NarrativeReports_Images/' . str_replace(' ','',$row['first_name']. "_" ). str_replace(' ','',$row['last_name']). "_" . $row['program'] . "_" . $row['section'];
+
                     $files = scandir($path);
                     $files_with_page = [];
                     $files_without_page = [];
@@ -62,6 +64,7 @@ function decrypt_data($data, $key) {
                     natsort($files_without_page);
                     $sorted_files = array_merge($files_without_page, $files_with_page);
                     foreach ($sorted_files as $file) {
+
                         echo '<div style="background-image:url('.$path.'/'.$file.')"></div>';
                     }
 

@@ -44,7 +44,10 @@ if ($action == 'newFinalReport'){
             $file_size = $_FILES['final_report_file']['size'];
 
             if (isPDF($file_name)){
-                $new_file_name = $first_name."_".$last_name."_".$program."_".$section.".pdf";
+
+                $file_first_name = str_replace(' ', '', $first_name);
+                $file_last_name = str_replace(' ', '', $last_name);
+                $new_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section.".pdf";
                 $current_date_time = date('Y-m-d H:i:s');
                 $narrative_status = 'OK';
                 if($file_error === UPLOAD_ERR_OK) {
@@ -66,11 +69,9 @@ if ($action == 'newFinalReport'){
                     $new_final_report->close();
                     $destination = "src/NarrativeReportsPDF/" . $new_file_name;
                     move_uploaded_file($file_temp, $destination);
+                    $report_pdf_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section;
 
-                     // replace the true
-
-
-                    if (convert_pdf_to_image($new_file_name,$first_name."_".$last_name,$section,$program)){
+                    if (convert_pdf_to_image($report_pdf_file_name)){
                         echo 1;
                         exit();
                     }
@@ -79,16 +80,16 @@ if ($action == 'newFinalReport'){
                     }
                 }
                 else {
-                    echo 2;
+                    echo 'file error';
                 }
             }else {
-                echo 3;
+                echo 'not pdf';
             }
         }else{
-            echo 4;
+            echo 'empty file';
         }
     }else{
-        echo 5;
+        echo 'form data are empty';
     }
     exit();
 }

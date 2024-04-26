@@ -10,6 +10,7 @@
         "convertapi/convertapi-php": "^2.0",
       "ext-json": "*",
         "ext-curl": "*",
-      "ext-mysqli": "*"
+      "ext-mysqli": "*",
+      "ext-openssl": "*"
     }
 }

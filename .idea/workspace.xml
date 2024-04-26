@@ -4,26 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="update 4/23/2024">
-      <change afterPath="$PROJECT_DIR$/TestDatatables.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/js/Datatables.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="4/26/2024">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Rio Carl_De La Cruz_BSBM_4B.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-18.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-19.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-20.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home_nav.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/home_nav.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/ajaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/ajaxRequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/narratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/narratives.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,24 +90,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/ecommerce&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
@@ -153,7 +163,8 @@
       <workItem from="1713920285332" duration="20963000" />
       <workItem from="1714007813056" duration="16991000" />
       <workItem from="1714046376636" duration="8777000" />
-      <workItem from="1714093755736" duration="1061000" />
+      <workItem from="1714093755736" duration="5451000" />
+      <workItem from="1714104678981" duration="3929000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -239,7 +250,21 @@
       <option name="project" value="LOCAL" />
       <updated>1713856002815</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="4/26/2024">
+      <created>1714094878831</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1714094878831</updated>
+    </task>
+    <task id="LOCAL-00014" summary="4/26/2024">
+      <created>1714094930065</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1714094930065</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -263,7 +288,8 @@
     <MESSAGE value="update 4/6/2024" />
     <MESSAGE value="update 4/7/2024" />
     <MESSAGE value="update 4/23/2024" />
-    <option name="LAST_COMMIT_MESSAGE" value="update 4/23/2024" />
+    <MESSAGE value="4/26/2024" />
+    <option name="LAST_COMMIT_MESSAGE" value="4/26/2024" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

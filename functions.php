@@ -2,18 +2,18 @@
 include 'vendor/autoload.php';
 use \ConvertApi\ConvertApi;
 
-function convert_pdf_to_image($file_name,$stud_name, $section,$program):bool{
+function convert_pdf_to_image($file_name):bool{
 
     $basePath = "src/NarrativeReports_Images/";
-    $subdirectoryName = $stud_name.'_'.$program."_".$section;
+    $subdirectoryName = $file_name;
 
     if (!is_dir($basePath . $subdirectoryName)) {
         mkdir($basePath . $subdirectoryName, 0755);
 
         ConvertApi::setApiSecret('1dLsWCbgR9f2Pgrw');
         $result = ConvertApi::convert('png', [
-            'File' => 'src/NarrativeReportsPDF/'.$file_name,
-            'FileName' => $stud_name.'_'.$program."_".$section."_page",
+            'File' => 'src/NarrativeReportsPDF/'.$file_name.'.pdf',
+            'FileName' => $file_name."_page",
             'ImageResolution' => '800',
         ], 'pdf'
         );

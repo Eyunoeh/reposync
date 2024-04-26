@@ -89,8 +89,6 @@ session_start();
                             </tr>
                             </thead>
                             <tbody id="narrativeReportsTableBody" class="text-center">
-
-
                             </tbody>
                         </table>
                     </div>
