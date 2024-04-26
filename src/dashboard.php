@@ -33,43 +33,47 @@ session_start()
             <div class="my-2 bg-gray-600 h-[1px]"></div>
         </div>
 
-        <div class=" p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 active:bg-slate-200 text-white">
-            <i class="fa-solid fa-house"></i>
-            <span class="text-[15px] ml-4  font-bold">Home</span>
-        </div>
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <a href="index.php">
+            <div class=" p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 active:bg-slate-200 text-white">
+
+                    <i class="fa-solid fa-house"></i>
+                <span class="text-[15px] ml-4  font-bold">Home</span>
+
+            </div>
+        </a>
+        <div id="dashboard" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-gauge"></i>
             <span class="text-[15px] ml-4  font-bold">Dashboard</span>
         </div>
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <div id="dashboard_narrative" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-book"></i>
             <span class="text-[15px] ml-4  font-bold">Narrative Reports</span>
         </div>
-
-
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer  hover:bg-slate-200 hover:text-slate-700  text-white" onclick="dropdown()">
+        <div id="announcement" onclick="dashboard_tab(this.id);dropdown('AnnouncementSubmenu')" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer  hover:bg-slate-200 hover:text-slate-700  text-white">
             <i class="fa-solid fa-bullhorn"></i>
             <div class="flex justify-between w-full items-center">
                 <span class="text-[15px] ml-4  font-bold">Announcement</span>
             </div>
+            <i class="fa-solid fa-chevron-down"></i>
         </div>
-        <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold " id="submenu">
-            <h1 class="cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+        <div id="AnnouncementSubmenu" class="ani text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" >
+            <h1 onclick="dashboard_tab('announcement')" class="cursor-pointer p-2  hover:text-slate-700  text-white rounded-md mt-1">
                 <i class="fa-regular fa-note-sticky"></i>
                  Adviser Notes
             </h1>
-            <h1 class="cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+            <h1 onclick="dashboard_tab('announcement')" class="cursor-pointer p-2 hover:text-slate-700  text-white rounded-md mt-1">
                 <i class="fa-regular fa-calendar-days"></i>
                  Activities & Schedule
             </h1>
+
         </div>
 
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <div id="dashBoardWeeklyReport" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-brands fa-font-awesome"></i>
             <span class="text-[15px] ml-4  font-bold">Students Weekly Report</span>
         </div>
         <div class="my-4 bg-gray-600 h-[1px]"></div>
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer  hover:bg-slate-200 hover:text-slate-700  text-white" onclick="dropdown()">
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer  hover:bg-slate-200 hover:text-slate-700  text-white" onclick="">
             <i class="fa-solid fa-user"></i>
             <div class="flex justify-between w-full items-center">
                 <span class="text-[15px] ml-4  font-bold">Users</span>
@@ -92,43 +96,9 @@ session_start()
             <span class="text-[15px] ml-4  font-bold">Logout</span>
         </div>
     </div>
-    <div class="flex gap-2 flex-col  max-w-6xl overflow-auto">
-        <div class="flex gap-2 ml-3 mt-3 flex-wrap xl:justify-center justify-evenly lg:justify-start h-full items-center text-slate-700 ">
-            <div class="card rounded h-60 w-full sm:w-[15rem] min-w-32   bg-info text-center grid place-items-center shadow-xl">
-                <h1 class="font-bold font-sans text-[4rem]">60</h1>
-                <h1 class="font-sans text-[25px]">Active Students</h1>
-            </div>
-            <div class="card rounded h-60 w-full sm:w-[15rem] min-w-32  bg-info text-center grid place-items-center shadow-xl">
-                <h1 class="font-bold font-sans text-[4rem]">13</h1>
-                <h1 class="font-sans text-[25px]">Active Adviser</h1>
-            </div>
-            <div class="card rounded h-60 w-full sm:w-[15rem] min-w-32   bg-warning text-center grid place-items-center shadow-xl">
-                <h1 class="font-bold font-sans text-[4rem]">23</h1>
-                <h1 class="font-sans text-[25px]">Archive Student</h1>
-            </div>
-            <div class="card rounded h-60 w-full sm:w-[15rem] min-w-32  bg-error text-center grid place-items-center shadow-xl">
-                <h1 class="font-bold font-sans text-[4rem]">60</h1>
-                <h1 class="font-sans text-[25px]">Archive Adviser</h1>
-            </div>
+    <section id="dashboard_main_content" class="flex gap-2 flex-col  max-w-6xl overflow-auto">
 
-            <div class="card rounded h-60 w-full sm:w-[15rem] min-w-32   bg-success text-center grid place-items-center shadow-">
-                <h1 class="font-bold font-sans text-[4rem]">300</h1>
-                <h1 class="font-sans text-[25px]">Narrative Reports</h1>
-            </div>
-            <div class="card rounded h-60 w-full sm:w-[15rem] min-w-32  bg-accent text-center grid place-items-center shadow-xl">
-                <h1 class="font-bold font-sans text-[4rem]">60</h1>
-                <h1 class="font-sans text-[25px]">Weekly Report</h1>
-            </div>
-
-            <div class="card rounded h-60 w-full sm:w-[15rem] min-w-32  bg-purple-400 text-center grid place-items-center shadow-xl">
-                <h1 class="font-bold font-sans text-[4rem]">60</h1>
-                <h1 class="font-sans text-[20px]">Archive Weekly Report</h1>
-            </div>
-            <div class="card rounded h-60 w-full sm:w-[15rem] min-w-32 bg-secondary text-center grid place-items-center shadow-xl">
-                <h1 class="font-bold font-sans text-[4rem]">60</h1>
-                <h1 class="font-sans text-[20px]">Archive Narrative Report</h1>
-            </div>
-        </div>
-    </div>
+    </section>
 </main>
+<script src="js/dashboard.js"></script>
 </body>

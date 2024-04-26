@@ -27,7 +27,6 @@ if ($action == 'resubmitReport'){
 
 }
 if ($action == 'newFinalReport'){
-
     extract($_POST);
     $first_name = isset($_POST['first_name']) ? sanitizeInput($_POST['first_name']) : '';
     $last_name = isset($_POST['last_name']) ? sanitizeInput($_POST['last_name']) : '';
