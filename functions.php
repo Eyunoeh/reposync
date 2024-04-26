@@ -34,6 +34,3 @@ function isPDF($filename) {
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
     return strtolower($extension) === 'pdf';
 }
-function newNarrativeReport(){
-
-}

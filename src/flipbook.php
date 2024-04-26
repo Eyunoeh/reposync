@@ -1,3 +1,15 @@
+
+<?php
+include_once '../DatabaseConn/databaseConn.php';
+function decrypt_data($data, $key) {
+    $cipher = "aes-256-cbc";
+    list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
+    return openssl_decrypt($encrypted_data, $cipher, $key, OPENSSL_RAW_DATA, $iv);
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,38 +27,53 @@
     <script type="text/javascript" src="turnjs4/extras/modernizr.2.5.3.min.js"></script>
     <title>Document</title>
 </head>
-
-
 <body class="bg-slate-200 ">
 
 <div class="flipbook-viewport overflow-auto ">
     <div class="container grid place-items-center ">
         <div class="flipbook">
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-2.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-3.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-5.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-6.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-7.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-8.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-9.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-10.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-11.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-12.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-13.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-14.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-15.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-16.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-17.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-18.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-19.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-20.png)"></div>
-            <div style="background-image:url(NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-21.png)"></div>
+            <?php
+            $encrypt_key = 'TheSecretKey#02';
+            if (isset($_GET['view'])){
+                $decrypted_narrative_id = decrypt_data($_GET['view'], $encrypt_key);
+                if (!$decrypted_narrative_id){
+                    header("Location: index.php");
+                }
+                $sql = "SELECT * FROM narrativereports WHERE narrative_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $decrypted_narrative_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($row = $result->fetch_assoc()) {
+                    $path = 'NarrativeReports_Images/' . $row['first_name'] . "_" . $row['last_name'] . "_" . $row['program'] . "_" . $row['section'];
+                    $files = scandir($path);
+                    $files_with_page = [];
+                    $files_without_page = [];
+                    foreach ($files as $file) {
+                        if ($file != "." && $file != "..") {
+                            if (preg_match('/page-\d+\.png$/', $file)) {
+                                $files_with_page[] = $file;
+                            } else {
+                                $files_without_page[] = $file;
+                            }
+                        }
+                    }
+                    natsort($files_with_page);
+                    natsort($files_without_page);
+                    $sorted_files = array_merge($files_without_page, $files_with_page);
+                    foreach ($sorted_files as $file) {
+                        echo '<div style="background-image:url('.$path.'/'.$file.')"></div>';
+                    }
+
+                }
+            }else{
+                header("Location: index.php");
+            }
+            $conn->close();
+            ?>
         </div>
     </div>
 </div>
-
-
 <script type="text/javascript">
 
     function loadApp() {

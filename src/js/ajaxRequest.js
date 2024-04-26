@@ -1,11 +1,7 @@
-
 document.addEventListener('submit', function(e) {
    e.preventDefault();
-   let modal
-   let formData
-   let endpoint
-   let loader_id
-   let submit_btn
+   let modal,formData,endpoint,loader_id,submit_btn
+
    if (e.target.id === 'addWeeklyReportForm'){
       endpoint = 'addWeeklyReport'
    }else if (e.target.id === 'resubmitReportForm'){
@@ -31,6 +27,7 @@ document.addEventListener('submit', function(e) {
             enable_button(submit_btn)
             remove_loader(loader_id);
             closeModalForm(modal);
+            studentNarrativeReports();
          } else {
             console.log(response);
          }

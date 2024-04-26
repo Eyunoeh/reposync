@@ -1,3 +1,5 @@
+
+
 <header class="bg-green-700 text-white sticky top-0 z-20">
     <section class="max-w-6xl mx-auto p-2 flex lg:justify-between justify-center items-center">
         <div class="flex items-center justify-between border-accent gap-1">
@@ -17,7 +19,7 @@
             <nav class="lg:inline-flex hidden space-x-4 text-md lg:text-xl  justify-between items-center" aria-label="main">
 
                 <a href="#" id="narrativesLink" class="transition-all hover:cursor-pointer
-                hover:text-black hover:bg-gray-300  hover:rounded p-2">Narrative Reports</a>
+                hover:text-black hover:bg-gray-300  hover:rounded p-2" >Narrative Reports</a>
 
                 <a href="#" id="announcement" class="transition-all hover:cursor-pointer
                 hover:text-black hover:bg-gray-300 hover:rounded p-2">Announcement</a>
@@ -42,11 +44,12 @@
                 <div class="dropdown dropdown-bottom dropdown-end flex  items-center gap-2">
                     <div class="avatar"  role="button" tabindex="0" >
                         <div class="w-10 rounded-full">
-                            <img src="assets/formbg.jpg" />
+                            <img src="assets/profile.jpg" />
                         </div>
                     </div>
                     <ul tabindex="0" class="absolute bg-slate-100 text-black right-0 dropdown-content z-[1] menu p-2 shadow  rounded w-52">
-                        <li><a>Dashboard</a></li>
+
+                        <?php echo $_SESSION['log_user_type'] != 'student' ? '<li><a href="dashboard.php">Dashboard</a></li>': ''?>
                         <li><a href="logout.php">Logout</a></li>
                     </ul>
                 </div><?php

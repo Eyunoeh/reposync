@@ -48,7 +48,7 @@ if ($action == 'newFinalReport'){
                 $current_date_time = date('Y-m-d H:i:s');
                 $narrative_status = 'OK';
                 if($file_error === UPLOAD_ERR_OK) {
-                    /*
+
                     $new_final_report = $conn->prepare("INSERT INTO narrativereports (stud_school_id, 
                               first_name, last_name, program, section, OJT_adviser,narrative_file_name, upload_date, file_status)
                               values (?,?,?,?,?,?,?,?,?)");
@@ -67,10 +67,10 @@ if ($action == 'newFinalReport'){
                     $destination = "src/NarrativeReportsPDF/" . $new_file_name;
                     move_uploaded_file($file_temp, $destination);
 
-                    //convert_pdf_to_image($new_file_name,$first_name."_".$last_name,$section,$program replace the true
-                    */
-                    sleep(5);
-                    if (true){
+                     // replace the true
+
+
+                    if (convert_pdf_to_image($new_file_name,$first_name."_".$last_name,$section,$program)){
                         echo 1;
                         exit();
                     }
@@ -91,4 +91,41 @@ if ($action == 'newFinalReport'){
         echo 5;
     }
     exit();
+}
+if ($action == 'get_narrativeReports') {
+    $secret_key = 'TheSecretKey#02';
+
+    function encrypt_data($data, $key) {
+        $cipher = "aes-256-cbc";
+        $ivlen = openssl_cipher_iv_length($cipher);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        $encrypted = openssl_encrypt($data, $cipher, $key, OPENSSL_RAW_DATA, $iv);
+        return base64_encode($encrypted . '::' . $iv);
+    }
+
+    $sql = "SELECT * FROM narrativereports order by upload_date desc ";
+    $result = $conn->query($sql);
+
+    if ($result === false) {
+        echo "Error: " . $conn->error;
+    } else {
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
+                        </td>
+                        <td class="p-3 text-end">
+                            <span class="font-semibold text-light-inverse text-md/normal">' . $row["program"] . '</span>
+                        </td>
+                        <td class="p-3 text-end ">
+                            <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>
+
+                       
+                        </td>
+                      </tr>';
+            }
+        }
+    }
+    $conn->close();
 }

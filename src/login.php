@@ -47,21 +47,7 @@
         </div>
     </div>
 </main>
-<div id="signup_modal" class="hidden absolute h-[100vh] w-full grid place-items-center bg-black bg-opacity-35">
-    <div class=" card w-96 bg-slate-100  border-black">
-        <div class="card-body items-center text-center">
-            <h2 class="card-title text-slate-600">Check your email</h2>
 
-            <p> Wait for the admin approval</p>
-            <div class="mt-4 card-actions justify-end">
-                <a href="index.php" class="btn btn-success btn-outline">Okay</a>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="loader" class="hidden absolute h-[100vh] w-full grid place-items-center bg-black bg-opacity-35">
-    <span class="loading loading-dots loading-lg text-white"></span>
-</div>
 </body>
 <script src="js/login.js">
 </script>

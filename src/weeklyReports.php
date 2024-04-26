@@ -14,7 +14,8 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                     <form class="flex w-[40%] justify-between hidden sm:inline-flex">
                         <div class="w-full">
                             <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                        focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Search">
+        focus:outline-none focus:shadow-outline" id="weeklyReportSearch" type="text" placeholder="Search"
+                                   onkeyup="handleSearch('weeklyReportSearch',getVisibleTableId())">
                         </div>
                     </form>
 
@@ -67,7 +68,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
 
                             </tbody>
                         </table>
-                        <table class="w-full my-0   border-neutral-200 hidden" id="logsTable " >
+                        <table class="w-full my-0   border-neutral-200 hidden" id="logsTable" >
                             <thead class="align-bottom  z-20">
                                 <tr class="font-semibold text-[0.95rem] sticky top-0  z-20 text-secondary-dark bg-slate-200 rounded">
                                     <th class="p-3 ">Week</th>
