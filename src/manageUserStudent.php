@@ -3,7 +3,3 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     header("Location: 404.php");
     exit();
 }
-
-?>
-
-weeklyReport

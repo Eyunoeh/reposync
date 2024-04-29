@@ -4,36 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="4/26/2024">
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="DashboardTabs 4/26/2024">
+      <change afterPath="$PROJECT_DIR$/src/js/adminAjax_request.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/js/adviser_ajax_request.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/manageUserAdmin.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/manageUserStudent.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Rio Carl_De La Cruz_BSBM_4B.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page-9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Rio Carl_De La Cruz_BSBM_4B/Rio Carl_De La Cruz_BSBM_4B_page.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboardContent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardContent.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/home.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/Datatables.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/Datatables.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/ajaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/student.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageAnnouncement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAnnouncement.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageNarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageNarrativeReports.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageWeeklyReport.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/narratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/narratives.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,24 +84,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/Laundry_Management_System&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
@@ -164,7 +158,14 @@
       <workItem from="1714007813056" duration="16991000" />
       <workItem from="1714046376636" duration="8777000" />
       <workItem from="1714093755736" duration="5451000" />
-      <workItem from="1714104678981" duration="3929000" />
+      <workItem from="1714104678981" duration="16410000" />
+      <workItem from="1714139138263" duration="7868000" />
+      <workItem from="1714150106554" duration="827000" />
+      <workItem from="1714179998925" duration="31444000" />
+      <workItem from="1714228495163" duration="679000" />
+      <workItem from="1714267316531" duration="7367000" />
+      <workItem from="1714280710520" duration="14524000" />
+      <workItem from="1714316261610" duration="4809000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -264,7 +265,21 @@
       <option name="project" value="LOCAL" />
       <updated>1714094930065</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="4/26/2024">
+      <created>1714108762546</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1714108762547</updated>
+    </task>
+    <task id="LOCAL-00016" summary="DashboardTabs 4/26/2024">
+      <created>1714119606532</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1714119606532</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -289,7 +304,8 @@
     <MESSAGE value="update 4/7/2024" />
     <MESSAGE value="update 4/23/2024" />
     <MESSAGE value="4/26/2024" />
-    <option name="LAST_COMMIT_MESSAGE" value="4/26/2024" />
+    <MESSAGE value="DashboardTabs 4/26/2024" />
+    <option name="LAST_COMMIT_MESSAGE" value="DashboardTabs 4/26/2024" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

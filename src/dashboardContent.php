@@ -1,3 +1,10 @@
+<?php
+if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
+    header("Location: 404.php");
+    exit();
+}
+?>
+
 <div class="flex gap-2 ml-3 mt-3 flex-wrap xl:justify-center justify-evenly lg:justify-start h-full items-center text-slate-700 ">
     <div class="card rounded h-60 w-full sm:w-[15rem] min-w-32   bg-info text-center grid place-items-center shadow-xl">
         <h1 class="font-bold font-sans text-[4rem]">60</h1>

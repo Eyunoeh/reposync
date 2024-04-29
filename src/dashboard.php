@@ -1,5 +1,6 @@
 <?php
-session_start()
+session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +50,7 @@ session_start()
             <i class="fa-solid fa-book"></i>
             <span class="text-[15px] ml-4  font-bold">Narrative Reports</span>
         </div>
-        <div id="announcement" onclick="dashboard_tab(this.id);dropdown('AnnouncementSubmenu')" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer  hover:bg-slate-200 hover:text-slate-700  text-white">
+        <div id="announcement" onclick="dropdown('AnnouncementSubmenu')" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer  hover:bg-slate-200 hover:text-slate-700  text-white">
             <i class="fa-solid fa-bullhorn"></i>
             <div class="flex justify-between w-full items-center">
                 <span class="text-[15px] ml-4  font-bold">Announcement</span>
@@ -57,15 +58,18 @@ session_start()
             <i class="fa-solid fa-chevron-down"></i>
         </div>
         <div id="AnnouncementSubmenu" class="ani text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" >
-            <h1 onclick="dashboard_tab('announcement')" class="cursor-pointer p-2  hover:text-slate-700  text-white rounded-md mt-1">
+            <h1 onclick="dashboard_tab(this.id)" id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 <i class="fa-regular fa-note-sticky"></i>
                  Adviser Notes
             </h1>
-            <h1 onclick="dashboard_tab('announcement')" class="cursor-pointer p-2 hover:text-slate-700  text-white rounded-md mt-1">
+            <?php
+            if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
+            ?>
+            <h1 onclick="dashboard_tab(this.id)" id="schedule&Act" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 <i class="fa-regular fa-calendar-days"></i>
                  Activities & Schedule
             </h1>
-
+            <?php endif;?>
         </div>
 
         <div id="dashBoardWeeklyReport" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
@@ -73,32 +77,51 @@ session_start()
             <span class="text-[15px] ml-4  font-bold">Students Weekly Report</span>
         </div>
         <div class="my-4 bg-gray-600 h-[1px]"></div>
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer  hover:bg-slate-200 hover:text-slate-700  text-white" onclick="">
+
+        <div onclick="dropdown('UserSubmenu')" id="userTab" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer  hover:bg-slate-200 hover:text-slate-700  text-white" >
             <i class="fa-solid fa-user"></i>
             <div class="flex justify-between w-full items-center">
                 <span class="text-[15px] ml-4  font-bold">Users</span>
             </div>
+            <i class="fa-solid fa-chevron-down"></i>
         </div>
-        <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold " id="submenu">
-            <h1 class="cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
-
+        <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="UserSubmenu">
+            <h1 onclick="dashboard_tab(this.id);" id="stud_list" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Student
             </h1>
-            <h1 class="cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+            <?php
+            if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
+            ?>
+            <h1 onclick="dashboard_tab(this.id);" id="adv_list" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Advisers
             </h1>
-            <h1 class="cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+            <h1 onclick="dashboard_tab(this.id);" id="admin_list" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Admin
             </h1>
+            <?php endif?>
         </div>
         <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-error hover:text-slate-700  text-white">
             <i class="fa-solid fa-right-from-bracket"></i>
-            <span class="text-[15px] ml-4  font-bold">Logout</span>
+            <a href="logout.php"><span class="text-[15px] ml-4  font-bold">Logout</span></a>
         </div>
+
     </div>
-    <section id="dashboard_main_content" class="flex gap-2 flex-col  max-w-6xl overflow-auto">
+    <section id="dashboard_main_content" class="flex gap-2 flex-col  max-w-6xl w-full overflow-auto">
 
     </section>
+
 </main>
+
 <script src="js/dashboard.js"></script>
+
+<script src="js/admin_adviserAjaxRequest.js"></script>
+<?php
+if ($_SESSION['log_user_type'] == 'admin'):
+?>
+<script src="js/adminAjax_request.js"></script>
+<?php elseif ($_SESSION['log_user_type'] == 'adviser'):?>
+<script src="js/adviser_ajax_request.js"></script>
+
+<?php endif;?>
+<script src="js/Datatables.js"></script>
 </body>

@@ -3,6 +3,7 @@ function handleSearch(inputId, tableId) {
     input = document.getElementById(inputId);
     filter = input.value.toUpperCase();
     programFilter = document.getElementById("programFilter");
+
     if (programFilter) {
         programFilter = programFilter.value;
     } else {
@@ -25,7 +26,7 @@ function handleSearch(inputId, tableId) {
                 }
             }
         }
-        if (programFilter === "" || programFilter === "Select Program" || programFilter === td[1].textContent.trim()) {
+        if (programFilter === "" || programFilter === "Select Program" || programFilter === td[2].textContent.trim()) {
             programMatch = true;
         }
         if (found && programMatch) {

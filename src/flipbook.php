@@ -1,4 +1,3 @@
-
 <?php
 include_once '../DatabaseConn/databaseConn.php';
 function decrypt_data($data, $key) {
@@ -6,7 +5,6 @@ function decrypt_data($data, $key) {
     list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
     return openssl_decrypt($encrypted_data, $cipher, $key, OPENSSL_RAW_DATA, $iv);
 }
-
 
 ?>
 
@@ -32,6 +30,7 @@ function decrypt_data($data, $key) {
 <div class="flipbook-viewport overflow-auto ">
     <div class="container grid place-items-center ">
         <div class="flipbook">
+            <div style="background-image:url(NarrativeReportsPDF/Capture.PNG)"></div>
             <?php
             $encrypt_key = 'TheSecretKey#02';
             if (isset($_GET['view'])){
@@ -74,6 +73,9 @@ function decrypt_data($data, $key) {
             }
             $conn->close();
             ?>
+            <div style="background-image:url()"></div>
+            <div style="background-image:url(NarrativeReportsPDF/backcover.PNG)"></div>
+
         </div>
     </div>
 </div>

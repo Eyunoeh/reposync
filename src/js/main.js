@@ -1,13 +1,17 @@
 let urlParams = new URLSearchParams(window.location.search);
 
 function navigate(page) {
-    fetch(page + '.php')
+    fetch(page +'.php', {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest' // Add a custom header
+        }
+    })
         .then(response => response.text())
         .then(html => {
             document.getElementById('mainContent').innerHTML = html ;
 
             updateActiveLink(page);
-            studentNarrativeReports();
+            home_student_NarrativeReports()
 
         })
         .catch(error => console.error('Error fetching content:', error));
@@ -109,65 +113,13 @@ function toggleNav() {
     }
 }
 
-function openModalForm(modal_id){
-    let modal = document.getElementById(modal_id);
-    modal.open = true;
-}
-function closeModalForm(modal_id) {
-    let modal = document.getElementById(modal_id);
-    modal.open = false;
-}
 
 
-function show_ref_id(id) {
-    let comment_id = document.getElementById(id);
-    let ref_id = comment_id.getAttribute('data-journal-comment-id');
-    document.getElementById('ref_id').innerHTML = ref_id;
-}
 
-function change_stud_table () {
-    let report_view_btn = document.getElementById('stud-weekly-rpt-btn');
-    let weekly_report_tbl = document.getElementById('weeklyReportTable');
-    let logs_tbl = document.getElementById('logsTable');
 
-    if (report_view_btn.innerHTML === 'View logs') {
-        report_view_btn.innerHTML = 'View report';
-        weekly_report_tbl.classList.add('hidden') ;
-        logs_tbl.classList.remove('hidden')
-
-    } else {
-        weekly_report_tbl.classList.remove('hidden');
-        logs_tbl.classList.add('hidden')
-        report_view_btn.innerHTML = 'View logs';
-    }
-}
-function getVisibleTableId() {
-    let logs_tbl = document.getElementById('logsTable');
-    if (!logs_tbl.classList.contains('hidden')) {
-        return 'logsTable';
-    } else {
-        return 'weeklyReportTable';
-    }
-}
- function add_loader(id){
-    let loader = document.getElementById(id);
-    loader.classList.remove('hidden');
-}
- function remove_loader(id){
-    let loader = document.getElementById(id);
-    loader.classList.add('hidden');
-}
-function enable_button(btn_id){
-    let btn = document.getElementById(btn_id);
-    btn.removeAttribute("disabled");
-}
-function disable_button(btn_id){
-    let btn = document.getElementById(btn_id);
-    btn.setAttribute("disabled", "disabled");
-}
-function studentNarrativeReports() {
+function home_student_NarrativeReports() {
     $.ajax({
-        url: '../ajax.php?action=get_narrativeReports',
+        url: '../ajax.php?action=get_narrativeReports&homeTable=request',
         method: 'GET',
         dataType: 'html',
         success: function(response) {
@@ -179,3 +131,4 @@ function studentNarrativeReports() {
         }
     });
 }
+

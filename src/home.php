@@ -1,3 +1,10 @@
+<?php
+if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
+    header("Location: 404.php");
+    exit();
+}
+?>
+
 <div id="hero" class="flex flex-col-reverse justify-center sm:flex-row p-6 items-center gap-8">
     <article class="w-1/2">
         <h2 class="max-w-md ">

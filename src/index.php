@@ -24,9 +24,14 @@ session_start();
 
     </main>
 
-
     <script src="js/main.js"></script>
-    <script src="js/ajaxRequest.js"></script>
+    <?php
+    if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'student'):
+    ?>
+    <script src="js/student.js"></script>
+    <?php
+    endif;
+    ?>
     <script src="js/Datatables.js"></script>
 </body>
 </html>
