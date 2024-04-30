@@ -34,10 +34,18 @@ function dashboard_tab(id){
         navigate('manageNarrativeReports.php');
     } else if (tab.id === 'dashboard'){
         navigate('dashboardContent.php');
-    } else if (tab.id === 'announcement'){
-        navigate('manageAnnouncement.php')
-    }else if (tab.id === 'dashBoardWeeklyReport'){
+    } else if (tab.id === 'adviserNotes'){
+        navigate('manageAdviserNote.php')
+    }else if (tab.id === 'schedule&Act'){
+        navigate('manamgeAct&Sched.php')
+    } else if (tab.id === 'dashBoardWeeklyReport'){
         navigate('manageWeeklyReport.php')
+    }else if (tab.id === 'stud_list'){
+        navigate('manageStudent.php')
+    }else if (tab.id === 'adv_list'){
+        navigate('manageAdviserNote.php')
+    }else if (tab.id === 'admin_list'){
+        navigate('manageAdmin.php')
     }
     act_tab(tab.id);
 }
@@ -77,11 +85,12 @@ function remove_loader(id){
 }
 function enable_button(btn_id){
     let btn = document.getElementById(btn_id);
-    btn.removeAttribute("disabled");
+    btn.classList.remove('hidden')
 }
 function disable_button(btn_id){
     let btn = document.getElementById(btn_id);
-    btn.setAttribute("disabled", "disabled");
+    btn.classList.add('hidden');
+
 }
 function dashboard_student_NarrativeReports() {
     $.ajax({
@@ -92,7 +101,6 @@ function dashboard_student_NarrativeReports() {
             $('#narrativeReportsTableBody').html(response);
         },
         error: function(xhr, status, error) {
-
             console.error('Error fetching data:', error);
         }
     });
@@ -107,11 +115,16 @@ function editNarrative(narrative_id){
                 document.querySelector('#EditNarrativeReportsForm input[name="first_name"]').value = data.first_name;
                 document.querySelector('#EditNarrativeReportsForm input[name="last_name"]').value = data.last_name;
                 document.querySelector('#EditNarrativeReportsForm input[name="school_id"]').value = data.stud_school_id;
-                document.querySelector('#EditNarrativeReportsForm input[name="program"]').value = data.program;
+                document.querySelector('#EditNarrativeReportsForm select[name="program"]').value = data.program;
                 document.querySelector('#EditNarrativeReportsForm input[name="section"]').value = data.section;
-                document.querySelector('#EditNarrativeReportsForm input[name="ojt_adviser"]').value = data.OJT_adviser;
-                document.querySelector('#EditNarrativeReportsForm input[name="narrative_id"]').value = data.narrative_id
+                if (data.sex === "Male") {
+                    document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Male"]').checked = true;
+                } else if (data.sex === "Female") {
+                    document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Female"]').checked = true;
+                }
 
+                document.querySelector('#EditNarrativeReportsForm input[name="ojt_adviser"]').value = data.OJT_adviser;
+                document.querySelector('#EditNarrativeReportsForm input[name="narrative_id"]').value = data.narrative_id;
             }
         },
         error: function(xhr, status, error) {
@@ -119,6 +132,7 @@ function editNarrative(narrative_id){
         }
     });
 }
+
 
 
 

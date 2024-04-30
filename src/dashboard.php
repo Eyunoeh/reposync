@@ -1,6 +1,8 @@
 <?php
 session_start();
-
+if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student'){
+    header("Location: index.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -7,11 +7,11 @@ document.addEventListener('submit', function(e) {
         endpoint = 'newFinalReport'
         modal =  'newNarrative';
         loader_id = 'loader_narrative';
-        btn = 'submit_btn'
+        btn = 'newNarrativeSubmitbtn'
     }if (e.target.id === 'EditNarrativeReportsForm'){
          endpoint = 'UpdateNarrativeReport';
          loader_id = 'loader_narrative_update';
-         btn = 'update_btn';
+         btn = 'editNarrativeBtn';
          modal = 'EditNarrative';
     }
 

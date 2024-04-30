@@ -45,7 +45,9 @@ function decrypt_data($data, $key) {
                 $stmt->execute();
                 $result = $stmt->get_result();
                 if ($row = $result->fetch_assoc()) {
-                    $path = 'NarrativeReports_Images/' . str_replace(' ','',$row['first_name']. "_" ). str_replace(' ','',$row['last_name']). "_" . $row['program'] . "_" . $row['section'];
+                    $path = 'NarrativeReports_Images/' . str_replace(' ','',
+                            $row['first_name']. "_" ). str_replace(' ','',$row['last_name']). "_" .
+                        $row['program'] . "_" . $row['section']. "_" .$row['stud_school_id'];
 
                     $files = scandir($path);
                     $files_with_page = [];
