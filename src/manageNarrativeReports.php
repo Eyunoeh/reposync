@@ -74,100 +74,203 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     </div>
     -->
 </div>
-<dialog id="newNarrative" class="modal card bg-black bg-opacity-40">
-    <div class="modal-box bg-slate-50 min-h-[30rem]  h-[30rem] flex flex-col ">
-        <div  class=" card-title sticky">
+
+<dialog id="newNarrative" class="modal bg-black  bg-opacity-40">
+    <div class="card bg-slate-50 w-[100vw] sm:w-[40rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div  class=" card-title sticky ">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('newNarrative')">✕</button>
-            <h3 class="font-bold text-center text-lg mb-5">Add Student Narrative Report</h3>
+            <h3 class="font-bold text-center text-lg  p-5">Add student narrative report</h3>
         </div>
-        <div class="overflow-auto max-h-[22rem] card-body ">
+        <div class="p-4">
             <form id="narrativeReportsForm"  enctype="multipart/form-data">
-                <div class="flex flex-col gap-8">
+                <div class="flex flex-col gap-8 mb-2 overflow-auto h-[25rem]">
                     <div class="flex flex-col gap-2">
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">First Name</label>
-                            <input required name="first_name" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
+                        <div class="flex justify-evenly gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">First name</span>
+                                </div>
+                                <input type="text" required name="first_name" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Last name</span>
+                                </div>
+                                <input type="text" required name="last_name" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">Last Name</label>
-                            <input required name="last_name" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
+                        <div class="flex justify-evenly gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">School ID</span>
+                                </div>
+                                <input type="text" required name="school_id" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Sex</span>
+                                </div>
+                                <div class="flex justify-start gap-2">
+                                    <div class="flex justify-center items-center flex-col">
+                                        <label class="text-sm">Male</label>
+                                        <input type="radio" name="stud_Sex" value="Male" class="radio bg-gray-300" checked />
+                                    </div>
+                                    <div class="flex justify-center items-center flex-col">
+                                        <label class="text-sm">Female</label>
+                                        <input type="radio" name="stud_Sex" value="Female" class="radio bg-gray-300" />
+                                    </div>
+                                </div>
+
+                            </label>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">School ID</label>
-                            <input required name="school_id" min="0" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="Type here...">
+
+                        <div class="flex justify-evenly gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Program</span>
+                                </div>
+                                <select required name="program" class="select select-bordered w-full bg-slate-100 ">
+                                    <option>Select program</option>
+                                    <option>BSIT</option>
+                                    <option>BSCS</option>
+                                    <option>BSCpE</option>
+                                </select>
+
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Section</span>
+                                </div>
+                                <input required name="section" type="text" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">Program</label>
-                            <input required name="program" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
+                        <div class="flex justify-evenly gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">OJT Adviser</span>
+                                </div>
+                                <input required name="ojt_adviser" type="text" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Narrative Report PDF</span>
+                                </div>
+                                <input name="final_report_file" accept="application/pdf" required type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
+                            </label>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">Section</label>
-                            <input required name="section" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">OJT Adviser</label>
-                            <input required name="ojt_adviser" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
-                        </div>
+
+
                     </div>
-                    <input name="final_report_file" accept="application/pdf" required type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
-                    <button id="submit_btn" class="btn btn-success btn-outline " >Submit</button>
                 </div>
+                <p id="loader_narrative" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
+
+                <div id="newNarrativeSubmitbtn" class="flex justify-center m-3">
+                    <button id="submit_btn" class="btn btn-success btn-outline w-1/2" >Submit</button>
+                </div>
+
             </form>
         </div>
-        <p id="loader_narrative" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
     </div>
 </dialog>
 
-<dialog id="EditNarrative" class="modal card bg-black bg-opacity-40">
-    <div class="modal-box bg-slate-50 min-h-[30rem]  h-[30rem] flex flex-col ">
-        <div  class=" card-title sticky">
+
+
+<dialog id="EditNarrative" class="modal bg-black  bg-opacity-40">
+    <div class="card bg-slate-50 w-[100vw] sm:w-[40rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div  class=" card-title sticky ">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('EditNarrative')">✕</button>
-            <h3 class="font-bold text-center text-lg mb-5">Edit Student Narrative Report</h3>
+            <h3 class="font-bold text-center text-lg  p-5">Edit student narrative report</h3>
         </div>
-        <div class="overflow-auto max-h-[22rem] card-body ">
+        <div class="p-4">
             <form id="EditNarrativeReportsForm"  enctype="multipart/form-data">
-                <div class="flex flex-col gap-8 text-slate-700">
+                <div class="flex flex-col gap-8 mb-2 overflow-auto h-[25rem]">
                     <div class="flex flex-col gap-2">
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">First Name</label>
-                            <input required name="first_name" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
+                        <div class="flex justify-evenly gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">First name</span>
+                                </div>
+                                <input type="text" required name="first_name" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Last name</span>
+                                </div>
+                                <input type="text" required name="last_name" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">Last Name</label>
-                            <input required name="last_name" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
+                        <div class="flex justify-evenly gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">School ID</span>
+                                </div>
+                                <input type="text" required name="school_id" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Sex</span>
+                                </div>
+                                <div class="flex justify-start gap-2">
+                                    <div class="flex justify-center items-center flex-col">
+                                        <label class="text-sm">Male</label>
+                                        <input type="radio" name="stud_Sex" value="Male" class="radio bg-gray-300" checked />
+                                    </div>
+                                    <div class="flex justify-center items-center flex-col">
+                                        <label class="text-sm">Female</label>
+                                        <input type="radio" name="stud_Sex" value="Female" class="radio bg-gray-300" />
+                                    </div>
+                                </div>
+                            </label>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">School ID</label>
-                            <input required name="school_id" min="0" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="Type here...">
+                        <input type="hidden" name="narrative_id" value="">
+                        <div class="flex justify-evenly gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Program</span>
+                                </div>
+                                <select required name="program" class="select select-bordered w-full bg-slate-100 ">
+                                    <option>Select program</option>
+                                    <option>BSIT</option>
+                                    <option>BSCS</option>
+                                    <option>BSCpE</option>
+                                </select>
+
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Section</span>
+                                </div>
+                                <input required name="section" type="text" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">Program</label>
-                            <input required name="program" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
+                        <div class="flex justify-evenly gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">OJT Adviser</span>
+                                </div>
+                                <input required name="ojt_adviser" type="text" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Narrative Report PDF</span>
+                                </div>
+                                <input name="final_report_file" accept="application/pdf" type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
+                            </label>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">Section</label>
-                            <input required name="section" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">OJT Adviser</label>
-                            <input required name="ojt_adviser" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Type here...">
-                        </div>
+
+
                     </div>
-                    <input type="hidden" name="narrative_id" value="">
+                </div>
+                <p id="loader_narrative_update" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
 
-                    <label class="form-control w-full max-w-xs">
-                        <div class="label">
-                            <span class="label-text text-warning">Leave empty or replace existing</span>
-                        </div>
-                        <input name="final_report_file" accept="application/pdf" type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
-
-                    </label>
+                <div id="editNarrativeBtn" class="flex justify-center m-3 gap-2">
                     <button id="update_btn" class="btn btn-info btn-outline" >Update</button>
                     <button id="archive_btn" class="btn btn-error btn-outline" >Archive</button>
                 </div>
+
+
             </form>
         </div>
-        <p id="loader_narrative_update" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
     </div>
 </dialog>
 
