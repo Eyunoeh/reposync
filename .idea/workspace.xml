@@ -4,163 +4,44 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="4/29/24 Narrative Module Update">
-      <change afterPath="$PROJECT_DIR$/src/manageAdmin.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="New Forms in dashboard working on students list">
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/database table connections.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Jane_Doe_BSIT_4B.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Jesse_Pinkman_BSBM_4B.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Jimmy_Cooks_BSCS_4A.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Johny_Doe_BSCpE_4C.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Narrative Report Format.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/RioCarl_DeLaCruz_BSBM_4C.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Sam_Sulek_BSIT_4D.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Walter_White_BSIT_3A.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page-9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jane_Doe_BSIT_4B/Jane_Doe_BSIT_4B_page.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page-9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSBM_4B/Jesse_Pinkman_BSBM_4B_page.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page-9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jimmy_Cooks_BSCS_4A/Jimmy_Cooks_BSCS_4A_page.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Doe_BSCpE_4C/Johny_Doe_BSCpE_4C_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Doe_BSCpE_4C/Johny_Doe_BSCpE_4C_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Doe_BSCpE_4C/Johny_Doe_BSCpE_4C_page.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page-9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/RioCarl_DeLaCruz_BSBM_4C/RioCarl_DeLaCruz_BSBM_4C_page.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sam_Sulek_BSIT_4D/Sam_Sulek_BSIT_4D_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sam_Sulek_BSIT_4D/Sam_Sulek_BSIT_4D_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sam_Sulek_BSIT_4D/Sam_Sulek_BSIT_4D_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sam_Sulek_BSIT_4D/Sam_Sulek_BSIT_4D_page.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page-9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sample_name_BSIT_4A/Sample_name_BSIT_4A_page.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page-9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Walter_White_BSIT_3A/Walter_White_BSIT_3A_page.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Tuco_Salamanca_BSIT_4A_0365489.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-18.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-19.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-20.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageAnnouncement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdviserNote.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageAdmin.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/manageNarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageNarrativeReports.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageUserAdmin.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageUserStudent.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,24 +98,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/ReposyncNarrativeManagementSystem&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
@@ -308,7 +190,13 @@
       <workItem from="1714404077871" duration="16000" />
       <workItem from="1714404155709" duration="26000" />
       <workItem from="1714405352925" duration="662000" />
-      <workItem from="1714459311146" duration="23832000" />
+      <workItem from="1714459311146" duration="24165000" />
+      <workItem from="1714526413614" duration="9700000" />
+      <workItem from="1714557527075" duration="6022000" />
+      <workItem from="1714613596485" duration="38983000" />
+      <workItem from="1714701068711" duration="1021000" />
+      <workItem from="1714702924444" duration="6555000" />
+      <workItem from="1714729428744" duration="24355000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -436,7 +324,21 @@
       <option name="project" value="LOCAL" />
       <updated>1714351622022</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="New Forms in dashboard working on students list">
+      <created>1714495895375</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1714495895375</updated>
+    </task>
+    <task id="LOCAL-00020" summary="New Forms in dashboard working on students list">
+      <created>1714495924033</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1714495924033</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -454,6 +356,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="home" />
     <MESSAGE value="noReload" />
     <MESSAGE value="narrative/nav" />
@@ -463,7 +366,8 @@
     <MESSAGE value="4/26/2024" />
     <MESSAGE value="DashboardTabs 4/26/2024" />
     <MESSAGE value="4/29/24 Narrative Module Update" />
-    <option name="LAST_COMMIT_MESSAGE" value="4/29/24 Narrative Module Update" />
+    <MESSAGE value="New Forms in dashboard working on students list" />
+    <option name="LAST_COMMIT_MESSAGE" value="New Forms in dashboard working on students list" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

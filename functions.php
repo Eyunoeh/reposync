@@ -89,3 +89,35 @@ function delete_pdf($pdf){
     }
 }
 
+
+function check_uniq_stud_id($stud_id){
+    include 'DatabaseConn/databaseConn.php';
+    $sql = 'SELECT stud_school_id FROM narrativereports WHERE stud_school_id = ?';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s', $stud_id);
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows > 0) {
+        $stmt->close();
+        return false;
+    } else {
+        $stmt->close();
+        return true;
+    }
+}
+function generatePassword($school_id) {
+    return "CVSUOJT".$school_id;
+}
+function getTotalAdvList($adv_user_id){
+    include 'DatabaseConn/databaseConn.php';
+    $sql = "SELECT COUNT(*) AS total FROM advisory_list WHERE adv_sch_user_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $adv_user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $total = $row['total'];
+    $stmt->close();
+
+    return $total;
+}

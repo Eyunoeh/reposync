@@ -21,6 +21,8 @@ function navigate(page) {
         .then(html => {
             document.getElementById('dashboard_main_content').innerHTML = html;
             dashboard_student_NarrativeReports();
+            get_studenUsertList();
+            get_AdvUsertList();
         })
         .catch(error => console.error('Error fetching content:', error));
 }
@@ -43,9 +45,7 @@ function dashboard_tab(id){
     }else if (tab.id === 'stud_list'){
         navigate('manageStudent.php')
     }else if (tab.id === 'adv_list'){
-        navigate('manageAdviserNote.php')
-    }else if (tab.id === 'admin_list'){
-        navigate('manageAdmin.php')
+        navigate('manageAdvisers.php')
     }
     act_tab(tab.id);
 }
@@ -105,6 +105,32 @@ function dashboard_student_NarrativeReports() {
         }
     });
 }
+function get_studenUsertList (){
+    $.ajax({
+        url: '../ajax.php?action=getStudentsList',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            $('#studentsList').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+function get_AdvUsertList (){
+    $.ajax({
+        url: '../ajax.php?action=getAdvisers',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            $('#advList').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
 function editNarrative(narrative_id){
     $.ajax({
         url: '../ajax.php?action=narrativeReportsJson&narrative_id=' + narrative_id,
@@ -133,8 +159,87 @@ function editNarrative(narrative_id){
     });
 }
 
+function editUserStud_Info(user_id){
+    $.ajax({
+        url: '../ajax.php?action=getStudInfoJson&data_id=' + user_id,
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data){
 
+                $('#EditStudentForm input[name="user_Fname"]').val(data.first_name);
+                $('#EditStudentForm input[name="user_Lname"]').val(data.last_name);
+                $('#EditStudentForm input[name="user_address"]').val(data.address);
+                $('#EditStudentForm input[name="contactNumber"]').val(data.contact_number);
+                $('#EditStudentForm input[name="school_id"]').val(data.school_id);
+                $('#EditStudentForm input[name="user_Email"]').val(data.email);
+                $('#EditStudentForm input[name="user_id"]').val(data.user_id);
+                $('#deactivate_stud_acc').attr('data-user_id', data.user_id);
+                $('#EditStudentForm select[name="stud_Program"]').val(data.program_id);
+                $('#EditStudentForm select[name="stud_Section"]').val(data.section_id);
+                if (data.sex === "Male") {
+                    $('#EditStudentForm input[name="user_Sex"][value="Male"]').prop('checked', true);
+                } else if (data.sex === "Female") {
+                    $('#EditStudentForm input[name="user_Sex"][value="Female"]').prop('checked', true);
+                }
 
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+function deactivate_account(id, modal_id){
+
+    $.ajax({
+        url: '../ajax.php?action=deactivate_account&data_id=' + id,
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response){
+               if (parseInt(response) === 1){
+                   closeModalForm(modal_id);
+                   get_studenUsertList();
+               }
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+function editAdvInfo(user_id){
+    $.ajax({
+        url: '../ajax.php?action=getAdvInfoJson&data_id=' + user_id,
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data){
+
+                $('#EditAdviserForm input[name="user_Fname"]').val(data.first_name);
+                $('#EditAdviserForm input[name="user_Lname"]').val(data.last_name);
+                $('#EditAdviserForm input[name="user_address"]').val(data.address);
+                $('#EditAdviserForm input[name="contactNumber"]').val(data.contact_number);
+                $('#EditAdviserForm input[name="school_id"]').val(data.school_id);
+                $('#EditAdviserForm input[name="user_Email"]').val(data.email);
+                $('#EditAdviserForm input[name="user_id"]').val(data.user_id);
+                $('#EditAdviserForm select[name="user_type"]').val(data.user_type);
+                $('#deactivate_adv').attr('data-user_id', data.user_id);
+
+                if (data.sex === "Male") {
+                    $('#EditAdviserForm input[name="user_Sex"][value="Male"]').prop('checked', true);
+                } else if (data.sex === "Female") {
+                    $('#EditAdviserForm input[name="user_Sex"][value="Female"]').prop('checked', true);
+                }
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
 
 window.onload = handleRouting;
-

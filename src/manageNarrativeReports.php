@@ -102,9 +102,9 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">School ID</span>
+                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
                                 </div>
-                                <input type="text" required name="school_id" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="number" min="0" oninput="this.value = this.value.slice(0, 8)" required name="school_id" placeholder="XXXXXXXX" maxlength="8" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -120,7 +120,6 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                         <input type="radio" name="stud_Sex" value="Female" class="radio bg-gray-300" />
                                     </div>
                                 </div>
-
                             </label>
                         </div>
 
@@ -202,9 +201,9 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">School ID</span>
+                                    <span class="label-text text-slate-700">School ID <span class="text-warning"> (Must be unique)</span></span>
                                 </div>
-                                <input type="text" required name="school_id" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" maxlength="8" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -267,8 +266,6 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                     <button id="update_btn" class="btn btn-info btn-outline" >Update</button>
                     <button id="archive_btn" class="btn btn-error btn-outline" >Archive</button>
                 </div>
-
-
             </form>
         </div>
     </div>
@@ -276,6 +273,5 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 
 
 <script>
-
-
+    dashboard_student_NarrativeReports();
 </script>
