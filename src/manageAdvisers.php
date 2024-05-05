@@ -138,7 +138,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">User type</span>
+                                    <span class="label-text text-slate-700">Access Type</span>
                                 </div>
                                 <select name="user_type" class=" select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select role</option>
@@ -236,7 +236,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                         <div class="flex justify-start">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">User type</span>
+                                    <span class="label-text text-slate-700">Access type</span>
                                 </div>
                                 <select name="user_type" class=" select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Change role</option>

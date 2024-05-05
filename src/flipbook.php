@@ -1,11 +1,6 @@
 <?php
 include_once '../DatabaseConn/databaseConn.php';
-function decrypt_data($data, $key) {
-    $cipher = "aes-256-cbc";
-    list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
-    return openssl_decrypt($encrypted_data, $cipher, $key, OPENSSL_RAW_DATA, $iv);
-}
-
+include '../encryptionFunction.php';
 ?>
 
 <!DOCTYPE html>

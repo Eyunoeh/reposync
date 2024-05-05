@@ -2100,6 +2100,10 @@ input.tab:checked + .tab-content,
     border-color: var(--btn-color, var(--fallback-b2));
   }
 
+  .btn-accent {
+    --btn-color: var(--fallback-a);
+  }
+
   .btn-neutral {
     --btn-color: var(--fallback-n);
   }
@@ -2161,6 +2165,10 @@ input.tab:checked + .tab-content,
 }
 
 @supports (color: oklch(0% 0 0)) {
+  .btn-accent {
+    --btn-color: var(--a);
+  }
+
   .btn-neutral {
     --btn-color: var(--n);
   }
@@ -2176,6 +2184,12 @@ input.tab:checked + .tab-content,
   .btn-error {
     --btn-color: var(--er);
   }
+}
+
+.btn-accent {
+  --tw-text-opacity: 1;
+  color: var(--fallback-ac,oklch(var(--ac)/var(--tw-text-opacity)));
+  outline-color: var(--fallback-a,oklch(var(--a)/1));
 }
 
 .btn-neutral {
@@ -2560,6 +2574,13 @@ details.collapse summary::-webkit-details-marker {
 .label-text {
   font-size: 0.875rem;
   line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+}
+
+.label-text-alt {
+  font-size: 0.75rem;
+  line-height: 1rem;
   --tw-text-opacity: 1;
   color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
 }
@@ -3295,6 +3316,10 @@ details.collapse summary::-webkit-details-marker {
   border-top-width: 1px;
   --tw-border-opacity: 1;
   border-top-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
+}
+
+.textarea-bordered {
+  border-color: var(--fallback-bc,oklch(var(--bc)/0.2));
 }
 
 .textarea:focus {
@@ -4298,6 +4323,10 @@ details.collapse summary::-webkit-details-marker {
   height: 32rem;
 }
 
+.h-\[70vh\] {
+  height: 70vh;
+}
+
 .h-\[75vh\] {
   height: 75vh;
 }
@@ -4316,6 +4345,10 @@ details.collapse summary::-webkit-details-marker {
 
 .h-screen {
   height: 100vh;
+}
+
+.max-h-24 {
+  max-height: 6rem;
 }
 
 .max-h-\[20rem\] {
@@ -4354,8 +4387,16 @@ details.collapse summary::-webkit-details-marker {
   min-height: 70px;
 }
 
+.min-h-\[75px\] {
+  min-height: 75px;
+}
+
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-\[3rem\] {
+  min-height: 3rem;
 }
 
 .w-1\/2 {
@@ -4474,6 +4515,10 @@ details.collapse summary::-webkit-details-marker {
   flex-shrink: 1;
 }
 
+.flex-grow {
+  flex-grow: 1;
+}
+
 .grow {
   flex-grow: 1;
 }
@@ -4557,6 +4602,10 @@ details.collapse summary::-webkit-details-marker {
 
 .justify-evenly {
   justify-content: space-evenly;
+}
+
+.gap-0 {
+  gap: 0px;
 }
 
 .gap-1 {
@@ -4672,6 +4721,11 @@ details.collapse summary::-webkit-details-marker {
   border-color: rgb(231 229 228 / var(--tw-border-opacity));
 }
 
+.border-slate-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(100 116 139 / var(--tw-border-opacity));
+}
+
 .bg-accent {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-a,oklch(var(--a)/var(--tw-bg-opacity)));
@@ -4730,6 +4784,11 @@ details.collapse summary::-webkit-details-marker {
 .bg-slate-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+}
+
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
 
 .bg-slate-50 {
@@ -5230,6 +5289,11 @@ body{
   background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 
+.hover\:object-scale-down:hover {
+  -o-object-fit: scale-down;
+     object-fit: scale-down;
+}
+
 .hover\:text-accent:hover {
   --tw-text-opacity: 1;
   color: var(--fallback-a,oklch(var(--a)/var(--tw-text-opacity)));
@@ -5261,6 +5325,12 @@ body{
 
 .hover\:opacity-90:hover {
   opacity: 0.9;
+}
+
+.hover\:shadow-xl:hover {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .hover\:file\:bg-slate-200::file-selector-button:hover {
@@ -5333,6 +5403,14 @@ body{
     width: 43rem;
   }
 
+  .sm\:w-\[50rem\] {
+    width: 50rem;
+  }
+
+  .sm\:w-\[55rem\] {
+    width: 55rem;
+  }
+
   .sm\:w-\[70\%\] {
     width: 70%;
   }
@@ -5343,6 +5421,22 @@ body{
 
   .sm\:flex-row {
     flex-direction: row;
+  }
+
+  .sm\:flex-nowrap {
+    flex-wrap: nowrap;
+  }
+
+  .sm\:justify-evenly {
+    justify-content: space-evenly;
+  }
+
+  .sm\:gap-2 {
+    gap: 0.5rem;
+  }
+
+  .sm\:p-0 {
+    padding: 0px;
   }
 
   .sm\:p-5 {
@@ -5380,6 +5474,10 @@ body{
 
   .lg\:hidden {
     display: none;
+  }
+
+  .lg\:h-\[37rem\] {
+    height: 37rem;
   }
 
   .lg\:justify-start {

@@ -4,44 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="New Forms in dashboard working on students list">
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/database table connections.PNG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="userModule done CRUD notification need to fix login system done">
+      <change afterPath="$PROJECT_DIR$/encryptionFunction.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/js/buttons_modal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ReposyncNarrativeManagementSystem.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ReposyncNarrativeManagementSystem.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Tuco_Salamanca_BSIT_4A_0365489.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page-9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Tuco_Salamanca_BSIT_4A_0365489/Tuco_Salamanca_BSIT_4A_0365489_page.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageAdmin.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/manageNarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageNarrativeReports.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageWeeklyReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +28,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ChangesViewManager" show_ignored="true" />
-  <component name="ComposerSettings">
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution>
       <executable path="composer" />
@@ -106,7 +85,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/ReposyncNarrativeManagementSystem&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/System&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -196,7 +175,11 @@
       <workItem from="1714613596485" duration="38983000" />
       <workItem from="1714701068711" duration="1021000" />
       <workItem from="1714702924444" duration="6555000" />
-      <workItem from="1714729428744" duration="24355000" />
+      <workItem from="1714729428744" duration="25417000" />
+      <workItem from="1714757586502" duration="116000" />
+      <workItem from="1714789860122" duration="4409000" />
+      <workItem from="1714812696828" duration="8773000" />
+      <workItem from="1714873256669" duration="20931000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -338,7 +321,21 @@
       <option name="project" value="LOCAL" />
       <updated>1714495924033</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="userModule done CRUD notification need to fix login system done">
+      <created>1714756364475</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1714756364475</updated>
+    </task>
+    <task id="LOCAL-00022" summary="userModule done CRUD notification need to fix login system done">
+      <created>1714756382700</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1714756382700</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -367,7 +364,8 @@
     <MESSAGE value="DashboardTabs 4/26/2024" />
     <MESSAGE value="4/29/24 Narrative Module Update" />
     <MESSAGE value="New Forms in dashboard working on students list" />
-    <option name="LAST_COMMIT_MESSAGE" value="New Forms in dashboard working on students list" />
+    <MESSAGE value="userModule done CRUD notification need to fix login system done" />
+    <option name="LAST_COMMIT_MESSAGE" value="userModule done CRUD notification need to fix login system done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

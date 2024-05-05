@@ -78,6 +78,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <i class="fa-brands fa-font-awesome"></i>
             <span class="text-[15px] ml-4  font-bold">Students Weekly Report</span>
         </div>
+
         <div class="my-4 bg-gray-600 h-[1px]"></div>
 
         <div onclick="dropdown('UserSubmenu')" id="userTab" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer  hover:bg-slate-200 hover:text-slate-700  text-white" >
@@ -126,5 +127,6 @@ if ($_SESSION['log_user_type'] == 'admin'):
 <script src="js/adviser_ajax_request.js"></script>
 
 <?php endif;?>
+<script src="js/buttons_modal.js"></script>
 <script src="js/Datatables.js"></script>
 </body>

@@ -1,7 +1,5 @@
 <?php
 
-
-
 if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
     header("Location: 404.php");
     exit();
@@ -15,42 +13,26 @@ include_once 'DatabaseConn/databaseConn.php';
 include_once 'functions.php';
 session_start();
 date_default_timezone_set('Asia/Manila');
-function decrypt_data($data, $key) {
-    $cipher = "aes-256-cbc";
-    list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
-    return openssl_decrypt($encrypted_data, $cipher, $key, OPENSSL_RAW_DATA, $iv);
-}
 
-function encrypt_data($data, $key) {
-    $cipher = "aes-256-cbc";
-    $ivlen = openssl_cipher_iv_length($cipher);
-    $iv = openssl_random_pseudo_bytes($ivlen);
-    $encrypted = openssl_encrypt($data, $cipher, $key, OPENSSL_RAW_DATA, $iv);
-    return base64_encode($encrypted . '::' . $iv);
-}
-$secret_key = 'TheSecretKey#02';
+include 'encryptionFunction.php';
+
 $action = $_GET['action'];
 extract($_POST);
+/*
 if ($action== 'signUp'){
-
     echo 1;
 }
-
+*/
 if ($action == 'login') {
 
     $log_email = isset($_POST['log_email']) ? sanitizeInput($_POST['log_email']) : '';
     $log_password = $_POST['log_password'] ?? '';
-
-
-
     if ($log_email!== '' && $log_password !== '') {
 
         $fetch_acc = "SELECT user_id, password FROM tbl_accounts WHERE email = ?";
         $stmt = $conn->prepare($fetch_acc);
         $stmt->bind_param("s", $log_email);
         $stmt->execute();
-
-
 
         if ($stmt->error) {
             echo "Error executing statement: " . $stmt->error;
@@ -101,6 +83,7 @@ if ($action == 'login') {
 
 
 if ($action == 'addWeeklyReport'){
+
 
     echo $newWeeklyReport;
 }
@@ -479,6 +462,7 @@ if ($action == 'newUser') {
     $user_address = isset($_POST['user_address']) ? sanitizeInput($_POST['user_address']) : '';
     $user_program = isset($_POST['stud_Program']) ? sanitizeInput($_POST['stud_Program']) : '';
     $user_section = isset($_POST['stud_Section']) ? sanitizeInput($_POST['stud_Section']) : '';
+    $stud_adviser = isset($_POST['stud_adviser']) ? sanitizeInput($_POST['stud_adviser']) : '';
     $user_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
     $user_type = isset($_POST['user_type']) ?sanitizeInput($_POST['user_type']) : '';
     $user_password = isset($_POST['user_password']) && sanitizeInput($_POST['user_password']) ? $_POST['user_password'] :'';
@@ -509,7 +493,7 @@ if ($action == 'newUser') {
 
         $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
 
-        // Insert the new student user into the database
+
         $insert_sql = "INSERT INTO tbl_user_info (first_name, last_name, address, contact_number, school_id, sex, user_type) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         $insert_stmt = $conn->prepare($insert_sql);
@@ -517,23 +501,27 @@ if ($action == 'newUser') {
             $user_shc_id, $user_sex,$user_type);
         $insert_stmt->execute();
 
-        // Get the user_id of the newly inserted student user
+
         $user_id = $insert_stmt->insert_id;
 
-        // Insert the student's account details into tbl_accounts
+
         $account_sql = "INSERT INTO tbl_accounts (user_id, email, password, status) 
                 VALUES (?, ?, ?, 'active')";
         $account_stmt = $conn->prepare($account_sql);
         $account_stmt->bind_param("iss", $user_id, $user_email, $hashed_password);
         $account_stmt->execute();
 
-        if ( $user_program !== '' && $user_section !== '' && $user_type == 'student')
+        if ( $user_program !== '' && $user_section !== '' && $user_type == 'student' && $stud_adviser !== '')
         {
             $student_sql = "INSERT INTO tbl_students (user_id, program_id, section_id) 
                 VALUES (?, ?, ?)";
             $student_stmt = $conn->prepare($student_sql);
             $student_stmt->bind_param("iii", $user_id, $user_program, $user_section);
             $student_stmt->execute();
+            $advisory_sql = "INSERT INTO advisory_list (adv_sch_user_id, stud_sch_user_id) VALUES (?,?)";
+            $advisory_stmt = $conn->prepare($advisory_sql);
+            $advisory_stmt->bind_param('ii', $stud_adviser, $user_id);
+            $advisory_stmt->execute();
         }
         echo 1;
 
@@ -543,38 +531,45 @@ if ($action == 'newUser') {
     }
 }
 if ($action == 'getStudentsList'){
-    $fetch_enrolled_stud =  "SELECT 
-                        u.user_id,
-                        u.first_name,
-                        u.last_name,
-                        u.address,
-                        u.contact_number,
-                        u.sex,
-                        u.school_id,
-                        u.user_type,
-                        s.program_id,
-                        p.program_code,
-                        p.program_name,
-                        a.acc_id,
-                        a.email,
-                        a.password,
-                        a.status,
-                        a.date_created,
-                        se.section_id,
-                        se.section
-                    FROM 
-                        tbl_students s
-                    JOIN 
-                        tbl_user_info u ON s.user_id = u.user_id
-                    JOIN 
-                        program p ON s.program_id = p.program_id
-                    JOIN 
-                        tbl_accounts a ON s.user_id = a.user_id
-                    JOIN 
-                        section se ON s.section_id = se.section_id
-                    where a.status = 'active' and u.user_type = 'student'
-                    ORDER BY 
-                        a.date_created ASC";
+    $fetch_enrolled_stud = "SELECT 
+                                u.user_id,
+                                u.first_name,
+                                u.last_name,
+                                u.address,
+                                u.contact_number,
+                                u.sex,
+                                u.school_id,
+                                u.user_type,
+                                s.program_id,
+                                p.program_code,
+                                p.program_name,
+                                a.acc_id,
+                                a.email,
+                                a.password,
+                                a.status,
+                                a.date_created,
+                                se.section_id,
+                                se.section,
+                                IFNULL(CONCAT(adv.first_name, ' ', adv.last_name), 'N/A') AS adviser_name
+                            FROM 
+                                tbl_students s
+                            JOIN 
+                                tbl_user_info u ON s.user_id = u.user_id
+                            JOIN 
+                                program p ON s.program_id = p.program_id
+                            JOIN 
+                                tbl_accounts a ON s.user_id = a.user_id
+                            JOIN 
+                                section se ON s.section_id = se.section_id
+                            LEFT JOIN 
+                                advisory_list ad ON s.user_id = ad.stud_sch_user_id
+                            LEFT JOIN 
+                                tbl_user_info adv ON ad.adv_sch_user_id = adv.user_id
+                            WHERE 
+                                a.status = 'active' 
+                                AND u.user_type = 'student'
+                            ORDER BY 
+                                a.date_created ASC";
     $result = $conn->query($fetch_enrolled_stud);
     if ($result === false){
         echo "Error: " . $conn->error;
@@ -588,6 +583,9 @@ if ($action == 'getStudentsList'){
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$row['last_name'].'</span>
                         </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['adviser_name'].'</span>
+                        </td>
 
                 
                         <td class="p-3 text-end">
@@ -600,27 +598,10 @@ if ($action == 'getStudentsList'){
                             <a href="#" onclick="openModalForm(\'editStuInfo\');editUserStud_Info(this.getAttribute(\'data-id\'))" data-id="' . urlencode(encrypt_data($row['user_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
                         </td>
                     </tr>';
-            /*
-            echo "User ID: " . $row['user_id'] . "<br>";
-            echo "First Name: " . $row['first_name'] . "<br>";
-            echo "Last Name: " . $row['last_name'] . "<br>";
-            echo "Address: " . $row['address'] . "<br>";
-            echo "Contact Number: " . $row['contact_number'] . "<br>";
-            echo "Sex: " . $row['sex'] . "<br>";
-            echo "School ID: " . $row['school_id'] . "<br>";
-            echo "Program ID: " . $row['program_id'] . "<br>";
-            echo "Program Code: " . $row['program_code'] . "<br>";
-            echo "Program Name: " . $row['program_name'] . "<br>";
-            echo "Account ID: " . $row['acc_id'] . "<br>";
-            echo "Email: " . $row['email'] . "<br>";
-            echo "Date Created: " . $row['date_created'] . "<br>";
-            echo "Section ID: " . $row['section_id'] . "<br>";
-            echo "Section: " . $row['section'] . "<br>";
-            echo "<br>"; // Add a line break between each student's information
-            */
         }
     }
 }
+
 
 if ($action == 'getStudInfoJson') {
     $user_id = decrypt_data($_GET['data_id'], $secret_key);
@@ -642,7 +623,9 @@ if ($action == 'getStudInfoJson') {
                                 a.date_created,
                                 a.status,
                                 se.section_id,
-                                se.section
+                                se.section,
+                                IFNULL(ad.adv_sch_user_id, '') AS adviser_id,
+                                IFNULL(CONCAT(adv.first_name, ' ', adv.last_name), 'No adviser') AS adviser_name
                             FROM 
                                 tbl_students s
                             JOIN 
@@ -653,6 +636,10 @@ if ($action == 'getStudInfoJson') {
                                 tbl_accounts a ON s.user_id = a.user_id
                             JOIN 
                                 section se ON s.section_id = se.section_id
+                            LEFT JOIN 
+                                advisory_list ad ON s.user_id = ad.stud_sch_user_id
+                            LEFT JOIN 
+                                tbl_user_info adv ON ad.adv_sch_user_id = adv.user_id
                             WHERE u.user_id = ?
                             ORDER BY 
                                 a.date_created ASC
@@ -666,15 +653,16 @@ if ($action == 'getStudInfoJson') {
 
     if ($result === false) {
         $error = "Error: " . $stmt->error;
-        header('Content-Type: application/json'); // Add this line
+        header('Content-Type: application/json');
         echo json_encode(array("error" => $error));
     } else {
         $student = $result->fetch_assoc();
-        header('Content-Type: application/json'); // Add this line
+        header('Content-Type: application/json');
         echo json_encode($student);
     }
     $stmt->close();
 }
+
 
 
 
@@ -688,6 +676,7 @@ if ($action == 'updateUserInfo'){
     $editUser_address = isset($_POST['user_address']) ? sanitizeInput($_POST['user_address']) : '';
     $editStud_program = isset($_POST['stud_Program']) ? sanitizeInput($_POST['stud_Program']) : '';
     $editStud_section = isset($_POST['stud_Section']) ? sanitizeInput($_POST['stud_Section']) : '';
+    $editStud_adviser = isset($_POST['stud_adviser']) ? sanitizeInput($_POST['stud_adviser']) : '';
     $editUser_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
     $editUser_user_id = isset($_POST['user_id']) ? sanitizeInput($_POST['user_id']) : '';
     $edituser_type = isset($_POST['user_type']) && sanitizeInput($_POST['user_type']) ? $_POST['user_type']: '';
@@ -737,8 +726,26 @@ if ($action == 'updateUserInfo'){
             $stmt_update_info = $conn->prepare($update_stud_info);
             $stmt_update_info->bind_param("iii", $editStud_program, $editStud_section, $editUser_user_id);
             $stmt_update_info->execute();
-        }
+            if ($editStud_adviser !== ''){
+                $check_query = "SELECT * FROM advisory_list WHERE stud_sch_user_id = ?";
+                $check_stmt = $conn->prepare($check_query);
+                $check_stmt->bind_param('i', $editUser_user_id);
+                $check_stmt->execute();
+                $result = $check_stmt->get_result();
+                if ($result->num_rows === 0) {
+                    $insert_query = "INSERT INTO advisory_list (stud_sch_user_id, adv_sch_user_id) VALUES (?, ?)";
+                    $insert_stmt = $conn->prepare($insert_query);
+                    $insert_stmt->bind_param('ii', $editUser_user_id, $editStud_adviser);
+                    $insert_stmt->execute();
+                } else {
+                    $update_query = "UPDATE advisory_list SET adv_sch_user_id = ? WHERE stud_sch_user_id = ?";
+                    $update_stmt = $conn->prepare($update_query);
+                    $update_stmt->bind_param('ii', $editStud_adviser, $editUser_user_id);
+                    $update_stmt->execute();
+                }
+            }
 
+        }
         if (isset($_POST['user_Pass']) and sanitizeInput($_POST['user_Pass'])){
             $hashed_password = password_hash($_POST['user_Pass'], PASSWORD_DEFAULT);
             $update_account = "UPDATE tbl_accounts 
@@ -771,7 +778,7 @@ if ($action == 'deactivate_account'){
 }
 
 if ($action == 'getAdvisers') {
-    // Prepare the SQL query to fetch advisers and admins
+
     $sql = "SELECT ui.*, acc.*
         FROM tbl_user_info ui
         INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
@@ -804,7 +811,7 @@ if ($action == 'getAdvisers') {
     exit();
 }
 if ($action == 'getAdvInfoJson') {
-    $user_id = $_GET['data_id']; // Assuming you receive the user_id from the client-side
+    $user_id = $_GET['data_id'];
 
     $sql = "SELECT ui.*, acc.*
             FROM tbl_user_info ui
@@ -815,15 +822,14 @@ if ($action == 'getAdvInfoJson') {
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
 
-    // Fetch the result
     $result = $stmt->get_result();
     if ($result === false) {
         $error = "Error: " . $stmt->error;
-        header('Content-Type: application/json'); // Add this line
+        header('Content-Type: application/json');
         echo json_encode(array("error" => $error));
     }else {
         $advisers = $result->fetch_assoc();
-        header('Content-Type: application/json'); // Add this line
+        header('Content-Type: application/json');
         echo json_encode($advisers);
     }
     $stmt->close();

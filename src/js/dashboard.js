@@ -49,6 +49,7 @@ function dashboard_tab(id){
     }
     act_tab(tab.id);
 }
+window.onload = handleRouting;
 function act_tab(id){
     const allTabs = document.querySelectorAll('.dashboard_tab'); // Assuming all tabs have the 'tab' class
     allTabs.forEach(tab => {
@@ -61,37 +62,7 @@ function act_tab(id){
 }
 
 
-function dropdown(id) {
-    let dropdown_tab = document.getElementById(id);
-    dropdown_tab.classList.toggle('hidden');
-}
 
-function openModalForm(modal_id){
-    let modal = document.getElementById(modal_id);
-    modal.open = true;
-}
-function closeModalForm(modal_id) {
-    let modal = document.getElementById(modal_id);
-    modal.open = false;
-}
-function add_loader(id){
-    let loader = document.getElementById(id);
-    loader.classList.remove('hidden');
-}
-function remove_loader(id){
-    let loader = document.getElementById(id);
-
-    loader.classList.add('hidden');
-}
-function enable_button(btn_id){
-    let btn = document.getElementById(btn_id);
-    btn.classList.remove('hidden')
-}
-function disable_button(btn_id){
-    let btn = document.getElementById(btn_id);
-    btn.classList.add('hidden');
-
-}
 function dashboard_student_NarrativeReports() {
     $.ajax({
         url: '../ajax.php?action=get_narrativeReports&dashboardTable=request',
@@ -159,14 +130,13 @@ function editNarrative(narrative_id){
     });
 }
 
-function editUserStud_Info(user_id){
+function editUserStud_Info(user_id) {
     $.ajax({
         url: '../ajax.php?action=getStudInfoJson&data_id=' + user_id,
         method: 'GET',
         dataType: 'json',
         success: function(data) {
-            if (data){
-
+            if (data) {
                 $('#EditStudentForm input[name="user_Fname"]').val(data.first_name);
                 $('#EditStudentForm input[name="user_Lname"]').val(data.last_name);
                 $('#EditStudentForm input[name="user_address"]').val(data.address);
@@ -177,12 +147,12 @@ function editUserStud_Info(user_id){
                 $('#deactivate_stud_acc').attr('data-user_id', data.user_id);
                 $('#EditStudentForm select[name="stud_Program"]').val(data.program_id);
                 $('#EditStudentForm select[name="stud_Section"]').val(data.section_id);
+                $('#EditStudentForm select[name="stud_adviser"]').val(data.adviser_id);
                 if (data.sex === "Male") {
                     $('#EditStudentForm input[name="user_Sex"][value="Male"]').prop('checked', true);
                 } else if (data.sex === "Female") {
                     $('#EditStudentForm input[name="user_Sex"][value="Female"]').prop('checked', true);
                 }
-
             }
         },
         error: function(xhr, status, error) {
@@ -190,6 +160,7 @@ function editUserStud_Info(user_id){
         }
     });
 }
+
 
 function deactivate_account(id, modal_id){
 
@@ -242,4 +213,4 @@ function editAdvInfo(user_id){
     });
 }
 
-window.onload = handleRouting;
+

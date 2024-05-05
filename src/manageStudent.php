@@ -3,6 +3,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     header("Location: 404.php");
     exit();
 }
+include '../DatabaseConn/databaseConn.php';
 ?>
 <div class="px-9 pt-2 flex justify-end items-stretch flex-wrap  pb-0 bg-transparent">
     <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('newStudentdialog')">New Student</button>
@@ -20,11 +21,13 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
         </div>
         <div class="block py-8 pt-6 px-9">
             <div class="overflow-auto h-96">
-                <table id="studListTbl" class="w-full my-0 border-neutral-200" >
+                <table id="studListTbl" class="w-full my-0 border-neutral-200 text-sm" >
                     <thead class="align-bottom z-20">
                     <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
                         <th class="p-3 text-start ">School ID</th>
                         <th class="p-3 text-start ">Name</th>
+                        <th class="p-3 text-start ">OJT Adviser</th>
+
                         <th class="p-3 text-end ">Program</th>
                         <th class="p-3 text-end ">Section</th>
                         <th class="p-3 text-end ">Action</th>
@@ -60,7 +63,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 
 </div>
 <dialog id="newStudentdialog" class="modal bg-black  bg-opacity-40">
-    <div class="card bg-slate-50 w-[100vw] sm:w-[40rem] max-h-[40rem]  flex flex-col text-slate-700">
+    <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] max-h-[40rem]  flex flex-col text-slate-700">
         <div  class=" card-title sticky ">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('newStudentdialog')">✕</button>
             <h3 class="font-bold text-center text-lg  p-5">Add new student </h3>
@@ -69,7 +72,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
             <form id="studentForm"  enctype="multipart/form-data">
                 <div class="flex flex-col gap-8 mb-2 overflow-auto h-[27rem]">
                     <div class="flex flex-col gap-2">
-                        <div class="flex justify-evenly gap-2">
+                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">First name</span>
@@ -81,28 +84,6 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                     <span class="label-text text-slate-700">Last name</span>
                                 </div>
                                 <input type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                        </div>
-                        <div class="flex justify-evenly gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Address</span>
-                                </div>
-                                <input type="text" name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Contact number</span>
-                                </div>
-                                <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                        </div>
-                        <div class="flex justify-evenly gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
-                                </div>
-                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -118,7 +99,26 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                         <input type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
                                     </div>
                                 </div>
-
+                            </label>
+                        </div>
+                        <div class="flex justify-evenly gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Address</span>
+                                </div>
+                                <input type="text" name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Contact number</span>
+                                </div>
+                                <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
+                                </div>
+                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                         </div>
 
@@ -133,7 +133,6 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                     <option value="2">BSCS</option>
                                 </select>
 
-
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -144,6 +143,31 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                     <option value="1">4A</option>
                                     <option value="2">4B</option>
                                     <option value="3">4C</option>
+                                </select>
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">OJT Adviser</span>
+                                </div>
+                                <select name="stud_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select adviser</option>
+                                    <?php
+                                    $adv_option_query = "SELECT ui.*, acc.*
+                                 FROM tbl_user_info ui
+                                 INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
+                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
+                                    $result = $conn->query($adv_option_query);
+
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+                                        }
+                                    } else {
+                                        echo "<option value=''>No users found</option>";
+                                    }
+                                    ?>
+
+
                                 </select>
                             </label>
                         </div>
@@ -175,7 +199,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     </div>
 </dialog>
 <dialog id="editStuInfo" class="modal bg-black  bg-opacity-40">
-    <div class="card bg-slate-50 w-[100vw] sm:w-[43rem] max-h-[35rem]  flex flex-col text-slate-700">
+    <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] max-h-[35rem]  flex flex-col text-slate-700">
         <div  class=" card-title sticky ">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('editStuInfo')">✕</button>
             <h3 class="font-bold text-center text-lg  p-5">Edit student info</h3>
@@ -197,28 +221,6 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                 </div>
                                 <input type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
-                        </div>
-                        <div class="flex justify-evenly gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Address</span>
-                                </div>
-                                <input type="text" name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Contact number</span>
-                                </div>
-                                <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                        </div>
-                        <div class="flex justify-evenly gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
-                                </div>
-                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Sex</span>
@@ -236,6 +238,26 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 
                             </label>
                         </div>
+                        <div class="flex justify-evenly gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Address</span>
+                                </div>
+                                <input type="text" name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Contact number</span>
+                                </div>
+                                <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
+                                </div>
+                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                        </div>
 
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
@@ -247,9 +269,8 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                     <option value="1">BSIT</option>
                                     <option value="2">BSCS</option>
                                 </select>
-
-
                             </label>
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Section</span>
@@ -259,6 +280,31 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                     <option value="1">4A</option>
                                     <option value="2">4B</option>
                                     <option value="3">4C</option>
+                                </select>
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">OJT Adviser</span>
+                                </div>
+                                <select name="stud_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select adviser</option>
+                                    <?php
+                                    $adv_option_query = "SELECT ui.*, acc.*
+                                 FROM tbl_user_info ui
+                                 INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
+                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
+                                    $result = $conn->query($adv_option_query);
+
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+                                        }
+                                    } else {
+                                        echo "<option value=''>No users found</option>";
+                                    }
+                                    ?>
+
+
                                 </select>
                             </label>
                         </div>
