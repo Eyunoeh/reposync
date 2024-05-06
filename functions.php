@@ -124,16 +124,11 @@ function getTotalAdvList($adv_user_id){
 }
 function insertActivityLog($activity_type, $file_id) {
     include 'DatabaseConn/databaseConn.php';
-
-
     $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
                             VALUES (?, ?, CURRENT_TIMESTAMP)";
-
     $stmt = $conn->prepare($insert_activity_log);
     $stmt->bind_param("is", $file_id, $activity_type);
     $stmt->execute();
-
-
     if ($stmt->affected_rows > 0) {
         return true;
     } else {

@@ -155,6 +155,25 @@ if ($action == 'getWeeklyReports'){
     $result = $stmt->get_result();
 
     while ($row = $result->fetch_assoc()) {
+        $status = $row['upload_status'];
+        switch ($status) {
+            case 'pending':
+                $formattedStatus = 'Pending';
+                $status_color = 'text-warning';
+                break;
+            case 'revision':
+                $formattedStatus = 'With Revision';
+                $status_color = 'text-info';
+
+                break;
+            case 'approved':
+                $formattedStatus = 'Approved';
+                $status_color = 'text-success';
+                break;
+            default:
+                $formattedStatus = 'Unknown';
+                break;
+        }
         echo ' <tr class="border-b border-dashed last:border-b-0">
 
                                 <td class="p-3 pr-0 ">
@@ -162,7 +181,7 @@ if ($action == 'getWeeklyReports'){
                                 </td>
 
                                 <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">' . $row['upload_status'] . '</span>
+                                    <span class="'.$status_color.' font-semibold text-light-inverse text-md/normal">' . $formattedStatus . '</span>
                                 </td>
                                 <td class="p-3 pr-0 " >
                                     <div class="indicator hover:cursor-pointer" onclick="openModalForm(\'comments\')">
@@ -183,6 +202,33 @@ if ($action == 'getWeeklyReports'){
                             </tr>';
     }
 }
+
+if ($action == 'updateWeeklyreportStat'){
+    $file_id = $_GET['file_id'] ?? '';
+    if ($file_id !== ''){
+        $sql = "SELECT * FROM weeklyreport where file_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $file_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            $filename = $row['weeklyFileReport'];
+
+            preg_match('/week_([0-9]+)\.pdf/', $filename, $matches);
+            $week_number = isset($matches[1]) ? (int)$matches[1] : '';
+
+            $row['weeklyFileReport'] = 'Week '.$week_number;
+
+            header('Content-Type: application/json');
+            echo json_encode($row);
+        }else{
+            echo 'No result';
+        }
+    }
+}
+
 
 
 if ($action == 'resubmitReport'){
@@ -243,6 +289,7 @@ if ($action == 'getUploadLogs'){
 
         $formatted_week = ($week_number !== '') ? "Week " . $week_number : '';
         $formatted_date_time = date("M d, Y g:i A", strtotime($row['activity_date']));
+
 
         echo '  <tr class="border-b border-dashed last:border-b-0">
 

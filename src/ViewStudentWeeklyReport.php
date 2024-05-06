@@ -1,17 +1,50 @@
 <?php
+$secret_key = 'TheSecretKey#02';
+
+
+include "../DatabaseConn/databaseConn.php";
+include '../encryptionFunction.php';
 session_start();
+
+if (isset($_POST['Update_remark']) and $_POST['Update_remark'] === 'Update'){
+    $remark = $_POST['report_Stat'];
+
+    if (in_array($remark, ['pending', 'revision', 'approved'])) {
+        $file_id = $_POST['file_id'];
+        $sql = "UPDATE weeklyreport set upload_status = ? where file_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('si', $remark,$file_id);
+        if ($stmt->execute()){
+            $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
+                            VALUES (?, 'status update', CURRENT_TIMESTAMP)";
+            $stmt = $conn->prepare($insert_activity_log);
+            $stmt->bind_param("i", $file_id, );
+            $stmt->execute();
+            if ($stmt->affected_rows > 0) {
+                header("Location: ViewStudentWeeklyReport.php?checkStudent=".urlencode(encrypt_data($_POST['stud_id'], $secret_key)));
+                exit();
+            }
+
+        }
+    }
+
+}
+
 if (!isset($_SESSION['log_user_type']) || ($_SESSION['log_user_type'] !== 'admin' && $_SESSION['log_user_type'] !== 'adviser')) {
     header("Location: index.php");
     exit();
 }
 
-include "../DatabaseConn/databaseConn.php";
-include '../encryptionFunction.php';
-$secret_key = 'TheSecretKey#02';
-decrypt_data($_GET['checkStudent'], $secret_key);
+if (!isset($_GET['checkStudent']) or !decrypt_data($_GET['checkStudent'], $secret_key)){
+    header("Location: 404.php");
+}
+
+
+
+$student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head data-theme="light">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,65 +81,78 @@ decrypt_data($_GET['checkStudent'], $secret_key);
                             <thead class="align-bottom  z-20">
                             <tr class="font-semibold text-[0.95rem] sticky top-0  z-20 text-secondary-dark bg-slate-200 rounded">
                                 <th class="p-3  ">Week</th>
-                                <th class="p-3 ">Status</th>
+                                <th class="p-3 ">Remark</th>
                                 <th class="p-3 ">View Comments</th>
                                 <th class="p-3 ">Action</th>
                             </tr>
                             </thead>
                             <tbody class=" text-center ">
 
+                            <?php
+                            $week = 1;
+                            $sql = "SELECT file_id, upload_status, weeklyFileReport
+        FROM weeklyReport
+        WHERE stud_user_id = ?
+        ORDER BY upload_date desc";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("i", $student_user_id); // Assuming $stud_user_id contains the user ID
+                            $stmt->execute();
+                            $result = $stmt->get_result();
 
-                            <tr class="border-b border-dashed last:border-b-0">
+                            while ($row = $result->fetch_assoc()) {
+                                $status = $row['upload_status'];
+
+                                switch ($status) {
+                                    case 'pending':
+                                        $formattedStatus = 'Pending';
+                                        $status_color = 'text-warning';
+                                        break;
+                                    case 'revision':
+                                        $formattedStatus = 'With Revision';
+                                        $status_color = 'text-info';
+
+                                        break;
+                                    case 'approved':
+                                        $formattedStatus = 'Approved';
+                                        $status_color = 'text-success';
+                                        break;
+                                    default:
+                                        $formattedStatus = 'Unknown';
+                                        break;
+                                }
+
+
+
+                                echo ' <tr class="border-b border-dashed last:border-b-0">
 
                                 <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">1</span>
+                                    <span class="font-semibold text-light-inverse text-md/normal">' . $week++ . '</span>
                                 </td>
 
                                 <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">Approve</span>
+                                    <span class="'.$status_color.'  font-semibold text-light-inverse text-md/normal">' . $formattedStatus . '</span>
                                 </td>
                                 <td class="p-3 pr-0 " >
-                                    <div class="indicator hover:cursor-pointer" onclick="openModalForm('comments')">
+                                    <div class="indicator hover:cursor-pointer" onclick="openModalForm(\'comments\')">
                                         <span class="indicator-item badge badge-neutral"  data-journal-comment-id="3" id="journal_comment_2">5</span>
                                         <a class="font-semibold text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
                                     </div>
                                 </td>
                                 <td class="p-3 pr-0  ">
                                     <div  class="tooltip tooltip-bottom"  data-tip="View">
-                                        <a href="NarrativeReportsPDF/Narrative%20Report%20Format.pdf" target="_blank" class=" text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
-                                        transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"  ><i class="fa-regular fa-eye"></i></a>
+                                        <a href="StudentWeeklyReports/' . $row['weeklyFileReport'] . '" target="_blank" class=" text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
+                                    transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"  ><i class="fa-regular fa-eye"></i></a>
                                     </div>
                                     <div class="tooltip tooltip-bottom" data-tip="Update remark">
                                         <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
-                                    transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  onclick="openModalForm('resubmitReport')"><i class="fa-solid fa-pen-to-square"></i></a>
+                                transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  data-report_id="' . $row['file_id'] . '" onclick="openModalForm(\'remarkForm\');updateWeeklyReportStat(this.getAttribute(\'data-report_id\'))"><i class="fa-solid fa-pen-to-square"></i></a>
                                     </div>
                                 </td>
-                            </tr>
-                            <tr class="border-b border-dashed last:border-b-0">
+                            </tr>';
+                            }
 
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">1</span>
-                                </td>
+                            ?>
 
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">Approve</span>
-                                </td>
-                                <td class="p-3 pr-0 " >
-                                    <div class="indicator hover:cursor-pointer" onclick="openModalForm('comments')">
-                                        <span class="indicator-item badge badge-neutral"  data-journal-comment-id="3" id="journal_comment_2">5</span>
-                                        <a class="font-semibold text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
-                                    </div>
-                                </td>
-                                <td class="p-3 pr-0  ">
-                                    <div  class="tooltip tooltip-bottom"  data-tip="View">
-                                        <a href="NarrativeReportsPDF/Narrative%20Report%20Format.pdf" target="_blank" class=" text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
-                                        transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"  ><i class="fa-regular fa-eye"></i></a>
-                                    </div>
-                                    <div class="tooltip tooltip-bottom" data-tip="Update remark">
-                                        <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
-                                    transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  onclick="openModalForm('resubmitReport')"><i class="fa-solid fa-pen-to-square"></i></a>
-                                    </div>
-                                </td>
                             </tbody>
                         </table>
                     </div>
@@ -115,6 +161,36 @@ decrypt_data($_GET['checkStudent'], $secret_key);
         </div>
     </div>
 </main>
+<dialog id="remarkForm" class="modal bg-black  bg-opacity-40">
+    <div class="card bg-slate-50 w-[60vw] sm:w-[20rem] h-[60vh] lg:h-[20rem]  flex flex-col text-slate-700 overflow-auto">
+        <div class="card-title sticky">
+            <form method="dialog">
+                <button class=" btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('remarkForm')">✕</button>
+            </form>
+            <h3 class="font-bold text-lg text-center text-black  top-0  p-5" id="week">Week 1</h3>
+        </div>
+        <div class="p-3">
+            <form id="WeeklyReportForm" method="post" action="ViewStudentWeeklyReport.php" class="flex flex-col justify-center gap-12 items-center">
+                <label class="form-control w-full max-w-xs">
+                    <div class="label">
+                        <span class="label-text">Update remark</span>
+                    </div>
+                    <select name="report_Stat" class="select select-bordered">
+                        <option selected value="pending">Pending</option>
+                        <option value="revision">With revision</option>
+                        <option value="approved">Approve</option>
+                    </select>
+                </label>
+                <input type="hidden" value="<?php echo $student_user_id?>" name="stud_id">
+                <input type="hidden" name="file_id" value="">
+                <div>
+                    <input type="submit" name="Update_remark" value="Update" class="btn-accent btn btn-md">
+                </div>
+            </form>
+        </div>
+
+    </div>
+</dialog>
 <dialog id="comments" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] h-[100vh] lg:h-[37rem]  flex flex-col text-slate-700 overflow-auto">
         <div class="card-title sticky">
@@ -183,11 +259,33 @@ decrypt_data($_GET['checkStudent'], $secret_key);
             </div>
             <div class="card-body  overflow-auto">
                 <img src="NarrativeReportsPDF/backcover.PNG" class="object-contain">
-
             </div>
         </div>
     </dialog>
 </dialog>
+<script>
+
+    function updateWeeklyReportStat(weeklyReport_id){
+        $.ajax({
+            url: '../ajax.php?action=updateWeeklyreportStat&file_id=' + weeklyReport_id,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data){
+                    $('#week').text(data.weeklyFileReport);
+                    $('#WeeklyReportForm select[name="report_Stat"]').val(data.upload_status);
+                    $('#WeeklyReportForm input[name="file_id"]').val(data.file_id);
+
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    }
+
+</script>
+<script src="js/Datatables.js"></script>
 <script src="js/buttons_modal.js"></script>
 </body>
 

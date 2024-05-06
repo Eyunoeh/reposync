@@ -3554,9 +3554,23 @@ details.collapse summary::-webkit-details-marker {
   font-size: 0.875rem;
 }
 
+.btn-md {
+  height: 3rem;
+  min-height: 3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+}
+
 .btn-square:where(.btn-sm) {
   height: 2rem;
   width: 2rem;
+  padding: 0px;
+}
+
+.btn-square:where(.btn-md) {
+  height: 3rem;
+  width: 3rem;
   padding: 0px;
 }
 
@@ -4312,6 +4326,10 @@ details.collapse summary::-webkit-details-marker {
   height: 32rem;
 }
 
+.h-\[60vh\] {
+  height: 60vh;
+}
+
 .h-\[70vh\] {
   height: 70vh;
 }
@@ -4434,6 +4452,10 @@ details.collapse summary::-webkit-details-marker {
 
 .w-\[40\%\] {
   width: 40%;
+}
+
+.w-\[60vw\] {
+  width: 60vw;
 }
 
 .w-\[70\%\] {
@@ -4587,6 +4609,10 @@ details.collapse summary::-webkit-details-marker {
 
 .gap-1 {
   gap: 0.25rem;
+}
+
+.gap-12 {
+  gap: 3rem;
 }
 
 .gap-2 {
@@ -5076,6 +5102,11 @@ details.collapse summary::-webkit-details-marker {
   color: rgb(15 23 42 / var(--tw-text-opacity));
 }
 
+.text-success {
+  --tw-text-opacity: 1;
+  color: var(--fallback-su,oklch(var(--su)/var(--tw-text-opacity)));
+}
+
 .text-warning {
   --tw-text-opacity: 1;
   color: var(--fallback-wa,oklch(var(--wa)/var(--tw-text-opacity)));
@@ -5343,6 +5374,10 @@ body{
     width: 15rem;
   }
 
+  .sm\:w-\[20rem\] {
+    width: 20rem;
+  }
+
   .sm\:w-\[30\%\] {
     width: 30%;
   }
@@ -5430,6 +5465,10 @@ body{
 
   .lg\:hidden {
     display: none;
+  }
+
+  .lg\:h-\[20rem\] {
+    height: 20rem;
   }
 
   .lg\:h-\[37rem\] {
