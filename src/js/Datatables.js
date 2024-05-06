@@ -37,3 +37,4 @@ function handleSearch(inputId, tableId) {
     }
 }
 
+

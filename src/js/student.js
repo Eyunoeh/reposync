@@ -4,12 +4,13 @@ document.addEventListener('submit', function(e) {
 
    if (e.target.id === 'addWeeklyReportForm'){
       endpoint = 'addWeeklyReport'
+      modal= 'newReport';
    }else if (e.target.id === 'resubmitReportForm'){
       endpoint = 'resubmitReport'
+      modal = 'resubmitReport';
    }
    formData = new FormData(e.target);
-   add_loader(loader_id);
-   disable_button(submit_btn)
+
 
    $.ajax({
       url: '../ajax.php?action='+ endpoint,
@@ -19,9 +20,9 @@ document.addEventListener('submit', function(e) {
       contentType: false,
       success: function(response) {
          if (response == 1) {
-            enable_button(submit_btn)
-            remove_loader(loader_id);
             closeModalForm(modal);
+            get_WeeklyReports();
+            getUploadLogs();
          } else {
             console.log(response);
          }
@@ -55,3 +56,4 @@ function getVisibleTableId() {
       return 'weeklyReportTable';
    }
 }
+

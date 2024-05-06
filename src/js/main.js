@@ -12,6 +12,8 @@ function navigate(page) {
 
             updateActiveLink(page);
             home_student_NarrativeReports()
+            get_WeeklyReports();
+            getUploadLogs();
 
         })
         .catch(error => console.error('Error fetching content:', error));
@@ -132,3 +134,34 @@ function home_student_NarrativeReports() {
     });
 }
 
+function get_WeeklyReports (){
+    $.ajax({
+        url: '../ajax.php?action=getWeeklyReports',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            $('#Weeklyreports').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+function resubmitWeeklyReport(weeklyReport_id){
+    document.querySelector('#resubmitReport input[name="file_id"]').value = weeklyReport_id;
+}
+
+function getUploadLogs(){
+    $.ajax({
+        url: '../ajax.php?action=getUploadLogs',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            $('#logsTable_body').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}

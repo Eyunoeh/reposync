@@ -110,6 +110,7 @@ function generatePassword($school_id) {
 }
 function getTotalAdvList($adv_user_id){
     include 'DatabaseConn/databaseConn.php';
+
     $sql = "SELECT COUNT(*) AS total FROM advisory_list WHERE adv_sch_user_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $adv_user_id);
@@ -120,4 +121,22 @@ function getTotalAdvList($adv_user_id){
     $stmt->close();
 
     return $total;
+}
+function insertActivityLog($activity_type, $file_id) {
+    include 'DatabaseConn/databaseConn.php';
+
+
+    $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
+                            VALUES (?, ?, CURRENT_TIMESTAMP)";
+
+    $stmt = $conn->prepare($insert_activity_log);
+    $stmt->bind_param("is", $file_id, $activity_type);
+    $stmt->execute();
+
+
+    if ($stmt->affected_rows > 0) {
+        return true;
+    } else {
+        return false; // Insertion failed
+    }
 }

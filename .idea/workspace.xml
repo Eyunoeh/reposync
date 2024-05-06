@@ -4,22 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="userModule done CRUD notification need to fix login system done">
-      <change afterPath="$PROJECT_DIR$/encryptionFunction.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/js/buttons_modal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ReposyncNarrativeManagementSystem.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ReposyncNarrativeManagementSystem.iml" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="report checking">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageNarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageNarrativeReports.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageWeeklyReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/Datatables.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/Datatables.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/student.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/student.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,25 +70,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/System&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
@@ -179,7 +172,10 @@
       <workItem from="1714757586502" duration="116000" />
       <workItem from="1714789860122" duration="4409000" />
       <workItem from="1714812696828" duration="8773000" />
-      <workItem from="1714873256669" duration="20931000" />
+      <workItem from="1714873256669" duration="21003000" />
+      <workItem from="1714967875798" duration="18322000" />
+      <workItem from="1714992955049" duration="21000" />
+      <workItem from="1715004048548" duration="1467000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -335,7 +331,14 @@
       <option name="project" value="LOCAL" />
       <updated>1714756382700</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="report checking">
+      <created>1714911242761</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1714911242761</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -365,7 +368,8 @@
     <MESSAGE value="4/29/24 Narrative Module Update" />
     <MESSAGE value="New Forms in dashboard working on students list" />
     <MESSAGE value="userModule done CRUD notification need to fix login system done" />
-    <option name="LAST_COMMIT_MESSAGE" value="userModule done CRUD notification need to fix login system done" />
+    <MESSAGE value="report checking" />
+    <option name="LAST_COMMIT_MESSAGE" value="report checking" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

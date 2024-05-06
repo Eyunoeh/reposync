@@ -27,7 +27,7 @@ if ($action == 'login') {
 
     $log_email = isset($_POST['log_email']) ? sanitizeInput($_POST['log_email']) : '';
     $log_password = $_POST['log_password'] ?? '';
-    if ($log_email!== '' && $log_password !== '') {
+    if ($log_email !== '' && $log_password !== '') {
 
         $fetch_acc = "SELECT user_id, password FROM tbl_accounts WHERE email = ?";
         $stmt = $conn->prepare($fetch_acc);
@@ -76,22 +76,192 @@ if ($action == 'login') {
         echo 2; // Error: Email or password empty
     }
 
-
 }
 
 
 
 
-if ($action == 'addWeeklyReport'){
+if ($action == 'addWeeklyReport') {
+    $user_id = isset($_POST['stud_user_id']) ? sanitizeInput($_POST['stud_user_id']) : '';
+    if ($user_id !== '') {
+        if (isset($_FILES['weeklyReport'])) {
+            if (isPDF($_FILES['weeklyReport']['name'])) {
+                if ($_FILES['weeklyReport']['error'] === UPLOAD_ERR_OK) {
+                    $get_weeklyReportCount = "SELECT COUNT(*) AS weeklyReportCount FROM weeklyReport WHERE stud_user_id = ?";
+                    $report_count_stmt = $conn->prepare($get_weeklyReportCount);
+                    $report_count_stmt->bind_param('i', $user_id);
+                    $report_count_stmt->execute();
+                    $res = $report_count_stmt->get_result();
+                    $weeklyReport_count = $res->fetch_assoc();
 
 
-    echo $newWeeklyReport;
+
+                    $get_User_info = "SELECT * FROM tbl_user_info WHERE user_id = ?";
+                    $stmt = $conn->prepare($get_User_info);
+                    $stmt->bind_param("i", $user_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $row = $result->fetch_assoc();
+
+                    $file_name = '';
+
+                    if ($weeklyReport_count['weeklyReportCount'] > 0) {
+                        $weeklyReport = $weeklyReport_count['weeklyReportCount'] + 1;
+                        $file_name = $row['school_id'] . "_WeeklyReport_week_" . $weeklyReport . ".pdf";
+
+                    } else {
+                        $file_name = $row['school_id'] . "_WeeklyReport_week_1.pdf";
+                    }
+                    $status = "Pending";
+
+                    $insert_weekly_report = "INSERT INTO weeklyReport (stud_user_id, weeklyFileReport, upload_date, upload_status) 
+                         VALUES (?, ?, CURRENT_TIMESTAMP, ?)";
+                    $stmt = $conn->prepare($insert_weekly_report);
+                    $stmt->bind_param("iss", $user_id, $file_name, $status);
+                    $stmt->execute();
+                    $file_id = $stmt->insert_id;
+                    insertActivityLog('upload',$file_id);
+                    $temp_file = $_FILES['weeklyReport']['tmp_name'];
+                    $final_destination = 'src/StudentWeeklyReports/' . $file_name;
+                    if (move_uploaded_file($temp_file, $final_destination)) {
+                        echo 1;
+                    } else {
+                        echo 'move_error';
+                    }
+                    exit();
+                } else {
+                    echo 'upload_error';
+                }
+            } else {
+                echo 'format_error';
+            }
+        } else {
+            echo 'file_missing';
+        }
+    } else {
+        echo 'missing_user_id';
+    }
 }
+if ($action == 'getWeeklyReports'){
+    $user_id = $_SESSION['log_user_id'];
+    $week = 1;
+    $sql = "SELECT file_id, upload_status, weeklyFileReport
+        FROM weeklyReport
+        WHERE stud_user_id = ?
+        ORDER BY upload_date";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id); // Assuming $stud_user_id contains the user ID
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        echo ' <tr class="border-b border-dashed last:border-b-0">
+
+                                <td class="p-3 pr-0 ">
+                                    <span class="font-semibold text-light-inverse text-md/normal">' . $week++ . '</span>
+                                </td>
+
+                                <td class="p-3 pr-0 ">
+                                    <span class="font-semibold text-light-inverse text-md/normal">' . $row['upload_status'] . '</span>
+                                </td>
+                                <td class="p-3 pr-0 " >
+                                    <div class="indicator hover:cursor-pointer" onclick="openModalForm(\'comments\')">
+                                        <span class="indicator-item badge badge-neutral"  data-journal-comment-id="3" id="journal_comment_2">5</span>
+                                        <a class="font-semibold text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
+                                    </div>
+                                </td>
+                                <td class="p-3 pr-0  ">
+                                    <div  class="tooltip tooltip-bottom"  data-tip="View">
+                                        <a href="StudentWeeklyReports/' . $row['weeklyFileReport'] . '" target="_blank" class=" text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
+                                    transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"  ><i class="fa-regular fa-eye"></i></a>
+                                    </div>
+                                    <div class="tooltip tooltip-bottom" data-tip="Resubmit">
+                                        <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
+                                transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  data-report_id="' . $row['file_id'] . '" onclick="openModalForm(\'resubmitReport\');resubmitWeeklyReport(this.getAttribute(\'data-report_id\'))"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    </div>
+                                </td>
+                            </tr>';
+    }
+}
+
+
 if ($action == 'resubmitReport'){
-
-    echo $resubmitReport;
-
+    $file_id = isset($_POST['file_id']) ? sanitizeInput($_POST['file_id']) : '';
+    if ($file_id !== '') {
+        if (isset($_FILES['resubmitReport'])) {
+            if (isPDF($_FILES['resubmitReport']['name'])) {
+                if ($_FILES['resubmitReport']['error'] === UPLOAD_ERR_OK) {
+                    $get_weeklyReport = "SELECT * FROM weeklyReport WHERE file_id = ?";
+                    $stmt = $conn->prepare($get_weeklyReport);
+                    $stmt->bind_param("i", $file_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $row = $result->fetch_assoc();
+                    $file_path = 'src/StudentWeeklyReports/' . $row['weeklyFileReport'];
+                    if (file_exists($file_path)) {
+                        unlink($file_path);
+                        move_uploaded_file($_FILES['resubmitReport']['tmp_name'], $file_path);
+                    }
+                    else{
+                        exit();
+                    }
+                    insertActivityLog('resubmit', $file_id);
+                    echo 1;
+                } else {
+                    echo 'upload_error';
+                }
+            } else {
+                echo 'format_error';
+            }
+        } else {
+            echo 'file_missing';
+        }
+    } else {
+        echo 'missing_file_id';
+    }
 }
+if ($action == 'getUploadLogs'){
+    $user_id = $_SESSION['log_user_id'];
+
+    $sql = "SELECT a.*, w.stud_user_id, w.weeklyFileReport
+            FROM activity_logs AS a
+            JOIN weeklyReport AS w ON a.file_id = w.file_id
+            WHERE w.stud_user_id = ?
+            ORDER BY a.activity_date DESC";
+
+    // Prepare and execute the statement
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $filename = $row['weeklyFileReport'];
+
+        preg_match('/week_([0-9]+)\.pdf/', $filename, $matches);
+        $week_number = isset($matches[1]) ? (int)$matches[1] : '';
+
+        $formatted_week = ($week_number !== '') ? "Week " . $week_number : '';
+        $formatted_date_time = date("M d, Y g:i A", strtotime($row['activity_date']));
+
+        echo '  <tr class="border-b border-dashed last:border-b-0">
+
+                                <td class="p-3 pr-0 ">
+                                    <span class="font-semibold text-light-inverse text-md/normal">'.$formatted_week.'</span>
+                                </td>
+
+                                <td class="p-3 pr-0 ">
+                                    <span class="font-semibold text-light-inverse text-md/normal">'.$formatted_date_time .'</span>
+                                </td>
+                                <td class="p-3 pr-0 ">
+                                    <span class="font-semibold text-light-inverse text-md/normal">'. $row['activity_type'] .'</span>
+                                </td>
+
+                            </tr>';
+    }
+}
+
+
 if ($action == 'newFinalReport'){
 
     $first_name = isset($_POST['first_name']) ? sanitizeInput($_POST['first_name']) : '';

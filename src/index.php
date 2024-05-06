@@ -23,6 +23,8 @@ session_start();
     <main class="max-w-6xl mx-auto" id="mainContent">
 
     </main>
+    <script src="js/buttons_modal.js"></script>
+    <script src="js/Datatables.js"></script>
 
     <script src="js/main.js"></script>
     <?php
@@ -32,7 +34,6 @@ session_start();
     <?php
     endif;
     ?>
-    <script src="js/buttons_modal.js"></script>
-    <script src="js/Datatables.js"></script>
+
 </body>
 </html>

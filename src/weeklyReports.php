@@ -9,6 +9,8 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
     header("Location: index.php");
     exit();
 }
+include '../DatabaseConn/databaseConn.php';
+$user_id = $_SESSION['log_user_id'];
 ?>
 <div class="grid place-items-center  text-gray-700 h-[95%]">
     <div class="w-full max-w-full ">
@@ -42,34 +44,10 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                                     <th class="p-3 ">Action</th>
                                 </tr>
                             </thead>
-                            <tbody class=" text-center ">
+                            <tbody id="Weeklyreports" class=" text-center ">
 
-                            <tr class="border-b border-dashed last:border-b-0">
 
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">1</span>
-                                </td>
 
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">Approve</span>
-                                </td>
-                                <td class="p-3 pr-0 " >
-                                    <div class="indicator hover:cursor-pointer" onclick="openModalForm('comments')">
-                                        <span class="indicator-item badge badge-neutral"  data-journal-comment-id="3" id="journal_comment_2">5</span>
-                                        <a class="font-semibold text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
-                                    </div>
-                                </td>
-                                <td class="p-3 pr-0  ">
-                                    <div  class="tooltip tooltip-bottom"  data-tip="View">
-                                        <a href="NarrativeReportsPDF/Narrative%20Report%20Format.pdf" target="_blank" class=" text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
-                                    transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"  ><i class="fa-regular fa-eye"></i></a>
-                                    </div>
-                                    <div class="tooltip tooltip-bottom" data-tip="Resubmit">
-                                        <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
-                                transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  onclick="openModalForm('resubmitReport')"><i class="fa-solid fa-pen-to-square"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
 
                             </tbody>
                         </table>
@@ -81,7 +59,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                                     <th class="p-3">Type</th>
                                 </tr>
                             </thead>
-                            <tbody class=" text-center">
+                            <tbody class=" text-center " id="logsTable_body">
 
                             <tr class="border-b border-dashed last:border-b-0">
 
@@ -188,8 +166,8 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                 <button class=" btn btn-sm btn-circle absolute right-2 top-2" onclick="closeModalForm('img_modal')">✕</button>
             </form>
         </div>
-        <div class="card-body  overflow-auto">
-            <img src="NarrativeReportsPDF/backcover.PNG" class="object-contain">
+        <div class="card-body flex justify-center items-center overflow-auto">
+            <img src="comments_img/Capture.PNG" class="object-contain">
 
         </div>
     </div>
@@ -200,19 +178,11 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
 <dialog id="newReport" class="modal bg-black bg-opacity-40">
     <div class="modal-box bg-white">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('newReport')">✕</button>
-        <h3 class="font-bold text-center text-lg mb-5">Choose submission type</h3>
+        <h3 class="font-bold text-center text-lg mb-5">Upload weekly report</h3>
         <form id="addWeeklyReportForm">
             <div class="flex flex-col gap-8">
-                <input name="file_sch_id" required type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
-                <hr class="w-full border rounded-2xl">
-
-                <label class="form-control w-full max-w-xs">
-                    <input type="url" placeholder="Type here" class="bg-slate-50 input input-bordered w-full max-w-xs" />
-                    <div class="label">
-                        <span class="label-text-alt ">Input the link here</span>
-                    </div>
-                </label>
-                <input type="hidden" name="newWeeklyReport" value="submitSuccess">
+                <input name="weeklyReport" required type="file" accept="application/pdf" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
+                <input type="hidden" name="stud_user_id" value="<?php echo $user_id?>">
                 <button class="btn btn-neutral btn-outline ">Submit</button>
             </div>
         </form>
@@ -225,9 +195,8 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
         <h3 class="font-bold text-center text-lg mb-5">Resubmit report</h3>
         <form id="resubmitReportForm">
             <div class="flex flex-col gap-8">
-                <input name="file_sch_id" required type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
-
-                <input type="hidden" name="resubmitReport" value="resubmitSuccess">
+                <input name="resubmitReport" required type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
+                <input type="hidden" name="file_id" value="">
                 <button class="btn btn-neutral btn-outline ">Submit</button>
             </div>
         </form>
