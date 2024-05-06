@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="report checking">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Weekltreport Submission">
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/Datatables.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/Datatables.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/student.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/student.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +170,7 @@
       <workItem from="1714873256669" duration="21003000" />
       <workItem from="1714967875798" duration="18322000" />
       <workItem from="1714992955049" duration="21000" />
-      <workItem from="1715004048548" duration="1467000" />
+      <workItem from="1715004048548" duration="8683000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -338,7 +333,21 @@
       <option name="project" value="LOCAL" />
       <updated>1714911242761</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Weekltreport Submission">
+      <created>1715008627725</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1715008627726</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Weekltreport Submission">
+      <created>1715008640394</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1715008640394</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -369,7 +378,8 @@
     <MESSAGE value="New Forms in dashboard working on students list" />
     <MESSAGE value="userModule done CRUD notification need to fix login system done" />
     <MESSAGE value="report checking" />
-    <option name="LAST_COMMIT_MESSAGE" value="report checking" />
+    <MESSAGE value="Weekltreport Submission" />
+    <option name="LAST_COMMIT_MESSAGE" value="Weekltreport Submission" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
