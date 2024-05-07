@@ -1,6 +1,6 @@
 <?php
 include_once '../DatabaseConn/databaseConn.php';
-include '../encryptionFunction.php';
+include '../functions.php';
 ?>
 
 <!DOCTYPE html>

@@ -3,32 +3,9 @@ $secret_key = 'TheSecretKey#02';
 
 
 include "../DatabaseConn/databaseConn.php";
-include '../encryptionFunction.php';
+include '../functions.php';
 session_start();
 
-if (isset($_POST['Update_remark']) and $_POST['Update_remark'] === 'Update'){
-    $remark = $_POST['report_Stat'];
-
-    if (in_array($remark, ['pending', 'revision', 'approved'])) {
-        $file_id = $_POST['file_id'];
-        $sql = "UPDATE weeklyreport set upload_status = ? where file_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('si', $remark,$file_id);
-        if ($stmt->execute()){
-            $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
-                            VALUES (?, 'status update', CURRENT_TIMESTAMP)";
-            $stmt = $conn->prepare($insert_activity_log);
-            $stmt->bind_param("i", $file_id, );
-            $stmt->execute();
-            if ($stmt->affected_rows > 0) {
-                header("Location: ViewStudentWeeklyReport.php?checkStudent=".urlencode(encrypt_data($_POST['stud_id'], $secret_key)));
-                exit();
-            }
-
-        }
-    }
-
-}
 
 if (!isset($_SESSION['log_user_type']) || ($_SESSION['log_user_type'] !== 'admin' && $_SESSION['log_user_type'] !== 'adviser')) {
     header("Location: index.php");
@@ -39,6 +16,52 @@ if (!isset($_GET['checkStudent']) or !decrypt_data($_GET['checkStudent'], $secre
     header("Location: 404.php");
 }
 
+if (isset($_POST['Update_remark']) and $_POST['Update_remark'] === 'Update'){
+    $remark = $_POST['report_Stat'];
+
+    if (in_array($remark, ['pending', 'revision', 'approved'])) {
+        echo 1;
+
+        $file_id = $_POST['file_id'];
+        $sql = "UPDATE weeklyreport set upload_status = ? where file_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('si', $remark,$file_id);
+        if ($stmt->execute()){
+            $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
+                            VALUES (?, 'status update', CURRENT_TIMESTAMP)";
+            $stmt = $conn->prepare($insert_activity_log);
+            $stmt->bind_param("i", $file_id, );
+            $stmt->execute();
+
+
+            if ($stmt->affected_rows > 0) {
+                echo 1;
+                header("Location: ViewStudentWeeklyReport.php?checkStudent=".urlencode(encrypt_data($_POST['stud_id'], $secret_key)));
+                exit();
+            }
+
+
+        }
+
+    }
+
+}
+function countFileComments($file_id){
+    include "../DatabaseConn/databaseConn.php";
+
+    $sql = "SELECT COUNT(*) AS comment_count FROM tbl_revision WHERE file_id = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $file_id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_assoc();
+    $comment_count = $row['comment_count'];
+
+    return $comment_count;
+}
 
 
 $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
@@ -100,6 +123,12 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
                             $result = $stmt->get_result();
 
                             while ($row = $result->fetch_assoc()) {
+                                $filename = $row['weeklyFileReport'];
+
+                                preg_match('/week_([0-9]+)\.pdf/', $filename, $matches);
+                                $week_number = isset($matches[1]) ? (int)$matches[1] : '';
+
+                                $formatted_week = ($week_number !== '') ? "Week " . $week_number : '';
                                 $status = $row['upload_status'];
 
                                 switch ($status) {
@@ -126,15 +155,15 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
                                 echo ' <tr class="border-b border-dashed last:border-b-0">
 
                                 <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">' . $week++ . '</span>
+                                    <span class="font-semibold text-light-inverse text-md/normal">' . $formatted_week . '</span>
                                 </td>
 
                                 <td class="p-3 pr-0 ">
                                     <span class="'.$status_color.'  font-semibold text-light-inverse text-md/normal">' . $formattedStatus . '</span>
                                 </td>
                                 <td class="p-3 pr-0 " >
-                                    <div class="indicator hover:cursor-pointer" onclick="openModalForm(\'comments\')">
-                                        <span class="indicator-item badge badge-neutral"  data-journal-comment-id="3" id="journal_comment_2">5</span>
+                                    <div class="indicator hover:cursor-pointer" data-report-comment-id="'.$row['file_id'].'" onclick="openModalForm(\'comments\');getComments(this.getAttribute(\'data-report-comment-id\'))">
+                                        <span class="indicator-item badge badge-neutral"   id="journal_comment_2">'.countFileComments( $row['file_id']).'</span>
                                         <a class="font-semibold text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
                                     </div>
                                 </td>
@@ -150,9 +179,7 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
                                 </td>
                             </tr>';
                             }
-
                             ?>
-
                             </tbody>
                         </table>
                     </div>
@@ -188,7 +215,6 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
                 </div>
             </form>
         </div>
-
     </div>
 </dialog>
 <dialog id="comments" class="modal bg-black  bg-opacity-40">
@@ -199,47 +225,21 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
             </form>
             <h3 class="font-bold text-lg text-center text-black  top-0  p-5">Report Comments</h3>
         </div>
-        <div class="overflow-auto card-body">
-            <div class="grid place-items-center">
+        <div class="overflow-auto card-body" id="comment_body">
 
-                <p class="py-4 px-2 border bg-slate-200 rounded-lg min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea ex facilis magni modi, molestias perferendis placeat quam quasi, qui ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!</p>
-                <div class="flex flex-wrap gap-1">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                </div>
 
-            </div>
-            <hr>
-            <div class="w-full grid place-items-center">
-                <p class="text-sm text-black text-center">2:30pm</p>
-                <p class="text-sm text-black text-center">4/16/2024</p>
-            </div>
-            <div class="grid place-items-center">
-                <p class="py-4 px-2 border rounded-lg bg-slate-200 min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea ex facilis magni modi, molestias perferendis placeat quam quasi, qui ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!</p>
-                <div class="flex flex-wrap gap-1">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                </div>
-            </div>
-            <hr>
-            <div class="w-full grid place-items-center">
-                <p class="text-sm text-black text-center">4:30pm</p>
-                <p class="text-sm text-black text-center">4/16/2024</p>
-            </div>
+
         </div>
         <div class="m-3 shadow-2xl rounded bg-gray-300 bg-opacity-70 ">
-            <form class="flex sm:flex-row flex-col justify-evenly items-center p-2 flex-wrap sm:gap-2 gap-0">
+            <form enctype="multipart/form-data" id="chatBox" class="flex sm:flex-row flex-col justify-evenly items-center p-2 flex-wrap sm:gap-2 gap-0">
                 <textarea name="revision_comment" class=" sm:w-auto w-full flex-grow textarea  max-h-24 textarea-bordered  bg-slate-100" placeholder="Type here"></textarea>
+                <input type="hidden" name="file_id" value="">
                 <div class=" flex  justify-center sm:justify-evenly sm:w-auto w-full flex-grow items-center p-2 sm:p-0">
                     <label class="form-control max-w-xs">
                         <div class="label">
                             <span class="label-text text-slate-700">Image attachment</span>
                         </div>
-                        <input name="final_report_file" accept="image/png, image/jpeg" multiple  type="file"
+                        <input name="final_report_file[]" accept="image/png, image/jpeg" multiple  type="file"
                                class="block  text-sm text-black file:mr-4
                     file:py-2 file:px-4 file:rounded-full file:border-0
                     file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
@@ -249,20 +249,66 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
             </form>
         </div>
     </div>
-    <dialog id="img_modal" class="modal bg-black  bg-opacity-40">
-        <div class="card  w-[100vw] sm:w-[55rem] h-[100vh]
-          flex flex-col text-slate-700 overflow-auto">
-            <div class="card-title sticky">
-                <form method="dialog">
-                    <button class=" btn btn-sm btn-circle absolute right-2 top-2" onclick="closeModalForm('img_modal')">✕</button>
-                </form>
-            </div>
-            <div class="card-body  overflow-auto">
-                <img src="NarrativeReportsPDF/backcover.PNG" class="object-contain">
-            </div>
-        </div>
-    </dialog>
 </dialog>
+<dialog id="img_modal" class="modal bg-black  bg-opacity-40">
+    <div class="card  w-[100vw] sm:w-[55rem] h-[100vh]
+          flex flex-col text-slate-700 overflow-auto">
+        <div class="card-title sticky">
+            <form method="dialog">
+                <button class=" btn btn-sm btn-circle absolute right-2 top-2" onclick="closeModalForm('img_modal')">✕</button>
+            </form>
+        </div>
+        <div class="card-body  overflow-auto max-h-[60rem]">
+            <img src="NarrativeReportsPDF/backcover.PNG" class="object-contain">
+        </div>
+    </div>
+</dialog>
+
+<script>
+    document.getElementById('chatBox').addEventListener('submit', function (e){
+        e.preventDefault();
+        formData = new FormData(e.target);
+
+        $.ajax({
+            url: '../ajax.php?action=giveComment',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (parseInt(response) === 1) {
+                  getComments(formData.get('file_id'));
+                } else if (parseInt(response) === 2){
+
+
+                }else {
+                    console.log(response);
+                }
+                e.target.reset();
+            },
+        });
+    });
+</script>
+
+<script>
+    function getComments(file_id){
+        $.ajax({
+            url: '../ajax.php?action=getCommentst&file_id=' + file_id,
+            method: 'GET',
+            dataType: 'html',
+            success: function(response) {
+                if (response){
+                    $('#comment_body').html(response);
+                    $('#chatBox input[name="file_id"]').val(file_id);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    }
+
+</script>
 <script>
 
     function updateWeeklyReportStat(weeklyReport_id){
@@ -283,6 +329,8 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
             }
         });
     }
+
+
 
 </script>
 <script src="js/Datatables.js"></script>

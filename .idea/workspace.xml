@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Weekltreport Submission">
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment=" weekly report checking update comment nalang kulang">
+      <change afterPath="$PROJECT_DIR$/FlipbookFunctions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encryptionFunction.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_3.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_3.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageWeeklyReport.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +79,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem",
+    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -170,7 +176,9 @@
       <workItem from="1714873256669" duration="21003000" />
       <workItem from="1714967875798" duration="18322000" />
       <workItem from="1714992955049" duration="21000" />
-      <workItem from="1715004048548" duration="8683000" />
+      <workItem from="1715004048548" duration="9321000" />
+      <workItem from="1715056930817" duration="1480000" />
+      <workItem from="1715066355837" duration="14439000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -347,7 +355,21 @@
       <option name="project" value="LOCAL" />
       <updated>1715008640394</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary=" weekly report checking update comment nalang kulang">
+      <created>1715015890649</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1715015890649</updated>
+    </task>
+    <task id="LOCAL-00027" summary=" weekly report checking update comment nalang kulang">
+      <created>1715015902776</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1715015902776</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -379,7 +401,8 @@
     <MESSAGE value="userModule done CRUD notification need to fix login system done" />
     <MESSAGE value="report checking" />
     <MESSAGE value="Weekltreport Submission" />
-    <option name="LAST_COMMIT_MESSAGE" value="Weekltreport Submission" />
+    <MESSAGE value=" weekly report checking update comment nalang kulang" />
+    <option name="LAST_COMMIT_MESSAGE" value=" weekly report checking update comment nalang kulang" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

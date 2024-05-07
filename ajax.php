@@ -5,16 +5,11 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     exit();
 }
 
-
-
-
-
-include_once 'DatabaseConn/databaseConn.php';
-include_once 'functions.php';
 session_start();
 date_default_timezone_set('Asia/Manila');
-
-include 'encryptionFunction.php';
+include_once 'DatabaseConn/databaseConn.php';
+include_once 'FlipbookFunctions.php';
+include 'functions.php';
 
 $action = $_GET['action'];
 extract($_POST);
@@ -1052,6 +1047,101 @@ if ($action == 'getAdvInfoJson') {
     $stmt->close();
 }
 
+if ($action == "getCommentst") {
+    $user_id = $_SESSION['log_user_id'];
+    $file_id = $_GET['file_id'];
+    $sql = "SELECT * FROM tbl_revision WHERE file_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $file_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+   if ($result->num_rows > 0){
+       while ($row = $result->fetch_assoc()) {
+           // Check if the user ID matches the session user ID
+           if ($row['user_id'] == $user_id) {
+               // Render the comment to the right
+               echo '<div class="grid place-items-center">
+                    <div class="flex justify-end items-end w-full ">
+                        <div>
+                            <p class="py-4 px-2  bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-end" id="ref_id">' . $row['comment'] . '</p>
+                       </div>
+                        <div class="avatar">
+                            <div class="w-10 rounded-full">
+                                <img src="assets/prof.jpg" />
+                            </div>
+                        </div>
+                    </div>';
 
+               // Fetch and display any attachments associated with the comment
+               $comment_id = $row['comment_id'];
+               $attachments_sql = "SELECT * FROM revision_attachment WHERE comment_id = ?";
+               $attachments_stmt = $conn->prepare($attachments_sql);
+               $attachments_stmt->bind_param("i", $comment_id);
+               $attachments_stmt->execute();
+               $attachments_result = $attachments_stmt->get_result();
+
+               if ($attachments_result->num_rows > 0) {
+                   echo '<div class="flex flex-wrap gap-1">';
+                   while ($attachment_row = $attachments_result->fetch_assoc()) {
+                       // Display attachment images here
+                       echo '<img src="comments_img/' . $attachment_row['attach_img_file_name'] . '" class="hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" alt="attachment">';
+                   }
+                   echo '</div>';
+               }
+
+               echo '</div>';
+           } else {
+               // Render the comment to the left
+               echo '<div class="grid place-items-center">
+                    <div class="flex justify-start items-end w-full ">
+                       <div class="avatar">
+                            <div class="w-10 rounded-full">
+                                <img src="assets/prof.jpg" />
+                            </div>
+                        </div>
+                        <div>
+                            <p class="py-4 px-2  bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-end" id="ref_id">' . $row['comment'] . '</p>
+                       </div>
+                        
+                    </div>';
+
+               $comment_id = $row['comment_id'];
+               $attachments_sql = "SELECT * FROM revision_attachment WHERE comment_id = ?";
+               $attachments_stmt = $conn->prepare($attachments_sql);
+               $attachments_stmt->bind_param("i", $comment_id);
+               $attachments_stmt->execute();
+               $attachments_result = $attachments_stmt->get_result();
+
+               if ($attachments_result->num_rows > 0) {
+                   echo '<div class="flex flex-wrap gap-1">';
+                   while ($attachment_row = $attachments_result->fetch_assoc()) {
+                       // Display attachment images here
+                       echo '<img src="comments_img/' . $attachment_row['attach_img_file_name'] . '" class="hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" alt="attachment">';
+                   }
+                   echo '</div>';
+               }
+               echo '</div>';
+           }
+           $comment_date_time = $row['comment_date'];
+           $timestamp = strtotime($comment_date_time);
+           $formatted_time = date("g:ia", $timestamp); // Format time as '2:30pm'
+           $formatted_date = date("n/j/Y", $timestamp); // Format date as '4/16/2024'
+           echo '<hr>';
+           echo '<div class="w-full grid place-items-center">
+        <p class="text-[10px] text-slate-400 text-center">' . $formatted_time . '</p>
+        <p class="text-[10px] text-slate-400 text-center">' . $formatted_date . '</p>
+      </div>';
+
+       }
+   }else{
+       echo '<p></p>';
+   }
+
+}
+if ($action == 'giveComment'){
+
+
+
+}
 
 
