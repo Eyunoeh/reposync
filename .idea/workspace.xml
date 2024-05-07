@@ -4,17 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment=" weekly report checking update comment nalang kulang">
-      <change afterPath="$PROJECT_DIR$/FlipbookFunctions.php" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="revision Comments under develop">
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b736d5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b74310.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b74cc6.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b75665.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b7992e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b7a860.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a21006bc09.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a21006c706.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a21008a3ba.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a210093b29.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a21009c2b7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a2100a3416.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a2100a733f.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a295c48a12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a573d91dda.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a573d928c6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a573d93307.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a573d9405f.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5854a92aa.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5854a9fa2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5854aac60.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5854ab628.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5906f07ec.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5906f1225.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5906f1e2e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/js/ViewStudentWeeklyReport.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encryptionFunction.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_3.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_3.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageWeeklyReport.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +99,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
+    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -178,7 +198,8 @@
       <workItem from="1714992955049" duration="21000" />
       <workItem from="1715004048548" duration="9321000" />
       <workItem from="1715056930817" duration="1480000" />
-      <workItem from="1715066355837" duration="14439000" />
+      <workItem from="1715066355837" duration="18349000" />
+      <workItem from="1715098759209" duration="4851000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -369,7 +390,21 @@
       <option name="project" value="LOCAL" />
       <updated>1715015902776</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="revision Comments under develop">
+      <created>1715083549993</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1715083549993</updated>
+    </task>
+    <task id="LOCAL-00029" summary="revision Comments under develop">
+      <created>1715083562511</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1715083562511</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -402,7 +437,8 @@
     <MESSAGE value="report checking" />
     <MESSAGE value="Weekltreport Submission" />
     <MESSAGE value=" weekly report checking update comment nalang kulang" />
-    <option name="LAST_COMMIT_MESSAGE" value=" weekly report checking update comment nalang kulang" />
+    <MESSAGE value="revision Comments under develop" />
+    <option name="LAST_COMMIT_MESSAGE" value="revision Comments under develop" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

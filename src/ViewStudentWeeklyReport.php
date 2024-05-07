@@ -189,7 +189,7 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
     </div>
 </main>
 <dialog id="remarkForm" class="modal bg-black  bg-opacity-40">
-    <div class="card bg-slate-50 w-[60vw] sm:w-[20rem] h-[60vh] lg:h-[20rem]  flex flex-col text-slate-700 overflow-auto">
+    <div class="card bg-slate-50 w-[60vw] sm:w-[20rem] h-[50vh] lg:h-[20rem]  flex flex-col text-slate-700 overflow-auto">
         <div class="card-title sticky">
             <form method="dialog">
                 <button class=" btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('remarkForm')">✕</button>
@@ -226,6 +226,74 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
             <h3 class="font-bold text-lg text-center text-black  top-0  p-5">Report Comments</h3>
         </div>
         <div class="overflow-auto card-body" id="comment_body">
+            <div class="grid place-items-center">
+                <div class="flex justify-end items-end">
+                    <p class="py-4 px-2 border bg-slate-200 rounded-lg min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lor
+                        em ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea
+                        ex facilis magni modi, molestias perferendis placeat quam quasi, qui
+                        ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!</p>
+                    <div class="avatar">
+                        <div class="w-10 rounded-full">
+                            <img src="assets/prof.jpg" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-1 w-full justify-end">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                </div>
+            </div>
+            <hr>
+            <div class="w-full grid place-items-center">
+                <p class="text-[10px] text-slate-400 text-center">2:30pm</p>
+                <p class="text-[10px] text-slate-400 text-center">4/16/2024</p>
+            </div>
+            <div class="grid place-items-center">
+                <div class="flex justify-end items-end">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full">
+                            <img src="assets/prof.jpg" />
+                        </div>
+                    </div>
+                    <p class="py-4 px-2 border bg-slate-200 rounded-lg min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lor
+                        em ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea
+                        ex facilis magni modi, molestias perferendis placeat quam quasi, qui
+                        ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!</p>
+
+                </div>
+            </div>
+            <hr>
+            <div class="w-full grid place-items-center">
+                <p class="text-[10px] text-slate-400 text-center">2:30pm</p>
+                <p class="text-[10px] text-slate-400 text-center">4/16/2024</p>
+            </div>
+            <div class="grid place-items-center">
+                <div class="flex justify-end items-end">
+                    <p class="py-4 px-2 border bg-slate-200 rounded-lg min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lor
+                        em ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea
+                        ex facilis magni modi, molestias perferendis placeat quam quasi, qui
+                        ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!</p>
+                    <div class="avatar">
+                        <div class="w-10 rounded-full">
+                            <img src="assets/prof.jpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-1">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                </div>
+            </div>
+            <hr>
+            <div class="w-full grid place-items-center">
+                <p class="text-[10px] text-slate-400 text-center">2:30pm</p>
+                <p class="text-[10px] text-slate-400 text-center">4/16/2024</p>
+            </div>
 
 
 
@@ -258,81 +326,14 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
                 <button class=" btn btn-sm btn-circle absolute right-2 top-2" onclick="closeModalForm('img_modal')">✕</button>
             </form>
         </div>
-        <div class="card-body  overflow-auto max-h-[60rem]">
-            <img src="NarrativeReportsPDF/backcover.PNG" class="object-contain">
+        <div class="card-body flex justify-center items-center max-h-[100vh] overflow-auto">
+            <img id="viewImage" src="" class="h-full sm:h-[75vh] object-scale-down">
         </div>
     </div>
 </dialog>
 
-<script>
-    document.getElementById('chatBox').addEventListener('submit', function (e){
-        e.preventDefault();
-        formData = new FormData(e.target);
 
-        $.ajax({
-            url: '../ajax.php?action=giveComment',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if (parseInt(response) === 1) {
-                  getComments(formData.get('file_id'));
-                } else if (parseInt(response) === 2){
-
-
-                }else {
-                    console.log(response);
-                }
-                e.target.reset();
-            },
-        });
-    });
-</script>
-
-<script>
-    function getComments(file_id){
-        $.ajax({
-            url: '../ajax.php?action=getCommentst&file_id=' + file_id,
-            method: 'GET',
-            dataType: 'html',
-            success: function(response) {
-                if (response){
-                    $('#comment_body').html(response);
-                    $('#chatBox input[name="file_id"]').val(file_id);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching data:', error);
-            }
-        });
-    }
-
-</script>
-<script>
-
-    function updateWeeklyReportStat(weeklyReport_id){
-        $.ajax({
-            url: '../ajax.php?action=updateWeeklyreportStat&file_id=' + weeklyReport_id,
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                if (data){
-                    $('#week').text(data.weeklyFileReport);
-                    $('#WeeklyReportForm select[name="report_Stat"]').val(data.upload_status);
-                    $('#WeeklyReportForm input[name="file_id"]').val(data.file_id);
-
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching data:', error);
-            }
-        });
-    }
-
-
-
-</script>
+<script src='js/ViewStudentWeeklyReport.js'></script>
 <script src="js/Datatables.js"></script>
 <script src="js/buttons_modal.js"></script>
 </body>

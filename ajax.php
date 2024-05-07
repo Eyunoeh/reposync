@@ -1061,16 +1061,16 @@ if ($action == "getCommentst") {
            if ($row['user_id'] == $user_id) {
                // Render the comment to the right
                echo '<div class="grid place-items-center">
-                    <div class="flex justify-end items-end w-full ">
-                        <div>
-                            <p class="py-4 px-2  bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-end" id="ref_id">' . $row['comment'] . '</p>
-                       </div>
-                        <div class="avatar">
-                            <div class="w-10 rounded-full">
-                                <img src="assets/prof.jpg" />
+                        <div class="flex justify-end items-end w-full mb-2">
+                            <div>
+                                <p class="py-4 px-2 bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-end ' . (isset($row['comment']) && $row['comment'] !== '' ? '' : 'hidden') . '" id="ref_id">' . $row['comment'] . '</p>
                             </div>
-                        </div>
-                    </div>';
+                            <div class="avatar">
+                                <div class="w-10 rounded-full">
+                                    <img src="assets/prof.jpg" />
+                                </div>
+                            </div>
+                        </div>';
 
                // Fetch and display any attachments associated with the comment
                $comment_id = $row['comment_id'];
@@ -1081,10 +1081,10 @@ if ($action == "getCommentst") {
                $attachments_result = $attachments_stmt->get_result();
 
                if ($attachments_result->num_rows > 0) {
-                   echo '<div class="flex flex-wrap gap-1">';
+                   echo '<div class="flex flex-wrap gap-1 w-full justify-end mb-2">';
                    while ($attachment_row = $attachments_result->fetch_assoc()) {
                        // Display attachment images here
-                       echo '<img src="comments_img/' . $attachment_row['attach_img_file_name'] . '" class="hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" alt="attachment">';
+                       echo '<img src="comments_img/' . $attachment_row['attach_img_file_name'] . ' " onclick="openModalForm(\'img_modal\');viewImage(\''.$attachment_row['attach_img_file_name'].'\')" class="hover:cursor-pointer h-[5rem] min-h-[3rem] max-h-[5rem] object-contain" alt="attachment">';
                    }
                    echo '</div>';
                }
@@ -1093,7 +1093,7 @@ if ($action == "getCommentst") {
            } else {
                // Render the comment to the left
                echo '<div class="grid place-items-center">
-                    <div class="flex justify-start items-end w-full ">
+                    <div class="flex justify-start items-end w-full mb-2">
                        <div class="avatar">
                             <div class="w-10 rounded-full">
                                 <img src="assets/prof.jpg" />
@@ -1113,10 +1113,9 @@ if ($action == "getCommentst") {
                $attachments_result = $attachments_stmt->get_result();
 
                if ($attachments_result->num_rows > 0) {
-                   echo '<div class="flex flex-wrap gap-1">';
+                   echo '<div class="flex flex-wrap gap-1  w-full justify-end mb-2">';
                    while ($attachment_row = $attachments_result->fetch_assoc()) {
-                       // Display attachment images here
-                       echo '<img src="comments_img/' . $attachment_row['attach_img_file_name'] . '" class="hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" alt="attachment">';
+                       echo '<img  src="' . $attachment_row['attach_img_file_name'] . '" onclick="openModalForm(\'img_modal\');viewImage(\''.$attachment_row['attach_img_file_name'].'\')" class="hover:cursor-pointer min-h-[3rem] max-h-[5rem] h-[5rem] object-contain" alt="attachment">';
                    }
                    echo '</div>';
                }
@@ -1138,10 +1137,46 @@ if ($action == "getCommentst") {
    }
 
 }
-if ($action == 'giveComment'){
+if ($action == 'giveComment') {
+
+    $revision_comment = $_POST['revision_comment'];
+    $file_id = $_POST['file_id'];
+    $user_id = $_SESSION['log_user_id'];
+    $comment_date = date('Y-m-d H:i:s');
+    $insert_revision_sql = "INSERT INTO tbl_revision (file_id,user_id ,comment, comment_date) VALUES (?, ?, ?, ?)";
+    $stmt = $conn->prepare($insert_revision_sql);
+    $stmt->bind_param("iiss", $file_id,$user_id , $revision_comment, $comment_date);
+    $stmt->execute();
+    $stmt->close();
+    $comment_id = $conn->insert_id;
+
+    if (!empty($_FILES['final_report_file']['name'][0])) {
 
 
 
+        foreach ($_FILES['final_report_file']['tmp_name'] as $key => $tmp_name) {
+            $temp_file = $_FILES['final_report_file']['tmp_name'][$key];
+            $file_type = $_FILES['final_report_file']['type'][$key];
+
+            $file_name = uniqid() . '.' . pathinfo($_FILES['final_report_file']['name'][$key], PATHINFO_EXTENSION);
+
+            $destination_directory = 'src/comments_img/';
+            $destination_file = $destination_directory . $file_name;
+            if (move_uploaded_file($temp_file, $destination_file)) {
+                $insert_attachment_sql = "INSERT INTO revision_attachment (comment_id, attach_img_file_name) VALUES (?, ?)";
+                $stmt = $conn->prepare($insert_attachment_sql);
+                $stmt->bind_param("is", $comment_id, $file_name);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                echo "Error moving file to destination directory.";
+            }
+        }
+
+        echo 1; // Success response
+    } else {
+        echo 2; // No file uploaded
+    }
 }
 
 
