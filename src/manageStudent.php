@@ -312,7 +312,7 @@ include '../DatabaseConn/databaseConn.php';
 
                         <div class="text-start  cursor-pointer" >
                             <div class="tooltip tooltip-right tooltip-error"
-                                 data-tip="Both input fields are required to change the account information."><p class=" font-bold">Note <i class="fa-solid fa-circle-exclamation text-error"></i></p>
+                                 data-tip="Both input fields are required to change the account information."><p class=" font-bold">Account Information <i class="fa-solid fa-circle-exclamation text-error"></i></p>
                             </div>
                         </div>
 

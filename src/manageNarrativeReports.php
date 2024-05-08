@@ -102,7 +102,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                 <div class="label">
                                     <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
                                 </div>
-                                <input type="number" min="0" oninput="this.value = this.value.slice(0, 8)" required name="school_id" placeholder="XXXXXXXX" maxlength="8" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="number" min="0" oninput="this.value = this.value.slice(0, 9)" required name="school_id" placeholder="XXXXXXXX" maxlength="8" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -201,7 +201,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                 <div class="label">
                                     <span class="label-text text-slate-700">School ID <span class="text-warning"> (Must be unique)</span></span>
                                 </div>
-                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" maxlength="8" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">

@@ -4,25 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="revision Comments adviser Done">
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a674d6b246.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a674d6c209.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a674d6cc7b.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a674d6ed9d.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a674d6fbb5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663b0f7f126cd.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663b0f7f13898.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663b0f7f142e9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663b0f7f36126.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663b0f7f46beb.png" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Report Checking module done">
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/Johny_Cooks_BSCS_4B_210103548.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page-9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Johny_Cooks_BSCS_4B_210103548/Johny_Cooks_BSCS_4B_210103548_page.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/ViewStudentWeeklyReport.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/ViewStudentWeeklyReport.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageNarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageNarrativeReports.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +197,7 @@
       <workItem from="1715066355837" duration="18349000" />
       <workItem from="1715098759209" duration="5105000" />
       <workItem from="1715104299655" duration="26000" />
-      <workItem from="1715144193444" duration="3908000" />
+      <workItem from="1715144193444" duration="6350000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -401,7 +409,21 @@
       <option name="project" value="LOCAL" />
       <updated>1715103653104</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Report Checking module done">
+      <created>1715148132136</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1715148132136</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Report Checking module done">
+      <created>1715148460765</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1715148460765</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -436,7 +458,8 @@
     <MESSAGE value=" weekly report checking update comment nalang kulang" />
     <MESSAGE value="revision Comments under develop" />
     <MESSAGE value="revision Comments adviser Done" />
-    <option name="LAST_COMMIT_MESSAGE" value="revision Comments adviser Done" />
+    <MESSAGE value="Report Checking module done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Report Checking module done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
