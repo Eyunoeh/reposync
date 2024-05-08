@@ -12,3 +12,19 @@ function decrypt_data($data, $key) {
     return openssl_decrypt($encrypted_data, $cipher, $key, OPENSSL_RAW_DATA, $iv);
 }
 $secret_key = 'TheSecretKey#02'; //id encryption password
+function countFileComments($file_id){
+    include "DatabaseConn/databaseConn.php";
+
+    $sql = "SELECT COUNT(*) AS comment_count FROM tbl_revision WHERE file_id = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $file_id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_assoc();
+    $comment_count = $row['comment_count'];
+
+    return $comment_count;
+}

@@ -11,6 +11,22 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
 }
 include '../DatabaseConn/databaseConn.php';
 $user_id = $_SESSION['log_user_id'];
+function countFileComments($file_id){
+    include "../DatabaseConn/databaseConn.php";
+
+    $sql = "SELECT COUNT(*) AS comment_count FROM tbl_revision WHERE file_id = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $file_id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_assoc();
+    $comment_count = $row['comment_count'];
+
+    return $comment_count;
+}
 ?>
 <div class="grid place-items-center  text-gray-700 h-[95%]">
     <div class="w-full max-w-full ">
@@ -34,7 +50,7 @@ $user_id = $_SESSION['log_user_id'];
                 <div class="px-9 flex justify-end w-full">
                 </div>
                 <div class="block py-8 pt-6 px-9">
-                    <div id="table_card" class="overflow-auto h-80 scroll-smooth">
+                    <div id="table_card" class="overflow-auto h-[70vh] scroll-smooth">
                         <table class="w-full my-0  border-neutral-200 " id="weeklyReportTable" >
                             <thead class="align-bottom  z-20">
                                 <tr class="font-semibold text-[0.95rem] sticky top-0  z-20 text-secondary-dark bg-slate-200 rounded">
@@ -107,47 +123,91 @@ $user_id = $_SESSION['log_user_id'];
             </form>
             <h3 class="font-bold text-lg text-center text-black  top-0  p-5">Report Comments</h3>
         </div>
-        <div class="overflow-auto card-body">
+        <div class="overflow-auto card-body" id="comment_body">
             <div class="grid place-items-center">
-
-                <p class="py-4 px-2 border bg-slate-200 rounded-lg min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea ex facilis magni modi, molestias perferendis placeat quam quasi, qui ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!</p>
-                <div class="flex flex-wrap gap-1">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                <div class="flex justify-end items-end">
+                    <p class="py-4 px-2 border bg-slate-200 rounded-lg min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lor
+                        em ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea
+                        ex facilis magni modi, molestias perferendis placeat quam quasi, qui
+                        ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!</p>
+                    <div class="avatar">
+                        <div class="w-10 rounded-full">
+                            <img src="assets/prof.jpg" />
+                        </div>
+                    </div>
                 </div>
 
-            </div>
-            <hr>
-            <div class="w-full grid place-items-center">
-                <p class="text-sm text-black text-center">2:30pm</p>
-                <p class="text-sm text-black text-center">4/16/2024</p>
-            </div>
-            <div class="grid place-items-center">
-                <p class="py-4 px-2 border rounded-lg bg-slate-200 min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea ex facilis magni modi, molestias perferendis placeat quam quasi, qui ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!</p>
-                <div class="flex flex-wrap gap-1">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[8rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                <div class="flex flex-wrap gap-1 w-full justify-end">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
                 </div>
             </div>
             <hr>
             <div class="w-full grid place-items-center">
-                <p class="text-sm text-black text-center">4:30pm</p>
-                <p class="text-sm text-black text-center">4/16/2024</p>
+                <p class="text-[10px] text-slate-400 text-center">2:30pm</p>
+                <p class="text-[10px] text-slate-400 text-center">4/16/2024</p>
+            </div>
+            <div class="grid place-items-center">
+                <div class="flex justify-start items-start">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full">
+                            <img src="assets/prof.jpg" />
+                        </div>
+                    </div>
+                    <p class="py-4 px-2 border bg-slate-200 rounded-lg min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lor
+                        em ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea
+                        ex facilis magni modi, molestias perferendis placeat quam quasi, qui
+                        ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!aaaa</p>
+                </div>
+                <div class="flex flex-wrap gap-1 w-full justify-start mb-2">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                </div>
+            </div>
+            <hr>
+            <div class="w-full grid place-items-center">
+                <p class="text-[10px] text-slate-400 text-center">2:30pm</p>
+                <p class="text-[10px] text-slate-400 text-center">4/16/2024</p>
+            </div>
+            <div class="grid place-items-center">
+                <div class="flex justify-end items-end">
+                    <p class="py-4 px-2 border bg-slate-200 rounded-lg min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lor
+                        em ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea
+                        ex facilis magni modi, molestias perferendis placeat quam quasi, qui
+                        ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!</p>
+                    <div class="avatar">
+                        <div class="w-10 rounded-full">
+                            <img src="assets/prof.jpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-1">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                </div>
+            </div>
+            <hr>
+            <div class="w-full grid place-items-center">
+                <p class="text-[10px] text-slate-400 text-center">2:30pm</p>
+                <p class="text-[10px] text-slate-400 text-center">4/16/2024</p>
             </div>
         </div>
         <div class="m-3 shadow-2xl rounded bg-gray-300 bg-opacity-70 ">
-            <form class="flex sm:flex-row flex-col justify-evenly items-center p-2 flex-wrap sm:gap-2 gap-0">
+            <form enctype="multipart/form-data" id="chatBox" class="flex sm:flex-row flex-col justify-evenly items-center p-2 flex-wrap sm:gap-2 gap-0">
                 <textarea name="revision_comment" class=" sm:w-auto w-full flex-grow textarea  max-h-24 textarea-bordered  bg-slate-100" placeholder="Type here"></textarea>
+                <input type="hidden" name="file_id" value="">
                 <div class=" flex  justify-center sm:justify-evenly sm:w-auto w-full flex-grow items-center p-2 sm:p-0">
                     <label class="form-control max-w-xs">
                         <div class="label">
                             <span class="label-text text-slate-700">Image attachment</span>
                         </div>
-                        <input name="final_report_file" accept="image/png, image/jpeg" multiple  type="file"
+                        <input name="final_report_file[]" accept="image/png, image/jpeg" multiple  type="file"
                                class="block  text-sm text-black file:mr-4
                     file:py-2 file:px-4 file:rounded-full file:border-0
                     file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
@@ -166,9 +226,8 @@ $user_id = $_SESSION['log_user_id'];
                 <button class=" btn btn-sm btn-circle absolute right-2 top-2" onclick="closeModalForm('img_modal')">✕</button>
             </form>
         </div>
-        <div class="card-body flex justify-center items-center overflow-auto">
-            <img src="comments_img/Capture.PNG" class="object-contain">
-
+        <div class="card-body flex justify-center items-center max-h-[100vh] overflow-auto">
+            <img id="viewImage" src="" class="h-full sm:h-[75vh] object-scale-down">
         </div>
     </div>
 </dialog>

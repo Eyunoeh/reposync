@@ -1,6 +1,5 @@
-var commentBody = document.getElementById('comment_body');
+let commentBody = document.getElementById('comment_body');
 
-// Function to scroll to the bottom of the div
 function scrollToBottom() {
     commentBody.scrollTop = commentBody.scrollHeight;
 }

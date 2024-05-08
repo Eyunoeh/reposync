@@ -4326,8 +4326,8 @@ details.collapse summary::-webkit-details-marker {
   height: 32rem;
 }
 
-.h-\[60vh\] {
-  height: 60vh;
+.h-\[50vh\] {
+  height: 50vh;
 }
 
 .h-\[70vh\] {
@@ -4354,16 +4354,12 @@ details.collapse summary::-webkit-details-marker {
   height: 100vh;
 }
 
-.h-\[40vh\] {
-  height: 40vh;
-}
-
-.h-\[50vh\] {
-  height: 50vh;
-}
-
 .max-h-24 {
   max-height: 6rem;
+}
+
+.max-h-\[100vh\] {
+  max-height: 100vh;
 }
 
 .max-h-\[20rem\] {
@@ -4384,18 +4380,6 @@ details.collapse summary::-webkit-details-marker {
 
 .max-h-\[5rem\] {
   max-height: 5rem;
-}
-
-.max-h-\[60rem\] {
-  max-height: 60rem;
-}
-
-.max-h-\[8rem\] {
-  max-height: 8rem;
-}
-
-.max-h-\[100vh\] {
-  max-height: 100vh;
 }
 
 .min-h-\[3rem\] {
@@ -4593,6 +4577,10 @@ details.collapse summary::-webkit-details-marker {
 
 .place-items-center {
   place-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
 }
 
 .items-end {

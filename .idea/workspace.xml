@@ -4,37 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="revision Comments under develop">
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b736d5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b74310.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b74cc6.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b75665.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b7992e.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a202b7a860.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a21006bc09.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a21006c706.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a21008a3ba.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a210093b29.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a21009c2b7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a2100a3416.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a2100a733f.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a295c48a12.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a573d91dda.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a573d928c6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a573d93307.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a573d9405f.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5854a92aa.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5854a9fa2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5854aac60.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5854ab628.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5906f07ec.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5906f1225.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/663a5906f1e2e.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/js/ViewStudentWeeklyReport.js" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="revision Comments adviser Done">
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a674d6b246.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a674d6c209.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a674d6cc7b.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a674d6ed9d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663a674d6fbb5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663b0f7f126cd.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663b0f7f13898.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663b0f7f142e9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663b0f7f36126.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/663b0f7f46beb.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/ViewStudentWeeklyReport.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/ViewStudentWeeklyReport.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +187,9 @@
       <workItem from="1715004048548" duration="9321000" />
       <workItem from="1715056930817" duration="1480000" />
       <workItem from="1715066355837" duration="18349000" />
-      <workItem from="1715098759209" duration="4851000" />
+      <workItem from="1715098759209" duration="5105000" />
+      <workItem from="1715104299655" duration="26000" />
+      <workItem from="1715144193444" duration="3908000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -404,7 +394,14 @@
       <option name="project" value="LOCAL" />
       <updated>1715083562511</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="revision Comments adviser Done">
+      <created>1715103653103</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1715103653104</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -438,7 +435,8 @@
     <MESSAGE value="Weekltreport Submission" />
     <MESSAGE value=" weekly report checking update comment nalang kulang" />
     <MESSAGE value="revision Comments under develop" />
-    <option name="LAST_COMMIT_MESSAGE" value="revision Comments under develop" />
+    <MESSAGE value="revision Comments adviser Done" />
+    <option name="LAST_COMMIT_MESSAGE" value="revision Comments adviser Done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -447,6 +445,12 @@
           <url>file://$PROJECT_DIR$/tailwind.config.js</url>
           <line>6</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/main.js</url>
+          <line>154</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

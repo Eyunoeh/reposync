@@ -15,6 +15,33 @@ function navigate(page) {
             get_WeeklyReports();
             getUploadLogs();
 
+            let chatBoxElement = document.getElementById('chatBox');
+
+            if (document.getElementById('chatBox')) {
+                chatBoxElement.addEventListener('submit', function (e){
+                    e.preventDefault();
+
+                    let formData = new FormData(e.target);
+
+                    $.ajax({
+                        url: '../ajax.php?action=giveComment',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (parseInt(response) === 1 || parseInt(response) === 2) {
+                                getComments(formData.get('file_id'));
+                                scrollToBottom();
+                            } else {
+                                console.log(response);
+                            }
+                            e.target.reset();
+                        },
+                    });
+                });
+            }
+
         })
         .catch(error => console.error('Error fetching content:', error));
 }
@@ -164,4 +191,29 @@ function getUploadLogs(){
             console.error('Error fetching data:', error);
         }
     });
+}
+function getComments(file_id){
+    $.ajax({
+        url: '../ajax.php?action=getCommentst&file_id=' + file_id,
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            if (response){
+                $('#comment_body').html(response);
+                $('#chatBox input[name="file_id"]').val(file_id);
+                scrollToBottom();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+function viewImage(srcPath){
+    let path = 'comments_img/'+ srcPath;
+    $('#viewImage').attr('src', path);
+}
+function scrollToBottom() {
+    let commentBody = document.getElementById('comment_body');
+    commentBody.scrollTop = commentBody.scrollHeight;
 }

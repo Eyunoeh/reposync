@@ -24,7 +24,7 @@ if ($action == 'login') {
     $log_password = $_POST['log_password'] ?? '';
     if ($log_email !== '' && $log_password !== '') {
 
-        $fetch_acc = "SELECT user_id, password FROM tbl_accounts WHERE email = ?";
+        $fetch_acc = "SELECT user_id, password FROM tbl_accounts WHERE email = ? and status = 'active'";
         $stmt = $conn->prepare($fetch_acc);
         $stmt->bind_param("s", $log_email);
         $stmt->execute();
@@ -150,7 +150,14 @@ if ($action == 'getWeeklyReports'){
     $result = $stmt->get_result();
 
     while ($row = $result->fetch_assoc()) {
+        $filename = $row['weeklyFileReport'];
+
+        preg_match('/week_([0-9]+)\.pdf/', $filename, $matches);
+        $week_number = isset($matches[1]) ? (int)$matches[1] : '';
+
+        $formatted_week = ($week_number !== '') ? "Week " . $week_number : '';
         $status = $row['upload_status'];
+
         switch ($status) {
             case 'pending':
                 $formattedStatus = 'Pending';
@@ -172,15 +179,15 @@ if ($action == 'getWeeklyReports'){
         echo ' <tr class="border-b border-dashed last:border-b-0">
 
                                 <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">' . $week++ . '</span>
+                                    <span class="font-semibold text-light-inverse text-md/normal">' . $formatted_week . '</span>
                                 </td>
 
                                 <td class="p-3 pr-0 ">
                                     <span class="'.$status_color.' font-semibold text-light-inverse text-md/normal">' . $formattedStatus . '</span>
                                 </td>
                                 <td class="p-3 pr-0 " >
-                                    <div class="indicator hover:cursor-pointer" onclick="openModalForm(\'comments\')">
-                                        <span class="indicator-item badge badge-neutral"  data-journal-comment-id="3" id="journal_comment_2">5</span>
+                                    <div class="indicator hover:cursor-pointer" data-report-comment-id="'.$row['file_id'].'" onclick="openModalForm(\'comments\');getComments(this.getAttribute(\'data-report-comment-id\'))">
+                                        <span class="indicator-item badge badge-neutral"  data-journal-comment-id="3" id="journal_comment_2">'.countFileComments($row['file_id']).'</span>
                                         <a class="font-semibold text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
                                     </div>
                                 </td>
@@ -1093,14 +1100,14 @@ if ($action == "getCommentst") {
            } else {
                // Render the comment to the left
                echo '<div class="grid place-items-center">
-                    <div class="flex justify-start items-end w-full mb-2">
+                    <div class="flex justify-start items-start w-full mb-2">
                        <div class="avatar">
                             <div class="w-10 rounded-full">
                                 <img src="assets/prof.jpg" />
                             </div>
                         </div>
                         <div>
-                            <p class="py-4 px-2  bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-end" id="ref_id">' . $row['comment'] . '</p>
+                                <p class="py-4 px-2 bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-end ' . (isset($row['comment']) && $row['comment'] !== '' ? '' : 'hidden') . '" id="ref_id">' . $row['comment'] . '</p>
                        </div>
                         
                     </div>';
@@ -1113,9 +1120,9 @@ if ($action == "getCommentst") {
                $attachments_result = $attachments_stmt->get_result();
 
                if ($attachments_result->num_rows > 0) {
-                   echo '<div class="flex flex-wrap gap-1  w-full justify-end mb-2">';
+                   echo '<div class="flex flex-wrap gap-1  w-full justify-start mb-2">';
                    while ($attachment_row = $attachments_result->fetch_assoc()) {
-                       echo '<img  src="' . $attachment_row['attach_img_file_name'] . '" onclick="openModalForm(\'img_modal\');viewImage(\''.$attachment_row['attach_img_file_name'].'\')" class="hover:cursor-pointer min-h-[3rem] max-h-[5rem] h-[5rem] object-contain" alt="attachment">';
+                       echo '<img  src="comments_img/' . $attachment_row['attach_img_file_name'] . '" onclick="openModalForm(\'img_modal\');viewImage(\''.$attachment_row['attach_img_file_name'].'\')" class="hover:cursor-pointer min-h-[3rem] max-h-[5rem] h-[5rem] object-contain" alt="attachment">';
                    }
                    echo '</div>';
                }

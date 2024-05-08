@@ -181,7 +181,7 @@ include '../DatabaseConn/databaseConn.php';
                             <input type="hidden" name="user_type" value="student">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">Password <span class="text-info"> (Predefined)</span>
+                                    <span class="label-text text-slate-700">Password <span class="text-info"> (Predefined "CVSUOJT{Student ID}") </span>
                                 </div>
                                 <input name="user_Pass"   type="password" placeholder="Predefined password" data-theme="light"
                                        disabled class="disabled disabled:text-black input w-full max-w-xs" />
