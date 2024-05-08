@@ -18,6 +18,22 @@ if ($action== 'signUp'){
     echo 1;
 }
 */
+function countFileComments($file_id){
+    include "DatabaseConn/databaseConn.php";
+
+    $sql = "SELECT COUNT(*) AS comment_count FROM tbl_revision WHERE file_id = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $file_id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_assoc();
+    $comment_count = $row['comment_count'];
+
+    return $comment_count;
+}
 if ($action == 'login') {
 
     $log_email = isset($_POST['log_email']) ? sanitizeInput($_POST['log_email']) : '';
