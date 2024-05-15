@@ -19,7 +19,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
     <title>Document</title>
 </head>
-<body  class="min-h-screen bg-slate-200 ">
+<body  class="min-h-screen bg-white ">
 
 <main class="flex h-[100vh] ">
     <div class="sidebar hidden sm:inline-block scroll-smooth  p-2 w-[300px] min-w-[300px] overflow-y-auto  text-center bg-green-700" >
@@ -62,7 +62,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
         <div id="AnnouncementSubmenu" class="ani text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" >
             <h1 onclick="dashboard_tab(this.id)" id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 <i class="fa-regular fa-note-sticky"></i>
-                 Adviser Notes
+                 Notes
             </h1>
             <?php
             if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
@@ -119,14 +119,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 <script src="js/dashboard.js"></script>
 
 <script src="js/admin_adviserAjaxRequest.js"></script>
-<?php
-if ($_SESSION['log_user_type'] == 'admin'):
-?>
-<script src="js/adminAjax_request.js"></script>
-<?php elseif ($_SESSION['log_user_type'] == 'adviser'):?>
-<script src="js/adviser_ajax_request.js"></script>
 
-<?php endif;?>
 <script src="js/buttons_modal.js"></script>
 <script src="js/Datatables.js"></script>
 </body>

@@ -3,7 +3,6 @@ function handleRouting() {
     const routes = {
         '/ReposyncNarrativeManagementSystem/src/dashboard.php':'dashboardContent.php',
     };
-
     if (routes[path]) {
         navigate(routes[path]);
         act_tab('dashboard');
@@ -14,7 +13,7 @@ function handleRouting() {
 function navigate(page) {
     fetch(page, {
         headers: {
-            'X-Requested-With': 'XMLHttpRequest' // Add a custom header
+            'X-Requested-With': 'XMLHttpRequest'
         }
     })
         .then(response => response.text())
@@ -23,6 +22,37 @@ function navigate(page) {
             dashboard_student_NarrativeReports();
             get_studenUsertList();
             get_AdvUsertList();
+            get_dashBoardnotes();
+            if (document.getElementById('act_n_schedForm')){
+                const startDateInput = document.querySelector('input[name="startDate"]');
+                const endDateInput = document.querySelector('input[name="endDate"]');
+                const sameDayActDateInput = document.querySelector('input[name="sameDayActDate"]');
+                startDateInput.addEventListener('input', () => {
+                    if (startDateInput.value !== '') {
+                        sameDayActDateInput.value = '';
+                    }
+                });
+                endDateInput.addEventListener('input', () => {
+                    if (endDateInput.value !== '') {
+                        sameDayActDateInput.value = '';
+                    }
+                });
+                sameDayActDateInput.addEventListener('input', () => {
+                    if (sameDayActDateInput.value !== '') {
+                        startDateInput.value = '';
+                        endDateInput.value = '';
+                    }
+                });
+            }
+            if (document.getElementById('NewNote')){
+                document.getElementById('NewNote').addEventListener('click', function (){
+
+                    document.getElementById('action_type').value = ''
+                    document.getElementById('announcementID').value = '';
+                    document.getElementById('NotesForm').reset();
+                });
+            }
+
         })
         .catch(error => console.error('Error fetching content:', error));
 }
@@ -102,6 +132,22 @@ function get_AdvUsertList (){
         }
     });
 }
+function get_dashBoardnotes (){
+    $.ajax({
+        url: '../ajax.php?action=getDashboardNotes',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+
+            $('#AdviserNotes').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+
 function editNarrative(narrative_id){
     $.ajax({
         url: '../ajax.php?action=narrativeReportsJson&narrative_id=' + narrative_id,
@@ -212,5 +258,29 @@ function editAdvInfo(user_id){
         }
     });
 }
+function getNotes(note_id){
+    $.ajax({
+        url: '../ajax.php?action=announcementJson&data_id=' + encodeURIComponent(note_id),
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data){
+                $('#NotesForm input[name="noteTitle"]').val(data.title);
+                $('#NotesForm textarea[name="message"]').val(data.description);
+                $('#NotesForm input[name="announcementID"]').val(data.announcement_id);
+                $('#NotesForm input[name="actionType"]').val('edit');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+
+
+
+
+
 
 

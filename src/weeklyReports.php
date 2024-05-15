@@ -31,7 +31,7 @@ function countFileComments($file_id){
 <div class="grid place-items-center  text-gray-700 h-[95%]">
     <div class="w-full max-w-full ">
         <div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
-            <div class="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
+            <div class="relative flex flex-col min-w-0 break-words  border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
                 <!-- card header -->
                 <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
                     <form class="flex w-[40%] justify-between hidden sm:inline-flex">

@@ -71,7 +71,6 @@ include '../functions.php';
             $conn->close();
             ?>
             <div style="background-image:url()"></div>
-            <div style="background-image:url(NarrativeReportsPDF/backcover.PNG)"></div>
 
         </div>
     </div>

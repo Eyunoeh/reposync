@@ -26,11 +26,7 @@
                 <?php if (!isset($_SESSION['log_user_type'])):?>
 
                  <div class="dropdown dropdown-bottom dropdown-end flex  items-center gap-2">
-                     <div tabindex="0" role="button" class="text-lg/normal btn btn-success">Login<i class="fa-solid fa-caret-down"></i></div>
-                     <ul tabindex="0" class="absolute bg-slate-100 text-black right-0 dropdown-content z-[1] menu p-2 shadow  rounded w-52">
-                         <li><a href="login.php"><i class="fa-solid fa-school"></i>Student or Adviser</a></li>
-                         <li><a href="adminLogin.php"><i class="fa-solid fa-user-tie"></i>Admin</a></li>
-                     </ul>
+                     <a href=" login.php" tabindex="0" role="button" class="text-lg/normal btn btn-success">Login</a>
                  </div>
                 <?php
                 endif;?>

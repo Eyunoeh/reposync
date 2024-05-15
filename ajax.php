@@ -418,6 +418,7 @@ if ($action == 'get_narrativeReports') {
                             <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>
                         </td>
                       </tr>';
+
                 }
                 else if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'adviser' and isset($_GET['dashboardTable']) && $_GET['dashboardTable'] == 'request') {
                     echo '<tr class="border-b border-dashed last:border-b-0 p-3">
@@ -1080,9 +1081,7 @@ if ($action == "getCommentst") {
     $result = $stmt->get_result();
    if ($result->num_rows > 0){
        while ($row = $result->fetch_assoc()) {
-           // Check if the user ID matches the session user ID
            if ($row['user_id'] == $user_id) {
-               // Render the comment to the right
                echo '<div class="grid place-items-center">
                         <div class="flex justify-end items-end w-full mb-2">
                             <div>
@@ -1095,7 +1094,6 @@ if ($action == "getCommentst") {
                             </div>
                         </div>';
 
-               // Fetch and display any attachments associated with the comment
                $comment_id = $row['comment_id'];
                $attachments_sql = "SELECT * FROM revision_attachment WHERE comment_id = ?";
                $attachments_stmt = $conn->prepare($attachments_sql);
@@ -1123,7 +1121,7 @@ if ($action == "getCommentst") {
                             </div>
                         </div>
                         <div>
-                                <p class="py-4 px-2 bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-end ' . (isset($row['comment']) && $row['comment'] !== '' ? '' : 'hidden') . '" id="ref_id">' . $row['comment'] . '</p>
+                                <p class="py-4 px-2 bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-start ' . (isset($row['comment']) && $row['comment'] !== '' ? '' : 'hidden') . '" id="ref_id">' . $row['comment'] . '</p>
                        </div>
                         
                     </div>';
@@ -1176,13 +1174,10 @@ if ($action == 'giveComment') {
     if (!empty($_FILES['final_report_file']['name'][0])) {
 
 
-
         foreach ($_FILES['final_report_file']['tmp_name'] as $key => $tmp_name) {
             $temp_file = $_FILES['final_report_file']['tmp_name'][$key];
             $file_type = $_FILES['final_report_file']['type'][$key];
-
             $file_name = uniqid() . '.' . pathinfo($_FILES['final_report_file']['name'][$key], PATHINFO_EXTENSION);
-
             $destination_directory = 'src/comments_img/';
             $destination_file = $destination_directory . $file_name;
             if (move_uploaded_file($temp_file, $destination_file)) {
@@ -1202,4 +1197,67 @@ if ($action == 'giveComment') {
     }
 }
 
+
+if ($action === 'Notes') {
+    $user_id = $_SESSION['log_user_id'];
+    $note_title = isset($_POST['noteTitle']) ? sanitizeInput($_POST['noteTitle']) : '';
+    $actionType = isset($_POST['actionType']) ? sanitizeInput($_POST['actionType']) : '';
+    $message = isset($_POST['message']) ? sanitizeInput($_POST['message']) : '';
+    $announcement_id = isset($_POST['announcementID']) ? sanitizeInput($_POST['announcementID']) : '';;
+    if ($note_title !== ''  && $message !== '') {
+        if ($actionType == 'edit'){
+            $sql = "UPDATE announcement SET 
+                        title = ?, description = ?, 
+                        announcementPosted = NOW() 
+                    where announcement_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssi', $note_title, $message, $announcement_id);
+            $stmt->execute();
+            echo 1;
+        }else {
+            $sql = "INSERT INTO announcement  (user_id, title, description,type)
+                    VALUES (?,?,?,'AdviserNote')";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('iss', $user_id, $note_title, $message);
+            $stmt->execute();
+            echo 1;
+        }
+    }
+}
+
+if ($action == 'getDashboardNotes'){
+    $user_id = $_SESSION['log_user_id'];
+    $getNotes = "SELECT * from announcement where user_id=?";
+    $stmt = $conn->prepare($getNotes);
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($res->num_rows > 0) {
+        while ($row = $res->fetch_assoc()){
+            $announcementPosted = date('h:i A', strtotime($row['announcementPosted']));
+            $formattedDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
+            echo '<div class="transform w-full md:w-[18rem] 0overflow-auto transition duration-500 shadow rounded
+            hover:scale-110 hover:bg-slate-300  justify-center items-center cursor-pointer p-3 h-[10rem] " onclick=" getNotes('.$row['announcement_id'].');openModalForm(\'Notes\');">
+            
+            <h1 class=" font-semibold ">'.$row['title'].'</h1>
+            <p class="  text-start text-sm">'.$row['description'].'
+            <p class="text-[12px]  text-slate-400 text-end">'.$formattedDateTime.'</p>
+        </div>';
+        }
+    }
+}
+
+if ($action == 'announcementJson' ){
+    $announcemnt_id = $_GET['data_id'];
+    $getAnnouncement = "SELECT * from announcement where announcement_id= ?";
+    $stmt = $conn->prepare($getAnnouncement);
+    $stmt->bind_param('i', $announcemnt_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($res->num_rows > 0) {
+        $announcement = $res->fetch_assoc();
+        header('Content-Type: application/json');
+        echo json_encode($announcement);
+    }
+}
 
