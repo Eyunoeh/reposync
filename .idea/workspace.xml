@@ -4,25 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="5/8/2024 minor updates test conversion">
-      <change afterPath="$PROJECT_DIR$/src/comments_img/66444720502ea.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/comments_img/664447205109f.png" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="notes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Capture.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/announcement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/announcement.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home_nav.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/home_nav.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/buttons_modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/buttons_modal.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/manageAdviserNote.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdviserNote.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/narratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/narratives.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,6 +196,12 @@
       <workItem from="1715599700265" duration="34000" />
       <workItem from="1715655684381" duration="37957000" />
       <workItem from="1715746320522" duration="12642000" />
+      <workItem from="1715762865090" duration="131000" />
+      <workItem from="1715770834754" duration="20000" />
+      <workItem from="1715788719137" duration="5730000" />
+      <workItem from="1715837663712" duration="3822000" />
+      <workItem from="1715917802865" duration="409000" />
+      <workItem from="1715919393977" duration="495000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -441,7 +434,14 @@
       <option name="project" value="LOCAL" />
       <updated>1715150618798</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="notes">
+      <created>1715762904345</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1715762904346</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -478,7 +478,8 @@
     <MESSAGE value="revision Comments adviser Done" />
     <MESSAGE value="Report Checking module done" />
     <MESSAGE value="5/8/2024 minor updates test conversion" />
-    <option name="LAST_COMMIT_MESSAGE" value="5/8/2024 minor updates test conversion" />
+    <MESSAGE value="notes" />
+    <option name="LAST_COMMIT_MESSAGE" value="notes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

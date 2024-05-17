@@ -1216,7 +1216,7 @@ if ($action === 'Notes') {
             echo 1;
         }else {
             $sql = "INSERT INTO announcement  (user_id, title, description,type)
-                    VALUES (?,?,?,'AdviserNote')";
+                    VALUES (?,?,?,'Notes')";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('iss', $user_id, $note_title, $message);
             $stmt->execute();
@@ -1227,7 +1227,7 @@ if ($action === 'Notes') {
 
 if ($action == 'getDashboardNotes'){
     $user_id = $_SESSION['log_user_id'];
-    $getNotes = "SELECT * from announcement where user_id=?";
+    $getNotes = "SELECT * from announcement where user_id= ? and status = 'active'";
     $stmt = $conn->prepare($getNotes);
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
@@ -1236,13 +1236,17 @@ if ($action == 'getDashboardNotes'){
         while ($row = $res->fetch_assoc()){
             $announcementPosted = date('h:i A', strtotime($row['announcementPosted']));
             $formattedDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
-            echo '<div class="transform w-full md:w-[18rem] 0overflow-auto transition duration-500 shadow rounded
-            hover:scale-110 hover:bg-slate-300  justify-center items-center cursor-pointer p-3 h-[10rem] " onclick=" getNotes('.$row['announcement_id'].');openModalForm(\'Notes\');">
+            echo '
+            <div class="transform w-full md:w-[18rem] transition duration-500 shadow rounded hover:scale-110 hover:bg-slate-300 justify-center items-center cursor-pointer p-3 h-[10rem]" onclick="removeTrashButton(); getNotes('.$row['announcement_id'].');openModalForm(\'Notes\');">
+            <div class="h-[8rem] overflow-hidden hover:overflow-auto">
+                <h1 class="font-semibold">'.$row['title'].'</h1>
+                <p class="text-start text-sm"> '.$row['description'].'</p>
+                <p class="text-[12px] text-slate-400 text-end">'.$formattedDateTime.'</p>
+            </div>
+        </div>
             
-            <h1 class=" font-semibold ">'.$row['title'].'</h1>
-            <p class="  text-start text-sm">'.$row['description'].'
-            <p class="text-[12px]  text-slate-400 text-end">'.$formattedDateTime.'</p>
-        </div>';
+            
+           ';
         }
     }
 }
@@ -1261,3 +1265,23 @@ if ($action == 'announcementJson' ){
     }
 }
 
+
+if ($action == 'deleteAnnouncement'){
+    $announcement_id = isset($_GET['data_id']) ? sanitizeInput($_GET['data_id']) : '';
+    if ($announcement_id !== '' ){
+        $hideAnnoucement = "UPDATE announcement SET status = 'archived' where announcement_id = ?";
+        $stmt = $conn->prepare($hideAnnoucement);
+        $stmt->bind_param('i',$announcement_id);
+        if ($stmt->execute()){
+            echo 1;
+            exit();
+        }else{
+            echo $stmt->error;
+            exit();
+        }
+    }else{
+        echo 'Invalid announcement ID';
+    }
+
+
+}

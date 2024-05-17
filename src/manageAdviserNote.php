@@ -15,7 +15,7 @@ session_start();
             <h1 class="font-bold text-2xl text-warning font-sans">Notes</h1>
         </div>
         <div class="">
-            <button class="btn btn-circle btn-success bg-opacity-70 " id="NewNote" onclick="openModalForm('Notes');"><i class="fa-solid fa-plus"></i></button>
+            <button class="btn btn-circle btn-success bg-opacity-70 " id="NewNote" onclick="openModalForm('Notes'); removeTrashButton()"><i class="fa-solid fa-plus"></i></button>
         </div>
     </div>
     <div class="w-full flex justify-center">
@@ -24,12 +24,12 @@ session_start();
     <div class=" card-body  flex sm:flex-row flex-col flex-wrap justify-start
     p-3 sm:p-5 overflow-hidden sm:overflow-x-auto  scroll-smooth gap-10" id="AdviserNotes">
 
-        <div class="transform w-full md:w-[18rem] overflow-auto transition duration-500 shadow rounded
-            hover:scale-110 hover:bg-slate-300  justify-center items-center cursor-pointer p-3 h-[10rem]">
-            <h1 class=" font-semibold ">Note title</h1>
-            <p class="text-start text-sm">Loremipsum dolor sit amet, consectetur adipisicing
-                elit. Accusantium assumenda at
-            <p class="text-[12px]  text-slate-400 text-end">3/20/2024 4:30pm </p>
+        <div class="transform w-full md:w-[18rem] transition duration-500 shadow rounded hover:scale-110 hover:bg-slate-300 justify-center items-center cursor-pointer p-3 h-[10rem]">
+            <div class="h-[8rem] overflow-hidden hover:overflow-auto">
+                <h1 class="font-semibold"></h1>
+                <p class="text-start text-sm"> </p>
+                <p class="text-[12px] text-slate-400 text-end"></p>
+            </div>
         </div>
     </div>
 </section>
@@ -37,9 +37,9 @@ session_start();
 
 <dialog id="Notes" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[40rem] max-h-[35rem]  flex flex-col text-slate-700">
-        <div  class=" card-title sticky ">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('Notes');">✕</button>
-            <h3 class="font-bold text-center text-lg  p-5">Students note</h3>
+        <div  class=" card-title sticky " id="NoteTitle">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" id="closeAnnouncementForm" onclick="closeModalForm('Notes'); ">✕</button>
+            <h3 class="font-bold text-center text-lg  p-2">Students note</h3>
         </div>
         <div class="p-4">
             <form id="NotesForm"  >

@@ -46,12 +46,22 @@ function navigate(page) {
             }
             if (document.getElementById('NewNote')){
                 document.getElementById('NewNote').addEventListener('click', function (){
-
                     document.getElementById('action_type').value = ''
                     document.getElementById('announcementID').value = '';
                     document.getElementById('NotesForm').reset();
+
+                    removeTrashButton();
+
                 });
             }
+            if (document.getElementById('trashAnnouncementBtn')){
+                document.getElementById('closeAnnouncementForm').addEventListener('click',function (){
+                    removeTrashButton()
+                })
+
+
+            }
+
 
         })
         .catch(error => console.error('Error fetching content:', error));
@@ -269,6 +279,10 @@ function getNotes(note_id){
                 $('#NotesForm textarea[name="message"]').val(data.description);
                 $('#NotesForm input[name="announcementID"]').val(data.announcement_id);
                 $('#NotesForm input[name="actionType"]').val('edit');
+                $('#NoteTitle').append('<div id="trashAnnouncementBtn" class="trash tooltip tooltip-bottom tooltip-error text-sm" data-tip="Delete note">' +
+                    '<a  onclick="deleteAnnoucement(this.getAttribute(\'data-id\'),\'Notes\')" data-id="' + data.announcement_id + '" class="btn-sm btn btn-circle btn-ghost hover:cursor-pointer text-error"><i class="fa-solid fa-trash"></i></a>' +
+                    '</div>');
+
             }
         },
         error: function(xhr, status, error) {
@@ -277,10 +291,33 @@ function getNotes(note_id){
     });
 }
 
+function removeTrashButton() {
+    $('#trashAnnouncementBtn').remove();
+}
 
 
 
 
 
+function deleteAnnoucement(id, modal_id){
+    $.ajax({
+        url: '../ajax.php?action=deleteAnnouncement&data_id=' + encodeURIComponent(id),
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response){
+                if (parseInt(response) === 1){
+                    get_dashBoardnotes ();
+                    closeModalForm(modal_id);
+
+                }
+            }
+            console.log(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
 
 
