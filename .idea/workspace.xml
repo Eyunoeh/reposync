@@ -4,39 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="notes">
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/Leo_Messi_BSIT_4B_210201235.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-11.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-12.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-13.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-14.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-15.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-16.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-17.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-18.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-19.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-20.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-21.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page.png" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="adminAnnoucement Fixed new api key">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlipbookFunctions.php" beforeDir="false" afterPath="$PROJECT_DIR$/FlipbookFunctions.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageAdviserNote.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdviserNote.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,25 +64,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/ReposyncNarrativeManagementSystem&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
@@ -232,7 +202,7 @@
       <workItem from="1715929629746" duration="6200000" />
       <workItem from="1715945633279" duration="17100000" />
       <workItem from="1716006125328" duration="2735000" />
-      <workItem from="1716010671531" duration="416000" />
+      <workItem from="1716010671531" duration="1096000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -479,7 +449,21 @@
       <option name="project" value="LOCAL" />
       <updated>1715920128938</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="adminAnnoucement Fixed new api key">
+      <created>1716011161633</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1716011161633</updated>
+    </task>
+    <task id="LOCAL-00037" summary="adminAnnoucement Fixed new api key">
+      <created>1716011173402</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1716011173402</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -517,7 +501,8 @@
     <MESSAGE value="Report Checking module done" />
     <MESSAGE value="5/8/2024 minor updates test conversion" />
     <MESSAGE value="notes" />
-    <option name="LAST_COMMIT_MESSAGE" value="notes" />
+    <MESSAGE value="adminAnnoucement Fixed new api key" />
+    <option name="LAST_COMMIT_MESSAGE" value="adminAnnoucement Fixed new api key" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

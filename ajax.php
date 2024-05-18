@@ -328,71 +328,72 @@ if ($action == 'getUploadLogs'){
 
 
 if ($action == 'newFinalReport'){
-
     $first_name = isset($_POST['first_name']) ? sanitizeInput($_POST['first_name']) : '';
     $last_name = isset($_POST['last_name']) ? sanitizeInput($_POST['last_name']) : '';
     $program = isset($_POST['program']) ? sanitizeInput($_POST['program']) : '';
     $section = isset($_POST['section']) ? sanitizeInput($_POST['section']) : '';
-    $stud_sex = isset($_POST['stud_Sex']) ? sanitizeInput($_POST['stud_Sex']) :'';
+    $stud_sex = isset($_POST['stud_Sex']) ? sanitizeInput($_POST['stud_Sex']) : '';
     $ojt_adviser = isset($_POST['ojt_adviser']) ? sanitizeInput($_POST['ojt_adviser']) : '';
     $school_id = isset($_POST['school_id']) && is_numeric($_POST['school_id']) && check_uniq_stud_id($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
-    if ($first_name !== '' && $stud_sex !== '' && $last_name !== '' && $program !== '' && $section !== '' && $ojt_adviser !== '' && $school_id !== '') {
-        if(isset($_FILES['final_report_file'])) {
-            $file_name = $_FILES['final_report_file']['name'];
-            $file_temp = $_FILES['final_report_file']['tmp_name'];
-            $file_type = $_FILES['final_report_file']['type'];
-            $file_error = $_FILES['final_report_file']['error'];
-            $file_size = $_FILES['final_report_file']['size'];
 
-            if (isPDF($file_name)){
+        if ($first_name !== '' && $stud_sex !== '' && $last_name !== '' && $program !== '' && $section !== '' && $ojt_adviser !== '' && $school_id !== '') {
+            if (isset($_FILES['final_report_file'])) {
+                $file_name = $_FILES['final_report_file']['name'];
+                $file_temp = $_FILES['final_report_file']['tmp_name'];
+                $file_type = $_FILES['final_report_file']['type'];
+                $file_error = $_FILES['final_report_file']['error'];
+                $file_size = $_FILES['final_report_file']['size'];
 
-                $file_first_name = str_replace(' ', '', $first_name);
-                $file_last_name = str_replace(' ', '', $last_name);
-                $new_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id.".pdf";
-                $current_date_time = date('Y-m-d H:i:s');
-                $narrative_status = 'OK';
-                if($file_error === UPLOAD_ERR_OK) {
+                if (isPDF($file_name)) {
+                    $file_first_name = str_replace(' ', '', $first_name);
+                    $file_last_name = str_replace(' ', '', $last_name);
+                    $new_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $section . "_" . $school_id . ".pdf";
+                    $current_date_time = date('Y-m-d H:i:s');
+                    $narrative_status = 'OK';
+                    if ($file_error === UPLOAD_ERR_OK) {
+                        try {
+                            $new_final_report = $conn->prepare("INSERT INTO narrativereports (stud_school_id, sex,
+                                      first_name, last_name, program, section, OJT_adviser,narrative_file_name, upload_date, file_status)
+                                      values (?,?,?,?,?,?,?,?,?,?)");
 
-                    $new_final_report = $conn->prepare("INSERT INTO narrativereports (stud_school_id, sex,
-                              first_name, last_name, program, section, OJT_adviser,narrative_file_name, upload_date, file_status)
-                              values (?,?,?,?,?,?,?,?,?,?)");
-
-                    $new_final_report->bind_param("ssssssssss",
-                        $school_id,$stud_sex, $first_name, $last_name,
-                        $program, $section, $ojt_adviser, $new_file_name,
-                        $current_date_time, $narrative_status);
+                            $new_final_report->bind_param("ssssssssss",
+                                $school_id, $stud_sex, $first_name, $last_name,
+                                $program, $section, $ojt_adviser, $new_file_name,
+                                $current_date_time, $narrative_status);
 
 
-                    if (!$new_final_report->execute()){
-                        echo 'query error';
-                        exit();
+                            if (!$new_final_report->execute()) {
+                                echo 'query error';
+                                exit();
+                            }
+                            $new_final_report->close();
+                            $destination = "src/NarrativeReportsPDF/" . $new_file_name;
+                            move_uploaded_file($file_temp, $destination);
+                            $report_pdf_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $section . "_" . $school_id;
+
+                            if (convert_pdf_to_image($report_pdf_file_name)) {
+                                echo 1;
+                                exit();
+                            } else {
+                                echo 'Flip book Conversion error';
+                            }
+                        }catch (Exception $e) {
+                            echo "Some error occurred when  uploading pleas contact developer";
+                        }
+                    } else {
+                        echo 'file error';
                     }
-                    $new_final_report->close();
-                    $destination = "src/NarrativeReportsPDF/" . $new_file_name;
-                    move_uploaded_file($file_temp, $destination);
-                    $report_pdf_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id;
-
-                    if (convert_pdf_to_image($report_pdf_file_name)){
-                        echo 1;
-                        exit();
-                    }
-                    else{
-                        echo 'Flip book Conversion error';
-                    }
+                } else {
+                    echo 'not pdf';
                 }
-                else {
-                    echo 'file error';
-                }
-            }else {
-                echo 'not pdf';
+            } else {
+                echo 'empty file';
             }
-        }else{
-            echo 'empty file';
+        } else {
+            echo 'form data are empty';
         }
-    }else{
-        echo 'form data are empty';
-    }
-    exit();
+        exit();
+
 }
 if ($action == 'get_narrativeReports') {
     $sql = "SELECT * FROM narrativereports where file_status = 'OK' order by upload_date desc";
