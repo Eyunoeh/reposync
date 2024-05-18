@@ -25,12 +25,13 @@ session_start();
     p-3 sm:p-5 overflow-hidden sm:overflow-x-auto  scroll-smooth gap-10" id="AdviserNotes">
 
         <div class="transform w-full md:w-[18rem] transition duration-500 shadow rounded hover:scale-110 hover:bg-slate-300 justify-center items-center cursor-pointer p-3 h-[10rem]">
-            <div class="h-[8rem] overflow-hidden hover:overflow-auto">
-                <h1 class="font-semibold"></h1>
-                <p class="text-start text-sm"> </p>
-                <p class="text-[12px] text-slate-400 text-end"></p>
+            <div class="h-[8rem] overflow-hidden hover:overflow-y-auto">
+                <h1 class="font-semibold">asdasd</h1>
+                <p class="text-start text-sm break-words"> r sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alir sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alir sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alir sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alir sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alir sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alias a</p>
+                <p class="text-[12px] text-slate-400 text-start">5/23/2024</p>
             </div>
         </div>
+
     </div>
 </section>
 
@@ -38,7 +39,7 @@ session_start();
 <dialog id="Notes" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[40rem] max-h-[35rem]  flex flex-col text-slate-700">
         <div  class=" card-title sticky " id="NoteTitle">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" id="closeAnnouncementForm" onclick="closeModalForm('Notes'); ">✕</button>
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" id="closeAnnouncementForm" onclick="closeModalForm('Notes');removeTrashButton() ">✕</button>
             <h3 class="font-bold text-center text-lg  p-2">Students note</h3>
         </div>
         <div class="p-4">

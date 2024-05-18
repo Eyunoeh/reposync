@@ -78,6 +78,18 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <i class="fa-brands fa-font-awesome"></i>
             <span class="text-[15px] ml-4  font-bold">Students Weekly Report</span>
         </div>
+        <?php
+
+        if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'admin'):
+
+        ?>
+        <div id="dashBoardProg_n_Section" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span class="text-[15px] ml-4  font-bold">Programs and Section</span>
+        </div>
+        <?php endif;?>
+
+
 
         <div class="my-4 bg-gray-600 h-[1px]"></div>
 

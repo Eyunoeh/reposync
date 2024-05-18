@@ -68,9 +68,14 @@ document.addEventListener('submit', function(e) {
          btn = 'noteSubmit';
          modal = 'Notes';
          transactionFunction = get_dashBoardnotes;
-
-
      }
+    if (e.target.id === 'act_n_schedForm'){
+        endpoint = 'NewActivity';
+        loader_id = 'SchedAndActLoader';
+        btn = 'SchedAndActbtn';
+        modal = 'Act&shedModal';
+        transactionFunction = getActivitiesAndSched;
+    }
 
 
     formData = new FormData(e.target);

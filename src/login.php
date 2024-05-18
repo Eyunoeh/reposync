@@ -45,7 +45,7 @@ if (isset($_SESSION['log_user_type'])){
                                 <input type="password" class="grow" name="log_password" placeholder="Password" />
                             </label>
                         </div>
-                        <a href="register.php" class="text-sm text-center text-info">Dont have an account?</a>
+                        <a href="#" class="text-sm text-center text-info">Fogot password?</a>
                     </div>
                     <div class="card-actions flex-col flex items-center  w-full mt-10">
                         <button id="login-btn-submit" class="btn btn-success btn-outline mr-2 h-10 p-3 w-20">Login</button>

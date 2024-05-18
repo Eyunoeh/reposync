@@ -1,4 +1,4 @@
-function handleRouting() {
+/*function handleRouting() {
     const path = window.location.pathname;
     const routes = {
         '/ReposyncNarrativeManagementSystem/src/dashboard.php':'dashboardContent.php',
@@ -10,6 +10,13 @@ function handleRouting() {
         handle404();
     }
 }
+
+ */
+
+
+document.addEventListener('DOMContentLoaded', function (){
+    navigate('dashboardContent.php')
+})
 function navigate(page) {
     fetch(page, {
         headers: {
@@ -23,43 +30,38 @@ function navigate(page) {
             get_studenUsertList();
             get_AdvUsertList();
             get_dashBoardnotes();
-            if (document.getElementById('act_n_schedForm')){
+            getActivitiesAndSched();
+            if (document.getElementById('act_n_schedForm')) {
                 const startDateInput = document.querySelector('input[name="startDate"]');
                 const endDateInput = document.querySelector('input[name="endDate"]');
-                const sameDayActDateInput = document.querySelector('input[name="sameDayActDate"]');
-                startDateInput.addEventListener('input', () => {
-                    if (startDateInput.value !== '') {
-                        sameDayActDateInput.value = '';
-                    }
-                });
-                endDateInput.addEventListener('input', () => {
-                    if (endDateInput.value !== '') {
-                        sameDayActDateInput.value = '';
-                    }
-                });
-                sameDayActDateInput.addEventListener('input', () => {
-                    if (sameDayActDateInput.value !== '') {
-                        startDateInput.value = '';
+                startDateInput.addEventListener('input', function() {
+                    if (endDateInput.value && endDateInput.value < startDateInput.value) {
                         endDateInput.value = '';
                     }
                 });
+                endDateInput.addEventListener('input', function() {
+                    if (startDateInput.value && startDateInput.value > endDateInput.value) {
+                        startDateInput.value = '';
+                    }
+                });
             }
+
+
             if (document.getElementById('NewNote')){
                 document.getElementById('NewNote').addEventListener('click', function (){
                     document.getElementById('action_type').value = ''
                     document.getElementById('announcementID').value = '';
                     document.getElementById('NotesForm').reset();
 
-                    removeTrashButton();
-
                 });
             }
-            if (document.getElementById('trashAnnouncementBtn')){
-                document.getElementById('closeAnnouncementForm').addEventListener('click',function (){
-                    removeTrashButton()
+            if (document.getElementById('act_n_schedForm')){
+                document.getElementById('newAct').addEventListener('click', function (){
+                    document.getElementById('action_type').value = ''
+                    document.getElementById('announcementID').value = '';
+                    document.getElementById('act_n_schedForm').reset();
+
                 })
-
-
             }
 
 
@@ -89,7 +91,6 @@ function dashboard_tab(id){
     }
     act_tab(tab.id);
 }
-window.onload = handleRouting;
 function act_tab(id){
     const allTabs = document.querySelectorAll('.dashboard_tab'); // Assuming all tabs have the 'tab' class
     allTabs.forEach(tab => {
@@ -150,6 +151,21 @@ function get_dashBoardnotes (){
         success: function(response) {
 
             $('#AdviserNotes').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+function getActivitiesAndSched (){
+    $.ajax({
+        url: '../ajax.php?action=getDashboardActSched',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+
+            $('#actAndschedList').html(response);
         },
         error: function(xhr, status, error) {
             console.error('Error fetching data:', error);
@@ -282,7 +298,29 @@ function getNotes(note_id){
                 $('#NoteTitle').append('<div id="trashAnnouncementBtn" class="trash tooltip tooltip-bottom tooltip-error text-sm" data-tip="Delete note">' +
                     '<a  onclick="deleteAnnoucement(this.getAttribute(\'data-id\'),\'Notes\')" data-id="' + data.announcement_id + '" class="btn-sm btn btn-circle btn-ghost hover:cursor-pointer text-error"><i class="fa-solid fa-trash"></i></a>' +
                     '</div>');
-
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+function getActSched(actId){
+    $.ajax({
+        url: '../ajax.php?action=announcementJson&data_id=' + encodeURIComponent(actId),
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data){
+                $('#act_n_schedForm input[name="Activitytitle"]').val(data.title);
+                $('#act_n_schedForm textarea[name="description"]').val(data.description);
+                $('#act_n_schedForm input[name="announcementID"]').val(data.announcement_id);
+                $('#act_n_schedForm input[name="actionType"]').val('edit');
+                $('#act_n_schedForm input[name="startDate"]').val(data.starting_date);
+                $('#act_n_schedForm input[name="endDate"]').val(data.end_date);
+                $('#act_schedtitle').append('<div id="trashAnnouncementBtn" class="trash tooltip tooltip-bottom tooltip-error text-sm" data-tip="Delete note">' +
+                    '<a  onclick="deleteAnnoucement(this.getAttribute(\'data-id\'),\'Act&shedModal\')" data-id="' + data.announcement_id + '" class="btn-sm btn btn-circle btn-ghost hover:cursor-pointer text-error"><i class="fa-solid fa-trash"></i></a>' +
+                    '</div>');
             }
         },
         error: function(xhr, status, error) {
@@ -308,8 +346,8 @@ function deleteAnnoucement(id, modal_id){
             if (response){
                 if (parseInt(response) === 1){
                     get_dashBoardnotes ();
+                    getActivitiesAndSched()
                     closeModalForm(modal_id);
-
                 }
             }
             console.log(response);

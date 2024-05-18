@@ -10,15 +10,15 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
             <h1 class="font-bold text-2xl text-warning font-sans">Activities & Schedule</h1>
         </div>
         <div class="">
-            <button class="btn btn-circle btn-success bg-opacity-70 " onclick="openModalForm('Act&shedModal')"><i class="fa-solid fa-plus"></i></button>
+            <button class="btn btn-circle btn-success bg-opacity-70 " id="newAct" onclick="openModalForm('Act&shedModal') ;removeTrashButton()"><i class="fa-solid fa-plus"></i></button>
         </div>
     </div>
-    <div class=" card-body grid place-items-center gap-5 p-3 sm:p-5 overflow-hidden sm:overflow-auto  scroll-smooth">
+    <div class=" card-body grid place-items-center gap-5 p-3 sm:p-5 overflow-hidden sm:overflow-auto  scroll-smooth" id="actAndschedList">
         <div class="flex transform w-[50rem]  transition duration-500 shadow rounded
             hover:scale-110 hover:bg-slate-300  justify-start items-center cursor-pointer">
             <div class=" min-w-[12rem]  p-2 sm:p-5 b text-center flex flex-col justify-center text-sm">
                 <h4>June 22, 2024</h4>
-                <h4>July 23, 2024</h4>
+
             </div>
             <div class="flex flex-col justify-center max-h-[10rem] overflow-auto p-3">
                 <h1 class="font-semibold">Beginning of OJT</h1>
@@ -53,9 +53,9 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 
 <dialog id="Act&shedModal" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] h-full  flex flex-col text-slate-700">
-        <div  class=" card-title sticky flex justify-between  items-center mr-2">
-            <h1 class="font-bold text-lg pl-5 pt-5 pb-0">Create activity and schedule</h1>
-            <button class="btn btn-sm btn-circle btn-ghost " onclick="closeModalForm('Act&shedModal');resetNoteForm('act_n_schedForm')">✕</button>
+        <div  class=" card-title sticky" id="act_schedtitle">
+            <h1 class="font-bold text-center text-lg  p-2">Activity and Schedule Form</h1>
+            <button class="absolute right-2 btn btn-sm btn-circle btn-ghost "  onclick="closeModalForm('Act&shedModal');removeTrashButton()">✕</button>
         </div>
         <div class="p-4 h-full">
             <form id="act_n_schedForm" class=" h-full" enctype="multipart/form-data">
@@ -69,7 +69,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                     <div class="label">
                                         <span class="label-text text-slate-700 font-bold">Title</span>
                                     </div>
-                                    <input type="text" required name="noteTitle" placeholder="Type here"
+                                    <input type="text" required name="Activitytitle" placeholder="Type here"
                                            class="  bg-slate-100 input input-bordered w-full " />
                                 </label>
                             </div>
@@ -78,42 +78,34 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                     <div class="label">
                                         <span class="label-text text-slate-700 font-bold">Text body</span>
                                     </div>
-                                    <textarea required  name="message" class="textarea textarea-success w-full" rows="5" cols="80" placeholder="Optional"></textarea>
+                                    <textarea  name="description" class="textarea textarea-success w-full" rows="5" cols="80" placeholder="Optional"></textarea>
                                 </label>
                             </div>
                         </div>
                         <hr class=" m-3">
                         <h1 class="font-bold">Activity Dates</h1>
-                        <div class="flex justify-start flex-wrap  gap-2 items-center ">
+                        <div class="flex justify-center flex-wrap  gap-2 items-center ">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">Start</span>
+                                    <span class="label-text text-slate-700">Starting date</span>
                                 </div>
-                                <input name="startDate"   type="date"  data-theme="light"
+                                <input name="startDate" required  type="date"  data-theme="light"
                                        class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">End</span>
+                                    <span class="label-text text-slate-700">Ending date</span>
                                 </div>
-                                <input name="endDate"   type="date"  data-theme="light"
+                                <input name="endDate"  required type="date"  data-theme="light"
                                        class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                         </div>
                         <hr class=" m-3">
-
-                        <h1 class=" text-sm">Same day activity date</h1>
-                        <div class="flex justify-start flex-wrap  gap-2 items-center ">
-                            <label class="form-control w-full max-w-xs">
-                                <input name="sameDayActDate" type="date"  data-theme="light"
-                                       class="bg-slate-100 input input-bordered w-full max-w-xs"  />
-                            </label>
-                        </div>
                     </div>
-                    <p id="new_adv_adminLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
-                    <div id="new_adv_adminBtn" class="flex justify-center m-5">
-                        <button id="admin_adv_Submit" class="btn btn-success btn-outline w-1/4" >Create</button>
-                    </div>
+                </div>
+                <p id="SchedAndActLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
+                <div id="SchedAndActbtn" class="flex justify-center ">
+                    <button id="admin_adv_Submit" class="btn btn-success btn-outline w-1/4" >Submit</button>
                 </div>
 
             </form>

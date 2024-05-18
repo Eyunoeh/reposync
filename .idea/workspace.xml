@@ -5,11 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="notes">
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/Leo_Messi_BSIT_4B_210201235.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page-9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Messi_BSIT_4B_210201235/Leo_Messi_BSIT_4B_210201235_page.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlipbookFunctions.php" beforeDir="false" afterPath="$PROJECT_DIR$/FlipbookFunctions.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/manageAdviserNote.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdviserNote.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +228,11 @@
       <workItem from="1715788719137" duration="5730000" />
       <workItem from="1715837663712" duration="3822000" />
       <workItem from="1715917802865" duration="409000" />
-      <workItem from="1715919393977" duration="495000" />
+      <workItem from="1715919393977" duration="3451000" />
+      <workItem from="1715929629746" duration="6200000" />
+      <workItem from="1715945633279" duration="17100000" />
+      <workItem from="1716006125328" duration="2735000" />
+      <workItem from="1716010671531" duration="416000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -441,7 +472,14 @@
       <option name="project" value="LOCAL" />
       <updated>1715762904346</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="notes">
+      <created>1715920128937</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1715920128938</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -488,11 +526,6 @@
           <url>file://$PROJECT_DIR$/tailwind.config.js</url>
           <line>6</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/js/main.js</url>
-          <line>154</line>
-          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

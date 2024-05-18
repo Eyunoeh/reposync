@@ -5373,6 +5373,10 @@ body{
   overflow: auto;
 }
 
+.hover\:overflow-y-auto:hover {
+  overflow-y: auto;
+}
+
 .hover\:rounded:hover {
   border-radius: 0.25rem;
 }

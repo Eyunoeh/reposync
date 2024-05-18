@@ -1227,7 +1227,7 @@ if ($action === 'Notes') {
 
 if ($action == 'getDashboardNotes'){
     $user_id = $_SESSION['log_user_id'];
-    $getNotes = "SELECT * from announcement where user_id= ? and status = 'active'";
+    $getNotes = "SELECT * from announcement where user_id= ? and status = 'active'  and type = 'Notes'";
     $stmt = $conn->prepare($getNotes);
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
@@ -1236,15 +1236,18 @@ if ($action == 'getDashboardNotes'){
         while ($row = $res->fetch_assoc()){
             $announcementPosted = date('h:i A', strtotime($row['announcementPosted']));
             $formattedDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
+            $message = $row['description'];
+
             echo '
-            <div class="transform w-full md:w-[18rem] transition duration-500 shadow rounded hover:scale-110 hover:bg-slate-300 justify-center items-center cursor-pointer p-3 h-[10rem]" onclick="removeTrashButton(); getNotes('.$row['announcement_id'].');openModalForm(\'Notes\');">
+              
+            
+        <div onclick="removeTrashButton(); getNotes('.$row['announcement_id'].');openModalForm(\'Notes\');" class="transform w-full md:w-[18rem] transition duration-500 shadow rounded hover:scale-110 hover:bg-slate-300 justify-center items-center cursor-pointer p-3 h-[10rem]">
             <div class="h-[8rem] overflow-hidden hover:overflow-auto">
                 <h1 class="font-semibold">'.$row['title'].'</h1>
-                <p class="text-start text-sm"> '.$row['description'].'</p>
+                <p class="text-start text-sm break-words"> '.$row['description'].' </p>
                 <p class="text-[12px] text-slate-400 text-end">'.$formattedDateTime.'</p>
             </div>
         </div>
-            
             
            ';
         }
@@ -1282,6 +1285,79 @@ if ($action == 'deleteAnnouncement'){
     }else{
         echo 'Invalid announcement ID';
     }
+}
 
+if ($action === 'NewActivity') {
+    $user_id = $_SESSION['log_user_id'];
+    $note_title = isset($_POST['Activitytitle']) ? sanitizeInput($_POST['Activitytitle']) : Null;
+    $actionType = isset($_POST['actionType']) ? sanitizeInput($_POST['actionType']) : '';
+    $actDescription = isset($_POST['description']) ? sanitizeInput($_POST['description']) : Null;
+    $announcement_id = isset($_POST['announcementID']) ? sanitizeInput($_POST['announcementID']) : Null;;
+    $startingDate = isset($_POST['startDate']) ? sanitizeInput($_POST['startDate']): null;
+    $endinggDate = isset($_POST['endDate']) ? sanitizeInput($_POST['endDate']): Null;
+    if ($note_title !== '' ) {
+        if ($actionType == 'edit'){
+            $sql = "UPDATE announcement SET 
+                        title = ?, description = ?, starting_date = ?, end_date = ?,
+                        announcementPosted = NOW() 
+                    where announcement_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssssi', $note_title, $actDescription,$startingDate,$endinggDate ,  $announcement_id);
+            $stmt->execute();
+            echo 1;
+        }else {
+            $sql = "INSERT INTO announcement  (user_id, title, description , starting_date, end_date,type)
+                    VALUES (?,?,?,?,?,'schedule and activities')";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('issss', $user_id, $note_title, $actDescription, $startingDate, $endinggDate);
+            $stmt->execute();
+            echo 1;
+        }
+    }
+}
+
+
+if ($action == 'getDashboardActSched'){
+    $user_id = $_SESSION['log_user_id'];
+    $getNotes = "SELECT *
+    FROM announcement 
+        WHERE user_id = ? 
+          AND status = 'active'
+            AND type = 'schedule and activities'
+        ORDER BY starting_date;
+        ";
+
+    $stmt = $conn->prepare($getNotes);
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($res->num_rows > 0) {
+        while ($row = $res->fetch_assoc()){
+            $announcementPosted = date('h:i A', strtotime($row['announcementPosted']));
+            $formattedDatePosted = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
+            $formattedStartingDate = date("F j, Y", strtotime($row['starting_date']));
+            $formattedEndingDate = date("F j, Y", strtotime($row['end_date']));
+            echo '<div onclick="removeTrashButton();openModalForm(\'Act&shedModal\');getActSched('.$row['announcement_id'].')" class="flex transform w-[50rem]  transition duration-500 shadow rounded
+            hover:scale-110 hover:bg-slate-300  justify-start items-center cursor-pointer">
+            <div class=" min-w-[12rem]  p-2 sm:p-5 b text-center flex flex-col justify-center text-sm">';
+
+           if ($formattedStartingDate === $formattedEndingDate){
+              echo '<h4 class="text-start">'.$formattedStartingDate.'</h4>';
+           }else {
+               echo '<h4 class="text-start">' . $formattedStartingDate . '</h4>';
+               echo '<h4 class="text-start">' . $formattedEndingDate . '</h4>';
+           }
+            echo '
+            </div>
+            <div class="flex flex-col justify-center max-h-[10rem] overflow-auto p-3">
+                <h1 class="font-semibold">'.$row['title'].'</h1>
+                <div class=" max-h-[10rem] overflow-auto">
+                    <p class="text-justify text-sm pr-5 break-words">'.$row['description'].'
+                    </p>
+                </div>
+            </div>
+        </div>';
+        }
+    }
 
 }
