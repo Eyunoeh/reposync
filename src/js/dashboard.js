@@ -31,6 +31,8 @@ function navigate(page) {
             get_AdvUsertList();
             get_dashBoardnotes();
             getActivitiesAndSched();
+            getPrograms();
+            getYrSec();
             if (document.getElementById('act_n_schedForm')) {
                 const startDateInput = document.querySelector('input[name="startDate"]');
                 const endDateInput = document.querySelector('input[name="endDate"]');
@@ -63,7 +65,11 @@ function navigate(page) {
 
                 })
             }
-
+            if (document.getElementById('SectionProgramFormInputs')){
+                if (document.getElementById('SectionProgramFormInputs')) {
+                    attachSelectEventListener();
+                }
+            }
 
         })
         .catch(error => console.error('Error fetching content:', error));
@@ -88,6 +94,8 @@ function dashboard_tab(id){
         navigate('manageStudent.php')
     }else if (tab.id === 'adv_list'){
         navigate('manageAdvisers.php')
+    }else if (tab.id === 'dashBoardProg_n_Section'){
+        navigate('ManageProgSec.php');
     }
     act_tab(tab.id);
 }
@@ -172,6 +180,33 @@ function getActivitiesAndSched (){
         }
     });
 }
+function getYrSec(){
+    $.ajax({
+        url: '../ajax.php?action=getDasboardYrSec',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+
+            $('#yrSec').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+function getPrograms(){
+    $.ajax({
+        url: '../ajax.php?action=getDasboardPrograms',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            $('#programs').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
 
 
 function editNarrative(narrative_id){
@@ -185,7 +220,7 @@ function editNarrative(narrative_id){
                 document.querySelector('#EditNarrativeReportsForm input[name="last_name"]').value = data.last_name;
                 document.querySelector('#EditNarrativeReportsForm input[name="school_id"]').value = data.stud_school_id;
                 document.querySelector('#EditNarrativeReportsForm select[name="program"]').value = data.program;
-                document.querySelector('#EditNarrativeReportsForm input[name="section"]').value = data.section;
+                document.querySelector('#EditNarrativeReportsForm select[name="section"]').value = data.section;
                 if (data.sex === "Male") {
                     document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Male"]').checked = true;
                 } else if (data.sex === "Female") {
@@ -318,7 +353,7 @@ function getActSched(actId){
                 $('#act_n_schedForm input[name="actionType"]').val('edit');
                 $('#act_n_schedForm input[name="startDate"]').val(data.starting_date);
                 $('#act_n_schedForm input[name="endDate"]').val(data.end_date);
-                $('#act_schedtitle').append('<div id="trashAnnouncementBtn" class="trash tooltip tooltip-bottom tooltip-error text-sm" data-tip="Delete note">' +
+                $('#act_schedtitle').append('<div id="trashAnnouncementBtn" class="trash tooltip tooltip-bottom tooltip-error text-sm" data-tip="Delete activity">' +
                     '<a  onclick="deleteAnnoucement(this.getAttribute(\'data-id\'),\'Act&shedModal\')" data-id="' + data.announcement_id + '" class="btn-sm btn btn-circle btn-ghost hover:cursor-pointer text-error"><i class="fa-solid fa-trash"></i></a>' +
                     '</div>');
             }
@@ -332,6 +367,8 @@ function getActSched(actId){
 function removeTrashButton() {
     $('#trashAnnouncementBtn').remove();
 }
+
+
 
 
 
@@ -357,5 +394,93 @@ function deleteAnnoucement(id, modal_id){
         }
     });
 }
+
+
+function renderAddProgramInputs() {
+    $('#SectionProgramFormInputs').html(`
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2">
+                <div class="flex justify-start gap-2">
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text text-slate-700 font-bold">Program Code</span>
+                        </div>
+                        <input type="text" required name="ProgramCode" placeholder="Type here" class="bg-slate-100 input input-bordered w-full" />
+                    </label>
+                </div>
+                <div class="flex justify-start gap-2">
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text text-slate-700 font-bold">Program Name</span>
+                        </div>
+                        <input type="text" required name="ProgramName" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
+                    </label>
+                </div>
+            </div>
+        </div>
+    `);
+}
+
+function renderAddYearSec(){
+        $('#SectionProgramFormInputs').html(`
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2">
+                <div class="flex justify-start gap-2">
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text text-slate-700 font-bold">Year</span>
+                        </div>
+                        <input type="number" required name="year" placeholder="Type here" class="bg-slate-100 input input-bordered w-full" />
+                    </label>
+                </div>
+                <div class="flex justify-start gap-2">
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text text-slate-700 font-bold">Section</span>
+                        </div>
+                        <input type="text" required name="section" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
+                    </label>
+                </div>
+            </div>
+        </div>
+    `
+        );
+}
+
+function renderSelectformOption(){
+    $('#option').html(`
+        <select id="formSelect" class="select  select-bordered w-full max-w-xs">
+            <option value="newProg">Program</option>
+            <option value="newyrSec">Year and Section</option>
+        </select>
+    `
+    );
+    attachSelectEventListener();
+}
+
+
+function attachSelectEventListener() {
+    let formSelect = document.getElementById('formSelect');
+    if (formSelect) {
+        let selectedValue = 'newProg';
+        formSelect.addEventListener('change', function() {
+             selectedValue = this.value;
+            if (document.getElementById('SectionProgramFormInputs')) {
+                if (selectedValue === 'newProg') {
+                    renderAddProgramInputs();
+                } else if (selectedValue === 'newyrSec') {
+                    renderAddYearSec();
+                }
+            }
+        });
+    }
+}
+
+function removeSelectFormOption(){
+    $('#formSelect').remove()
+}
+
+
+
 
 

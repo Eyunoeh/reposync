@@ -4,6 +4,8 @@ session_start();
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+    <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/output.css">
@@ -14,7 +16,7 @@ session_start();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
-    <title>Document</title>
+    <title>Home</title>
 </head>
 <body  class="min-h-screen bg-slate-200 ">
 

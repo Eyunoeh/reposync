@@ -11,18 +11,19 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/output.css">
     <link rel="stylesheet" href="css/scrollbar.css">
+    <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
     <script src="https://kit.fontawesome.com/470d815d8e.js"crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
-    <title>Document</title>
+    <title>Dashboard</title>
 </head>
 <body  class="min-h-screen bg-white ">
 
 <main class="flex h-[100vh] ">
-    <div class="sidebar hidden sm:inline-block scroll-smooth  p-2 w-[300px] min-w-[300px] overflow-y-auto  text-center bg-green-700" >
+    <div class="sidebar hidden sm:inline-block scroll-smooth  p-2 w-[300px] min-w-[300px] overflow-y-hidden hover:overflow-y-auto  text-center bg-green-700" >
         <div class=" text-gray-100 text-xl bg-green-700 transition-all ">
             <div class="p-2.5 mt-1 flex items-center">
                 <div class="avatar">
@@ -85,7 +86,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
         ?>
         <div id="dashBoardProg_n_Section" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-graduation-cap"></i>
-            <span class="text-[15px] ml-4  font-bold">Programs and Section</span>
+            <span class="text-[15px] ml-4  font-bold">Prog-Yr-Sec</span>
         </div>
         <?php endif;?>
 
@@ -122,7 +123,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
         </div>
 
     </div>
-    <section id="dashboard_main_content" class="flex gap-2 flex-col  max-w-6xl w-full overflow-auto">
+    <section id="dashboard_main_content" class="flex gap-2 flex-col   w-full overflow-auto">
 
     </section>
 

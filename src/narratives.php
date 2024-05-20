@@ -5,7 +5,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     header("Location: 404.php");
     exit();
 }
-
+include '../DatabaseConn/databaseConn.php';
 ?>
 
 <div class="flex flex-wrap  text-gray-700  ">
@@ -20,8 +20,16 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                         <div class="w-[40%]">
                             <select class="w-full h-10 rounded bg-slate-50 font-semibold" name="stud_program" id="programFilter" onchange="handleSearch('searchNarrativeInput', 'narrativeReportsTable')">
                                 <option value="">Select Program</option>
-                                <option value="BSIT">BSIT</option>
-                                <option value="BSBM">BSBM</option>
+                                <?php
+                                    $sql = "SELECT * FROM  program";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option >'.$row['program_code'].'</option>
+                                               ';
+
+                                    }?>
                             </select>
                         </div>
 

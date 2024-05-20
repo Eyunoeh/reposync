@@ -75,3 +75,20 @@ session_start();
     </div>
 </dialog>
 
+<dialog id="NewNoteNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('NewNoteNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-success absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>Note has been posted!</span>
+        </div>
+    </div>
+</dialog>
+
+<dialog id="UpdateNoteNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('UpdateNoteNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-info absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>Note has been updated!</span>
+        </div>
+    </div>
+</dialog>

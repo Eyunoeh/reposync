@@ -14,6 +14,8 @@ function navigate(page) {
             home_student_NarrativeReports()
             get_WeeklyReports();
             getUploadLogs();
+            getHomeActSched();
+            getHomeNotes();
 
             let chatBoxElement = document.getElementById('chatBox');
 
@@ -217,3 +219,38 @@ function scrollToBottom() {
     let commentBody = document.getElementById('comment_body');
     commentBody.scrollTop = commentBody.scrollHeight;
 }
+
+
+function getHomeActSched(){
+    $.ajax({
+        url: '../ajax.php?action=getHomeActSched' ,
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            if (response){
+                $('#actSched').html(response);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+
+}
+function getHomeNotes(){
+    $.ajax({
+        url: '../ajax.php?action=getHomeNotes' ,
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            if (response){
+                $('#studNotes').html(response);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+
+}
+

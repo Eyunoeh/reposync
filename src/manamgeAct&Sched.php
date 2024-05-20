@@ -107,8 +107,25 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                 <div id="SchedAndActbtn" class="flex justify-center ">
                     <button id="admin_adv_Submit" class="btn btn-success btn-outline w-1/4" >Submit</button>
                 </div>
-
             </form>
+        </div>
+    </div>
+</dialog>
+
+<dialog id="NewActSchedNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('NewActSchedNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-success absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>New activity has been posted students will get notified through email!</span>
+        </div>
+    </div>
+</dialog>
+
+<dialog id="UpdateaActSchedNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('UpdateaActSchedNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-info absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>Activity has been updated!</span>
         </div>
     </div>
 </dialog>

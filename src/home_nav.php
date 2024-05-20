@@ -46,6 +46,7 @@
                     <ul tabindex="0" class="absolute bg-slate-100 text-black right-0 dropdown-content z-[1] menu p-2 shadow  rounded w-52">
 
                         <?php echo $_SESSION['log_user_type'] != 'student' ? '<li><a href="dashboard.php">Dashboard</a></li>': ''?>
+                        <li><a href="#">Account Settings</a></li>
                         <li><a href="logout.php">Logout</a></li>
                     </ul>
                 </div><?php

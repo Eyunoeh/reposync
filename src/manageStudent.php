@@ -129,8 +129,18 @@ include '../DatabaseConn/databaseConn.php';
                                 </div>
                                 <select name="stud_Program" class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select program</option>
-                                    <option value="1">BSIT</option>
-                                    <option value="2">BSCS</option>
+                                    <?php
+                                    $sql = "SELECT * FROM  program";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option value="'.$row['program_id'].'">'.$row['program_code'].'</option>
+                                               ';
+
+                                    }
+
+                                    ?>
                                 </select>
 
                             </label>
@@ -266,8 +276,19 @@ include '../DatabaseConn/databaseConn.php';
                                 </div>
                                 <select name="stud_Program" class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select program</option>
-                                    <option value="1">BSIT</option>
-                                    <option value="2">BSCS</option>
+                                    <?php
+                                    $sql = "SELECT * FROM  program";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option value="'.$row['program_id'].'">'.$row['program_code'].'</option>
+                                               ';
+
+                                    }
+
+                                    ?>
+
                                 </select>
                             </label>
 
@@ -361,6 +382,23 @@ include '../DatabaseConn/databaseConn.php';
             </div>
         </dialog>
 
+    </div>
+</dialog>
+
+<dialog id="NewStudentNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('NewStudentNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-success absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>New student account has been created!</span>
+        </div>
+    </div>
+</dialog>
+<dialog id="EditStudentNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('EditStudentNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-info absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>Student information has been updated!</span>
+        </div>
     </div>
 </dialog>
 

@@ -172,7 +172,19 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
             </form>
         </div>
     </div>
+    <dialog id="passNotmatchNotif"  class="modal bg-black  bg-opacity-40 ">
+        <div class="card bg-warning w-[80vw] absolute top-10 sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+            <div  class=" card-title sticky justify-center">
+                <h3 class="font-bold text-center text-lg  p-5">Password does not match!</h3>
+            </div>
+            <div class="p-4 w-full flex justify-center">
+                <button class="btn  btn-neutral  w-1/4 " onclick="closeModalForm('passNotmatchNotif')">OK</button>
+            </div>
+        </div>
+    </dialog>
 </dialog>
+
+
 <dialog id="editAdv_admin" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[43rem] max-h-[35rem]  flex flex-col text-slate-700">
         <div  class=" card-title sticky  flex justify-end">
@@ -292,4 +304,21 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
         </dialog>
     </div>
 </dialog>
+<dialog id="NewadvNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('NewadvNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-success absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>New adviser account has been created!</span>
+        </div>
+    </div>
+</dialog>
+<dialog id="EditAdvNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('EditAdvNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-info absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>Adviser information has been updated!</span>
+        </div>
+    </div>
+</dialog>
+
 

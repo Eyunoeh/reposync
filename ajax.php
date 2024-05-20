@@ -161,7 +161,7 @@ if ($action == 'getWeeklyReports'){
         WHERE stud_user_id = ?
         ORDER BY upload_date";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id); // Assuming $stud_user_id contains the user ID
+    $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -293,7 +293,6 @@ if ($action == 'getUploadLogs'){
             WHERE w.stud_user_id = ?
             ORDER BY a.activity_date DESC";
 
-    // Prepare and execute the statement
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
@@ -393,7 +392,6 @@ if ($action == 'newFinalReport'){
             echo 'form data are empty';
         }
         exit();
-
 }
 if ($action == 'get_narrativeReports') {
     $sql = "SELECT * FROM narrativereports where file_status = 'OK' order by upload_date desc";
@@ -1320,16 +1318,14 @@ if ($action === 'NewActivity') {
 
 if ($action == 'getDashboardActSched'){
     $user_id = $_SESSION['log_user_id'];
-    $getNotes = "SELECT *
+    $actSched = "SELECT *    
     FROM announcement 
-        WHERE user_id = ? 
+        WHERE 1 = 1
           AND status = 'active'
             AND type = 'schedule and activities'
         ORDER BY starting_date;
         ";
-
-    $stmt = $conn->prepare($getNotes);
-    $stmt->bind_param('i', $user_id);
+    $stmt = $conn->prepare($actSched);
     $stmt->execute();
     $res = $stmt->get_result();
     if ($res->num_rows > 0) {
@@ -1360,5 +1356,174 @@ if ($action == 'getDashboardActSched'){
         </div>';
         }
     }
+}
+if ($action == 'ProgYrSec') {
+    $program_code = isset($_POST['ProgramCode']) ? sanitizeInput($_POST['ProgramCode']) : '';
+    $program_name = isset($_POST['ProgramName']) ? sanitizeInput($_POST['ProgramName']) : '';
+    $year = isset($_POST['year']) ? sanitizeInput($_POST['year']) : '';
+    $section = isset($_POST['section']) ? sanitizeInput($_POST['section']) : '';
+    $actionType = isset($_POST['action_type']) ? sanitizeInput($_POST['action_type']) : '';
+    $id = isset($_POST['ID']) ? sanitizeInput($_POST['ID']) : '';
 
+    if ($program_code !== '' && $program_name !== '') {
+        if (isset($actionType) && $actionType == 'edit') {
+            $sql = "UPDATE program SET program_code = ?, program_name = ? WHERE id = ?";
+            $updateProgStmt = $conn->prepare($sql);
+            $updateProgStmt->bind_param('ssi', $program_code, $program_name, $id);
+            if ($updateProgStmt->execute()) {
+                echo 1;
+                exit();
+            } else {
+                echo $updateProgStmt->error;
+                exit();
+            }
+        } else {
+            $sql = "INSERT INTO program (program_code, program_name) VALUES (?, ?)";
+            $insertProgStmt = $conn->prepare($sql);
+            $insertProgStmt->bind_param('ss', $program_code, $program_name);
+            if ($insertProgStmt->execute()) {
+                echo 1;
+                exit();
+            } else {
+                echo $insertProgStmt->error;
+                exit();
+            }
+        }
+    } elseif ($year !== '' && $section !== '') {
+        $dbcolNameSection = $year . $section;
+        if (isset($actionType) && $actionType == 'edit') {
+            $sql = "UPDATE section SET section = ? WHERE id = ?";
+            $updateSecStmt = $conn->prepare($sql);
+            $updateSecStmt->bind_param('si', $dbcolNameSection, $id);
+            if ($updateSecStmt->execute()) {
+                echo 1;
+                exit();
+            } else {
+                echo $updateSecStmt->error;
+                exit();
+            }
+        } else {
+            $sql = "INSERT INTO section (section) VALUES (?)";
+            $insertSecStmt = $conn->prepare($sql);
+            $insertSecStmt->bind_param('s', $dbcolNameSection);
+            if ($insertSecStmt->execute()) {
+                echo 1;
+                exit();
+            } else {
+                echo $insertSecStmt->error;
+                exit();
+            }
+        }
+    } else {
+        echo "Please provide valid input.";
+    }
+}
+
+if ($action == 'getDasboardYrSec'){
+
+    $sql = "SELECT * FROM  section";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    while ($row = $res->fetch_assoc()){
+        echo '<tr class="hover">
+                    <td>'.$row['section'].'</td>
+                    <td class="text-center cursor-pointer"><i class="fa-solid fa-pen-to-square"></i></td>
+                </tr>';
+    }
+}
+if ($action == 'getDasboardPrograms'){
+    $sql = "SELECT * FROM  program";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    while ($row = $res->fetch_assoc()){
+        echo '<tr class="hover">
+                    <td>'.$row['program_code'].'</td>
+                    <td>'.$row['program_name'].'</td>
+                    <td class="text-center cursor-pointer"><i class="fa-solid fa-pen-to-square"></i></td>
+
+                </tr>';
+
+    }
+}
+
+if ($action === 'getHomeActSched'){
+    $actSched = "SELECT *    
+    FROM announcement 
+        WHERE 1 = 1
+          AND status = 'active'
+            AND type = 'schedule and activities'
+        ORDER BY starting_date;
+        ";
+    $stmt = $conn->prepare($actSched);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($res->num_rows > 0) {
+        while ($row = $res->fetch_assoc()){
+            $announcementPosted = date('h:i A', strtotime($row['announcementPosted']));
+            $formattedDatePosted = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
+            $formattedStartingDate = date("F j, Y", strtotime($row['starting_date']));
+            $formattedEndingDate = date("F j, Y", strtotime($row['end_date']));
+
+            echo '<div class="flex min-w-[40rem] ' . (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'student' ? 'w-[40rem]' : 'w-[50rem]') . ' shadow rounded transition duration-500 transform hover:scale-110 hover:bg-slate-300 cursor-pointer justify-start items-center">
+                    <div class="w-[12rem] p-2 sm:p-5 b text-center flex flex-col justify-start text-sm ">
+                    
+                    ';
+            if ($formattedStartingDate === $formattedEndingDate){
+                echo '<h4 class="text-start">'.$formattedStartingDate.'</h4>';
+            }else {
+                echo '<h4 class="text-start">' . $formattedStartingDate . '</h4>';
+                echo '<h4 class="text-start">' . $formattedEndingDate . '</h4>';
+            }
+
+
+                echo '</div>
+                    <div class="flex flex-col justify-center max-h-[10rem] overflow-auto ">
+                        <h1 class="font-semibold">'.$row['title'].'</h1>
+                        <div class="max-h-[10rem] transition duration-100 overflow-hidden hover:overflow-auto">
+                            <p class="text-justify text-sm pr-5">'.$row['description'].'</p>
+                        </div>
+                    </div>
+                </div>';
+        }
+    }
+}
+
+if ($action == 'getHomeNotes'){
+    $user_id = $_SESSION['log_user_id'];
+
+    $getAdv = "SELECT * FROM advisory_list WHERE stud_sch_user_id = ?";
+    $getAdvStmt = $conn->prepare($getAdv);
+    $getAdvStmt->bind_param('i', $user_id);
+    $getAdvStmt->execute();
+    $res = $getAdvStmt->get_result();
+    $get_adv_id = $res->fetch_assoc();
+    $adv_id = $get_adv_id['adv_sch_user_id'];
+
+    $getAdv_announcement = "SELECT * FROM announcement WHERE user_id = ? AND type = 'Notes' AND status = 'active' order by announcementPosted";
+    $getannouncementStmt = $conn->prepare($getAdv_announcement);
+    $getannouncementStmt->bind_param('i', $adv_id);
+    $getannouncementStmt->execute();
+    $results = $getannouncementStmt->get_result();
+
+    while ($row = $results->fetch_assoc()){
+        $notePosted = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
+
+        echo '
+
+<div class="flex transition duration-500 transform scale-90 hover:scale-100 hover:bg-slate-300 cursor-pointer w-full">
+    <div class="flex flex-col justify-center p-2 w-full">
+        <h1 class="font-semibold">'.$row['title'].'</h1>
+        <div class="max-h-[10rem] transition overflow-hidden hover:overflow-auto w-full">
+            <p class="text-justify text-sm break-words w-full">'.$row['description'].'
+            </p>
+            <p class="text-[12px] text-slate-400 text-end">'.$notePosted.'
+        </div>
+    </div>
+</div>
+
+       
+        ';
+    }
 }

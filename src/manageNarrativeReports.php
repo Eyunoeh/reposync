@@ -3,6 +3,8 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     header("Location: 404.php");
     exit();
 }
+
+include '../DatabaseConn/databaseConn.php';
 ?>
 
 <div class="px-9 pt-2 flex justify-end items-stretch flex-wrap  pb-0 bg-transparent">
@@ -20,8 +22,18 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                 <div class="w-[40%]">
                     <select class="w-full h-10 rounded bg-slate-50 font-semibold"  id="programFilter" onchange="handleSearch('searchNarrativeInput', 'narrativeReportsTable')">
                         <option value="">Select Program</option>
-                        <option value="BSIT">BSIT</option>
-                        <option value="BSBM">BSBM</option>
+                        <?php
+                        $sql = "SELECT * FROM  program";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->execute();
+                        $res = $stmt->get_result();
+                        while ($row = $res->fetch_assoc()){
+                            echo '<option >'.$row['program_code'].'</option>
+                                               ';
+
+                        }
+
+                        ?>
                     </select>
                 </div>
             </form>
@@ -127,10 +139,19 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
                                 <select required name="program" class="select select-bordered w-full bg-slate-100 ">
-                                    <option>Select program</option>
-                                    <option>BSIT</option>
-                                    <option>BSCS</option>
-                                    <option>BSCpE</option>
+                                    <option selected disabled>Select program</option>
+                                    <?php
+                                    $sql = "SELECT * FROM  program";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option >'.$row['program_code'].'</option>
+                                               ';
+
+                                    }
+
+                                    ?>
                                 </select>
 
                             </label>
@@ -138,8 +159,18 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                 <div class="label">
                                     <span class="label-text text-slate-700">Section</span>
                                 </div>
-                                <input required name="section" type="text" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
+                                <select required name="section" class="select select-bordered w-full bg-slate-100 ">
+                                    <option>Select Section</option>
+                                    <?php
+                                    $sql = "SELECT * FROM  section";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option>'.$row['section'].'</option>';
+                                    }
+                                    ?>
+                                </select>                            </label>
                         </div>
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
@@ -227,18 +258,41 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                 </div>
                                 <select required name="program" class="select select-bordered w-full bg-slate-100 ">
                                     <option>Select program</option>
-                                    <option>BSIT</option>
-                                    <option>BSCS</option>
-                                    <option>BSCpE</option>
+                                    <?php
+                                    $sql = "SELECT * FROM  program";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option >'.$row['program_code'].'</option>
+                                               ';
+
+                                    }
+
+                                    ?>
                                 </select>
 
                             </label>
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Section</span>
                                 </div>
-                                <input required name="section" type="text" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <select required name="section" class="select select-bordered w-full bg-slate-100 ">
+                                    <option>Select Section</option>
+                                    <?php
+                                    $sql = "SELECT * FROM  section";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option>'.$row['section'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+
                             </label>
+
                         </div>
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
@@ -249,7 +303,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">Narrative Report PDF</span>
+                                    <span class="label-text text-slate-700">Replace Existing Narrative Report</span>
                                 </div>
                                 <input name="final_report_file" accept="application/pdf" type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
                             </label>
@@ -269,7 +323,31 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     </div>
 </dialog>
 
-
+<dialog id="SuccessLUploadNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('SuccessLUploadNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-success absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>New narrative report has been uploaded!</span>
+        </div>
+    </div>
+</dialog>
+<dialog id="SuccessNarrativeEdit"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('SuccessNarrativeEdit')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-info absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>Narrative report has been updated!</span>
+        </div>
+    </div>
+</dialog>
+<dialog id="archiveNarrativeNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('archiveNarrativeNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-warning absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>Narrative report has been archived!</span>
+        </div>
+    </div>
+</dialog>
 <script>
+
     dashboard_student_NarrativeReports();
 </script>

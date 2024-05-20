@@ -4,9 +4,87 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="adminAnnoucement Fixed new api key">
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="added try catch block at uploading narrative reports">
+      <change afterPath="$PROJECT_DIR$/src/ManageProgSec.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Jesse_Pinkman_BSIT_3A_01234567.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Leo_Christiano_BSIT_4C_201231231.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Sally_KitKit_BSIT_3A_212065477.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page-9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Jesse_Pinkman_BSIT_3A_01234567/Jesse_Pinkman_BSIT_3A_01234567_page.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-18.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-19.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-20.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page-9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Leo_Christiano_BSIT_4C_201231231/Leo_Christiano_BSIT_4C_201231231_page.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-18.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-19.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-20.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page-9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Sally_KitKit_BSIT_3A_212065477/Sally_KitKit_BSIT_3A_212065477_page.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/announcement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/announcement.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home_nav.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/home_nav.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageAdviserNote.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdviserNote.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageNarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageNarrativeReports.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/narratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/narratives.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +150,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
+    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -202,7 +280,15 @@
       <workItem from="1715929629746" duration="6200000" />
       <workItem from="1715945633279" duration="17100000" />
       <workItem from="1716006125328" duration="2735000" />
-      <workItem from="1716010671531" duration="1096000" />
+      <workItem from="1716010671531" duration="4183000" />
+      <workItem from="1716032717245" duration="18247000" />
+      <workItem from="1716096375877" duration="11262000" />
+      <workItem from="1716130320225" duration="517000" />
+      <workItem from="1716141372198" duration="2033000" />
+      <workItem from="1716189937155" duration="344000" />
+      <workItem from="1716199630830" duration="354000" />
+      <workItem from="1716200997470" duration="61000" />
+      <workItem from="1716206814862" duration="12000000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -463,7 +549,14 @@
       <option name="project" value="LOCAL" />
       <updated>1716011173402</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="added try catch block at uploading narrative reports">
+      <created>1716012090698</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1716012090698</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -502,7 +595,8 @@
     <MESSAGE value="5/8/2024 minor updates test conversion" />
     <MESSAGE value="notes" />
     <MESSAGE value="adminAnnoucement Fixed new api key" />
-    <option name="LAST_COMMIT_MESSAGE" value="adminAnnoucement Fixed new api key" />
+    <MESSAGE value="added try catch block at uploading narrative reports" />
+    <option name="LAST_COMMIT_MESSAGE" value="added try catch block at uploading narrative reports" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
