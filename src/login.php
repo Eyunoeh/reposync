@@ -59,8 +59,19 @@ if (isset($_SESSION['log_user_type'])){
 <div id="loader" class="hidden absolute h-[100vh] w-full grid place-items-center bg-black bg-opacity-35">
     <span class="loading loading-dots loading-lg text-white"></span>
 </div>
+<dialog id="loginWarning"  class="modal bg-black  bg-opacity-40 ">
+    <div class="card bg-warning w-[80vw] absolute top-10 sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div  class=" card-title sticky justify-center">
+            <h3 class="font-bold text-center text-lg  p-5" id="loginNotiftext"></h3>
+        </div>
+        <div class="p-4 w-full flex justify-center">
+            <button class="btn  btn-neutral  w-1/4 " onclick="closeModalForm('loginWarning')">OK</button>
+        </div>
+    </div>
+</dialog>
 
 </body>
+<script src="js/buttons_modal.js"></script>
 <script src="js/login.js">
 </script>
 

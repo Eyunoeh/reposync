@@ -14,15 +14,19 @@ document.addEventListener('submit', function (e){
         }
     });
     if (!isValid) {
-        alert("Please fill in all fields");
+        document.getElementById('loginNotiftext').innerHTML= 'Please fill in all fields';
+        openModalForm('loginWarning');
         return;
     }
     if (!emailRegex.test(formData.get('log_email'))){
-        alert('Input the right format');
+        document.getElementById('loginNotiftext').innerHTML= 'Please input the right Email format';
+        openModalForm('loginWarning');
         return;
     }
     if (formData.get('log_password').length < 8){
-        alert('minimum of 8 characters');
+        document.getElementById('loginNotiftext').innerHTML= 'Password must be at least 8 characters';
+        openModalForm('loginWarning');
+
         return;
     }
 
@@ -42,7 +46,8 @@ document.addEventListener('submit', function (e){
 
                 window.location.href = 'dashboard.php';
             } else if (parseInt(response) === 2) {
-                alert('Incorrect email or password');
+                document.getElementById('loginNotiftext').innerHTML= 'Incorrect email or password';
+                openModalForm('loginWarning');
                 document.getElementById('loader').classList.add('hidden');
             }
             console.log(response);

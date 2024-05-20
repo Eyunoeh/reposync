@@ -1516,7 +1516,7 @@ if ($action == 'getHomeNotes'){
     <div class="flex flex-col justify-center p-2 w-full">
         <h1 class="font-semibold">'.$row['title'].'</h1>
         <div class="max-h-[10rem] transition overflow-hidden hover:overflow-auto w-full">
-            <p class="text-justify text-sm break-words w-full">'.$row['description'].'
+            <p class="text-justify text-sm break-words w-full">aaaaa'.$row['description'].'
             </p>
             <p class="text-[12px] text-slate-400 text-end">'.$notePosted.'
         </div>
