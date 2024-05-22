@@ -11,7 +11,6 @@ function navigate(page) {
             document.getElementById('mainContent').innerHTML = html ;
 
             updateActiveLink(page);
-            home_student_NarrativeReports()
             get_WeeklyReports();
             getUploadLogs();
             getHomeActSched();

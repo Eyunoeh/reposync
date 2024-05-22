@@ -122,20 +122,14 @@ document.addEventListener('submit', function(e) {
                 remove_loader(loader_id);
                 closeModalForm(modal);
                 openModalForm(notification);
-
                 getNewData.forEach(func => func());
-
-            } else if (parseInt(response) === 2){
-               alert("Student id already exist");// para sa create new student user hindi pa final
-               remove_loader(loader_id);
-               enable_button(btn);
-            }else {
-                console.log(response);
+            } else {
+                alert(response);
+                remove_loader(loader_id);
+                enable_button(btn);
             }
-            e.target.reset();
         },
     });
-
 });
 
 function isEmpty(variable) {

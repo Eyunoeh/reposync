@@ -5,7 +5,8 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 }
 include '../DatabaseConn/databaseConn.php';
 ?>
-<div class="px-9 pt-2 flex justify-end items-stretch flex-wrap  pb-0 bg-transparent">
+<div class="px-9 pt-2 flex justify-between items-stretch flex-wrap  pb-0 bg-transparent">
+    <button class="btn btn-neutral btn-sm bg-slate-500 border-none text-slate-100 " >Export accounts</button>
     <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('newStudentdialog')">New Student</button>
 </div>
 
@@ -27,9 +28,8 @@ include '../DatabaseConn/databaseConn.php';
                         <th class="p-3 text-start ">School ID</th>
                         <th class="p-3 text-start ">Name</th>
                         <th class="p-3 text-start ">OJT Adviser</th>
-
                         <th class="p-3 text-end ">Program</th>
-                        <th class="p-3 text-end ">Section</th>
+                        <th class="p-3 text-end ">Company</th>
                         <th class="p-3 text-end ">Action</th>
                     </tr>
                     </thead>
@@ -77,36 +77,28 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">First name</span>
                                 </div>
-                                <input type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input required type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Middle name</span>
+                                </div>
+                                <input type="text"  name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Last name</span>
                                 </div>
-                                <input type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text" required name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Sex</span>
-                                </div>
-                                <div class="flex justify-start gap-2">
-                                    <div class="flex justify-center items-center flex-col">
-                                        <label class="text-sm">Male</label>
-                                        <input type="radio" name="user_Sex" value="Male" class="radio bg-gray-300" checked />
-                                    </div>
-                                    <div class="flex justify-center items-center flex-col">
-                                        <label class="text-sm">Female</label>
-                                        <input type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
-                                    </div>
-                                </div>
-                            </label>
+
                         </div>
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Address</span>
                                 </div>
-                                <input type="text" name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text" required name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -114,20 +106,35 @@ include '../DatabaseConn/databaseConn.php';
                                 </div>
                                 <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
+
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Sex</span>
+                                </div>
+                                <div class="flex justify-start gap-2">
+                                    <div class="flex justify-center items-center flex-col">
+                                        <label class="text-sm">Male</label>
+                                        <input required type="radio" name="user_Sex" value="Male" class="radio bg-gray-300"  />
+                                    </div>
+                                    <div class="flex justify-center items-center flex-col">
+                                        <label class="text-sm">Female</label>
+                                        <input required type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
                                 </div>
                                 <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
-                        </div>
-
-                        <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
-                                <select name="stud_Program" class="select select-bordered w-full bg-slate-100 " required>
+                                <select name="stud_Program" required class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select program</option>
                                     <?php
                                     $sql = "SELECT * FROM  program";
@@ -148,13 +155,22 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">Section</span>
                                 </div>
-                                <select name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
+                                <select  name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select section</option>
-                                    <option value="1">4A</option>
-                                    <option value="2">4B</option>
-                                    <option value="3">4C</option>
+                                    <?php
+                                    $sql = "SELECT * FROM  section";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option value="'.$row['section_id'].'">'.$row['section'].'</option>';
+                                    }
+                                    ?>
                                 </select>
                             </label>
+                        </div>
+                        <div class="flex justify-evenly gap-2">
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Adviser</span>
@@ -180,20 +196,32 @@ include '../DatabaseConn/databaseConn.php';
 
                                 </select>
                             </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Company Name</span>
+                                </div>
+                                <input type="text" name="stud_compName" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Training Hours</span>
+                                </div>
+                                <input type="text" name="stud_TrainingHours" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
                         </div>
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Account email</span>
                                 </div>
-                                <input name="user_Email" type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input name="user_Email" required type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <input type="hidden" name="user_type" value="student">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Password <span class="text-info"> (Predefined "CVSUOJT{Student ID}") </span>
                                 </div>
-                                <input name="user_Pass"   type="password" placeholder="Predefined password" data-theme="light"
+                                <input   type="password" placeholder="Predefined password" data-theme="light"
                                        disabled class="disabled disabled:text-black input w-full max-w-xs" />
                             </label>
                         </div>
@@ -223,29 +251,19 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">First name</span>
                                 </div>
-                                <input type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input required type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Middle name</span>
+                                </div>
+                                <input type="text"  name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Last name</span>
                                 </div>
-                                <input type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Sex</span>
-                                </div>
-                                <div class="flex justify-start gap-2">
-                                    <div class="flex justify-center items-center flex-col">
-                                        <label class="text-sm">Male</label>
-                                        <input type="radio" name="user_Sex" value="Male" class="radio bg-gray-300" checked />
-                                    </div>
-                                    <div class="flex justify-center items-center flex-col">
-                                        <label class="text-sm">Female</label>
-                                        <input type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
-                                    </div>
-                                </div>
-
+                                <input type="text" required name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                         </div>
                         <div class="flex justify-evenly gap-2">
@@ -253,7 +271,7 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">Address</span>
                                 </div>
-                                <input type="text" name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text" required name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -261,20 +279,36 @@ include '../DatabaseConn/databaseConn.php';
                                 </div>
                                 <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
+                                    <span class="label-text text-slate-700">Sex</span>
                                 </div>
-                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <div class="flex justify-start gap-2">
+                                    <div class="flex justify-center items-center flex-col">
+                                        <label class="text-sm">Male</label>
+                                        <input required type="radio" name="user_Sex" value="Male" class="radio bg-gray-300"  />
+                                    </div>
+                                    <div class="flex justify-center items-center flex-col">
+                                        <label class="text-sm">Female</label>
+                                        <input required type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
+                                    </div>
+                                </div>
                             </label>
                         </div>
 
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
+                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
+                                </div>
+                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
-                                <select name="stud_Program" class="select select-bordered w-full bg-slate-100 " required>
+                                <select name="stud_Program" required class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select program</option>
                                     <?php
                                     $sql = "SELECT * FROM  program";
@@ -288,21 +322,30 @@ include '../DatabaseConn/databaseConn.php';
                                     }
 
                                     ?>
-
                                 </select>
-                            </label>
 
+                            </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Section</span>
                                 </div>
-                                <select name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
+                                <select  name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select section</option>
-                                    <option value="1">4A</option>
-                                    <option value="2">4B</option>
-                                    <option value="3">4C</option>
+                                    <?php
+                                    $sql = "SELECT * FROM  section";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option value="'.$row['section_id'].'">'.$row['section'].'</option>';
+                                    }
+                                    ?>
                                 </select>
                             </label>
+
+                        </div>
+                        <div class="flex justify-evenly gap-2">
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Adviser</span>
@@ -327,6 +370,18 @@ include '../DatabaseConn/databaseConn.php';
 
 
                                 </select>
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Company Name</span>
+                                </div>
+                                <input type="text" name="stud_compName" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Training Hours</span>
+                                </div>
+                                <input type="text" name="stud_TrainingHours" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                         </div>
                         <hr class="w-full border bg-slate-700 mt-10 ">

@@ -18,8 +18,7 @@
         </button>
             <nav class="lg:inline-flex hidden space-x-4 text-md lg:text-xl  justify-between items-center" aria-label="main">
 
-                <a href="#" id="narrativesLink" class="transition-all hover:cursor-pointer
-                hover:text-black hover:bg-gray-300  hover:rounded p-2" >Narrative Reports</a>
+
 
                 <a href="#" id="announcement" class="transition-all hover:cursor-pointer
                 hover:text-black hover:bg-gray-300 hover:rounded p-2">Announcement</a>
@@ -30,6 +29,9 @@
                  </div>
                 <?php
                 endif;?>
+                <a href="#" id="narrativesLink" class="transition-all hover:cursor-pointer
+                hover:text-black hover:bg-gray-300  hover:rounded p-2  <?php echo isset($_SESSION['log_user_type'])  ? '' : 'hidden'; ?>" >Narrative Reports</a>
+
 
                 <a href="#" id="reportLink" class="transition-all hover:cursor-pointer
                 hover:text-black hover:bg-gray-300 hover:rounded p-2

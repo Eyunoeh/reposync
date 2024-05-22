@@ -5,84 +5,81 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 }
 
 include '../DatabaseConn/databaseConn.php';
+function getTotalNarrativeReports($program) {
+    include '../DatabaseConn/databaseConn.php';
+
+    $sql = "SELECT COUNT(*) AS total FROM narrativereports WHERE program = ?";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("s", $program);
+        $stmt->execute();
+        $stmt->bind_result($total);
+        $stmt->fetch();
+        $stmt->close();
+        return $total;
+    } else {
+        return "Error preparing the SQL statement: " . $conn->error;
+    }
+}
+
+session_start()
 ?>
 
-<div class="px-9 pt-2 flex justify-end items-stretch flex-wrap  pb-0 bg-transparent">
-    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('newNarrative')">New Narrative Report</button>
-
-</div>
 <div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
     <div class="relative flex flex-col min-w-0 break-words  h-full rounded-2xl border-stone-200 bg-light/30">
         <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent ">
-            <form class="flex w-full justify-between">
+            <form class="flex w-full justify-start">
                 <div class="w-[40%]">
                     <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                         focus:outline-none focus:shadow-outline" id="searchNarrativeInput" type="text" placeholder="Search" onkeyup="handleSearch('searchNarrativeInput', 'narrativeReportsTable')">
                 </div>
-                <div class="w-[40%]">
-                    <select class="w-full h-10 rounded bg-slate-50 font-semibold"  id="programFilter" onchange="handleSearch('searchNarrativeInput', 'narrativeReportsTable')">
-                        <option value="">Select Program</option>
-                        <?php
-                        $sql = "SELECT * FROM  program";
-                        $stmt = $conn->prepare($sql);
-                        $stmt->execute();
-                        $res = $stmt->get_result();
-                        while ($row = $res->fetch_assoc()){
-                            echo '<option >'.$row['program_code'].'</option>
-                                               ';
 
-                        }
-
-                        ?>
-                    </select>
-                </div>
             </form>
         </div>
         <div class="block py-8 pt-6 px-9">
-            <div class="overflow-auto h-96">
-                <table id="narrativeReportsTable" class="w-full my-0 border-neutral-200" >
+            <div class="overflow-auto h-full">
+                <table id="narrativeReportsTable" class="w-full my-0 border-neutral-200 text-sm">
                     <thead class="align-bottom z-20">
-                    <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
-                        <th class="p-3 text-start ">Name</th>
-                        <th class="p-3 text-start ">OJT adviser</th>
-                        <th class="p-3 text-end ">Program</th>
-                        <th class="p-3 text-end ">Section</th>
-                        <th class="p-3 text-end ">Action</th>
+                    <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral">
+                        <th class="p-3 text-start">Code</th>
+                        <th class="p-3 text-start">Program</th>
+                        <th class="p-3 text-end">Total narratives</th>
+                        <th class="p-3 text-center">View</th>
                     </tr>
                     </thead>
-                    <tbody id="narrativeReportsTableBody" class="text-center text-slate-600">
-                        <tr class="border-b border-dashed last:border-b-0 p-3">
-                            <td class="p-3 text-start">
-                                <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
-                            </td>
-                            <td class="p-3 text-start">
-                                <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
-                            </td>
-                            <td class="p-3 text-center">
-                                <span class="font-semibold text-light-inverse text-md/normal">4A</span>
-                            </td>
-                            <td class="p-3 text-center">
-                                <span class="font-semibold text-light-inverse text-md/normal">BSIT</span>
-                            </td>
-                            <td class="p-3 text-center">
-                                <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>
-                                <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-error"><i class="fa-solid fa-trash"></i></a>
-                            </td>
-                        </tr>
+                    <tbody id="narrativeReportsTableBody" class="text-slate-600">
+                    <?php
+                    $sql = "SELECT * FROM  program";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
+                    $res = $stmt->get_result();
+                    while ($row = $res->fetch_assoc()){
+                        echo '<tr class="border-b border-dashed last:border-b-0">
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">'.$row['program_code'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">'.$row['program_name'].'</span>
+                        </td>
+                        <td class="p-3 text-end">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.getTotalNarrativeReports($row['program_code']).'</span>
+                        </td>
+                        <td class="p-3 text-center">
+                            <a href="dashboardViewnarrativeReports.php?program='.$row['program_code'].'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>
+                        </td>
+                    </tr>
+                                               ';
+
+
+                    }
+
+                    ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <hr class="w-full p-2">
-    <!--
-    <div class="flex justify-center pr-6 w-full">
-        <div class="join grid grid-cols-2">
-            <button id="prev-page" class="join-item btn btn-outline" onclick="prev_Page()">Previous page</button>
-            <button id="next-page" class="join-item btn btn-outline" onclick="next_Page()">Next</button>
-        </div>
-    </div>
-    -->
+
 </div>
 
 <dialog id="newNarrative" class="modal bg-black  bg-opacity-40">
@@ -177,7 +174,26 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Adviser</span>
                                 </div>
-                                <input required name="ojt_adviser" type="text" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <select name="ojt_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select adviser</option>
+                                    <?php
+                                    $adv_option_query = "SELECT ui.*, acc.*
+                                 FROM tbl_user_info ui
+                                 INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
+                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
+                                    $result = $conn->query($adv_option_query);
+
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+                                        }
+                                    } else {
+                                        echo "<option value=''>N/A</option>";
+                                    }
+                                    ?>
+
+
+                                </select>
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -299,7 +315,26 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Adviser</span>
                                 </div>
-                                <input required name="ojt_adviser" type="text" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <select name="ojt_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select adviser</option>
+                                    <?php
+                                    $adv_option_query = "SELECT ui.*, acc.*
+                                 FROM tbl_user_info ui
+                                 INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
+                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
+                                    $result = $conn->query($adv_option_query);
+
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+                                        }
+                                    } else {
+                                        echo "<option value=''>No users found</option>";
+                                    }
+                                    ?>
+
+
+                                </select>
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -347,7 +382,3 @@ include '../DatabaseConn/databaseConn.php';
         </div>
     </div>
 </dialog>
-<script>
-
-    dashboard_student_NarrativeReports();
-</script>

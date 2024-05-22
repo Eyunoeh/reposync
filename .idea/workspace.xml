@@ -4,13 +4,85 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="newdata">
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="login Notif">
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/Newtest_aasd_BSBM_4B_123355443.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/TestConvertFname_TestConvertLname_BSBM_4C_201235543.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/Yuri_Ausan_BSCS_4C_123123455.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/james_asugan_BSIT_4A_212304545.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page-9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345/ASASDASDdda_SDSDFSDFSD_BSIT_4A_912312345_page.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Newtest_aasd_BSBM_4B_123355443/Newtest_aasd_BSBM_4B_123355443_page-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Newtest_aasd_BSBM_4B_123355443/Newtest_aasd_BSBM_4B_123355443_page-3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Newtest_aasd_BSBM_4B_123355443/Newtest_aasd_BSBM_4B_123355443_page.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/TestConvertFname_TestConvertLname_BSBM_4C_201235543/TestConvertFname_TestConvertLname_BSBM_4C_201235543_page-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/TestConvertFname_TestConvertLname_BSBM_4C_201235543/TestConvertFname_TestConvertLname_BSBM_4C_201235543_page-3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/TestConvertFname_TestConvertLname_BSBM_4C_201235543/TestConvertFname_TestConvertLname_BSBM_4C_201235543_page.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Yuri_Ausan_BSCS_4C_123123455/Yuri_Ausan_BSCS_4C_123123455_page-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Yuri_Ausan_BSCS_4C_123123455/Yuri_Ausan_BSCS_4C_123123455_page-3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Yuri_Ausan_BSCS_4C_123123455/Yuri_Ausan_BSCS_4C_123123455_page.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page-9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/james_asugan_BSIT_4A_212304545/james_asugan_BSIT_4A_212304545_page.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_4.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/664c52207326d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/664c52207415a.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/664c5220757bc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/664d4c432cd1a.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/664d4c432e21d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dashboardViewnarrativeReports.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/htmlHead.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/announcement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/announcement.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboardContent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardContent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home_nav.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/home_nav.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageNarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageNarrativeReports.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/narratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/narratives.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +287,10 @@
       <workItem from="1716199630830" duration="354000" />
       <workItem from="1716200997470" duration="61000" />
       <workItem from="1716206814862" duration="12415000" />
-      <workItem from="1716247229345" duration="1600000" />
+      <workItem from="1716247229345" duration="4579000" />
+      <workItem from="1716276374346" duration="21345000" />
+      <workItem from="1716338731289" duration="4378000" />
+      <workItem from="1716346653678" duration="11929000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -497,7 +572,14 @@
       <option name="project" value="LOCAL" />
       <updated>1716225109667</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="newdata">
+      <created>1716249557072</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1716249557072</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

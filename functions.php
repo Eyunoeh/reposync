@@ -11,4 +11,4 @@ function decrypt_data($data, $key) {
     list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
     return openssl_decrypt($encrypted_data, $cipher, $key, OPENSSL_RAW_DATA, $iv);
 }
-$secret_key = 'TheSecretKey#02'; //id encryption password
+$secret_key = 'TheSecretKey#02'; //id encryption password dont remove

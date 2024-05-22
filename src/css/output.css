@@ -2664,10 +2664,6 @@ details.collapse summary::-webkit-details-marker {
   margin-inline-start: -1px;
 }
 
-.join-item:focus {
-  isolation: isolate;
-}
-
 .link:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -4489,12 +4485,24 @@ details.collapse summary::-webkit-details-marker {
   width: 100vw;
 }
 
+.w-\[10rem\] {
+  width: 10rem;
+}
+
+.w-\[12rem\] {
+  width: 12rem;
+}
+
 .w-\[300px\] {
   width: 300px;
 }
 
 .w-\[40\%\] {
   width: 40%;
+}
+
+.w-\[40rem\] {
+  width: 40rem;
 }
 
 .w-\[50rem\] {
@@ -4525,6 +4533,10 @@ details.collapse summary::-webkit-details-marker {
   min-width: 0px;
 }
 
+.min-w-10 {
+  min-width: 2.5rem;
+}
+
 .min-w-32 {
   min-width: 8rem;
 }
@@ -4539,6 +4551,10 @@ details.collapse summary::-webkit-details-marker {
 
 .min-w-\[300px\] {
   min-width: 300px;
+}
+
+.min-w-\[40rem\] {
+  min-width: 40rem;
 }
 
 .max-w-6xl {
@@ -4608,10 +4624,6 @@ details.collapse summary::-webkit-details-marker {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-}
-
-.grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .flex-col {
@@ -4807,19 +4819,9 @@ details.collapse summary::-webkit-details-marker {
   border-color: rgb(231 229 228 / var(--tw-border-opacity));
 }
 
-.bg-accent {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-a,oklch(var(--a)/var(--tw-bg-opacity)));
-}
-
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
-}
-
-.bg-error {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-er,oklch(var(--er)/var(--tw-bg-opacity)));
 }
 
 .bg-gray-200 {
@@ -4840,21 +4842,6 @@ details.collapse summary::-webkit-details-marker {
 .bg-green-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(21 128 61 / var(--tw-bg-opacity));
-}
-
-.bg-info {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-in,oklch(var(--in)/var(--tw-bg-opacity)));
-}
-
-.bg-purple-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(192 132 252 / var(--tw-bg-opacity));
-}
-
-.bg-secondary {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-s,oklch(var(--s)/var(--tw-bg-opacity)));
 }
 
 .bg-slate-100 {
@@ -4880,11 +4867,6 @@ details.collapse summary::-webkit-details-marker {
 .bg-slate-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(51 65 85 / var(--tw-bg-opacity));
-}
-
-.bg-success {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-su,oklch(var(--su)/var(--tw-bg-opacity)));
 }
 
 .bg-transparent {
@@ -5314,6 +5296,10 @@ details.collapse summary::-webkit-details-marker {
   transition-duration: 150ms;
 }
 
+.duration-100 {
+  transition-duration: 100ms;
+}
+
 .duration-200 {
   transition-duration: 200ms;
 }
@@ -5642,8 +5628,8 @@ body{
     height: 37rem;
   }
 
-  .lg\:justify-start {
-    justify-content: flex-start;
+  .lg\:justify-center {
+    justify-content: center;
   }
 
   .lg\:justify-between {

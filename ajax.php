@@ -1,9 +1,11 @@
 <?php
-
+/*
 if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
     header("Location: 404.php");
     exit();
 }
+*/
+
 
 session_start();
 date_default_timezone_set('Asia/Manila');
@@ -13,11 +15,10 @@ include 'functions.php';
 
 $action = $_GET['action'];
 extract($_POST);
-/*
-if ($action== 'signUp'){
-    echo 1;
-}
-*/
+
+
+
+
 function countFileComments($file_id){
     include "DatabaseConn/databaseConn.php";
 
@@ -351,13 +352,13 @@ if ($action == 'newFinalReport'){
                     $narrative_status = 'OK';
                     if ($file_error === UPLOAD_ERR_OK) {
                         try {
-                            $new_final_report = $conn->prepare("INSERT INTO narrativereports (stud_school_id, sex,
-                                      first_name, last_name, program, section, OJT_adviser,narrative_file_name, upload_date, file_status)
+                            $new_final_report = $conn->prepare("INSERT INTO narrativereports (stud_school_id, OJT_adviser_ID, sex,
+                                      first_name, last_name, program, section, narrative_file_name, upload_date, file_status)
                                       values (?,?,?,?,?,?,?,?,?,?)");
 
-                            $new_final_report->bind_param("ssssssssss",
-                                $school_id, $stud_sex, $first_name, $last_name,
-                                $program, $section, $ojt_adviser, $new_file_name,
+                            $new_final_report->bind_param("sissssssss",
+                                $school_id, $ojt_adviser,$stud_sex, $first_name, $last_name,
+                                $program, $section,  $new_file_name,
                                 $current_date_time, $narrative_status);
 
 
@@ -394,72 +395,66 @@ if ($action == 'newFinalReport'){
         exit();
 }
 if ($action == 'get_narrativeReports') {
-    $sql = "SELECT * FROM narrativereports where file_status = 'OK' order by upload_date desc";
-    $result = $conn->query($sql);
+    if (!isset($_SESSION['log_user_id'])){
+        exit();
+    }
+    $selectProgram = $_GET['program'];
+
+    $sql = "SELECT narrativereports.*, tbl_user_info.user_id,
+       tbl_user_info.first_name AS adv_first_name, 
+       tbl_user_info.last_name AS adv_last_name
+FROM narrativereports
+JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id
+WHERE narrativereports.file_status = 'OK' AND narrativereports.program = ?
+ORDER BY narrativereports.upload_date DESC;
+
+";
+    $getNarrtivesStmt = $conn->prepare($sql);
+    $getNarrtivesStmt->bind_param('s', $selectProgram);
+    $getNarrtivesStmt->execute();
+    $result = $getNarrtivesStmt->get_result();
     $number = 1;
     if ($result === false) {
         echo "Error: " . $conn->error;
     } else {
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                if (isset($_GET['homeTable']) && $_GET['homeTable'] == 'request') {
+                 if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'adviser') {
                     echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">' . $number++ . '</span>
+                       <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-sm">' . $row['stud_school_id'] . '</span>
                         </td>
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
                         </td>
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">' . $row["program"] . '</span>
-                        </td>
-                        <td class="p-3 text-end ">
-                            <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>
-                        </td>
-                      </tr>';
-
-                }
-                else if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'adviser' and isset($_GET['dashboardTable']) && $_GET['dashboardTable'] == 'request') {
-                    echo '<tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-sm">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
+                            <span class="font-semibold text-light-inverse text-md/normal">' . $row['adv_first_name'] . ' ' . $row['adv_last_name'] . '</span>
                         </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-sm">' . $row['OJT_adviser'] . '</span>
-                        </td>
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-sm">' . $row["program"] . '</span>
-                        </td>
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-sm">' . $row["section"] . '</span>
-                        </td>
+                      
+                
                         <td class="p-3 text-end ">
                             <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
                         </td>
                       </tr>';
                 }
-                else if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'admin' and isset($_GET['dashboardTable']) && $_GET['dashboardTable'] == 'request') {
+                 if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'admin') {
                     echo '<tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
+                            <span class="font-semibold text-light-inverse text-sm">' . $row['stud_school_id'] . '</span>
                         </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">' . $row['OJT_adviser'] . '</span>
+                        <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
                         </td>
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">' . $row["program"] . '</span>
+                        <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal  break-words">' . $row['adv_first_name'] . ' ' . $row['adv_last_name'] . '</span>
                         </td>
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">' . $row["section"] . '</span>
-                        </td>
+                    
+                  
                         <td class="p-3 text-end ">
                             <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
                             <a onclick="openModalForm(\'EditNarrative\');editNarrative(this.getAttribute(\'data-narrative\'))" id="archive_narrative" data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"><i class="fa-solid fa-pen-to-square"></i></a>
                         </td>
                       </tr>';
-                }else{
-
-                    exit();
                 }
             }
         }
@@ -481,6 +476,8 @@ if ($action == 'narrativeReportsJson'){
         if ($result && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $row['narrative_id'] = encrypt_data($row['narrative_id'], $secret_key);
+
+            header('Content-Type: application/json');
             echo json_encode($row);
         } else {
             echo "Error: No data found for the given narrative ID.";
@@ -524,19 +521,20 @@ if ($action === 'UpdateNarrativeReport'){
         }
         $update_final_report = $conn->prepare("UPDATE narrativereports
                                       SET stud_school_id = ?,
+                                          OJT_adviser_ID = ?,
                                           sex = ?,
                                           first_name = ?,
                                           last_name = ?,
                                           program = ?,
                                           section = ?,
-                                          OJT_adviser = ?,
+                                          
                                           narrative_file_name = ?,
                                           upload_date = ?,
                                           file_status = ?
                                       WHERE narrative_id = ?");
-        $update_final_report->bind_param("ssssssssssi",
-            $school_id, $stud_sex,$first_name, $last_name,
-            $program, $section, $ojt_adviser, $new_file_name,
+        $update_final_report->bind_param("sissssssssi",
+            $school_id, $ojt_adviser,$stud_sex,$first_name, $last_name,
+            $program, $section, $new_file_name,
             $current_date_time, $narrative_status,$narrative_id);
 
 
@@ -691,6 +689,7 @@ if ($action == 'newUser') {
 
     $user_first_name = isset($_POST['user_Fname']) ? sanitizeInput($_POST['user_Fname']) : '';
     $user_last_name = isset($_POST['user_Lname']) ? sanitizeInput($_POST['user_Lname']) : '';
+    $user_middle_name = isset($_POST['user_Mname']) ? sanitizeInput($_POST['user_Mname']) : 'N/A';
     $user_shc_id = isset($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
     $user_sex = isset($_POST['user_Sex']) ? sanitizeInput($_POST['user_Sex']) : '';
     $user_contact_number = isset($_POST['contactNumber']) ? sanitizeInput($_POST['contactNumber']) : '';
@@ -698,6 +697,8 @@ if ($action == 'newUser') {
     $user_program = isset($_POST['stud_Program']) ? sanitizeInput($_POST['stud_Program']) : '';
     $user_section = isset($_POST['stud_Section']) ? sanitizeInput($_POST['stud_Section']) : '';
     $stud_adviser = isset($_POST['stud_adviser']) ? sanitizeInput($_POST['stud_adviser']) : '';
+    $stud_compName = isset($_POST['stud_compName']) ? sanitizeInput($_POST['stud_compName']) : 'N/A';
+    $stud_trainingHours = isset($_POST['stud_TrainingHours']) ? sanitizeInput($_POST['stud_TrainingHours']) : 'N/A';
     $user_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
     $user_type = isset($_POST['user_type']) ?sanitizeInput($_POST['user_type']) : '';
     $user_password = isset($_POST['user_password']) && sanitizeInput($_POST['user_password']) ? $_POST['user_password'] :'';
@@ -729,12 +730,19 @@ if ($action == 'newUser') {
         $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
 
 
-        $insert_sql = "INSERT INTO tbl_user_info (first_name, last_name, address, contact_number, school_id, sex, user_type) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $insert_sql = "INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number, school_id, sex, user_type) 
+                VALUES (?, ?, ? , ?, ?, ?, ?, ?)";
         $insert_stmt = $conn->prepare($insert_sql);
-        $insert_stmt->bind_param("sssssss", $user_first_name, $user_last_name, $user_address, $user_contact_number,
+        $insert_stmt->bind_param("ssssssss", $user_first_name, $user_middle_name,$user_last_name, $user_address, $user_contact_number,
             $user_shc_id, $user_sex,$user_type);
-        $insert_stmt->execute();
+        if (!$insert_stmt->execute()) {
+            if ($conn->errno == 1062) {
+                echo 'Error: Email already exists.';
+            } else {
+                echo 'Error: ' . $conn->error;
+            }
+        }
+
 
 
         $user_id = $insert_stmt->insert_id;
@@ -748,10 +756,10 @@ if ($action == 'newUser') {
 
         if ( $user_program !== '' && $user_section !== '' && $user_type == 'student' && $stud_adviser !== '')
         {
-            $student_sql = "INSERT INTO tbl_students (user_id, program_id, section_id) 
-                VALUES (?, ?, ?)";
+            $student_sql = "INSERT INTO tbl_students (user_id, program_id, section_id, company_name, training_hours) 
+                VALUES (?, ?, ?, ?, ?)";
             $student_stmt = $conn->prepare($student_sql);
-            $student_stmt->bind_param("iii", $user_id, $user_program, $user_section);
+            $student_stmt->bind_param("iiiss", $user_id, $user_program, $user_section,$stud_compName, $stud_trainingHours);
             $student_stmt->execute();
             $advisory_sql = "INSERT INTO advisory_list (adv_sch_user_id, stud_sch_user_id) VALUES (?,?)";
             $advisory_stmt = $conn->prepare($advisory_sql);
@@ -785,6 +793,8 @@ if ($action == 'getStudentsList'){
                                 a.date_created,
                                 se.section_id,
                                 se.section,
+                                ad.adv_sch_user_id as adviserUserId,
+                                s.*,
                                 IFNULL(CONCAT(adv.first_name, ' ', adv.last_name), 'N/A') AS adviser_name
                             FROM 
                                 tbl_students s
@@ -804,14 +814,39 @@ if ($action == 'getStudentsList'){
                                 a.status = 'active' 
                                 AND u.user_type = 'student'
                             ORDER BY 
-                                a.date_created ASC";
+                                a.date_created desc";
     $result = $conn->query($fetch_enrolled_stud);
     if ($result === false){
         echo "Error: " . $conn->error;
     }
     if ($result->num_rows > 0){
         while ($row = $result->fetch_assoc()){
-            echo '<tr class="border-b border-dashed last:border-b-0 p-3">
+            if ($_SESSION['log_user_type'] == 'adviser' and$_SESSION['log_user_id'] == $row['adviserUserId']){
+                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['school_id'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$row['last_name'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['adviser_name'].'</span>
+                        </td>
+
+                        <td class="p-3 text-end">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['program_code'].'</span>
+                        </td>
+                        <td class="p-3 text-end">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['company_name'].'</span>
+                        </td>
+                        
+                        <td class="p-3 text-end">
+                            <a href="#" onclick="openModalForm(\'editStuInfo\');editUserStud_Info(this.getAttribute(\'data-id\'))" data-id="' . urlencode(encrypt_data($row['user_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
+                        </td>
+                    </tr>';
+            }
+            else if ($_SESSION['log_user_type'] == 'admin'){
+                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['school_id'].'</span>
                         </td>
@@ -823,16 +858,18 @@ if ($action == 'getStudentsList'){
                         </td>
 
                 
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['section'].'</span>
-                        </td>
+                        
                         <td class="p-3 text-end">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['program_code'].'</span>
+                        </td>
+                        <td class="p-3 text-end">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['company_name'].'</span>
                         </td>
                         <td class="p-3 text-end">
                             <a href="#" onclick="openModalForm(\'editStuInfo\');editUserStud_Info(this.getAttribute(\'data-id\'))" data-id="' . urlencode(encrypt_data($row['user_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
                         </td>
                     </tr>';
+            }
         }
     }
 }
@@ -859,6 +896,8 @@ if ($action == 'getStudInfoJson') {
                                 a.status,
                                 se.section_id,
                                 se.section,
+                                s.company_name, 
+                                s.training_hours,
                                 IFNULL(ad.adv_sch_user_id, '') AS adviser_id,
                                 IFNULL(CONCAT(adv.first_name, ' ', adv.last_name), 'No adviser') AS adviser_name
                             FROM 
@@ -915,6 +954,8 @@ if ($action == 'updateUserInfo'){
     $editUser_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
     $editUser_user_id = isset($_POST['user_id']) ? sanitizeInput($_POST['user_id']) : '';
     $edituser_type = isset($_POST['user_type']) && sanitizeInput($_POST['user_type']) ? $_POST['user_type']: '';
+    $editStud_compName = isset($_POST['stud_compName']) ? sanitizeInput($_POST['stud_compName']) : 'N/A';
+    $edit_trainingHours = isset($_POST['stud_TrainingHours']) ? sanitizeInput($_POST['stud_TrainingHours']) : 'N/A';
 
 
     if ($editUser_first_name !== '' &&
@@ -944,22 +985,23 @@ if ($action == 'updateUserInfo'){
 
 
         if ($stmt->errno == 1062) {
-            // Error code 1062  duplicate entry error
-            echo 2;// duplicate stud id
-            exit; // Stop execution
+            echo "School id already exist";
+            exit;
         } else if ($stmt->errno) {
-            // Handle other MySQL errors
+
             echo 'Error: ' . $stmt->error;
-            exit; // Stop execution
+            exit;
         }
         if ($editStud_program !== '' && //execute only if the admin editing student type user
             $editStud_section !== '' && $edituser_type == 'student'){
             $update_stud_info = "UPDATE tbl_students 
                             SET program_id = ?, 
-                                section_id = ? 
+                                section_id = ? ,
+                                company_name= ?, 
+                                training_hours = ?
                             WHERE user_id = ?";
             $stmt_update_info = $conn->prepare($update_stud_info);
-            $stmt_update_info->bind_param("iii", $editStud_program, $editStud_section, $editUser_user_id);
+            $stmt_update_info->bind_param("iissi", $editStud_program, $editStud_section, $editStud_compName, $edit_trainingHours , $editUser_user_id);
             $stmt_update_info->execute();
             if ($editStud_adviser !== ''){
                 $check_query = "SELECT * FROM advisory_list WHERE stud_sch_user_id = ?";
@@ -989,11 +1031,22 @@ if ($action == 'updateUserInfo'){
                            WHERE user_id = ?";
             $stmt_update_account = $conn->prepare($update_account);
             $stmt_update_account->bind_param("ssi", $editUser_email, $hashed_password, $editUser_user_id);
-            $stmt_update_account->execute();
 
-            //add emailing
+            if (!$stmt_update_account->execute()){
+                if ($stmt_update_account->errno == 1062) {
+                    echo "Email id already exist";
+                    exit;
+                } else if ($stmt_update_account->errno) {
+
+                    echo 'Error: ' . $stmt->error;
+                    exit;
+                }
+            }
+
         }
         echo 1;
+        exit();
+
 
     } else {
         echo 'Error: Some required fields are empty.';
@@ -1516,7 +1569,7 @@ if ($action == 'getHomeNotes'){
     <div class="flex flex-col justify-center p-2 w-full">
         <h1 class="font-semibold">'.$row['title'].'</h1>
         <div class="max-h-[10rem] transition overflow-hidden hover:overflow-auto w-full">
-            <p class="text-justify text-sm break-words w-full">aaaaa'.$row['description'].'
+            <p class="text-justify text-sm break-words w-full">'.$row['description'].'
             </p>
             <p class="text-[12px] text-slate-400 text-end">'.$notePosted.'
         </div>

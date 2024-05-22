@@ -26,7 +26,6 @@ function navigate(page) {
         .then(response => response.text())
         .then(html => {
             document.getElementById('dashboard_main_content').innerHTML = html;
-            dashboard_student_NarrativeReports();
             get_studenUsertList();
             get_AdvUsertList();
             get_dashBoardnotes();
@@ -98,6 +97,17 @@ function dashboard_tab(id){
         navigate('ManageProgSec.php');
     }
     act_tab(tab.id);
+    if(tab.id === 'dshbContentLinkActStud'){
+        navigate('manageStudent.php');
+        act_tab('stud_list');
+    }else if(tab.id === 'dshbContentLinkActAdv'){
+        act_tab('adv_list');
+        navigate('manageAdvisers.php')
+    }else if(tab.id === 'dshbContentLinkNarratives'){
+        act_tab('dashboard_narrative');
+        navigate('manageNarrativeReports.php')
+    }
+
 }
 function act_tab(id){
     const allTabs = document.querySelectorAll('.dashboard_tab'); // Assuming all tabs have the 'tab' class
@@ -209,33 +219,6 @@ function getPrograms(){
 }
 
 
-function editNarrative(narrative_id){
-    $.ajax({
-        url: '../ajax.php?action=narrativeReportsJson&narrative_id=' + narrative_id,
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            if (data){
-                document.querySelector('#EditNarrativeReportsForm input[name="first_name"]').value = data.first_name;
-                document.querySelector('#EditNarrativeReportsForm input[name="last_name"]').value = data.last_name;
-                document.querySelector('#EditNarrativeReportsForm input[name="school_id"]').value = data.stud_school_id;
-                document.querySelector('#EditNarrativeReportsForm select[name="program"]').value = data.program;
-                document.querySelector('#EditNarrativeReportsForm select[name="section"]').value = data.section;
-                if (data.sex === "Male") {
-                    document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Male"]').checked = true;
-                } else if (data.sex === "Female") {
-                    document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Female"]').checked = true;
-                }
-
-                document.querySelector('#EditNarrativeReportsForm input[name="ojt_adviser"]').value = data.OJT_adviser;
-                document.querySelector('#EditNarrativeReportsForm input[name="narrative_id"]').value = data.narrative_id;
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
 
 function editUserStud_Info(user_id) {
     $.ajax({
@@ -250,6 +233,8 @@ function editUserStud_Info(user_id) {
                 $('#EditStudentForm input[name="contactNumber"]').val(data.contact_number);
                 $('#EditStudentForm input[name="school_id"]').val(data.school_id);
                 $('#EditStudentForm input[name="user_Email"]').val(data.email);
+                $('#EditStudentForm input[name="stud_compName"]').val(data.company_name);
+                $('#EditStudentForm input[name="stud_TrainingHours"]').val(data.training_hours);
                 $('#EditStudentForm input[name="user_id"]').val(data.user_id);
                 $('#deactivate_stud_acc').attr('data-user_id', data.user_id);
                 $('#EditStudentForm select[name="stud_Program"]').val(data.program_id);
