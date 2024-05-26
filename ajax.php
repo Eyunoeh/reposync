@@ -1279,7 +1279,7 @@ if ($action === 'Notes') {
 
 if ($action == 'getDashboardNotes'){
     $user_id = $_SESSION['log_user_id'];
-    $getNotes = "SELECT * from announcement where user_id= ?  and status IN ('Active', 'Pending', 'Declined') and type = 'Notes'";
+    $getNotes = "SELECT * from announcement where user_id= ?  and status IN ('Active', 'Pending', 'Declined') and type = 'Notes' ORDER BY  announcementPosted desc";
     $stmt = $conn->prepare($getNotes);
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
@@ -1579,4 +1579,69 @@ if ($action == 'getHomeNotes'){
        
         ';
     }
+}
+
+if ($action == 'getAdvNotesgetAdvNotes'){
+    $getAdvNotes= "SELECT announcement.*, tbl_user_info.*
+    FROM announcement 
+    JOIN tbl_user_info ON announcement.user_id = tbl_user_info.user_id
+        WHERE announcement.status != 'Hidden'
+            AND type = 'Notes'
+        ORDER BY announcement.announcementPosted desc;";
+    $getAdvNotesStmt = $conn->prepare($getAdvNotes);
+    $getAdvNotesStmt->execute();
+    $res = $getAdvNotesStmt->get_result();
+
+    if ($res->num_rows > 0){
+        while ($row = $res->fetch_assoc()){
+            $middle_initial = $row['middle_name']!== 'N/A' ? ' ' . substr($row['middle_name'], 0, 1) . '.' : '';
+
+            echo '<tr class="border-b border-dashed last:border-b-0 p-3">
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$middle_initial.' '.$row['last_name'].'</span>
+                        </td>
+
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['title'].'</span>
+                        </td>
+                        
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['status'].'</span>
+                        </td>
+                         <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.date('M j Y g:i A', strtotime($row['announcementPosted'])).'</span>
+                        </td>
+                        <td class="p-3 text-end">
+                            <a href="#" class="hover:cursor-pointer mb-1
+                            font-semibold transition-colors duration-200
+                            ease-in-out text-lg/normal text-secondary-inverse
+                            hover:text-accent"><i class="fa-solid fa-circle-info" onclick="openModalForm(\'AdviserNoteReq\');getAdvReqNotesInfo('.$row['announcement_id'].')"></i></a>
+                        </td>
+                    </tr>';
+        }
+    }
+}
+if ($action == 'UpdateNotePostReq'){
+    $noteStat = isset($_POST['NoteStat']) ? sanitizeInput($_POST['NoteStat']): '';
+    $declineReason = isset($_POST['reason']) ? sanitizeInput($_POST['reason']): 'N/A';
+    $announcement_id = isset($_POST['announcementID']) ? sanitizeInput($_POST['announcementID']): '';
+
+    if ($noteStat !== '' && $announcement_id !== ''){
+        $sql = "UPDATE announcement SET 
+                        status = ?,
+                        reason = ?
+            
+                    where announcement_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ssi', $noteStat, $declineReason, $announcement_id);
+        if (!$stmt->execute()){
+            echo $stmt->error;
+            exit();
+        }
+        echo 1;
+    }else{
+        echo "Please put the required input fields";
+        exit();
+    }
+
 }

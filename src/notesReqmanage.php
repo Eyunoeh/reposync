@@ -25,30 +25,30 @@ session_start();
             </form>
         </div>
         <div class="block py-8 pt-6 px-9">
-            <div class="overflow-auto h-96">
+            <div class="overflow-auto h-screen">
                 <table id="NotesReqTbL" class="w-full my-0 border-neutral-200 text-sm" >
-                    <thead class="align-bottom z-20">
+                    <thead class="align-bottom z-20 shadow-lg">
                     <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
                         <th class="p-3 text-start ">Adviser name</th>
                         <th class="p-3 text-start ">Title</th>
-                        <th class="p-3 text-start ">Description</th>
-                        <th class="p-3 text-end ">Status</th>
-                        <th class="p-3 text-end ">Note posted</th>
+                        <th class="p-3 text-start ">Status</th>
+                        <th class="p-3 text-start ">Note posted</th>
                         <th class="p-3 text-end ">Action</th>
 
                     </tr>
                     </thead>
                     <tbody id="NotesReq" class="text-center text-slate-600">
+ <!--
                     <tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
                         </td>
 
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">Male</span>
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">Title</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">4A</span>
+                            <span class="font-semibold text-light-inverse text-md/normal  break-words max-w-32 whitespace-normal">Some messages its gonna be lonng</span>
                         </td>
                         <td class="p-3 text-end">
                             <span class="font-semibold text-light-inverse text-md/normal">BSIT</span>
@@ -63,6 +63,7 @@ session_start();
                             hover:text-accent"><i class="fa-solid fa-circle-info" onclick="openModalForm('AdviserNoteReq')"></i></a>
                         </td>
                     </tr>
+                    -->
                     </tbody>
                 </table>
             </div>
@@ -72,47 +73,50 @@ session_start();
 
 
 <dialog id="AdviserNoteReq" class="modal bg-black  bg-opacity-40">
-    <div class="card bg-slate-50 w-[100vw] sm:w-[40rem] max-h-[35rem]  flex flex-col text-slate-700">
+    <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] max-h-[35rem]  flex flex-col text-slate-700 overflow-auto">
         <div  class=" card-title sticky" id="NoteTitle">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" id="closeAnnouncementForm" onclick="closeModalForm('AdviserNoteReq'); ">✕</button>
             <h3 class="font-bold text-center text-lg  p-2">Adviser student note</h3>
         </div>
-        <div id="status_Box">
-
-
-        </div>
-
         <div class="p-4">
-            <form id="AdvFormStat"  >
-                <input type="hidden" name="actionType" value="new" id="action_type">
+            <form id="AdvNoteReqForm"  >
                 <input type="hidden" value="" name="announcementID" id="announcementID">
                 <div class="flex flex-col gap-8 mb-2 overflow-auto ">
                     <label class="form-control w-full">
                         <div class="label">
                             <span class="label-text">Update status</span>
                         </div>
-                        <select name="NoteStat" class="select select-bordered">
+                        <select id="NoteStat" name="NoteStat" class="select select-bordered">
                             <option value="Pending">Pending</option>
-                            <option value="Approved">Approve</option>
+                            <option value="Active">Approve</option>
                             <option value="Declined">Declined</option>
-                            <option value="Hidden">Hidden</option>
                         </select>
                     </label>
-                    <div class="flex justify-start gap-2">
-                        <label class="form-control w-full ">
-                            <div class="label">
-                                <span class="label-text text-slate-700 font-bold">Reason</span>
-                            </div>
-                            <textarea required  name="reason" class="textarea textarea-error w-full" rows="5" cols="50" placeholder="Type here"></textarea>
-                        </label>
+                    <hr>
+                    <div class="p-4">
+                        <h1 class=" mb-2" ><strong>Title: </strong><span id="Notetitle"></span></h1>
+                        <p class="break-words max-h-[10rem] overflow-auto text-start"><strong>Message: </strong><span id="noteMessage"></span></p>
+                    </div>
+                    <div class="flex justify-start gap-2" id="reasonTextArea">
+
                     </div>
                     <input type="hidden" name="file_id" value="">
                 </div>
-                <p id="notes" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
-                <div id="noteSubmit" class="flex justify-center m-3">
-                    <button id="submit_btn" class="btn btn-success bg-opacity-40 btn-outline w-1/2" >OK</button>
+                <p id="UpdateNoteLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
+                <div id="UpdateNoteBtn" class="flex justify-center m-3">
+                    <button id="submit_btn" class="btn btn-info bg-opacity-40 btn-outline w-1/2" >OK</button>
                 </div>
             </form>
+        </div>
+
+
+    </div>
+</dialog>
+<dialog id="NoteStatUpdateNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('NoteStatUpdateNotif')">
+    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
+        <div role="alert" class="alert alert-info absolute top-50" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>Status has been updated</span>
         </div>
     </div>
 </dialog>

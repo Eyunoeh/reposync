@@ -32,6 +32,7 @@ function navigate(page) {
             getActivitiesAndSched();
             getPrograms();
             getYrSec();
+            getAdvNotes();
             if (document.getElementById('act_n_schedForm')) {
                 const startDateInput = document.querySelector('input[name="startDate"]');
                 const endDateInput = document.querySelector('input[name="endDate"]');
@@ -69,7 +70,25 @@ function navigate(page) {
                     attachSelectEventListener();
                 }
             }
+            if (document.getElementById('AdvNoteReqForm')){
 
+                let advNoteStat = document.getElementById('NoteStat');
+                if (advNoteStat){
+                    advNoteStat.addEventListener("change", function (){
+                        if (advNoteStat.value === 'Declined'){
+                            $('#reasonTextArea').append('<label class="form-control w-full ">\n' +
+                                '                            <div class="label">\n' +
+                                '                                <span class="label-text text-slate-700 font-bold">Reason</span>\n' +
+                                '                            </div>\n' +
+                                '                            <input type="text" required  name="reason" class="input input-error w-full" placeholder="Type here">' +
+                                '                        </label>')
+                        }
+                        else{
+                            $('#reasonTextArea').empty();
+                        }
+                    })
+                }
+            }
         })
         .catch(error => console.error('Error fetching content:', error));
 }
@@ -219,6 +238,19 @@ function getPrograms(){
         }
     });
 }
+function getAdvNotes(){
+    $.ajax({
+        url: '../ajax.php?action=getAdvNotes',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            $('#NotesReq').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
 
 
 
@@ -316,9 +348,6 @@ function getNotes(note_id){
                 let status = data.status;
                 let status_class = '';
 
-
-
-
                 $('#status_Box').append('<p class="" id="NoteStat"></p>');
                 document.getElementById('NoteStat').className = '';
                 $('#status_Box').find('#NoteStat').html(status);
@@ -350,6 +379,36 @@ function getNotes(note_id){
                 $('#NoteTitle').append('<div id="trashAnnouncementBtn" class="trash tooltip tooltip-bottom tooltip-error text-sm" data-tip="Delete note">' +
                     '<a  onclick="deleteAnnoucement(this.getAttribute(\'data-id\'),\'Notes\')" data-id="' + data.announcement_id + '" class="btn-sm btn btn-circle btn-ghost hover:cursor-pointer text-error"><i class="fa-solid fa-trash"></i></a>' +
                     '</div>');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+function getAdvReqNotesInfo(id){
+    $.ajax({
+        url: '../ajax.php?action=announcementJson&data_id=' + encodeURIComponent(id),
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data){
+                $('#reasonTextArea').empty();
+                if (data.status === 'Declined'){
+                    $('#reasonTextArea').append('<label class="form-control w-full ">\n' +
+                        '                            <div class="label">\n' +
+                        '                                <span class="label-text text-slate-700 font-bold">Reason</span>\n' +
+                        '                            </div>\n' +
+                        '                            <input type="text" value="'+ data.reason +'" required  name="reason" class="input input-error w-full" placeholder="Type here">' +
+                        '                        </label>')
+                }
+                $('#AdvNoteReqForm select[name="NoteStat"]').val(data.status);
+                $('#AdvNoteReqForm input[name="announcementID"]').val(data.announcement_id);
+                $('#Notetitle').html(data.title);
+                $('#noteMessage').html(data.description);
+
+
             }
         },
         error: function(xhr, status, error) {

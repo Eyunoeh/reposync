@@ -4,15 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="revised viewing narrative reports">
-      <change afterPath="$PROJECT_DIR$/src/notesReqmanage.php" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="revising checking notes">
+      <change afterPath="$PROJECT_DIR$/src/assets/reposync bg 4.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dashboardContent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardContent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/manageAdviserNote.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdviserNote.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/notesReqmanage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/notesReqmanage.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,24 +80,24 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
+    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem/src/assets",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\assets" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\js" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\NarrativeReports" />
-      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem" />
@@ -223,7 +225,9 @@
       <workItem from="1716346653678" duration="12119000" />
       <workItem from="1716360523865" duration="20000" />
       <workItem from="1716533858217" duration="289000" />
-      <workItem from="1716695516399" duration="10694000" />
+      <workItem from="1716695516399" duration="11273000" />
+      <workItem from="1716708773133" duration="104000" />
+      <workItem from="1716710454949" duration="12810000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -526,7 +530,14 @@
       <option name="project" value="LOCAL" />
       <updated>1716360373999</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="revising checking notes">
+      <created>1716708164437</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1716708164437</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -545,7 +556,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="home" />
     <MESSAGE value="noReload" />
     <MESSAGE value="narrative/nav" />
     <MESSAGE value="update 4/6/2024" />
@@ -570,7 +580,8 @@
     <MESSAGE value="newdata" />
     <MESSAGE value="login Notif" />
     <MESSAGE value="revised viewing narrative reports" />
-    <option name="LAST_COMMIT_MESSAGE" value="revised viewing narrative reports" />
+    <MESSAGE value="revising checking notes" />
+    <option name="LAST_COMMIT_MESSAGE" value="revising checking notes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -2,9 +2,7 @@
 document.addEventListener('submit', function(e) {
     e.preventDefault();
     let modal,formData,endpoint,loader_id,btn, notification;
-
     let getNewData = [];
-
      if (e.target.id === 'narrativeReportsForm'){
         endpoint = 'newFinalReport'
         modal =  'newNarrative';
@@ -103,6 +101,13 @@ document.addEventListener('submit', function(e) {
         getNewData.push(getYrSec);
         getNewData.push(getPrograms);
 
+    }if (e.target.id === 'AdvNoteReqForm'){
+        endpoint = 'UpdateNotePostReq';
+        loader_id = 'UpdateNoteLoader';
+        modal = 'AdviserNoteReq';
+        btn = 'UpdateNoteBtn';
+        notification = 'NoteStatUpdateNotif';
+        getNewData.push(getAdvNotes);
     }
 
 

@@ -23,7 +23,7 @@ if (isset($_SESSION['log_user_type'])){
 </head>
 <body  class="bg-slate-100 grid place-items-center">
 <main class="h-screen mx-auto flex  justify-center items-center sm:flex-row overflow-y-auto ">
-    <img id="login_img" class="hover:cursor-pointer lg:block hidden object-fit h-[32rem] w-full sm:w-auto md:w-[720px] border border-black " src="assets/433830404_367892839570918_5234819426372777336_n.png" alt="Cookie Image">
+    <img id="login_img" class="hover:cursor-pointer lg:block hidden object-fit h-[32rem] w-full sm:w-auto md:w-[720px] border border-black " src="assets/reposync%20bg%204.png" alt="Cookie Image">
     <div class="bg-white card h-[90vh] w-full  sm:w-96 sm:h-[32rem] bg-transparent text-neutral-content border-none md:border rounded-none">
         <div class="card-body flex flex-col justify-center items-center lg:border-black lg:border">
             <div class="text-center">
