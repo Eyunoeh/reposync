@@ -1279,7 +1279,7 @@ if ($action === 'Notes') {
 
 if ($action == 'getDashboardNotes'){
     $user_id = $_SESSION['log_user_id'];
-    $getNotes = "SELECT * from announcement where user_id= ? and status = 'active'  and type = 'Notes'";
+    $getNotes = "SELECT * from announcement where user_id= ?  and status IN ('Active', 'Pending', 'Declined') and type = 'Notes'";
     $stmt = $conn->prepare($getNotes);
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
@@ -1324,7 +1324,7 @@ if ($action == 'announcementJson' ){
 if ($action == 'deleteAnnouncement'){
     $announcement_id = isset($_GET['data_id']) ? sanitizeInput($_GET['data_id']) : '';
     if ($announcement_id !== '' ){
-        $hideAnnoucement = "UPDATE announcement SET status = 'archived' where announcement_id = ?";
+        $hideAnnoucement = "UPDATE announcement SET status = 'Hidden' where announcement_id = ?";
         $stmt = $conn->prepare($hideAnnoucement);
         $stmt->bind_param('i',$announcement_id);
         if ($stmt->execute()){
@@ -1374,7 +1374,7 @@ if ($action == 'getDashboardActSched'){
     $actSched = "SELECT *    
     FROM announcement 
         WHERE 1 = 1
-          AND status = 'active'
+          AND status = 'Active'
             AND type = 'schedule and activities'
         ORDER BY starting_date;
         ";
@@ -1505,7 +1505,7 @@ if ($action === 'getHomeActSched'){
     $actSched = "SELECT *    
     FROM announcement 
         WHERE 1 = 1
-          AND status = 'active'
+          AND status = 'Active'
             AND type = 'schedule and activities'
         ORDER BY starting_date;
         ";
@@ -1554,7 +1554,7 @@ if ($action == 'getHomeNotes'){
     $get_adv_id = $res->fetch_assoc();
     $adv_id = $get_adv_id['adv_sch_user_id'];
 
-    $getAdv_announcement = "SELECT * FROM announcement WHERE user_id = ? AND type = 'Notes' AND status = 'active' order by announcementPosted";
+    $getAdv_announcement = "SELECT * FROM announcement WHERE user_id = ? AND type = 'Notes' AND status = 'Active' order by announcementPosted";
     $getannouncementStmt = $conn->prepare($getAdv_announcement);
     $getannouncementStmt->bind_param('i', $adv_id);
     $getannouncementStmt->execute();

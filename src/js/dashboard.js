@@ -85,7 +85,9 @@ function dashboard_tab(id){
         navigate('dashboardContent.php');
     } else if (tab.id === 'adviserNotes'){
         navigate('manageAdviserNote.php')
-    }else if (tab.id === 'schedule&Act'){
+    }else if (tab.id === 'notesReq'){
+        navigate('notesReqmanage.php')
+    } else if (tab.id === 'schedule&Act'){
         navigate('manamgeAct&Sched.php')
     } else if (tab.id === 'dashBoardWeeklyReport'){
         navigate('manageWeeklyReport.php')
@@ -311,6 +313,36 @@ function getNotes(note_id){
         dataType: 'json',
         success: function(data) {
             if (data){
+                let status = data.status;
+                let status_class = '';
+
+
+
+
+                $('#status_Box').append('<p class="" id="NoteStat"></p>');
+                document.getElementById('NoteStat').className = '';
+                $('#status_Box').find('#NoteStat').html(status);
+                $('#status_Box').find('#declineReason').remove();
+                switch (status) {
+                    case 'Declined':
+                        $('#status_Box').append('<p class="text-slate-700 font-semibold text-xs pl-2" id="declineReason">' +
+                            '<strong>Reason:</strong> ' + data.reason +
+                            '</p>');
+                        status_class = 'text-error';
+                        break;
+                    case 'Pending':
+                        status_class = 'text-warning';
+                        break;
+                    case 'Active':
+                        status_class = 'text-success';
+                        break;
+                    default:
+                        status_class = ''; // Default class if none of the cases match
+                }
+
+                document.getElementById('NoteStat').classList.add('font-semibold', 'text-sm', 'pl-2', status_class);
+
+
                 $('#NotesForm input[name="noteTitle"]').val(data.title);
                 $('#NotesForm textarea[name="message"]').val(data.description);
                 $('#NotesForm input[name="announcementID"]').val(data.announcement_id);
@@ -351,6 +383,9 @@ function getActSched(actId){
 
 function removeTrashButton() {
     $('#trashAnnouncementBtn').remove();
+}
+function removeStatusBoxContent(){
+    $('#status_Box').empty();
 }
 
 

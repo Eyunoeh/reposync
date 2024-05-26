@@ -66,10 +66,16 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
                 <i class="fa-regular fa-note-sticky"></i>
                  Notes
             </h1>
+
             <?php
             if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
             ?>
-            <h1 onclick="dashboard_tab(this.id)" id="schedule&Act" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <h1 onclick="dashboard_tab(this.id)" id="notesReq" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                    <i class="fa-regular fa-note-sticky"></i>
+                    Advisers Notes
+                </h1>
+
+                <h1 onclick="dashboard_tab(this.id)" id="schedule&Act" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 <i class="fa-regular fa-calendar-days"></i>
                  Activities & Schedule
             </h1>

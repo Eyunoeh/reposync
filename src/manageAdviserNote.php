@@ -15,7 +15,7 @@ session_start();
             <h1 class="font-bold text-2xl text-warning font-sans">Notes</h1>
         </div>
         <div class="">
-            <button class="btn btn-circle btn-success bg-opacity-70 " id="NewNote" onclick="openModalForm('Notes'); removeTrashButton()"><i class="fa-solid fa-plus"></i></button>
+            <button class="btn btn-circle btn-success bg-opacity-70 " id="NewNote" onclick="openModalForm('Notes'); removeTrashButton();removeStatusBoxContent()"><i class="fa-solid fa-plus"></i></button>
         </div>
     </div>
     <div class="w-full flex justify-center">
@@ -38,10 +38,15 @@ session_start();
 
 <dialog id="Notes" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[40rem] max-h-[35rem]  flex flex-col text-slate-700">
-        <div  class=" card-title sticky " id="NoteTitle">
+        <div  class=" card-title sticky" id="NoteTitle">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" id="closeAnnouncementForm" onclick="closeModalForm('Notes');removeTrashButton() ">✕</button>
             <h3 class="font-bold text-center text-lg  p-2">Students note</h3>
         </div>
+        <div id="status_Box">
+
+
+        </div>
+
         <div class="p-4">
             <form id="NotesForm"  >
                 <input type="hidden" name="actionType" value="new" id="action_type">
