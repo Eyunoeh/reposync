@@ -1581,7 +1581,7 @@ if ($action == 'getHomeNotes'){
     }
 }
 
-if ($action == 'getAdvNotesgetAdvNotes'){
+if ($action == 'getAdvNotes'){
     $getAdvNotes= "SELECT announcement.*, tbl_user_info.*
     FROM announcement 
     JOIN tbl_user_info ON announcement.user_id = tbl_user_info.user_id

@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="revising checking notes">
-      <change afterPath="$PROJECT_DIR$/src/assets/reposync bg 4.png" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Checking adviser posted notes OK">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboardContent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardContent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageAdviserNote.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdviserNote.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/notesReqmanage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/notesReqmanage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/htmlHead.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +73,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem/src/assets",
+    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -227,7 +220,9 @@
       <workItem from="1716533858217" duration="289000" />
       <workItem from="1716695516399" duration="11273000" />
       <workItem from="1716708773133" duration="104000" />
-      <workItem from="1716710454949" duration="12810000" />
+      <workItem from="1716710454949" duration="12953000" />
+      <workItem from="1716741712720" duration="43000" />
+      <workItem from="1716864737077" duration="841000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -537,7 +532,14 @@
       <option name="project" value="LOCAL" />
       <updated>1716708164437</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Checking adviser posted notes OK">
+      <created>1716723979401</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1716723979401</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -556,7 +558,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="noReload" />
     <MESSAGE value="narrative/nav" />
     <MESSAGE value="update 4/6/2024" />
     <MESSAGE value="update 4/7/2024" />
@@ -581,7 +582,8 @@
     <MESSAGE value="login Notif" />
     <MESSAGE value="revised viewing narrative reports" />
     <MESSAGE value="revising checking notes" />
-    <option name="LAST_COMMIT_MESSAGE" value="revising checking notes" />
+    <MESSAGE value="Checking adviser posted notes OK" />
+    <option name="LAST_COMMIT_MESSAGE" value="Checking adviser posted notes OK" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
