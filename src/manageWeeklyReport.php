@@ -31,6 +31,9 @@ session_start();
                     <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
                         <th class="p-3 text-start ">School ID</th>
                         <th class="p-3 text-start ">Name</th>
+                        <th class="p-3 text-start ">Company</th>
+                        <th class="p-3 text-start ">Training hours</th>
+
                         <th class="p-3 text-end ">Last Activity</th>
                         <th class="p-3 text-end ">Check Reports</th>
                     </tr>
@@ -59,37 +62,29 @@ session_start();
                     $adv_sch_user_id = $_SESSION['log_user_id'];
 
                     $adv_list_tbl = "SELECT 
-                    u.school_id,
-                    u.first_name,
-                    u.user_id,
-                    u.last_name
+                    *
                 FROM 
                     advisory_list a
                 JOIN 
                     tbl_user_info u ON a.stud_sch_user_id = u.user_id
+                JOIN 
+                    tbl_students s ON s.user_id = a.stud_sch_user_id 
                 WHERE 
                     a.adv_sch_user_id = ?
                 ORDER BY 
                     (SELECT activity_date FROM activity_logs WHERE file_id IN (
                         SELECT file_id FROM weeklyReport WHERE stud_user_id = u.user_id
                     ) ORDER BY activity_date DESC LIMIT 1) DESC";
-
-
-
                     $stmt = $conn->prepare($adv_list_tbl);
     $stmt->bind_param("i", $adv_sch_user_id);
     $stmt->execute();
     $result = $stmt->get_result();
-
-    // Check if there are any results
     if ($result->num_rows > 0) {
-        // Loop through each row of the result set
         while ($row = $result->fetch_assoc()) {
-            $latest_activity = getLatestActivity($row['user_id']); // Assuming $db_connection is your database connection object
+            $latest_activity = getLatestActivity($row['user_id']);
 
             $formatted_date_time = $latest_activity ? date("M d, Y g:i A", strtotime($latest_activity)) : 'No Activity';
 
-            // Output the information in a table row format
             echo '<tr class="border-b border-dashed last:border-b-0 p-3">
                     <td class="p-3 text-start">
                         <span class="font-semibold text-light-inverse text-md/normal">' . $row['school_id'] . '</span>
@@ -97,6 +92,13 @@ session_start();
                     <td class="p-3 text-start">
                         <span class="font-semibold text-light-inverse text-md/normal">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
                     </td>
+                    <td class="p-3 text-start">
+                        <span class="font-semibold text-light-inverse text-md/normal">' . $row['company_name'] . '</span>
+                    </td>
+                    <td class="p-3 text-start">
+                        <span class="font-semibold text-light-inverse text-md/normal">' . $row['training_hours'] . '</span>
+                    </td>
+                    
                     <td class="p-3 text-end">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$formatted_date_time.'</span>
                         </td>

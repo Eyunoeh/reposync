@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Checking adviser posted notes OK">
+      <change afterPath="$PROJECT_DIR$/test.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/htmlHead.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ManageProgSec.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ManageProgSec.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/announcement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/announcement.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboardViewnarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardViewnarrativeReports.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home_nav.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/home_nav.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageWeeklyReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -222,7 +231,11 @@
       <workItem from="1716708773133" duration="104000" />
       <workItem from="1716710454949" duration="12953000" />
       <workItem from="1716741712720" duration="43000" />
-      <workItem from="1716864737077" duration="841000" />
+      <workItem from="1716864737077" duration="8240000" />
+      <workItem from="1716908090753" duration="2010000" />
+      <workItem from="1716988477261" duration="23000" />
+      <workItem from="1716988505028" duration="14000" />
+      <workItem from="1716989878537" duration="8466000" />
     </task>
     <task id="LOCAL-00001" summary="home">
       <created>1712200715647</created>
@@ -539,7 +552,14 @@
       <option name="project" value="LOCAL" />
       <updated>1716723979401</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Checking adviser posted notes OK">
+      <created>1716867067313</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1716867067313</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

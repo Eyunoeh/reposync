@@ -34,10 +34,7 @@
                     <td>4C</td>
                     <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
                 </tr>
-
-
-
-
+                
                 </tbody>
             </table>
         </div>

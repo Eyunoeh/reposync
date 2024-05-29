@@ -424,6 +424,7 @@ function getActSched(actId){
         success: function(data) {
             if (data){
                 $('#act_n_schedForm input[name="Activitytitle"]').val(data.title);
+                $('#act_n_schedForm select[name="announcementTarget"]').val(data.SchedAct_targetViewer);
                 $('#act_n_schedForm textarea[name="description"]').val(data.description);
                 $('#act_n_schedForm input[name="announcementID"]').val(data.announcement_id);
                 $('#act_n_schedForm input[name="actionType"]').val('edit');

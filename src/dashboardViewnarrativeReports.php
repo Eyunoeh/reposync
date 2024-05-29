@@ -76,6 +76,9 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                         <th class="p-3 text-start ">School ID</th>
                         <th class="p-3 text-start min-w-10">Name</th>
                         <th class="p-3 text-start min-w-10">OJT adviser</th>
+                        <th class="p-3 text-start min-w-10">Batch</th>
+
+
                         <th class="p-3 text-end ">Action</th>
                     </tr>
                     </thead>
@@ -107,7 +110,7 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
 </div>
 
 <dialog id="newNarrative" class="modal bg-black  bg-opacity-40">
-    <div class="card bg-slate-50 w-[100vw] sm:w-[40rem] max-h-[35rem]  flex flex-col text-slate-700">
+    <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] max-h-[35rem]  flex flex-col text-slate-700">
         <div  class=" card-title sticky ">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('newNarrative')">✕</button>
             <h3 class="font-bold text-center text-lg  p-5">Add student narrative report</h3>
@@ -125,6 +128,12 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
+                                    <span class="label-text text-slate-700">Middle name</span>
+                                </div>
+                                <input type="text" required name="middle_name" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
                                     <span class="label-text text-slate-700">Last name</span>
                                 </div>
                                 <input type="text" required name="last_name" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
@@ -139,7 +148,7 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">Sex</span>
+                                    <span class="label-text text-slate-700 text-center">Sex</span>
                                 </div>
                                 <div class="flex justify-start gap-2">
                                     <div class="flex justify-center items-center flex-col">
@@ -151,6 +160,31 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                                         <input type="radio" name="stud_Sex" value="Female" class="radio bg-gray-300" />
                                     </div>
                                 </div>
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">OJT Adviser</span>
+                                </div>
+                                <select name="ojt_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select adviser</option>
+                                    <?php
+                                    $adv_option_query = "SELECT ui.*, acc.*
+                                 FROM tbl_user_info ui
+                                 INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
+                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
+                                    $result = $conn->query($adv_option_query);
+
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+                                        }
+                                    } else {
+                                        echo "<option value=''>No users found</option>";
+                                    }
+                                    ?>
+
+
+                                </select>
                             </label>
                         </div>
 
@@ -191,34 +225,38 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                                         echo '<option>'.$row['section'].'</option>';
                                     }
                                     ?>
-                                </select>                            </label>
+                                </select>
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">School Year</span>
+                                </div>
+                                <div class="flex gap-2 items-center">
+                                    <input type="number" required name="startYear" oninput="this.value = this.value.slice(0, 4)" class="bg-slate-100 input input-bordered w-full max-w-xs" placeholder="0000" />
+                                    <p class="text-center items-center font-bold text-lg"> - </p>
+                                    <input type="number" required name="endYear" oninput="this.value = this.value.slice(0, 4)" class="bg-slate-100 input input-bordered w-full max-w-xs" placeholder="0000" />
+                                </div>
+
+                            </label>
+
                         </div>
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">OJT Adviser</span>
+                                    <span class="label-text text-slate-700">Student Company / Institution</span>
                                 </div>
-                                <select name="ojt_adviser" class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select adviser</option>
-                                    <?php
-                                    $adv_option_query = "SELECT ui.*, acc.*
-                                 FROM tbl_user_info ui
-                                 INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
-                                    $result = $conn->query($adv_option_query);
-
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
-                                        }
-                                    } else {
-                                        echo "<option value=''>N/A</option>";
-                                    }
-                                    ?>
-
-
-                                </select>
+                                <input type="text" required name="companyName" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
+
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Training Hours</span>
+                                </div>
+                                <input type="number" required name="trainingHours" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                        </div>
+                        <div class="flex justify-evenly gap-2">
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Narrative Report PDF</span>
@@ -244,7 +282,7 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
 
 
 <dialog id="EditNarrative" class="modal bg-black  bg-opacity-40">
-    <div class="card bg-slate-50 w-[100vw] sm:w-[40rem] max-h-[35rem]  flex flex-col text-slate-700">
+    <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] max-h-[35rem]  flex flex-col text-slate-700">
         <div  class=" card-title sticky ">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('EditNarrative')">✕</button>
             <h3 class="font-bold text-center text-lg  p-5">Edit student narrative report</h3>
@@ -262,6 +300,12 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
+                                    <span class="label-text text-slate-700">Middle name</span>
+                                </div>
+                                <input type="text"  name="middle_name" placeholder="Optional" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
                                     <span class="label-text text-slate-700">Last name</span>
                                 </div>
                                 <input type="text" required name="last_name" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
@@ -270,13 +314,13 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">School ID <span class="text-warning"> (Must be unique)</span></span>
+                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
                                 </div>
-                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="number" min="0" oninput="this.value = this.value.slice(0, 9)" required name="school_id" placeholder="XXXXXXXX" maxlength="8" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">Sex</span>
+                                    <span class="label-text text-slate-700 text-center">Sex</span>
                                 </div>
                                 <div class="flex justify-start gap-2">
                                     <div class="flex justify-center items-center flex-col">
@@ -288,6 +332,31 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                                         <input type="radio" name="stud_Sex" value="Female" class="radio bg-gray-300" />
                                     </div>
                                 </div>
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">OJT Adviser</span>
+                                </div>
+                                <select name="ojt_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select adviser</option>
+                                    <?php
+                                    $adv_option_query = "SELECT ui.*, acc.*
+                                 FROM tbl_user_info ui
+                                 INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
+                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
+                                    $result = $conn->query($adv_option_query);
+
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+                                        }
+                                    } else {
+                                        echo "<option value=''>No users found</option>";
+                                    }
+                                    ?>
+
+
+                                </select>
                             </label>
                         </div>
                         <input type="hidden" name="narrative_id" value="">
@@ -332,34 +401,36 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                                 </select>
 
                             </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">School Year</span>
+                                </div>
+                                <div class="flex gap-2 items-center">
+                                    <input type="number" required name="startYear" oninput="this.value = this.value.slice(0, 4)" class="bg-slate-100 input input-bordered w-full max-w-xs" placeholder="0000" />
+                                    <p class="text-center items-center font-bold text-lg"> - </p>
+                                    <input type="number" required name="endYear" oninput="this.value = this.value.slice(0, 4)" class="bg-slate-100 input input-bordered w-full max-w-xs" placeholder="0000" />
+                                </div>
+
+                            </label>
 
                         </div>
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">OJT Adviser</span>
+                                    <span class="label-text text-slate-700">Student Company / Institution</span>
                                 </div>
-                                <select name="ojt_adviser" class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select adviser</option>
-                                    <?php
-                                    $adv_option_query = "SELECT ui.*, acc.*
-                                 FROM tbl_user_info ui
-                                 INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
-                                    $result = $conn->query($adv_option_query);
-
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
-                                        }
-                                    } else {
-                                        echo "<option value=''>No users found</option>";
-                                    }
-                                    ?>
-
-
-                                </select>
+                                <input type="text" required name="companyName" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
+
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Training Hours</span>
+                                </div>
+                                <input type="number" required name="trainingHours" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                        </div>
+                        <div class="flex justify-evenly gap-2">
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Replace Existing Narrative Report</span>
@@ -433,9 +504,26 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
             dataType: 'json',
             success: function(data) {
                 if (data){
+
+                    let startSchYear = "", endSchYear = "";
+                    if (data.sySubmitted !== 'N/A') {
+                        let years = data.sySubmitted.split(',');
+                        startSchYear = years[0].trim();
+                        endSchYear = years[1].trim();
+
+                    }
+
+                    document.querySelector('#EditNarrativeReportsForm input[name="startYear"]').value = startSchYear;
+                    document.querySelector('#EditNarrativeReportsForm input[name="endYear"]').value = endSchYear;
+
+
+
                     document.querySelector('#EditNarrativeReportsForm input[name="narrative_id"]').value = data.narrative_id;
+                    document.querySelector('#EditNarrativeReportsForm input[name="trainingHours"]').value = data.training_hours;
+                    document.querySelector('#EditNarrativeReportsForm input[name="companyName"]').value = data.company_name;
 
                     document.querySelector('#EditNarrativeReportsForm input[name="first_name"]').value = data.first_name;
+                    document.querySelector('#EditNarrativeReportsForm input[name="middle_name"]').value = data.middle_name;
                     document.querySelector('#EditNarrativeReportsForm input[name="last_name"]').value = data.last_name;
                     document.querySelector('#EditNarrativeReportsForm input[name="school_id"]').value = data.stud_school_id;
                     document.querySelector('#EditNarrativeReportsForm select[name="program"]').value = data.program;

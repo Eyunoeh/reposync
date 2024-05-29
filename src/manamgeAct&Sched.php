@@ -3,6 +3,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     header("Location: 404.php");
     exit();
 }
+include '../DatabaseConn/databaseConn.php'
 ?>
 <section class="  overflow-auto   bg-white pl-5 pb-5 pr-5 pt-0 h-full">
     <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-50 justify-between ">
@@ -65,12 +66,34 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                     <div class="flex flex-col gap-2">
                         <div class="flex flex-col gap-2">
                             <div class="flex justify-start gap-2">
+
                                 <label class="form-control w-full ">
                                     <div class="label">
                                         <span class="label-text text-slate-700 font-bold">Title</span>
                                     </div>
                                     <input type="text" required name="Activitytitle" placeholder="Type here"
                                            class="  bg-slate-100 input input-bordered w-full " />
+                                </label>
+                                <label class="form-control w-full max-w-xs">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700 font-bold">Announcement for:</span>
+                                    </div>
+                                    <select name="announcementTarget" required class="select select-bordered w-full bg-slate-100 " required>
+                                        <option value="All" selected >All program</option>
+                                        <?php
+                                        $sql = "SELECT * FROM  program";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->execute();
+                                        $res = $stmt->get_result();
+                                        while ($row = $res->fetch_assoc()){
+                                            echo '<option value="'.$row['program_code'].'">'.$row['program_code'].'</option>
+                                               ';
+
+                                        }
+
+                                        ?>
+                                    </select>
+
                                 </label>
                             </div>
                             <div class="flex justify-start gap-2">

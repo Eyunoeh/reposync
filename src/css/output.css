@@ -4397,6 +4397,10 @@ details.collapse summary::-webkit-details-marker {
   height: 95%;
 }
 
+.h-auto {
+  height: auto;
+}
+
 .h-full {
   height: 100%;
 }

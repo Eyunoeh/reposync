@@ -226,6 +226,7 @@ function getHomeActSched(){
         method: 'GET',
         dataType: 'html',
         success: function(response) {
+            console.log(response);
             if (response){
                 $('#actSched').html(response);
             }

@@ -329,14 +329,19 @@ if ($action == 'getUploadLogs'){
 
 if ($action == 'newFinalReport'){
     $first_name = isset($_POST['first_name']) ? sanitizeInput($_POST['first_name']) : '';
+    $middle_name = isset($_POST['middle_name']) ? sanitizeInput($_POST['middle_name']) : 'N/A';
     $last_name = isset($_POST['last_name']) ? sanitizeInput($_POST['last_name']) : '';
     $program = isset($_POST['program']) ? sanitizeInput($_POST['program']) : '';
     $section = isset($_POST['section']) ? sanitizeInput($_POST['section']) : '';
     $stud_sex = isset($_POST['stud_Sex']) ? sanitizeInput($_POST['stud_Sex']) : '';
     $ojt_adviser = isset($_POST['ojt_adviser']) ? sanitizeInput($_POST['ojt_adviser']) : '';
+    $compName = isset($_POST['companyName']) ? sanitizeInput($_POST['companyName']) : 'N/A';
+    $trainingHours = isset($_POST['trainingHours']) ? sanitizeInput($_POST['trainingHours']) : 0;
+    $sySubmitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
+
     $school_id = isset($_POST['school_id']) && is_numeric($_POST['school_id']) && check_uniq_stud_id($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
 
-        if ($first_name !== '' && $stud_sex !== '' && $last_name !== '' && $program !== '' && $section !== '' && $ojt_adviser !== '' && $school_id !== '') {
+        if ($first_name !== '' && $stud_sex !== '' && $last_name !== '' && $program !== '' && $section !== '' && $ojt_adviser !== '' && $school_id !== '' && $sySubmitted !== '') {
             if (isset($_FILES['final_report_file'])) {
                 $file_name = $_FILES['final_report_file']['name'];
                 $file_temp = $_FILES['final_report_file']['tmp_name'];
@@ -352,14 +357,15 @@ if ($action == 'newFinalReport'){
                     $narrative_status = 'OK';
                     if ($file_error === UPLOAD_ERR_OK) {
                         try {
-                            $new_final_report = $conn->prepare("INSERT INTO narrativereports (stud_school_id, OJT_adviser_ID, sex,
-                                      first_name, last_name, program, section, narrative_file_name, upload_date, file_status)
-                                      values (?,?,?,?,?,?,?,?,?,?)");
+                            $new_final_report = $conn->prepare("INSERT INTO narrativereports
+    (stud_school_id, OJT_adviser_ID, sex, first_name, middle_name, last_name, program, section, narrative_file_name, upload_date, file_status, training_hours, company_name, sySubmitted)
+    values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-                            $new_final_report->bind_param("sissssssss",
-                                $school_id, $ojt_adviser,$stud_sex, $first_name, $last_name,
-                                $program, $section,  $new_file_name,
-                                $current_date_time, $narrative_status);
+                            $new_final_report->bind_param("sisssssssssiss",
+                                $school_id, $ojt_adviser, $stud_sex, $first_name, $middle_name, $last_name,
+                                $program, $section, $new_file_name, $current_date_time, $narrative_status,
+                                $trainingHours, $compName, $sySubmitted);
+
 
 
                             if (!$new_final_report->execute()) {
@@ -421,14 +427,17 @@ ORDER BY narrativereports.upload_date DESC;
             while ($row = $result->fetch_assoc()) {
                  if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'adviser') {
                     echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                       <td class="p-3 text-start">
+                        <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-sm">' . $row['stud_school_id'] . '</span>
                         </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
+                        <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
                         </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">' . $row['adv_first_name'] . ' ' . $row['adv_last_name'] . '</span>
+                         <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal  break-words">' . $row['adv_first_name'] . ' ' . $row['adv_last_name'] . '</span>
+                        </td>
+                        <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . str_replace(',', ' - ', $row['sySubmitted']) . ' </span>
                         </td>
                       
                 
@@ -445,9 +454,13 @@ ORDER BY narrativereports.upload_date DESC;
                         <td class="p-3 text-start min-w-32">
                             <span class="font-semibold text-light-inverse text-md/normal break-words">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
                         </td>
-                        <td class="p-3 text-start min-w-32">
+                         <td class="p-3 text-start min-w-32">
                             <span class="font-semibold text-light-inverse text-md/normal  break-words">' . $row['adv_first_name'] . ' ' . $row['adv_last_name'] . '</span>
                         </td>
+                        <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . str_replace(',', ' - ', $row['sySubmitted']) . ' </span>
+                        </td>
+                  
                     
                   
                         <td class="p-3 text-end ">
@@ -455,6 +468,7 @@ ORDER BY narrativereports.upload_date DESC;
                             <a onclick="openModalForm(\'EditNarrative\');editNarrative(this.getAttribute(\'data-narrative\'))" id="archive_narrative" data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"><i class="fa-solid fa-pen-to-square"></i></a>
                         </td>
                       </tr>';
+
                 }
             }
         }
@@ -491,6 +505,8 @@ if ($action == 'narrativeReportsJson'){
 if ($action === 'UpdateNarrativeReport'){
 
     $first_name = isset($_POST['first_name']) ? sanitizeInput($_POST['first_name']) : '';
+    $middle_name = isset($_POST['middle_name']) ? sanitizeInput($_POST['middle_name']) : 'N/A';
+
     $last_name = isset($_POST['last_name']) ? sanitizeInput($_POST['last_name']) : '';
     $program = isset($_POST['program']) ? sanitizeInput($_POST['program']) : '';
     $section = isset($_POST['section']) ? sanitizeInput($_POST['section']) : '';
@@ -498,7 +514,11 @@ if ($action === 'UpdateNarrativeReport'){
     $stud_sex = isset($_POST['stud_Sex']) ? sanitizeInput($_POST['stud_Sex']) : '';
     $school_id = isset($_POST['school_id']) && is_numeric($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
     $narrative_id = isset($_POST['narrative_id']) ? sanitizeInput($_POST['narrative_id']) : '';
-    if ($first_name !== '' && $last_name !== '' && $stud_sex !== '' && $program !== '' && $section !== '' && $ojt_adviser !== '' && $school_id !== ''  && $narrative_id !== '') {
+    $compName = isset($_POST['companyName']) ? sanitizeInput($_POST['companyName']) : 'N/A';
+    $trainingHours = isset($_POST['trainingHours']) ? sanitizeInput($_POST['trainingHours']) : 0;
+    $sySubmitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
+
+    if ($first_name !== '' && $last_name !== '' && $stud_sex !== '' && $program !== '' && $section !== '' && $ojt_adviser !== '' && $school_id !== ''  && $narrative_id !== ''&& $sySubmitted !== '') {
         $file_first_name = str_replace(' ', '', $first_name);
         $file_last_name = str_replace(' ', '', $last_name);
         $new_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id.".pdf";
@@ -524,18 +544,22 @@ if ($action === 'UpdateNarrativeReport'){
                                           OJT_adviser_ID = ?,
                                           sex = ?,
                                           first_name = ?,
+                                          middle_name = ?,
                                           last_name = ?,
                                           program = ?,
                                           section = ?,
-                                          
+                                        
                                           narrative_file_name = ?,
                                           upload_date = ?,
+                                          training_hours = ?,
+                                          company_name = ?,
+                                          sySubmitted = ?,
                                           file_status = ?
                                       WHERE narrative_id = ?");
-        $update_final_report->bind_param("sissssssssi",
-            $school_id, $ojt_adviser,$stud_sex,$first_name, $last_name,
+        $update_final_report->bind_param("sissssssssssssi",
+            $school_id, $ojt_adviser,$stud_sex,$first_name, $middle_name,  $last_name,
             $program, $section, $new_file_name,
-            $current_date_time, $narrative_status,$narrative_id);
+            $current_date_time, $trainingHours, $compName,$sySubmitted ,$narrative_status,$narrative_id);
 
 
         if (!$update_final_report->execute()){
@@ -1347,21 +1371,22 @@ if ($action === 'NewActivity') {
     $announcement_id = isset($_POST['announcementID']) ? sanitizeInput($_POST['announcementID']) : Null;;
     $startingDate = isset($_POST['startDate']) ? sanitizeInput($_POST['startDate']): null;
     $endinggDate = isset($_POST['endDate']) ? sanitizeInput($_POST['endDate']): Null;
+    $announcementTarget = isset($_POST['announcementTarget']) ? sanitizeInput($_POST['announcementTarget']): 'N/A';
     if ($note_title !== '' ) {
         if ($actionType == 'edit'){
             $sql = "UPDATE announcement SET 
-                        title = ?, description = ?, starting_date = ?, end_date = ?,
+                        title = ?, description = ?, starting_date = ?, end_date = ?, SchedAct_targetViewer = ?,
                         announcementPosted = NOW() 
                     where announcement_id = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssssi', $note_title, $actDescription,$startingDate,$endinggDate ,  $announcement_id);
+            $stmt->bind_param('sssssi', $note_title, $actDescription,$startingDate,$endinggDate,  $announcementTarget,$announcement_id);
             $stmt->execute();
             echo 1;
         }else {
-            $sql = "INSERT INTO announcement  (user_id, title, description , starting_date, end_date,type)
-                    VALUES (?,?,?,?,?,'schedule and activities')";
+            $sql = "INSERT INTO announcement  (user_id, title, description , starting_date, end_date,type, status, SchedAct_targetViewer)
+                    VALUES (?,?,?,?,?,'schedule and activities','Active', ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('issss', $user_id, $note_title, $actDescription, $startingDate, $endinggDate);
+            $stmt->bind_param('isssss', $user_id, $note_title, $actDescription, $startingDate, $endinggDate, $announcementTarget);
             $stmt->execute();
             echo 1;
         }
@@ -1501,19 +1526,60 @@ if ($action == 'getDasboardPrograms'){
     }
 }
 
-if ($action === 'getHomeActSched'){
-    $actSched = "SELECT *    
-    FROM announcement 
-        WHERE 1 = 1
-          AND status = 'Active'
-            AND type = 'schedule and activities'
-        ORDER BY starting_date;
+if ($action === 'getHomeActSched') {
+    $user_id = $_SESSION['log_user_id'] ?? '';
+    $targetViewer = '';
+
+    if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] === 'student') {
+        $getStudProg = "
+            SELECT program.*, tbl_students.*, tbl_user_info.*
+            FROM tbl_students
+            JOIN tbl_user_info ON tbl_students.user_id = tbl_user_info.user_id
+            JOIN program ON tbl_students.program_id = program.program_id
+            WHERE tbl_students.user_id = ?;
         ";
+
+        $getStudProgStmt = $conn->prepare($getStudProg);
+        $getStudProgStmt->bind_param('i', $user_id);
+
+        if (!$getStudProgStmt->execute()) {
+            echo $getStudProgStmt->error;
+            exit();
+        }
+
+        $res = $getStudProgStmt->get_result();
+
+        if ($res->num_rows !== 1) {
+            echo 'No records';
+            exit();
+        }
+
+        $row = $res->fetch_assoc();
+        $programCode = $row['program_code'];
+        $targetViewer = "AND SchedAct_targetViewer IN ('All', '$programCode')";
+    } else {
+        $targetViewer = "AND SchedAct_targetViewer = 'All'";
+    }
+
+    $actSched = "
+        SELECT *    
+        FROM announcement 
+        WHERE status = 'Active'
+        AND type = 'schedule and activities' $targetViewer
+        ORDER BY starting_date;
+    ";
+
     $stmt = $conn->prepare($actSched);
-    $stmt->execute();
+
+    if (!$stmt->execute()) {
+        echo $stmt->error;
+        exit();
+    }
+
     $res = $stmt->get_result();
+
     if ($res->num_rows > 0) {
-        while ($row = $res->fetch_assoc()){
+        while ($row = $res->fetch_assoc()) {
             $announcementPosted = date('h:i A', strtotime($row['announcementPosted']));
             $formattedDatePosted = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
             $formattedStartingDate = date("F j, Y", strtotime($row['starting_date']));
@@ -1521,27 +1587,27 @@ if ($action === 'getHomeActSched'){
 
             echo '<div class="flex min-w-[40rem] ' . (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'student' ? 'w-[40rem]' : 'w-[50rem]') . ' shadow rounded transition duration-500 transform hover:scale-110 hover:bg-slate-300 cursor-pointer justify-start items-center">
                     <div class="w-[12rem] p-2 sm:p-5 b text-center flex flex-col justify-start text-sm ">
-                    
                     ';
-            if ($formattedStartingDate === $formattedEndingDate){
-                echo '<h4 class="text-start">'.$formattedStartingDate.'</h4>';
-            }else {
+
+            if ($formattedStartingDate === $formattedEndingDate) {
+                echo '<h4 class="text-start">' . $formattedStartingDate . '</h4>';
+            } else {
                 echo '<h4 class="text-start">' . $formattedStartingDate . '</h4>';
                 echo '<h4 class="text-start">' . $formattedEndingDate . '</h4>';
             }
 
-
-                echo '</div>
+            echo '</div>
                     <div class="flex flex-col justify-center max-h-[10rem] overflow-auto ">
-                        <h1 class="font-semibold">'.$row['title'].'</h1>
+                        <h1 class="font-semibold">' . $row['title'] . '</h1>
                         <div class="max-h-[10rem] transition duration-100 overflow-hidden hover:overflow-auto">
-                            <p class="text-justify text-sm pr-5">'.$row['description'].'</p>
+                            <p class="text-justify text-sm pr-5">' . $row['description'] . '</p>
                         </div>
                     </div>
                 </div>';
         }
     }
 }
+
 
 if ($action == 'getHomeNotes'){
     $user_id = $_SESSION['log_user_id'];
