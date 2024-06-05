@@ -321,7 +321,6 @@ if ($action == 'getUploadLogs'){
                                 <td class="p-3 pr-0 ">
                                     <span class="font-semibold text-light-inverse text-md/normal">'. $row['activity_type'] .'</span>
                                 </td>
-
                             </tr>';
     }
 }
@@ -354,7 +353,7 @@ if ($action == 'newFinalReport'){
                     $file_last_name = str_replace(' ', '', $last_name);
                     $new_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $section . "_" . $school_id . ".pdf";
                     $current_date_time = date('Y-m-d H:i:s');
-                    $narrative_status = 'OK';
+                    $narrative_status = 'Pending';
                     if ($file_error === UPLOAD_ERR_OK) {
                         try {
                             $new_final_report = $conn->prepare("INSERT INTO narrativereports
@@ -425,34 +424,13 @@ ORDER BY narrativereports.upload_date DESC;
     } else {
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                 if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'adviser') {
-                    echo '<tr class="border-b border-dashed last:border-b-0 p-3">
+                $middle_initial = $row['middle_name']!== 'N/A' ? ' ' . $row['middle_name']  : '';
+                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-sm">' . $row['stud_school_id'] . '</span>
                         </td>
                         <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
-                        </td>
-                         <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal  break-words">' . $row['adv_first_name'] . ' ' . $row['adv_last_name'] . '</span>
-                        </td>
-                        <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . str_replace(',', ' - ', $row['sySubmitted']) . ' </span>
-                        </td>
-                      
-                
-                        <td class="p-3 text-end ">
-                            <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
-                        </td>
-                      </tr>';
-                }
-                 if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'admin') {
-                    echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-sm">' . $row['stud_school_id'] . '</span>
-                        </td>
-                        <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . $row['first_name'] . ' ' . $middle_initial . ' ' . $row['last_name'] . '</span>
                         </td>
                          <td class="p-3 text-start min-w-32">
                             <span class="font-semibold text-light-inverse text-md/normal  break-words">' . $row['adv_first_name'] . ' ' . $row['adv_last_name'] . '</span>
@@ -461,15 +439,20 @@ ORDER BY narrativereports.upload_date DESC;
                             <span class="font-semibold text-light-inverse text-md/normal break-words">' . str_replace(',', ' - ', $row['sySubmitted']) . ' </span>
                         </td>
                   
-                    
-                  
-                        <td class="p-3 text-end ">
-                            <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
-                            <a onclick="openModalForm(\'EditNarrative\');editNarrative(this.getAttribute(\'data-narrative\'))" id="archive_narrative" data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"><i class="fa-solid fa-pen-to-square"></i></a>
-                        </td>
-                      </tr>';
+                    <td class="p-3 text-end ">
+                  ';
 
+                if ($_SESSION['log_user_id'] === $row['OJT_adviser_ID']){
+                    echo '
+                            <a onclick="openModalForm(\'EditNarrative\');editNarrative(this.getAttribute(\'data-narrative\'))" id="archive_narrative" data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
+                        ';
+                }else{
+                    echo ' <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>';
                 }
+
+                echo'</td>
+                      </tr>';
             }
         }
     }
@@ -518,12 +501,16 @@ if ($action === 'UpdateNarrativeReport'){
     $trainingHours = isset($_POST['trainingHours']) ? sanitizeInput($_POST['trainingHours']) : 0;
     $sySubmitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
 
+    $uploadDeclineRemark = isset($_POST['remark']) ? sanitizeInput($_POST['remark']) : '';
+    $allowed_statuses = array('OK', 'Pending', 'Declined');
+    $uploadStat = isset($_POST['UploadStat']) && in_array($_POST['UploadStat'], $allowed_statuses) ? sanitizeInput($_POST['UploadStat']) : Null;
+
+
     if ($first_name !== '' && $last_name !== '' && $stud_sex !== '' && $program !== '' && $section !== '' && $ojt_adviser !== '' && $school_id !== ''  && $narrative_id !== ''&& $sySubmitted !== '') {
         $file_first_name = str_replace(' ', '', $first_name);
         $file_last_name = str_replace(' ', '', $last_name);
         $new_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id.".pdf";
         $current_date_time = date('Y-m-d H:i:s');
-        $narrative_status = 'OK';
         $narrative_id = decrypt_data($narrative_id,$secret_key);
         $old_filename = '';
         $sql = "SELECT * FROM narrativereports WHERE narrative_id = ?";
@@ -553,13 +540,25 @@ if ($action === 'UpdateNarrativeReport'){
                                           upload_date = ?,
                                           training_hours = ?,
                                           company_name = ?,
-                                          sySubmitted = ?,
-                                          file_status = ?
+                                          sySubmitted = ?
+                                    
                                       WHERE narrative_id = ?");
-        $update_final_report->bind_param("sissssssssssssi",
+        $update_final_report->bind_param("sisssssssssssi",
             $school_id, $ojt_adviser,$stud_sex,$first_name, $middle_name,  $last_name,
             $program, $section, $new_file_name,
-            $current_date_time, $trainingHours, $compName,$sySubmitted ,$narrative_status,$narrative_id);
+            $current_date_time, $trainingHours, $compName,$sySubmitted ,$narrative_id);
+        if ($uploadStat !== Null){
+            if ($uploadStat === 'OK'){
+                $uploadDeclineRemark = 'OK';
+            }
+            $updateStat = "UPDATE narrativereports
+                                      SET file_status = ?, remarks = ?
+                                    where narrative_id = ?
+                                    ";
+            $updateStatSTMT = $conn->prepare($updateStat);
+            $updateStatSTMT->bind_param('ssi', $uploadStat, $uploadDeclineRemark, $narrative_id);
+            $updateStatSTMT->execute();
+        }
 
 
         if (!$update_final_report->execute()){
@@ -1710,4 +1709,46 @@ if ($action == 'UpdateNotePostReq'){
         exit();
     }
 
+}
+if ($action === 'getPendingFinalReports'){
+    if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'admin'){
+        $narrativeUploadReq = "SELECT tbl_user_info.first_name as AdvFname, tbl_user_info.middle_name as AdvMname,tbl_user_info.last_name as AdvLname, narrativereports.* FROM narrativereports
+    JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id 
+    WHERE file_status = 'Pending' OR file_status = 'Declined';";
+        $narrativeUploadReqSTMT = $conn->prepare($narrativeUploadReq);
+        $narrativeUploadReqSTMT->execute();
+        $result = $narrativeUploadReqSTMT->get_result();
+        if ($result->num_rows > 0){
+            while ($row = $result->fetch_assoc()){
+                $studMiddleName = '';
+                $advMiddleName = '';
+                if ($row['middle_name'] !== 'N/A'){
+                    $studMiddleName = $row['middle_name'];
+                }
+                if ($row['AdvMname'] !== 'N/A'){
+                    $advMiddleName = $row['AdvMname'];
+                }
+                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
+                        <td class="p-3 text-start w-[10rem]">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">'.$row['stud_school_id'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$studMiddleName.' '.$row['last_name'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['AdvFname'].' '.$advMiddleName.' '.$row['AdvLname'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['file_status'].'</span>
+                        </td>
+                        <td class="p-3 text-end">
+                           <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
+
+                            <a onclick="openModalForm(\'EditNarrativeReq\');
+                            editNarrativeReq(this.getAttribute(\'data-narrative\'))"  data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
+                        </td>
+                    </tr>';
+            }
+        }
+    }
 }

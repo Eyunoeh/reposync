@@ -86,6 +86,11 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <span class="text-[15px] ml-4  font-bold">Narrative Reports</span>
         </div>
 
+        <div id="dashboard_ReviewUploadNarrative" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-start rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+            <i class="fa-solid fa-book"></i>
+            <span class="text-[15px] ml-4  font-bold">Upload Narrative Request</span>
+        </div>
+
         <?php
 
         if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'admin'):
@@ -136,10 +141,20 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 
 </main>
 
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+
+
+</script>
 <script src="js/dashboard.js"></script>
 
 <script src="js/admin_adviserAjaxRequest.js"></script>
 
 <script src="js/buttons_modal.js"></script>
 <script src="js/Datatables.js"></script>
+
+
 </body>

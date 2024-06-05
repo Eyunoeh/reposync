@@ -340,7 +340,7 @@ include '../DatabaseConn/databaseConn.php';
                                         echo '<option value="'.$row['section_id'].'">'.$row['section'].'</option>';
                                     }
                                     ?>
-                                </select>
+                                </select>=
                             </label>
 
                         </div>

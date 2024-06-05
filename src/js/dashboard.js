@@ -33,6 +33,7 @@ function navigate(page) {
             getPrograms();
             getYrSec();
             getAdvNotes();
+            getPendingFinalReports();
             if (document.getElementById('act_n_schedForm')) {
                 const startDateInput = document.querySelector('input[name="startDate"]');
                 const endDateInput = document.querySelector('input[name="endDate"]');
@@ -71,7 +72,6 @@ function navigate(page) {
                 }
             }
             if (document.getElementById('AdvNoteReqForm')){
-
                 let advNoteStat = document.getElementById('NoteStat');
                 if (advNoteStat){
                     advNoteStat.addEventListener("change", function (){
@@ -89,6 +89,30 @@ function navigate(page) {
                     })
                 }
             }
+            if (document.getElementById('EditNarrativeReportsReqForm')){
+                let uploadstat = document.getElementById('UploadStat');
+                if (uploadstat){
+                    uploadstat.addEventListener("change", function (){
+                        if (uploadstat.value === 'Declined'){
+                            $('#declineUploadReason').append('<label class="form-control w-full ">\n' +
+                                '                            <div class="label">\n' +
+                                '                                <span class="label-text text-slate-700 font-bold">Remarks</span>\n' +
+                                '                            </div>\n' +
+                                '                            <input type="text" required  name="remark" class="input input-error w-full" placeholder="Type here">' +
+                                '                        </label>')
+                        }
+                        else{
+                            $('#declineUploadReason').empty();
+                        }
+                    })
+                }
+            }
+            const ctx = document.getElementById('myChart')
+            if (ctx) {
+                ctx.getContext('2d');
+                renderChart(ctx);
+            }
+
         })
         .catch(error => console.error('Error fetching content:', error));
 }
@@ -100,7 +124,9 @@ function dashboard_tab(id){
     let tab = document.getElementById(id);
     if(tab.id === 'dashboard_narrative'){
         navigate('manageNarrativeReports.php');
-    } else if (tab.id === 'dashboard'){
+    } else if (tab.id === 'dashboard_ReviewUploadNarrative'){
+        navigate('manageUploadNarratives.php');
+    }  else if (tab.id === 'dashboard'){
         navigate('dashboardContent.php');
     } else if (tab.id === 'adviserNotes'){
         navigate('manageAdviserNote.php')
@@ -116,19 +142,87 @@ function dashboard_tab(id){
         navigate('manageAdvisers.php')
     }else if (tab.id === 'dashBoardProg_n_Section'){
         navigate('ManageProgSec.php');
+    }else if (tab.id === 'dshbuploadNarrativeReq'){
+        navigate('manageUploadNarratives.php');
     }
     act_tab(tab.id);
-    if(tab.id === 'dshbContentLinkActStud'){
-        navigate('manageStudent.php');
-        act_tab('stud_list');
-    }else if(tab.id === 'dshbContentLinkActAdv'){
-        act_tab('adv_list');
-        navigate('manageAdvisers.php')
-    }else if(tab.id === 'dshbContentLinkNarratives'){
-        act_tab('dashboard_narrative');
-        navigate('manageNarrativeReports.php')
+   if(tab.id === 'adviserNotesReq'){
+        act_tab('notesReq');
+        navigate('notesReqmanage.php')
+    }
+    else if (tab.id === 'dshbweeklyReport'){
+        navigate('manageWeeklyReport.php');
+        act_tab('dashBoardWeeklyReport');
+    }
+    else if (tab.id === 'dshbuploadNarrativeReq'){
+        navigate('manageUploadNarratives.php');
+        act_tab('dashboard_ReviewUploadNarrative');
     }
 
+}
+function renderChart(ctx) {
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Active student', 'Active adviser', 'Narrative Reports', 'Archived adviser', 'Archived student'],
+            datasets: [{
+                label: '',
+                data: [12, 19, 40, 5, 2],
+                borderWidth: 1,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)', // Color for 'Active student'
+                    'rgba(54, 162, 235, 0.2)', // Color for 'Active adviser'
+                    'rgba(255, 206, 86, 0.2)', // Color for 'Narrative Reports'
+                    'rgba(75, 192, 192, 0.2)', // Color for 'Archived adviser'
+                    'rgba(153, 102, 255, 0.2)' // Color for 'Archived student'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)', // Border color for 'Active student'
+                    'rgba(54, 162, 235, 1)', // Border color for 'Active adviser'
+                    'rgba(255, 206, 86, 1)', // Border color for 'Narrative Reports'
+                    'rgba(75, 192, 192, 1)', // Border color for 'Archived adviser'
+                    'rgba(153, 102, 255, 1)' // Border color for 'Archived student'
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false // Hide the legend
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `# of Data: ${context.raw}`;
+                        }
+                    }
+                }
+            },
+            maintainAspectRatio: false,
+            responsive: true,
+            onClick: (event, elements) => {
+                if (elements.length > 0) {
+                    const elementIndex = elements[0].index;
+                    const label = myChart.data.labels[elementIndex];
+                    if (label === 'Active student') {
+                        const elementId = "stud_list";
+                        dashboard_tab(elementId);
+                    } else if (label === 'Active adviser') {
+                        const elementId = "adv_list";
+                        dashboard_tab(elementId);
+                    } else if (label === 'Narrative Reports') {
+                        const elementId = "dashboard_narrative";
+                        dashboard_tab(elementId);
+                    }
+                }
+            }
+        }
+    });
 }
 function act_tab(id){
     const allTabs = document.querySelectorAll('.dashboard_tab'); // Assuming all tabs have the 'tab' class
@@ -245,6 +339,80 @@ function getAdvNotes(){
         dataType: 'html',
         success: function(response) {
             $('#NotesReq').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+function getPendingFinalReports(){
+    $.ajax({
+        url: '../ajax.php?action=getPendingFinalReports',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            $('#narrativeReportsReqTableBody').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+function editNarrativeReq(narrative_id){
+    $.ajax({
+        url: '../ajax.php?action=narrativeReportsJson&narrative_id=' + narrative_id,
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data){
+
+                if (document.getElementById('SelectreqStatuses')){
+                    $('#declineUploadReason').empty();
+                    document.querySelector('#EditNarrativeReportsReqForm select[name="UploadStat"]').value = data.file_status;
+                    if (data.file_status  === 'Declined'){
+                        $('#declineUploadReason').append('<label class="form-control w-full " id="remarkInput">\n' +
+                            '                            <div class="label">\n' +
+                            '                                <span class="label-text text-slate-700 font-bold">Remarks</span>\n' +
+                            '                            </div>\n' +
+                            '                            <input type="text" required  name="remark" value="'+ data.remarks +'" class="input input-error w-full" placeholder="Type here">' +
+                            '                        </label>')
+
+                    }
+
+                }
+
+
+
+                let startSchYear = "", endSchYear = "";
+                if (data.sySubmitted !== 'N/A') {
+                    let years = data.sySubmitted.split(',');
+                    startSchYear = years[0].trim();
+                    endSchYear = years[1].trim();
+
+                }
+
+                document.querySelector('#EditNarrativeReportsReqForm input[name="startYear"]').value = startSchYear;
+                document.querySelector('#EditNarrativeReportsReqForm input[name="endYear"]').value = endSchYear;
+
+
+
+                document.querySelector('#EditNarrativeReportsReqForm input[name="narrative_id"]').value = data.narrative_id;
+                document.querySelector('#EditNarrativeReportsReqForm input[name="trainingHours"]').value = data.training_hours;
+                document.querySelector('#EditNarrativeReportsReqForm input[name="companyName"]').value = data.company_name;
+
+                document.querySelector('#EditNarrativeReportsReqForm input[name="first_name"]').value = data.first_name;
+                document.querySelector('#EditNarrativeReportsReqForm input[name="middle_name"]').value = data.middle_name;
+                document.querySelector('#EditNarrativeReportsReqForm input[name="last_name"]').value = data.last_name;
+                document.querySelector('#EditNarrativeReportsReqForm input[name="school_id"]').value = data.stud_school_id;
+                document.querySelector('#EditNarrativeReportsReqForm select[name="program"]').value = data.program;
+                document.querySelector('#EditNarrativeReportsReqForm select[name="section"]').value = data.section;
+                if (data.sex === "Male") {
+                    document.querySelector('#EditNarrativeReportsReqForm input[name="stud_Sex"][value="Male"]').checked = true;
+                } else if (data.sex === "Female") {
+                    document.querySelector('#EditNarrativeReportsReqForm input[name="stud_Sex"][value="Female"]').checked = true;
+                }
+                document.querySelector('#EditNarrativeReportsReqForm select[name="ojt_adviser"]').value = data.OJT_adviser_ID;
+            }
         },
         error: function(xhr, status, error) {
             console.error('Error fetching data:', error);
@@ -559,7 +727,6 @@ function attachSelectEventListener() {
 function removeSelectFormOption(){
     $('#formSelect').remove()
 }
-
 
 
 

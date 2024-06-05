@@ -109,6 +109,14 @@ document.addEventListener('submit', function(e) {
         notification = 'NoteStatUpdateNotif';
         getNewData.push(getAdvNotes);
     }
+    if (e.target.id === 'EditNarrativeReportsReqForm'){
+        endpoint = 'UpdateNarrativeReport';
+        loader_id = 'loader_narrative_update';
+        modal = 'EditNarrativeReq';
+        btn = 'editNarrativeBtn';
+        notification = 'SuccessNarrativeEdit';
+        getNewData.push(getPendingFinalReports);
+    }
 
 
     formData = new FormData(e.target);
