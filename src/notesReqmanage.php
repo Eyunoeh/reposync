@@ -14,8 +14,8 @@ $secret_key ='TheSecretKey#02';
 session_start();
 ?>
 
-<div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
-    <div class="relative flex flex-col min-w-0 break-words  h-full rounded-2xl border-stone-200 bg-light/30">
+<div class="overflow-y-hidden relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
+    <div class="relative flex flex-col min-w-0 break-words   rounded-2xl border-stone-200 bg-light/30">
         <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent ">
             <form class="flex w-full justify-start">
                 <div class="w-[40%]">

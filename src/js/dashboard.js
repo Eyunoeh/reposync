@@ -380,6 +380,10 @@ function editNarrativeReq(narrative_id){
                     }
 
                 }
+                if (document.getElementById('textStatuses')){
+                    $('#ReportUploadStatus').html(data.file_status)
+                    $('#ReportUploadRemarks').html(data.remarks);
+                }
 
 
 

@@ -44,7 +44,11 @@ session_start();
             </div>
             <div onclick="dashboard_tab('adviserNotes')" id="adviserNotesReq" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
                 <h1 class="font-bold font-sans text-[4rem]">60</h1>
-                <h1 class="font-sans ">Pending Adviser Notes</h1>
+                <h1 class="font-sans ">Pending Notes</h1>
+            </div>
+            <div onclick="dashboard_tab(this.id)" id="stud_list" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
+                <h1 class="font-bold font-sans text-[4rem]">60</h1>
+                <h1 class="font-sans ">Total active student</h1>
             </div>
         </div>
 

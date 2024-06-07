@@ -18,7 +18,9 @@ include '../functions.php';
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
     <script type="text/javascript" src="turnjs4/extras/jquery.min.1.7.js"></script>
     <script type="text/javascript" src="turnjs4/extras/modernizr.2.5.3.min.js"></script>
-    <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
+
+    <title>Narrative Report flipbook</title>
 </head>
 <body class="bg-slate-200 ">
 

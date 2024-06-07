@@ -4434,6 +4434,10 @@ details.collapse summary::-webkit-details-marker {
   max-height: 35rem;
 }
 
+.max-h-\[38rem\] {
+  max-height: 38rem;
+}
+
 .max-h-\[40rem\] {
   max-height: 40rem;
 }

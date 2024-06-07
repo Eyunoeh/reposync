@@ -353,7 +353,7 @@ if ($action == 'newFinalReport'){
                     $file_last_name = str_replace(' ', '', $last_name);
                     $new_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $section . "_" . $school_id . ".pdf";
                     $current_date_time = date('Y-m-d H:i:s');
-                    $narrative_status = 'Pending';
+                    $narrative_status = isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'admin' ? 'OK' : 'Pending';
                     if ($file_error === UPLOAD_ERR_OK) {
                         try {
                             $new_final_report = $conn->prepare("INSERT INTO narrativereports
@@ -547,6 +547,9 @@ if ($action === 'UpdateNarrativeReport'){
             $school_id, $ojt_adviser,$stud_sex,$first_name, $middle_name,  $last_name,
             $program, $section, $new_file_name,
             $current_date_time, $trainingHours, $compName,$sySubmitted ,$narrative_id);
+        if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'adviser'){
+            $uploadStat = 'Pending';
+        }
         if ($uploadStat !== Null){
             if ($uploadStat === 'OK'){
                 $uploadDeclineRemark = 'OK';
@@ -844,7 +847,7 @@ if ($action == 'getStudentsList'){
     }
     if ($result->num_rows > 0){
         while ($row = $result->fetch_assoc()){
-            if ($_SESSION['log_user_type'] == 'adviser' and$_SESSION['log_user_id'] == $row['adviserUserId']){
+            if ($_SESSION['log_user_id'] == $row['adviserUserId']){
                 echo '<tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['school_id'].'</span>
@@ -863,31 +866,6 @@ if ($action == 'getStudentsList'){
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['company_name'].'</span>
                         </td>
                         
-                        <td class="p-3 text-end">
-                            <a href="#" onclick="openModalForm(\'editStuInfo\');editUserStud_Info(this.getAttribute(\'data-id\'))" data-id="' . urlencode(encrypt_data($row['user_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
-                        </td>
-                    </tr>';
-            }
-            else if ($_SESSION['log_user_type'] == 'admin'){
-                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['school_id'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$row['last_name'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['adviser_name'].'</span>
-                        </td>
-
-                
-                        
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['program_code'].'</span>
-                        </td>
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['company_name'].'</span>
-                        </td>
                         <td class="p-3 text-end">
                             <a href="#" onclick="openModalForm(\'editStuInfo\');editUserStud_Info(this.getAttribute(\'data-id\'))" data-id="' . urlencode(encrypt_data($row['user_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
                         </td>
@@ -1716,6 +1694,46 @@ if ($action === 'getPendingFinalReports'){
     JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id 
     WHERE file_status = 'Pending' OR file_status = 'Declined';";
         $narrativeUploadReqSTMT = $conn->prepare($narrativeUploadReq);
+        $narrativeUploadReqSTMT->execute();
+        $result = $narrativeUploadReqSTMT->get_result();
+        if ($result->num_rows > 0){
+            while ($row = $result->fetch_assoc()){
+                $studMiddleName = '';
+                $advMiddleName = '';
+                if ($row['middle_name'] !== 'N/A'){
+                    $studMiddleName = $row['middle_name'];
+                }
+                if ($row['AdvMname'] !== 'N/A'){
+                    $advMiddleName = $row['AdvMname'];
+                }
+                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
+                        <td class="p-3 text-start w-[10rem]">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">'.$row['stud_school_id'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$studMiddleName.' '.$row['last_name'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['AdvFname'].' '.$advMiddleName.' '.$row['AdvLname'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['file_status'].'</span>
+                        </td>
+                        <td class="p-3 text-end">
+                           <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
+
+                            <a onclick="openModalForm(\'EditNarrativeReq\');
+                            editNarrativeReq(this.getAttribute(\'data-narrative\'))"  data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
+                        </td>
+                    </tr>';
+            }
+        }
+    }elseif (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'adviser'){
+        $narrativeUploadReq = "SELECT tbl_user_info.first_name as AdvFname, tbl_user_info.middle_name as AdvMname,tbl_user_info.last_name as AdvLname, narrativereports.* FROM narrativereports
+    JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id 
+    WHERE OJT_adviser_ID = ? and file_status = 'Pending' OR file_status = 'Declined'  ";
+        $narrativeUploadReqSTMT = $conn->prepare($narrativeUploadReq);
+        $narrativeUploadReqSTMT->bind_param('i', $_SESSION['log_user_id']);
         $narrativeUploadReqSTMT->execute();
         $result = $narrativeUploadReqSTMT->get_result();
         if ($result->num_rows > 0){

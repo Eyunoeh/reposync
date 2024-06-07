@@ -81,15 +81,16 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             </h1>
             <?php endif;?>
         </div>
+        <div id="dashboard_ReviewUploadNarrative" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-start rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+            <i class="fa-solid fa-book"></i>
+            <span class="text-[15px] ml-4  font-bold">Upload Narrative Report</span>
+        </div>
         <div id="dashboard_narrative" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-book"></i>
             <span class="text-[15px] ml-4  font-bold">Narrative Reports</span>
         </div>
 
-        <div id="dashboard_ReviewUploadNarrative" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-start rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
-            <i class="fa-solid fa-book"></i>
-            <span class="text-[15px] ml-4  font-bold">Upload Narrative Request</span>
-        </div>
+
 
         <?php
 

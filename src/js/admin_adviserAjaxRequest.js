@@ -117,6 +117,14 @@ document.addEventListener('submit', function(e) {
         notification = 'SuccessNarrativeEdit';
         getNewData.push(getPendingFinalReports);
     }
+    if (e.target.id === 'narrativeReportsForm'){
+        endpoint = 'newFinalReport'
+        modal =  'newNarrative';
+        loader_id = 'loader_narrative';
+        btn = 'newNarrativeSubmitbtn';
+        notification = 'SuccessLUploadNotif'
+        getNewData.push(getPendingFinalReports);
+    }
 
 
     formData = new FormData(e.target);
