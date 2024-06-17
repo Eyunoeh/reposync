@@ -4,82 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Update">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlipbookFunctions.php" beforeDir="false" afterPath="$PROJECT_DIR$/FlipbookFunctions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/announcement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/announcement.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b736d5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b74310.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b74cc6.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b75665.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b7992e.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b7a860.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a21006bc09.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a21006c706.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a21008a3ba.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a210093b29.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a21009c2b7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a2100a3416.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a2100a733f.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a295c48a12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a573d91dda.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a573d928c6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a573d93307.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a573d9405f.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5854a92aa.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5854a9fa2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5854aac60.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5854ab628.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5906f07ec.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5906f1225.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5906f1e2e.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a674d6b246.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a674d6c209.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a674d6cc7b.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a674d6ed9d.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663a674d6fbb5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663b0f7f126cd.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663b0f7f13898.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663b0f7f142e9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663b0f7f36126.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/663b0f7f46beb.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/66444720502ea.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664447205109f.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/6649d917c117c.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/6649d917c1c73.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664b3ff7e0819.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664b3ff7e187b.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664c52207326d.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664c52207415a.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664c5220757bc.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664caacc4f9f7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664caacc5094f.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664caacc514ce.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664caaf14debd.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664caaf14ee1b.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664caaf14fd84.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664caaf150a86.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664d4c432cd1a.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/664d4c432e21d.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/665e672408384.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/665e672408eb2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/Capture.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/comments_img/Capture2.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/basicFLip.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/basicFLip.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboardContent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardContent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboardViewnarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardViewnarrativeReports.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageUploadNarratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageUploadNarratives.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageWeeklyReport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/narratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/narratives.php" afterDir="false" />
-    </list>
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Update" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -151,7 +76,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.webide.settings.project.settings.php",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -313,14 +238,7 @@
       <workItem from="1718077699412" duration="1206000" />
       <workItem from="1718153340995" duration="4954000" />
       <workItem from="1718202036742" duration="76000" />
-      <workItem from="1718631394335" duration="8510000" />
-    </task>
-    <task id="LOCAL-00003" summary="noReload">
-      <created>1712227150223</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1712227150223</updated>
+      <workItem from="1718631394335" duration="10365000" />
     </task>
     <task id="LOCAL-00004" summary="narrative/nav">
       <created>1712241106067</created>
@@ -658,7 +576,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718153643466</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Update">
+      <created>1718640787139</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1718640787140</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
