@@ -1,10 +1,10 @@
 <?php
-/*
+
 if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
     header("Location: 404.php");
     exit();
 }
-*/
+
 
 
 session_start();
@@ -847,7 +847,7 @@ if ($action == 'getStudentsList'){
     }
     if ($result->num_rows > 0){
         while ($row = $result->fetch_assoc()){
-            if ($_SESSION['log_user_id'] == $row['adviserUserId']){
+            if ($_SESSION['log_user_type'] == 'admin'){
                 echo '<tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['school_id'].'</span>
@@ -870,7 +870,34 @@ if ($action == 'getStudentsList'){
                             <a href="#" onclick="openModalForm(\'editStuInfo\');editUserStud_Info(this.getAttribute(\'data-id\'))" data-id="' . urlencode(encrypt_data($row['user_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
                         </td>
                     </tr>';
+
+            }elseif ($_SESSION['log_user_type'] == 'admin'){
+                if ($_SESSION['log_user_id'] == $row['adviserUserId']){
+                    echo '<tr class="border-b border-dashed last:border-b-0 p-3">
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['school_id'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$row['last_name'].'</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['adviser_name'].'</span>
+                        </td>
+
+                        <td class="p-3 text-end">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['program_code'].'</span>
+                        </td>
+                        <td class="p-3 text-end">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['company_name'].'</span>
+                        </td>
+                        
+                        <td class="p-3 text-end">
+                            <a href="#" onclick="openModalForm(\'editStuInfo\');editUserStud_Info(this.getAttribute(\'data-id\'))" data-id="' . urlencode(encrypt_data($row['user_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
+                        </td>
+                    </tr>';
+                }
             }
+
         }
     }
 }
@@ -1770,3 +1797,49 @@ if ($action === 'getPendingFinalReports'){
         }
     }
 }
+
+
+if ($action == 'dshbGePendingFinalReports') {
+
+    if ($_SESSION['log_user_type'] == 'admin') {
+        $getPendingFinalUpdload = "SELECT COUNT(*) as totalPending FROM narrativereports 
+                                   WHERE file_status = 'Pending';";
+        $getPendingFinalUpdloadSTMT = $conn->prepare($getPendingFinalUpdload);
+        $getPendingFinalUpdloadSTMT->execute();
+        $result = $getPendingFinalUpdloadSTMT->get_result();
+
+    } else if ($_SESSION['log_user_type'] == 'adviser') {
+        $getPendingFinalUpdload = "SELECT COUNT(*) as totalPending FROM narrativereports
+                                   WHERE OJT_adviser_ID = ? AND (file_status = 'Pending' OR file_status = 'Declined');";
+        $getPendingFinalUpdloadSTMT = $conn->prepare($getPendingFinalUpdload);
+        $getPendingFinalUpdloadSTMT->bind_param('i', $_SESSION['log_user_id']);
+        $getPendingFinalUpdloadSTMT->execute();
+        $result = $getPendingFinalUpdloadSTMT->get_result();
+    }
+
+    if ($result->num_rows > 0) {
+        echo $result->fetch_assoc()['totalPending'];
+    } else {
+        echo 0;
+    }
+    exit();
+
+}
+if ($action == 'dshbPendStudWeeklyReport'){
+    $getTotalStudPedingWeeklyReport = "SELECT COUNT(*) AS totalStudentPendingReport 
+FROM `weeklyreport` 
+    JOIN advisory_list on advisory_list.stud_sch_user_id = weeklyreport.stud_user_id 
+WHERE advisory_list.adv_sch_user_id = ? AND weeklyreport.upload_status = 'pending';
+";
+    $getTotalStudPedingWeeklyReportSTMT  = $conn->prepare($getTotalStudPedingWeeklyReport);
+    $getTotalStudPedingWeeklyReportSTMT->bind_param('s',$_SESSION['log_user_id']);
+    $getTotalStudPedingWeeklyReportSTMT->execute();
+    $result = $getTotalStudPedingWeeklyReportSTMT->get_result();
+    if ($result->num_rows > 0) {
+        echo $result->fetch_assoc()['totalStudentPendingReport'];
+    } else {
+        echo 0;
+    }
+    exit();
+}
+

@@ -236,7 +236,12 @@ session_start();
         <div  class=" card-title sticky ">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('EditNarrativeReq')">✕</button>
             <h3 class="font-bold text-center text-lg  p-5">Update student narrative report</h3>
+
+            <div data-tip="Download PDF" class="tooltip tooltip-bottom">
+                <a id="dlLink" href="" target="_blank" class="btn btn-circle  hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2 text-info"><i class="fa-solid fa-download"></i></a>
+            </div>
         </div>
+
         <?php if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'adviser'):?>
 
         <div class="pl-5" id="textStatuses">

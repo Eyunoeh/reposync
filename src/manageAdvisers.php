@@ -60,7 +60,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                         </td>
 
                         <td class="p-3 text-end">
-                            <a onclick="openModalForm('editAdv_admin')" href="#" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
+                            <a onclick="openModalForm('editAdv_admin')" href="#" class=" "><i class="fa-solid fa-circle-info"></i></a>
                         </td>
                     </tr>
                     </tbody>

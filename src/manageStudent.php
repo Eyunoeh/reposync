@@ -10,7 +10,7 @@ include '../DatabaseConn/databaseConn.php';
     <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('newStudentdialog')">New Student</button>
 </div>
 
-<div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
+<div class="overflow-y-hidden relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
     <div class="relative flex flex-col min-w-0 break-words  h-full rounded-2xl border-stone-200 bg-light/30">
         <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent ">
             <form class="flex w-full justify-start">
@@ -21,7 +21,7 @@ include '../DatabaseConn/databaseConn.php';
             </form>
         </div>
         <div class="block py-8 pt-6 px-9">
-            <div class="overflow-auto h-96">
+            <div class="overflow-auto h-[100vh]">
                 <table id="studListTbl" class="w-full my-0 border-neutral-200 text-sm" >
                     <thead class="align-bottom z-20">
                     <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
@@ -340,7 +340,7 @@ include '../DatabaseConn/databaseConn.php';
                                         echo '<option value="'.$row['section_id'].'">'.$row['section'].'</option>';
                                     }
                                     ?>
-                                </select>=
+                                </select>
                             </label>
 
                         </div>

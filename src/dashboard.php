@@ -62,6 +62,8 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <i class="fa-solid fa-chevron-down"></i>
         </div>
         <div id="AnnouncementSubmenu" class="ani text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" >
+
+
             <h1 onclick="dashboard_tab(this.id)" id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 <i class="fa-regular fa-note-sticky"></i>
                  Notes

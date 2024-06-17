@@ -18,6 +18,7 @@ body{
 }
 
 .flipbook-viewport .flipbook{
+	overflow: hidden;
 	width:922px;
 	height:600px;
 

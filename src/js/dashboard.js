@@ -34,6 +34,8 @@ function navigate(page) {
             getYrSec();
             getAdvNotes();
             getPendingFinalReports();
+            getTotalPendingUploadNarrative();
+            getTotalPendingStudentWeeklyReport();
             if (document.getElementById('act_n_schedForm')) {
                 const startDateInput = document.querySelector('input[name="startDate"]');
                 const endDateInput = document.querySelector('input[name="endDate"]');
@@ -263,6 +265,33 @@ function get_studenUsertList (){
         }
     });
 }
+
+function getTotalPendingUploadNarrative(){
+    $.ajax({
+        url: '../ajax.php?action=dshbGePendingFinalReports',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            $('#pendingUploadNarrativeReport').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+function getTotalPendingStudentWeeklyReport(){
+    $.ajax({
+        url: '../ajax.php?action=dshbPendStudWeeklyReport',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            $('#pendingStudWeeklyReport').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
 function get_AdvUsertList (){
     $.ajax({
         url: '../ajax.php?action=getAdvisers',
@@ -365,6 +394,7 @@ function editNarrativeReq(narrative_id){
         dataType: 'json',
         success: function(data) {
             if (data){
+                document.getElementById('dlLink').href='NarrativeReportsPDF/'+ data.narrative_file_name;
 
                 if (document.getElementById('SelectreqStatuses')){
                     $('#declineUploadReason').empty();

@@ -38,8 +38,8 @@ include '../DatabaseConn/databaseConn.php';
                     </div>
                 </form>
             </div>
-            <div class="block py-8 pt-6 px-9">
-                <div class="overflow-auto h-[100vh]">
+            <div class="block py-8 pt-6 px-9  ">
+                <div class="overflow-auto h-[65vh]">
                     <table id="narrativeReportsTable" class="w-full my-0 border-neutral-200" >
                         <thead class="align-bottom z-10">
                         <tr class="font-semibold text-[0.95rem] sticky top-0 z-10 text-secondary-dark bg-slate-200 rounded">

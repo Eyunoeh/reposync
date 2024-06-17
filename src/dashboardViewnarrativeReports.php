@@ -113,6 +113,9 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
         <div  class=" card-title sticky ">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('EditNarrative')">✕</button>
             <h3 class="font-bold text-center text-lg  p-5">Edit student narrative report</h3>
+            <div data-tip="Download PDF" class="tooltip tooltip-bottom ">
+                <a id="dlLink" target="_blank" class="btn btn-circle hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2 text-info"><i class="fa-solid fa-download"></i></a>
+            </div>
         </div>
         <div class="p-4">
             <form id="EditNarrativeReportsForm"  enctype="multipart/form-data">
@@ -170,9 +173,12 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                                     $adv_option_query = "SELECT ui.*, acc.*
                                  FROM tbl_user_info ui
                                  INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
-                                    $result = $conn->query($adv_option_query);
+                                 WHERE ui.user_type IN ('admin', 'adviser') and ui.user_id = ?  AND acc.status = 'active'";
 
+                                    $adv_option_querySTMT = $conn->prepare($adv_option_query);
+                                    $adv_option_querySTMT->bind_param('i', $_SESSION['log_user_id']);
+                                    $adv_option_querySTMT->execute();
+                                    $result = $adv_option_querySTMT->get_result();
                                     if ($result->num_rows > 0) {
                                         while ($row = $result->fetch_assoc()) {
                                             echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
@@ -323,36 +329,39 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
             success: function(data) {
                 if (data){
 
-                    let startSchYear = "", endSchYear = "";
-                    if (data.sySubmitted !== 'N/A') {
-                        let years = data.sySubmitted.split(',');
-                        startSchYear = years[0].trim();
-                        endSchYear = years[1].trim();
+                        let startSchYear = "", endSchYear = "";
+                        if (data.sySubmitted !== 'N/A') {
+                            let years = data.sySubmitted.split(',');
+                            startSchYear = years[0].trim();
+                            endSchYear = years[1].trim();
+
+                        document.getElementById('dlLink').href='NarrativeReportsPDF/'+ data.narrative_file_name;
+
+
+                        document.querySelector('#EditNarrativeReportsForm input[name="startYear"]').value = startSchYear;
+                        document.querySelector('#EditNarrativeReportsForm input[name="endYear"]').value = endSchYear;
+
+
+
+                        document.querySelector('#EditNarrativeReportsForm input[name="narrative_id"]').value = data.narrative_id;
+                        document.querySelector('#EditNarrativeReportsForm input[name="trainingHours"]').value = data.training_hours;
+                        document.querySelector('#EditNarrativeReportsForm input[name="companyName"]').value = data.company_name;
+
+                        document.querySelector('#EditNarrativeReportsForm input[name="first_name"]').value = data.first_name;
+                        document.querySelector('#EditNarrativeReportsForm input[name="middle_name"]').value = data.middle_name;
+                        document.querySelector('#EditNarrativeReportsForm input[name="last_name"]').value = data.last_name;
+                        document.querySelector('#EditNarrativeReportsForm input[name="school_id"]').value = data.stud_school_id;
+                        document.querySelector('#EditNarrativeReportsForm select[name="program"]').value = data.program;
+                        document.querySelector('#EditNarrativeReportsForm select[name="section"]').value = data.section;
+                        if (data.sex === "Male") {
+                            document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Male"]').checked = true;
+                        } else if (data.sex === "Female") {
+                            document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Female"]').checked = true;
+                        }
+
+                        document.querySelector('#EditNarrativeReportsForm select[name="ojt_adviser"]').value = data.OJT_adviser_ID;
+
                     }
-
-                    document.querySelector('#EditNarrativeReportsForm input[name="startYear"]').value = startSchYear;
-                    document.querySelector('#EditNarrativeReportsForm input[name="endYear"]').value = endSchYear;
-
-
-
-                    document.querySelector('#EditNarrativeReportsForm input[name="narrative_id"]').value = data.narrative_id;
-                    document.querySelector('#EditNarrativeReportsForm input[name="trainingHours"]').value = data.training_hours;
-                    document.querySelector('#EditNarrativeReportsForm input[name="companyName"]').value = data.company_name;
-
-                    document.querySelector('#EditNarrativeReportsForm input[name="first_name"]').value = data.first_name;
-                    document.querySelector('#EditNarrativeReportsForm input[name="middle_name"]').value = data.middle_name;
-                    document.querySelector('#EditNarrativeReportsForm input[name="last_name"]').value = data.last_name;
-                    document.querySelector('#EditNarrativeReportsForm input[name="school_id"]').value = data.stud_school_id;
-                    document.querySelector('#EditNarrativeReportsForm select[name="program"]').value = data.program;
-                    document.querySelector('#EditNarrativeReportsForm select[name="section"]').value = data.section;
-                    if (data.sex === "Male") {
-                        document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Male"]').checked = true;
-                    } else if (data.sex === "Female") {
-                        document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Female"]').checked = true;
-                    }
-
-                    document.querySelector('#EditNarrativeReportsForm select[name="ojt_adviser"]').value = data.OJT_adviser_ID;
-
                 }
             },
             error: function(xhr, status, error) {

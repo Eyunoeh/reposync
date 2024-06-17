@@ -4386,6 +4386,10 @@ details.collapse summary::-webkit-details-marker {
   height: 50vh;
 }
 
+.h-\[65vh\] {
+  height: 65vh;
+}
+
 .h-\[70vh\] {
   height: 70vh;
 }
@@ -5015,6 +5019,10 @@ details.collapse summary::-webkit-details-marker {
 
 .pb-0 {
   padding-bottom: 0px;
+}
+
+.pb-3 {
+  padding-bottom: 0.75rem;
 }
 
 .pb-5 {

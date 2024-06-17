@@ -112,7 +112,7 @@ session_start();
         }
     } else {
         // If no results found, display a message
-        echo '<tr><td colspan="3">No students found for this adviser.</td></tr>';
+        echo '<tr><td colspan="9">No Active / Assigned students found for this adviser.</td></tr>';
     }
 
     // Close the prepared statement and release the result set

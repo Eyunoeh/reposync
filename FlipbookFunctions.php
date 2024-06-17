@@ -10,7 +10,7 @@ function convert_pdf_to_image($file_name):bool{
     if (!is_dir($basePath . $subdirectoryName)) {
         mkdir($basePath . $subdirectoryName, 0755);
 
-        ConvertApi::setApiSecret('ibjeGR1eEpfx6tzY');
+        ConvertApi::setApiSecret('oc2ymqnjEq3ZQDbk');
         $result = ConvertApi::convert('png', [
             'File' => 'src/NarrativeReportsPDF/'.$file_name.'.pdf',
             'FileName' => $file_name."_page",

@@ -4,31 +4,81 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Update managing narrative reports new narrative reports uploaded">
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Max_Verstappen_BSIT_4A_201233421.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page-9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Max_Verstappen_BSIT_4A_201233421/Max_Verstappen_BSIT_4A_201233421_page.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlipbookFunctions.php" beforeDir="false" afterPath="$PROJECT_DIR$/FlipbookFunctions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/announcement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/announcement.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b736d5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b74310.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b74cc6.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b75665.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b7992e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a202b7a860.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a21006bc09.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a21006c706.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a21008a3ba.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a210093b29.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a21009c2b7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a2100a3416.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a2100a733f.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a295c48a12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a573d91dda.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a573d928c6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a573d93307.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a573d9405f.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5854a92aa.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5854a9fa2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5854aac60.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5854ab628.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5906f07ec.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5906f1225.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a5906f1e2e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a674d6b246.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a674d6c209.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a674d6cc7b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a674d6ed9d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663a674d6fbb5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663b0f7f126cd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663b0f7f13898.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663b0f7f142e9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663b0f7f36126.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/663b0f7f46beb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/66444720502ea.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664447205109f.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/6649d917c117c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/6649d917c1c73.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664b3ff7e0819.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664b3ff7e187b.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664c52207326d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664c52207415a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664c5220757bc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664caacc4f9f7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664caacc5094f.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664caacc514ce.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664caaf14debd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664caaf14ee1b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664caaf14fd84.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664caaf150a86.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664d4c432cd1a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/664d4c432e21d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/665e672408384.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/665e672408eb2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/Capture.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comments_img/Capture2.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/basicFLip.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/basicFLip.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboardContent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardContent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboardViewnarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardViewnarrativeReports.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageUploadNarratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageUploadNarratives.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageWeeklyReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/narratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/narratives.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -261,13 +311,9 @@
       <workItem from="1717988702517" duration="1221000" />
       <workItem from="1718029149631" duration="21000" />
       <workItem from="1718077699412" duration="1206000" />
-    </task>
-    <task id="LOCAL-00002" summary="home">
-      <created>1712224331744</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1712224331744</updated>
+      <workItem from="1718153340995" duration="4954000" />
+      <workItem from="1718202036742" duration="76000" />
+      <workItem from="1718631394335" duration="8510000" />
     </task>
     <task id="LOCAL-00003" summary="noReload">
       <created>1712227150223</created>
@@ -605,7 +651,14 @@
       <option name="project" value="LOCAL" />
       <updated>1717733175082</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Update">
+      <created>1718153643465</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1718153643466</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -624,7 +677,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="4/26/2024" />
     <MESSAGE value="DashboardTabs 4/26/2024" />
     <MESSAGE value="4/29/24 Narrative Module Update" />
     <MESSAGE value="New Forms in dashboard working on students list" />
@@ -649,7 +701,8 @@
     <MESSAGE value="add new narrative this is pages" />
     <MESSAGE value="update 2nd revision" />
     <MESSAGE value="Update managing narrative reports new narrative reports uploaded" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update managing narrative reports new narrative reports uploaded" />
+    <MESSAGE value="Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -658,6 +711,12 @@
           <url>file://$PROJECT_DIR$/tailwind.config.js</url>
           <line>6</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/dashboard.js</url>
+          <line>264</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

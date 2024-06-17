@@ -81,10 +81,9 @@ include '../functions.php';
 
     function loadApp() {
       $('.flipbook').turn({
-            width:1000,
+            width:900,
             height:600,
             elevation: 50,
-            gradients: true,
             autoCenter: true
 
         });
