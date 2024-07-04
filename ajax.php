@@ -270,6 +270,11 @@ if ($action == 'resubmitReport'){
                     else{
                         exit();
                     }
+                    $updateReadStat = "UPDATE weeklyreport SET readStatus = 'Unread' where file_id = ?";
+                    $updateReadStatSTMT = $conn->prepare($updateReadStat);
+                    $updateReadStatSTMT->bind_param('i', $file_id);
+                    $updateReadStatSTMT->execute();
+
                     insertActivityLog('resubmit', $file_id);
                     echo 1;
                 } else {
@@ -283,6 +288,19 @@ if ($action == 'resubmitReport'){
         }
     } else {
         echo 'missing_file_id';
+    }
+}
+
+if ($action == 'updateReadStat'){
+    $file_id = $_GET['file_id'];
+    $updateReadStat = "UPDATE weeklyreport SET readStatus = 'Read' where file_id = ?";
+    $updateReadStatSTMT = $conn->prepare($updateReadStat);
+    $updateReadStatSTMT->bind_param('i', $file_id);
+
+    if ($updateReadStatSTMT->execute()){
+        echo 1;
+    }else{
+        echo $updateReadStatSTMT->error;
     }
 }
 if ($action == 'getUploadLogs'){
@@ -858,6 +876,10 @@ if ($action == 'getStudentsList'){
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['adviser_name'].'</span>
                         </td>
+                          <td class="p-3 text-end">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['training_hours'].'</span>
+                        </td>
+
 
                         <td class="p-3 text-end">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['program_code'].'</span>
@@ -871,7 +893,7 @@ if ($action == 'getStudentsList'){
                         </td>
                     </tr>';
 
-            }elseif ($_SESSION['log_user_type'] == 'admin'){
+            }elseif ($_SESSION['log_user_type'] == 'adviser'){
                 if ($_SESSION['log_user_id'] == $row['adviserUserId']){
                     echo '<tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
@@ -880,8 +902,8 @@ if ($action == 'getStudentsList'){
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$row['last_name'].'</span>
                         </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['adviser_name'].'</span>
+                        <td class="p-3 text-end">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['training_hours'].'</span>
                         </td>
 
                         <td class="p-3 text-end">
@@ -1719,7 +1741,7 @@ if ($action === 'getPendingFinalReports'){
     if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'admin'){
         $narrativeUploadReq = "SELECT tbl_user_info.first_name as AdvFname, tbl_user_info.middle_name as AdvMname,tbl_user_info.last_name as AdvLname, narrativereports.* FROM narrativereports
     JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id 
-    WHERE file_status = 'Pending' OR file_status = 'Declined';";
+    WHERE file_status = 'Pending'";
         $narrativeUploadReqSTMT = $conn->prepare($narrativeUploadReq);
         $narrativeUploadReqSTMT->execute();
         $result = $narrativeUploadReqSTMT->get_result();
@@ -1810,7 +1832,7 @@ if ($action == 'dshbGePendingFinalReports') {
 
     } else if ($_SESSION['log_user_type'] == 'adviser') {
         $getPendingFinalUpdload = "SELECT COUNT(*) as totalPending FROM narrativereports
-                                   WHERE OJT_adviser_ID = ? AND (file_status = 'Pending' OR file_status = 'Declined');";
+                                   WHERE OJT_adviser_ID = ? AND file_status = 'Pending';";
         $getPendingFinalUpdloadSTMT = $conn->prepare($getPendingFinalUpdload);
         $getPendingFinalUpdloadSTMT->bind_param('i', $_SESSION['log_user_id']);
         $getPendingFinalUpdloadSTMT->execute();
@@ -1825,18 +1847,37 @@ if ($action == 'dshbGePendingFinalReports') {
     exit();
 
 }
+if ($action == 'dshbDeclinedFinalReports') {
+
+    if ($_SESSION['log_user_type'] == 'adviser') {
+        $getPendingFinalUpdload = "SELECT COUNT(*) as totalDeclined FROM narrativereports
+                                   WHERE OJT_adviser_ID = ? AND file_status = 'Declined';";
+        $getPendingFinalUpdloadSTMT = $conn->prepare($getPendingFinalUpdload);
+        $getPendingFinalUpdloadSTMT->bind_param('i', $_SESSION['log_user_id']);
+        $getPendingFinalUpdloadSTMT->execute();
+        $result = $getPendingFinalUpdloadSTMT->get_result();
+    }
+
+    if ($result->num_rows > 0) {
+        echo $result->fetch_assoc()['totalDeclined'];
+    } else {
+        echo 0;
+    }
+    exit();
+
+}
 if ($action == 'dshbPendStudWeeklyReport'){
-    $getTotalStudPedingWeeklyReport = "SELECT COUNT(*) AS totalStudentPendingReport 
+    $getTotalStudPedingWeeklyReport = "SELECT COUNT(*) AS totalStudentUnreadReport 
 FROM `weeklyreport` 
     JOIN advisory_list on advisory_list.stud_sch_user_id = weeklyreport.stud_user_id 
-WHERE advisory_list.adv_sch_user_id = ? AND weeklyreport.upload_status = 'pending';
+WHERE advisory_list.adv_sch_user_id = ? AND weeklyreport.readStatus = 'Unread';
 ";
     $getTotalStudPedingWeeklyReportSTMT  = $conn->prepare($getTotalStudPedingWeeklyReport);
-    $getTotalStudPedingWeeklyReportSTMT->bind_param('s',$_SESSION['log_user_id']);
+    $getTotalStudPedingWeeklyReportSTMT->bind_param('i',$_SESSION['log_user_id']);
     $getTotalStudPedingWeeklyReportSTMT->execute();
     $result = $getTotalStudPedingWeeklyReportSTMT->get_result();
     if ($result->num_rows > 0) {
-        echo $result->fetch_assoc()['totalStudentPendingReport'];
+        echo $result->fetch_assoc()['totalStudentUnreadReport'];
     } else {
         echo 0;
     }

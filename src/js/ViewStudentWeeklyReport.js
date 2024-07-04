@@ -66,3 +66,25 @@ function updateWeeklyReportStat(weeklyReport_id){
         }
     });
 }
+
+function updateReadStat(fileLocation, file_id) {
+    $.ajax({
+        url: '../ajax.php?action=updateReadStat&file_id=' + file_id,
+        method: 'GET',
+        dataType: 'html',
+        success: function(data) {
+            if (parseInt(data) === 1) {
+                var a = document.createElement('a');
+                a.href = fileLocation;
+                a.target = '_blank';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}

@@ -35,7 +35,7 @@ session_start();
                         <th class="p-3 text-start ">Training hours</th>
 
                         <th class="p-3 text-end ">Last Activity</th>
-                        <th class="p-3 text-end ">Check Reports</th>
+                        <th class="p-3 text-end " colspan="9">Check Reports</th>
                     </tr>
                     </thead>
                     <tbody id="AdvisoryWeeklyReportList" class="text-center text-slate-600">
@@ -56,6 +56,21 @@ session_start();
                             return $latest_activity['activity_date'];
                         } else {
                             return null;
+                        }
+                    }
+                    function checkNewWeeklyReports($stud_sch_user_id){
+                        include '../DatabaseConn/databaseConn.php';
+
+                        $getUnreadWeeklyReports = "SELECT * FROM weeklyreport 
+         where stud_user_id = ? and readStatus = 'Unread'";
+                        $getUnreadWeeklyReportsSTMT = $conn->prepare($getUnreadWeeklyReports);
+                        $getUnreadWeeklyReportsSTMT->bind_param("i",$stud_sch_user_id);
+                        $getUnreadWeeklyReportsSTMT->execute();
+                        $res = $getUnreadWeeklyReportsSTMT->get_result();
+                        if ($res->num_rows > 0){
+                            return true;
+                        }else{
+                            return false;
                         }
                     }
 
@@ -86,38 +101,54 @@ session_start();
             $formatted_date_time = $latest_activity ? date("M d, Y g:i A", strtotime($latest_activity)) : 'No Activity';
 
             echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                    <td class="p-3 text-start">
-                        <span class="font-semibold text-light-inverse text-md/normal">' . $row['school_id'] . '</span>
-                    </td>
-                    <td class="p-3 text-start">
-                        <span class="font-semibold text-light-inverse text-md/normal">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
-                    </td>
-                    <td class="p-3 text-start">
-                        <span class="font-semibold text-light-inverse text-md/normal">' . $row['company_name'] . '</span>
-                    </td>
-                    <td class="p-3 text-start">
-                        <span class="font-semibold text-light-inverse text-md/normal">' . $row['training_hours'] . '</span>
-                    </td>
-                    
-                    <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$formatted_date_time.'</span>
-                        </td>
-                    <td class="p-3 text-end">
-                        <a href="ViewStudentWeeklyReport.php?checkStudent= '.urlencode(encrypt_data($row['user_id'], $secret_key)).'" class="hover:cursor-pointer
-                        mb-1 font-semibold transition-colors duration-200
-                        ease-in-out text-lg/normal text-secondary-inverse
-                        hover:text-accent" target="_blank"><i class="fa-solid fa-arrow-right"></i></a>
-                    </td>
-                </tr>';
+        <td class="p-3 text-start">
+            <span class="font-semibold text-light-inverse text-md/normal">' . $row['school_id'] . '</span>
+        </td>
+        <td class="p-3 text-start">
+            <span class="font-semibold text-light-inverse text-md/normal">' . $row['first_name'] . ' ' . $row['last_name'] . '</span>
+        </td>
+        <td class="p-3 text-start">
+            <span class="font-semibold text-light-inverse text-md/normal">' . $row['company_name'] . '</span>
+        </td>
+        <td class="p-3 text-start">
+            <span class="font-semibold text-light-inverse text-md/normal">' . $row['training_hours'] . '</span>
+        </td>
+        <td class="p-3 text-end">
+            <span class="font-semibold text-light-inverse text-md/normal">'.$formatted_date_time.'</span>
+        </td>';
+            if (checkNewWeeklyReports($row['stud_sch_user_id'])){
+                echo '<td class="p-3 text-end relative">
+            <span class="absolute top-0 right-0 badge badge-sm badge-info">New</span>
+
+            <a href="ViewStudentWeeklyReport.php?checkStudent=' . urlencode(encrypt_data($row['stud_sch_user_id'], $secret_key)) . '" >
+                <div class="relative hover:cursor-pointer h-auto mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+        </td>';
+            }else{
+                echo '<td class="p-3 text-end relative">
+
+            <a href="ViewStudentWeeklyReport.php?checkStudent=' . urlencode(encrypt_data($row['stud_sch_user_id'], $secret_key)) . '">
+                <div class="relative hover:cursor-pointer h-auto mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+        </td>';
+            }
+
+
+        echo '
+    </tr>';
+
         }
     } else {
-        // If no results found, display a message
         echo '<tr><td colspan="9">No Active / Assigned students found for this adviser.</td></tr>';
     }
 
-    // Close the prepared statement and release the result set
     $stmt->close();
 ?>
+
 
 
                     </tbody>

@@ -26,9 +26,9 @@ session_start();
 
         <div class="transform w-full md:w-[18rem] transition duration-500 shadow rounded hover:scale-110 hover:bg-slate-300 justify-center items-center cursor-pointer p-3 h-[10rem]">
             <div class="h-[8rem] overflow-hidden hover:overflow-y-auto">
-                <h1 class="font-semibold">asdasd</h1>
-                <p class="text-start text-sm break-words"> r sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alir sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alir sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alir sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alir sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alir sit amet, consectetur alor sit amet, consectetur adipisicing elit. Alias a</p>
-                <p class="text-[12px] text-slate-400 text-start">5/23/2024</p>
+                <h1 class="font-semibold"></h1>
+                <p class="text-start text-sm break-words"> </p>
+                <p class="text-[12px] text-slate-400 text-start"></p>
             </div>
         </div>
 

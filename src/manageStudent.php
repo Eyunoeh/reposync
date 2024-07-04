@@ -3,6 +3,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     header("Location: 404.php");
     exit();
 }
+session_start();
 include '../DatabaseConn/databaseConn.php';
 ?>
 <div class="px-9 pt-2 flex justify-between items-stretch flex-wrap  pb-0 bg-transparent">
@@ -25,12 +26,24 @@ include '../DatabaseConn/databaseConn.php';
                 <table id="studListTbl" class="w-full my-0 border-neutral-200 text-sm" >
                     <thead class="align-bottom z-20">
                     <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
-                        <th class="p-3 text-start ">School ID</th>
-                        <th class="p-3 text-start ">Name</th>
-                        <th class="p-3 text-start ">OJT Adviser</th>
-                        <th class="p-3 text-end ">Program</th>
-                        <th class="p-3 text-end ">Company</th>
-                        <th class="p-3 text-end ">Action</th>
+                        <?php if ($_SESSION['log_user_type'] == 'admin'):?>
+                            <th class="p-3 text-start ">School ID</th>
+                            <th class="p-3 text-start ">Name</th>
+                            <th class="p-3 text-start ">OJT Adviser</th>
+                            <th class="p-3 text-end ">Training Hours</th>
+
+                            <th class="p-3 text-end ">Program</th>
+                            <th class="p-3 text-end ">Company</th>
+                            <th class="p-3 text-end ">Action</th>
+                        <?php elseif ($_SESSION['log_user_type'] == 'adviser'):?>
+                            <th class="p-3 text-start ">School ID</th>
+                            <th class="p-3 text-start ">Name</th>
+                            <th class="p-3 text-end ">Training Hours</th>
+                            <th class="p-3 text-end ">Program</th>
+                            <th class="p-3 text-end ">Company</th>
+                            <th class="p-3 text-end ">Action</th>
+
+                        <?php endif;?>
                     </tr>
                     </thead>
                     <tbody id="studentsList" class="text-center text-slate-600">

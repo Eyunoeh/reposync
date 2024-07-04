@@ -89,7 +89,10 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
         <div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
             <div class="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
                 <!-- card header -->
-                <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[75px] pb-0 bg-transparent">
+                <div class="px-9 pt-5 flex justify-between
+                 items-stretch flex-wrap min-h-[75px] pb-0 bg-transparent">
+                    <a href="dashboard.php" class="btn btn-sm btn-outline font-bold text-slate-700"><i class="fa-solid fa-circle-left"></i> Dashboard</a>
+
                     <form class="flex w-[40%] justify-between hidden sm:inline-flex">
                         <div class="w-full">
                             <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
@@ -101,13 +104,14 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
                 <div class="px-9 flex justify-end w-full">
                 </div>
                 <div class="block py-8 pt-6 px-9">
-                    <div id="table_card" class="overflow-auto h-[70vh] scroll-smooth">
+                    <div id="table_card" class="overflow-y-auto overflow-x-hidden h-[70vh] scroll-smooth">
                         <table class="w-full my-0  border-neutral-200 " id="stud_weekly_report" >
                             <thead class="align-bottom  z-20">
                             <tr class="font-semibold text-[0.95rem] sticky top-0  z-20 text-secondary-dark bg-slate-200 rounded">
                                 <th class="p-3  ">Week</th>
                                 <th class="p-3 ">Remark</th>
                                 <th class="p-3 ">View Comments</th>
+                                <th class="p-3 ">Read Status</th>
                                 <th class="p-3 ">Action</th>
                             </tr>
                             </thead>
@@ -115,7 +119,7 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
 
                             <?php
                             $week = 1;
-                            $sql = "SELECT file_id, upload_status, weeklyFileReport
+                            $sql = "SELECT file_id, upload_status, weeklyFileReport, readStatus
         FROM weeklyReport
         WHERE stud_user_id = ?
         ORDER BY upload_date desc";
@@ -169,10 +173,14 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
                                         <a class="font-semibold text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
                                     </div>
                                 </td>
+                                   <td class="p-3 pr-0 ">
+                                    <span class=" font-semibold text-light-inverse text-md/normal">' . $row['readStatus'] . '</span>
+                                </td>
                                 <td class="p-3 pr-0  ">
                                     <div  class="tooltip tooltip-bottom"  data-tip="View">
-                                        <a href="StudentWeeklyReports/' . $row['weeklyFileReport'] . '" target="_blank" class=" text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
-                                    transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"  ><i class="fa-regular fa-eye"></i></a>
+                          <a onclick="updateReadStat(\'StudentWeeklyReports/' . $row['weeklyFileReport'] . '\', this.getAttribute(\'data-report_id\'))" data-report_id="' . $row['file_id'] . '" target="_blank" class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                            <i class="fa-regular fa-eye"></i>
+                        </a>
                                     </div>
                                     <div class="tooltip tooltip-bottom" data-tip="Update remark">
                                         <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
@@ -180,6 +188,7 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
                                     </div>
                                 </td>
                             </tr>';
+
                             }
                             ?>
                             </tbody>

@@ -35,7 +35,8 @@ function navigate(page) {
             getAdvNotes();
             getPendingFinalReports();
             getTotalPendingUploadNarrative();
-            getTotalPendingStudentWeeklyReport();
+            getTotalUnreadStudentWeeklyReport();
+            getTotalDeclinedUploadNarrative();
             if (document.getElementById('act_n_schedForm')) {
                 const startDateInput = document.querySelector('input[name="startDate"]');
                 const endDateInput = document.querySelector('input[name="endDate"]');
@@ -144,7 +145,9 @@ function dashboard_tab(id){
         navigate('manageAdvisers.php')
     }else if (tab.id === 'dashBoardProg_n_Section'){
         navigate('ManageProgSec.php');
-    }else if (tab.id === 'dshbuploadNarrativeReq'){
+    }else if (tab.id === 'pendingNarrativeReqCount'){
+        navigate('manageUploadNarratives.php');
+    }else if (tab.id === 'declinedNarrativeReqCount'){
         navigate('manageUploadNarratives.php');
     }
     act_tab(tab.id);
@@ -169,7 +172,7 @@ function renderChart(ctx) {
             labels: ['Active student', 'Active adviser', 'Narrative Reports', 'Archived adviser', 'Archived student'],
             datasets: [{
                 label: '',
-                data: [12, 19, 40, 5, 2],
+                data: [300, 7, 500, 5, 2],
                 borderWidth: 1,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)', // Color for 'Active student'
@@ -279,13 +282,26 @@ function getTotalPendingUploadNarrative(){
         }
     });
 }
-function getTotalPendingStudentWeeklyReport(){
+function getTotalDeclinedUploadNarrative(){
+    $.ajax({
+        url: '../ajax.php?action=dshbDeclinedFinalReports',
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+            $('#declinedUploadNarrativeReport').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+function getTotalUnreadStudentWeeklyReport(){
     $.ajax({
         url: '../ajax.php?action=dshbPendStudWeeklyReport',
         method: 'GET',
         dataType: 'html',
         success: function(response) {
-            $('#pendingStudWeeklyReport').html(response);
+            $('#UnreadStudWeeklyReport').html(response);
         },
         error: function(xhr, status, error) {
             console.error('Error fetching data:', error);
