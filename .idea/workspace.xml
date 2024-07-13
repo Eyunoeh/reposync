@@ -5,19 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Update">
+      <change afterPath="$PROJECT_DIR$/src/assets/user.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/comments_img/66860f0d5592e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/manageArchive.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/manage_dhshboardProfile.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_3.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_3.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ManageProgSec.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ManageProgSec.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dashboardContent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardContent.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dashboardViewnarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardViewnarrativeReports.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/ViewStudentWeeklyReport.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/ViewStudentWeeklyReport.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageAdviserNote.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdviserNote.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageNarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageNarrativeReports.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageWeeklyReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageUploadNarratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageUploadNarratives.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/narratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/narratives.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +90,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
+    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem/src/assets",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -257,13 +264,11 @@
       <workItem from="1719030433737" duration="287000" />
       <workItem from="1719730190642" duration="6627000" />
       <workItem from="1719886643462" duration="11155000" />
-    </task>
-    <task id="LOCAL-00006" summary="update 4/7/2024">
-      <created>1712463150931</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1712463150931</updated>
+      <workItem from="1720060697897" duration="1026000" />
+      <workItem from="1720144487693" duration="13093000" />
+      <workItem from="1720367548658" duration="17000" />
+      <workItem from="1720575906465" duration="9862000" />
+      <workItem from="1720828233461" duration="12771000" />
     </task>
     <task id="LOCAL-00007" summary="update 4/7/2024">
       <created>1712468984077</created>
@@ -601,7 +606,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718642772883</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Update">
+      <created>1720060733306</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1720060733307</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -657,7 +669,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/dashboard.js</url>
-          <line>267</line>
+          <line>317</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

@@ -208,14 +208,20 @@ if ($action == 'getWeeklyReports'){
                                         <a class="font-semibold text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
                                     </div>
                                 </td>
-                                <td class="p-3 pr-0  ">
-                                    <div  class="tooltip tooltip-bottom"  data-tip="View">
-                                        <a href="StudentWeeklyReports/' . $row['weeklyFileReport'] . '" target="_blank" class=" text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
-                                    transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"  ><i class="fa-regular fa-eye"></i></a>
-                                    </div>
+                                <td class="p-3 pr-0  text-end">
+                                    ';
+        if ($formattedStatus === 'Pending' || $formattedStatus === 'With Revision'){
+            echo '
+                                   
                                     <div class="tooltip tooltip-bottom" data-tip="Resubmit">
                                         <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
                                 transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  data-report_id="' . $row['file_id'] . '" onclick="openModalForm(\'resubmitReport\');resubmitWeeklyReport(this.getAttribute(\'data-report_id\'))"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    </div>';
+        }
+
+        echo '                    <div  class="tooltip tooltip-bottom"  data-tip="View">
+                                        <a href="StudentWeeklyReports/' . $row['weeklyFileReport'] . '" target="_blank" class=" text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
+                                    transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"  ><i class="fa-regular fa-eye"></i></a>
                                     </div>
                                 </td>
                             </tr>';
@@ -337,7 +343,7 @@ if ($action == 'getUploadLogs'){
                                     <span class="font-semibold text-light-inverse text-md/normal">'.$formatted_date_time .'</span>
                                 </td>
                                 <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">'. $row['activity_type'] .'</span>
+                                    <span class="font-semibold text-light-inverse text-md/normal">'. ucfirst($row['activity_type']).'</span>
                                 </td>
                             </tr>';
     }
@@ -443,10 +449,14 @@ ORDER BY narrativereports.upload_date DESC;
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $middle_initial = $row['middle_name']!== 'N/A' ? ' ' . $row['middle_name']  : '';
-                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
+                echo '<tr class="border-b border-dashed last:border-b-0 p-3">';
+                if ($_SESSION['log_user_type'] !== 'student'){
+                    echo '<td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-sm">' . $row['stud_school_id'] . '</span>
-                        </td>
+                        </td>';
+                }
+                echo '
+                        
                         <td class="p-3 text-start min-w-32">
                             <span class="font-semibold text-light-inverse text-md/normal break-words">' . $row['first_name'] . ' ' . $middle_initial . ' ' . $row['last_name'] . '</span>
                         </td>
@@ -472,6 +482,8 @@ ORDER BY narrativereports.upload_date DESC;
                 echo'</td>
                       </tr>';
             }
+        }else{
+            echo '<tr><td colspan="9">No Result</td></tr>';
         }
     }
     $conn->close();
@@ -1471,7 +1483,7 @@ if ($action == 'ProgYrSec') {
 
     if ($program_code !== '' && $program_name !== '') {
         if (isset($actionType) && $actionType == 'edit') {
-            $sql = "UPDATE program SET program_code = ?, program_name = ? WHERE id = ?";
+            $sql = "UPDATE program SET program_code = ?, program_name = ? WHERE program_id = ?";
             $updateProgStmt = $conn->prepare($sql);
             $updateProgStmt->bind_param('ssi', $program_code, $program_name, $id);
             if ($updateProgStmt->execute()) {
@@ -1494,11 +1506,14 @@ if ($action == 'ProgYrSec') {
             }
         }
     } elseif ($year !== '' && $section !== '') {
-        $dbcolNameSection = $year . $section;
+
         if (isset($actionType) && $actionType == 'edit') {
-            $sql = "UPDATE section SET section = ? WHERE id = ?";
+            $sql = "UPDATE section SET
+                   year = ?,
+                   section = ?
+               WHERE section_id  = ?";
             $updateSecStmt = $conn->prepare($sql);
-            $updateSecStmt->bind_param('si', $dbcolNameSection, $id);
+            $updateSecStmt->bind_param('isi', $year, $section, $id);
             if ($updateSecStmt->execute()) {
                 echo 1;
                 exit();
@@ -1507,9 +1522,11 @@ if ($action == 'ProgYrSec') {
                 exit();
             }
         } else {
-            $sql = "INSERT INTO section (section) VALUES (?)";
+
+
+            $sql = "INSERT INTO section (year,section)  VALUES (?,?)";
             $insertSecStmt = $conn->prepare($sql);
-            $insertSecStmt->bind_param('s', $dbcolNameSection);
+            $insertSecStmt->bind_param('is', $year,$section);
             if ($insertSecStmt->execute()) {
                 echo 1;
                 exit();
@@ -1531,8 +1548,11 @@ if ($action == 'getDasboardYrSec'){
     $res = $stmt->get_result();
     while ($row = $res->fetch_assoc()){
         echo '<tr class="hover">
-                    <td>'.$row['section'].'</td>
-                    <td class="text-center cursor-pointer"><i class="fa-solid fa-pen-to-square"></i></td>
+                    <td>'.$row['year'].''.$row['section'].'</td>
+                    <td class="text-center cursor-pointer">   
+                     <a onclick="openModalForm(\'ProgSecFormModal\'); EditYrSec('.$row['section_id'].')">
+                     <i class="fa-solid fa-pen-to-square"></i>
+                    </a></td>
                 </tr>';
     }
 }
@@ -1545,10 +1565,40 @@ if ($action == 'getDasboardPrograms'){
         echo '<tr class="hover">
                     <td>'.$row['program_code'].'</td>
                     <td>'.$row['program_name'].'</td>
-                    <td class="text-center cursor-pointer"><i class="fa-solid fa-pen-to-square"></i></td>
+                    <td class="text-center cursor-pointer"
+                    <a onclick="openModalForm(\'ProgSecFormModal\');  EditProgram('.$row['program_id'].')">
+                     <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    </td>
 
                 </tr>';
 
+    }
+}
+if ($action == 'getProgJSON'){
+    $program_id = $_GET['data_id'];
+    $getProg = "SELECT * FROM program where program_id = ?";
+    $getProgSTMT = $conn->prepare($getProg);
+    $getProgSTMT->bind_param('i',$program_id);
+    $getProgSTMT->execute();
+    $result = $getProgSTMT->get_result();
+    if($result ->num_rows === 1){
+        $row = $result->fetch_assoc();
+        header('Content-Type: application/json');
+        echo json_encode($row);
+    }
+}
+if ($action == 'getYrSecJSON'){
+    $section_id = $_GET['data_id'];
+    $getYearSec = "SELECT * FROM section where section_id = ?";
+    $getYearSecSTMT = $conn->prepare($getYearSec);
+    $getYearSecSTMT->bind_param('i',$section_id);
+    $getYearSecSTMT->execute();
+    $result = $getYearSecSTMT->get_result();
+    if($result ->num_rows === 1){
+        $row = $result->fetch_assoc();
+        header('Content-Type: application/json');
+        echo json_encode($row);
     }
 }
 
@@ -1780,7 +1830,7 @@ if ($action === 'getPendingFinalReports'){
     }elseif (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'adviser'){
         $narrativeUploadReq = "SELECT tbl_user_info.first_name as AdvFname, tbl_user_info.middle_name as AdvMname,tbl_user_info.last_name as AdvLname, narrativereports.* FROM narrativereports
     JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id 
-    WHERE OJT_adviser_ID = ? and file_status = 'Pending' OR file_status = 'Declined'  ";
+    WHERE OJT_adviser_ID = ? and  file_status in ('Pending', 'Declined') ORDER  BY file_status  ";
         $narrativeUploadReqSTMT = $conn->prepare($narrativeUploadReq);
         $narrativeUploadReqSTMT->bind_param('i', $_SESSION['log_user_id']);
         $narrativeUploadReqSTMT->execute();
@@ -1822,7 +1872,6 @@ if ($action === 'getPendingFinalReports'){
 
 
 if ($action == 'dshbGePendingFinalReports') {
-
     if ($_SESSION['log_user_type'] == 'admin') {
         $getPendingFinalUpdload = "SELECT COUNT(*) as totalPending FROM narrativereports 
                                    WHERE file_status = 'Pending';";
@@ -1883,4 +1932,23 @@ WHERE advisory_list.adv_sch_user_id = ? AND weeklyreport.readStatus = 'Unread';
     }
     exit();
 }
+if ($action == 'pendingADVnoteReq') {
+    $userType = $_SESSION['log_user_type'];
+    $userId = $_SESSION['log_user_id'];
+
+    $query = "SELECT COUNT(*) AS totalPendingNoteReq FROM announcement WHERE  type = 'Notes'
+                                                           and status = 'Pending'";
+    if ($userType == 'adviser') {
+        $query .= " AND user_id = ?";
+    }
+    $stmt = $conn->prepare($query);
+    if ($userType == 'adviser') {
+        $stmt->bind_param('i', $userId);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    echo $result->fetch_assoc()['totalPendingNoteReq'];
+    exit();
+}
+
 

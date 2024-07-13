@@ -49,7 +49,12 @@ if (isset($_SESSION['log_user_type'])){
                     </div>
                     <div class="card-actions flex-col flex items-center  w-full mt-10">
                         <button id="login-btn-submit" class="btn btn-success btn-outline mr-2 h-10 p-3 w-20">Login</button>
+
+                        <a href="#" class="text-sm text-center text-info">Continue with Google?</a>
+
                     </div>
+
+
                 </form>
             </section>
 

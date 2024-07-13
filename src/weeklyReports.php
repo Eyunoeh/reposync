@@ -50,14 +50,14 @@ function countFileComments($file_id){
                 <div class="px-9 flex justify-end w-full">
                 </div>
                 <div class="block py-8 pt-6 px-9">
-                    <div id="table_card" class="overflow-auto h-[70vh] scroll-smooth">
+                    <div id="table_card" class="overflow-y-auto overflow-x-hidden h-[70vh] scroll-smooth">
                         <table class="w-full my-0  border-neutral-200 " id="weeklyReportTable" >
                             <thead class="align-bottom  z-20">
                                 <tr class="font-semibold text-[0.95rem] sticky top-0  z-20 text-secondary-dark bg-slate-200 rounded">
                                     <th class="p-3  ">Week</th>
                                     <th class="p-3 ">Status</th>
                                     <th class="p-3 ">View Comments</th>
-                                    <th class="p-3 ">Action</th>
+                                    <th class="p-3 text-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="Weeklyreports" class=" text-center ">

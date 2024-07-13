@@ -3,7 +3,8 @@ document.addEventListener('submit', function(e) {
     e.preventDefault();
     let modal,formData,endpoint,loader_id,btn, notification;
     let getNewData = [];
-     if (e.target.id === 'narrativeReportsForm'){
+
+    if (e.target.id === 'narrativeReportsForm'){
         endpoint = 'newFinalReport'
         modal =  'newNarrative';
         loader_id = 'loader_narrative';
@@ -98,6 +99,21 @@ document.addEventListener('submit', function(e) {
         loader_id = 'progyrsecLoader';
         btn = 'progyrsecLoaderbtn';
         modal = 'ProgSecFormModal';
+        notification = 'ProgYrSecNotif';
+        if (e.target.querySelector('input[name="action_type"]').value === 'edit') {
+            $('#ProgrYrSecNotifText').html('Updated!')
+
+        }else {
+            if (e.target.querySelector('input[name="ProgramCode"]') &&
+                e.target.querySelector('input[name="ProgramName"]')) {
+                $('#ProgrYrSecNotifText').html('New program has been added!!')
+
+            }else if (e.target.querySelector('input[name="year"]') &&
+                e.target.querySelector('input[name="section"]')) {
+                $('#ProgrYrSecNotifText').html('Year and Section added!')
+
+            }
+        }
         getNewData.push(getYrSec);
         getNewData.push(getPrograms);
 
@@ -126,9 +142,10 @@ document.addEventListener('submit', function(e) {
         getNewData.push(getPendingFinalReports);
     }
 
-
     formData = new FormData(e.target);
+
     add_loader(loader_id);
+
     disable_button(btn)
 
     $.ajax({
@@ -142,6 +159,7 @@ document.addEventListener('submit', function(e) {
                 enable_button(btn)
                 remove_loader(loader_id);
                 closeModalForm(modal);
+
                 openModalForm(notification);
                 getNewData.forEach(func => func());
             } else {

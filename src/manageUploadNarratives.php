@@ -121,7 +121,7 @@ session_start();
                                     $adv_option_query = "SELECT ui.*, acc.*
                                  FROM tbl_user_info ui
                                  INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
+                                 WHERE ui.user_type  = 'adviser' AND acc.status = 'active'";
                                     $result = $conn->query($adv_option_query);
 
                                     if ($result->num_rows > 0) {
@@ -172,7 +172,7 @@ session_start();
                                     $stmt->execute();
                                     $res = $stmt->get_result();
                                     while ($row = $res->fetch_assoc()){
-                                        echo '<option>'.$row['section'].'</option>';
+                                        echo '<option>'.$row['year'].''.$row['section'].'</option>';
                                     }
                                     ?>
                                 </select>
@@ -331,7 +331,7 @@ session_start();
                                     $adv_option_query = "SELECT ui.*, acc.*
                                  FROM tbl_user_info ui
                                  INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
+                                 WHERE ui.user_type  = 'adviser' AND acc.status = 'active' ";
                                     $result = $conn->query($adv_option_query);
 
                                     if ($result->num_rows > 0) {
@@ -383,7 +383,7 @@ session_start();
                                     $stmt->execute();
                                     $res = $stmt->get_result();
                                     while ($row = $res->fetch_assoc()){
-                                        echo '<option>'.$row['section'].'</option>';
+                                        echo '<option>'.$row['year'].''.$row['section'].'</option>';
                                     }
                                     ?>
                                 </select>

@@ -17,13 +17,7 @@ session_start();
             <h1 class="font-bold font-sans text-[4rem]" id="pendingUploadNarrativeReport">
                 <span class="loading loading-spinner loading-lg"></span>
             </h1>
-            <h1 class="font-sans ">Pending Final Report Upload</h1>
-        </div>
-        <div onclick="dashboard_tab(this.id)" id="dshbweeklyReport" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
-            <h1 class="font-bold font-sans text-[4rem]" id="UnreadStudWeeklyReport">
-                <span class="loading loading-spinner loading-lg"></span>
-            </h1>
-            <h1 class="font-sans " >Unread Weekly Reports</h1>
+            <h1 class="font-sans ">Pending Narrative Report Upload</h1>
         </div>
     </div>
     <div class="flex-grow">
@@ -53,12 +47,11 @@ session_start();
             </h1>
             <h1 class="font-sans " >Unread Weekly Reports</h1>
         </div>
-        <div onclick="dashboard_tab(this.id)" id="dashboard_narrative" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
-            <h1 class="font-bold font-sans text-[4rem]">60</h1>
-            <h1 class="font-sans ">Total Narrative Reports</h1>
-        </div>
-        <div onclick="dashboard_tab('adviserNotes')" id="adviserNotesReq" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
-            <h1 class="font-bold font-sans text-[4rem]">60</h1>
+
+        <div onclick="dashboard_tab(this.id)" id="adviserNotesCard" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
+            <h1 class="font-bold font-sans text-[4rem]" id="pendingNoteCount">
+                <span class="loading loading-spinner loading-lg"></span>
+            </h1>
             <h1 class="font-sans ">Pending Notes</h1>
         </div>
         <div onclick="dashboard_tab(this.id)" id="stud_list" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">

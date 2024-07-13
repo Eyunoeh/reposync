@@ -1,8 +1,10 @@
 
 
 <?php
+
 session_start();
-if (!isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'student'){
+
+if (!isset($_SESSION['log_user_type'])){
     header('Location: 404.php');
 }
 include '../DatabaseConn/databaseConn.php';
@@ -19,10 +21,10 @@ while ($row = $res->fetch_assoc()) {
     $programCodes[] = $row['program_code'];
 }
 
-if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
+/*if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
     header('Location: dashboard.php');
     exit();
-}
+}*/
 
 
 
@@ -56,9 +58,11 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
 <div class="overflow-y-hidden h-[100vh] relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white">
     <div class="relative flex flex-col min-w-0 break-words rounded-2xl border-stone-200 bg-light/30">
         <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap pb-0 bg-transparent ">
-
+            <?php if ($_SESSION['log_user_type'] !== 'student'):?>
             <a href="dashboard.php" class="btn btn-outline font-bold text-slate-700"><i class="fa-solid fa-circle-left"></i> Dashboard</a>
-
+            <?php else:?>
+            <a href="index.php" class="btn btn-outline font-bold text-slate-700"><i class="fa-solid fa-house"></i> Home</a>
+            <?php endif;?>
             <form class="flex justify-start w-[40%]">
 
                     <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
@@ -71,7 +75,10 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                 <table id="narrativeReportsTable" class="w-full my-0 border-neutral-200 text-sm" >
                     <thead class="align-bottom z-20">
                     <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
+                        <?php if ($_SESSION['log_user_type'] !== 'student'):?>
+
                         <th class="p-3 text-start ">School ID</th>
+                        <?php endif;?>
                         <th class="p-3 text-start min-w-10">Name</th>
                         <th class="p-3 text-start min-w-10">OJT adviser</th>
                         <th class="p-3 text-start min-w-10">Batch</th>
@@ -109,7 +116,7 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
 
 
 
-
+<?php if ($_SESSION['log_user_type'] !== 'student'):?>
 <dialog id="EditNarrative" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] max-h-[35rem]  flex flex-col text-slate-700">
         <div  class=" card-title sticky ">
@@ -230,7 +237,7 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
                                     $stmt->execute();
                                     $res = $stmt->get_result();
                                     while ($row = $res->fetch_assoc()){
-                                        echo '<option>'.$row['section'].'</option>';
+                                        echo '<option>'.$row['year'].''.$row['section'].'</option>';
                                     }
                                     ?>
                                 </select>
@@ -304,25 +311,7 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
     </div>
 </dialog>
 <script>
-    document.addEventListener('DOMContentLoaded', function (){
-        dashboard_student_NarrativeReports();
-    })
-    function dashboard_student_NarrativeReports() {
 
-        let program = '<?php echo urlencode($_GET['program']); ?>';
-
-        $.ajax({
-            url: '../ajax.php?action=get_narrativeReports&program=' + program,
-            method: 'GET',
-            dataType: 'html',
-            success: function(response) {
-                $('#narrativeReportsTableBody').html(response);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching data:', error);
-            }
-        });
-    }
     function editNarrative(narrative_id){
         $.ajax({
             url: '../ajax.php?action=narrativeReportsJson&narrative_id=' + narrative_id,
@@ -417,6 +406,30 @@ if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
     });
 
 
+</script>
+
+
+<?php endif;?>
+<script>
+    document.addEventListener('DOMContentLoaded', function (){
+        dashboard_student_NarrativeReports();
+    })
+    function dashboard_student_NarrativeReports() {
+
+        let program = '<?php echo urlencode($_GET['program']); ?>';
+
+        $.ajax({
+            url: '../ajax.php?action=get_narrativeReports&program=' + program,
+            method: 'GET',
+            dataType: 'html',
+            success: function(response) {
+                $('#narrativeReportsTableBody').html(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    }
 </script>
 <script src="js/buttons_modal.js"></script>
 <script src="js/Datatables.js"></script>

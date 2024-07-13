@@ -49,10 +49,14 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <i class="fa-solid fa-gauge"></i>
             <span class="text-[15px] ml-4  font-bold">Dashboard</span>
         </div>
-        <div id="dashBoardWeeklyReport" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
-            <i class="fa-brands fa-font-awesome"></i>
-            <span class="text-[15px] ml-4  font-bold">Students Weekly Report</span>
-        </div>
+        <?php if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'adviser'):?>
+
+            <div id="dashBoardWeeklyReport" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+                <i class="fa-brands fa-font-awesome"></i>
+                <span class="text-[15px] ml-4  font-bold">Students Weekly Report</span>
+            </div>
+        <?php endif;?>
+
 
         <div id="announcement" onclick="dropdown('AnnouncementSubmenu')" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer  hover:bg-slate-200 hover:text-slate-700  text-white">
             <i class="fa-solid fa-bullhorn"></i>
@@ -64,10 +68,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
         <div id="AnnouncementSubmenu" class="ani text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" >
 
 
-            <h1 onclick="dashboard_tab(this.id)" id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
-                <i class="fa-regular fa-note-sticky"></i>
-                 Notes
-            </h1>
+
 
             <?php
             if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
@@ -81,6 +82,12 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
                 <i class="fa-regular fa-calendar-days"></i>
                  Activities & Schedule
             </h1>
+
+            <?php elseif ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'adviser'):?>
+                <h1 onclick="dashboard_tab(this.id)" id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                    <i class="fa-regular fa-note-sticky"></i>
+                    Notes
+                </h1>
             <?php endif;?>
         </div>
         <div id="dashboard_ReviewUploadNarrative" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-start rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
@@ -131,6 +138,9 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
                     Archived
                 </h1>
             <?php endif?>
+            <h1 onclick="dashboard_tab(this.id);" id="profile" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                Profile
+            </h1>
         </div>
         <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-error hover:text-slate-700  text-white">
             <i class="fa-solid fa-right-from-bracket"></i>

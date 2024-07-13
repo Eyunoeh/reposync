@@ -16,6 +16,7 @@
 
 document.addEventListener('DOMContentLoaded', function (){
     navigate('dashboardContent.php')
+    act_tab('dashboard');
 })
 function navigate(page) {
     fetch(page, {
@@ -34,9 +35,23 @@ function navigate(page) {
             getYrSec();
             getAdvNotes();
             getPendingFinalReports();
-            getTotalPendingUploadNarrative();
-            getTotalUnreadStudentWeeklyReport();
-            getTotalDeclinedUploadNarrative();
+
+            (async () => {
+                try {
+                    let pendingNoteCount = await getTotalPendingNotes();
+                    let unreadWeeklyreports = await getTotalUnreadStudentWeeklyReport();
+                    let pendingUploadNarrative =  await getTotalPendingUploadNarrative();
+                    let declinedUploadNarrative =  await  getTotalDeclinedUploadNarrative();
+
+                    $('#pendingNoteCount').html(pendingNoteCount)
+                    $('#UnreadStudWeeklyReport').html(unreadWeeklyreports)
+                    $('#pendingUploadNarrativeReport').html(pendingUploadNarrative);
+                    $('#declinedUploadNarrativeReport').html(declinedUploadNarrative);
+
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            })();
             if (document.getElementById('act_n_schedForm')) {
                 const startDateInput = document.querySelector('input[name="startDate"]');
                 const endDateInput = document.querySelector('input[name="endDate"]');
@@ -110,6 +125,19 @@ function navigate(page) {
                     })
                 }
             }
+            if (document.getElementById('profileForm')){
+                document.getElementById('profileImg').addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.getElementById('selectedProfile').src = e.target.result;
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+            }
             const ctx = document.getElementById('myChart')
             if (ctx) {
                 ctx.getContext('2d');
@@ -120,9 +148,7 @@ function navigate(page) {
         .catch(error => console.error('Error fetching content:', error));
 }
 
-function handle404() {
-    window.location.href = '/404.php';
-}
+
 function dashboard_tab(id){
     let tab = document.getElementById(id);
     if(tab.id === 'dashboard_narrative'){
@@ -140,7 +166,8 @@ function dashboard_tab(id){
     } else if (tab.id === 'dashBoardWeeklyReport'){
         navigate('manageWeeklyReport.php')
     }else if (tab.id === 'stud_list'){
-        navigate('manageStudent.php')
+        navigate('manageStudent.php');
+        document.getElementById('UserSubmenu').classList.remove('hidden');
     }else if (tab.id === 'adv_list'){
         navigate('manageAdvisers.php')
     }else if (tab.id === 'dashBoardProg_n_Section'){
@@ -149,11 +176,22 @@ function dashboard_tab(id){
         navigate('manageUploadNarratives.php');
     }else if (tab.id === 'declinedNarrativeReqCount'){
         navigate('manageUploadNarratives.php');
+    }else if (tab.id === 'account_archived'){
+        navigate('manageArchive.php');
+    }else if (tab.id === 'profile'){
+        navigate('manage_dhshboardProfile.php');
     }
     act_tab(tab.id);
    if(tab.id === 'adviserNotesReq'){
         act_tab('notesReq');
         navigate('notesReqmanage.php')
+       document.getElementById('AnnouncementSubmenu').classList.remove('hidden');
+    }
+   if(tab.id === 'adviserNotesCard'){
+        act_tab('adviserNotes');
+        navigate('manageAdviserNote.php')
+       console.log(1123)
+       document.getElementById('AnnouncementSubmenu').classList.remove('hidden');
     }
     else if (tab.id === 'dshbweeklyReport'){
         navigate('manageWeeklyReport.php');
@@ -163,16 +201,16 @@ function dashboard_tab(id){
         navigate('manageUploadNarratives.php');
         act_tab('dashboard_ReviewUploadNarrative');
     }
-
 }
 function renderChart(ctx) {
+
     const myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Active student', 'Active adviser', 'Narrative Reports', 'Archived adviser', 'Archived student'],
+            labels: [ 'Narrative Reports', 'Active student', 'Active adviser',  'Archived adviser', 'Archived student'],
             datasets: [{
                 label: '',
-                data: [300, 7, 500, 5, 2],
+                data: [500, 300, 7,  5, 2],
                 borderWidth: 1,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)', // Color for 'Active student'
@@ -217,11 +255,23 @@ function renderChart(ctx) {
                     if (label === 'Active student') {
                         const elementId = "stud_list";
                         dashboard_tab(elementId);
+                        document.getElementById('UserSubmenu').classList.remove('hidden');
+
                     } else if (label === 'Active adviser') {
                         const elementId = "adv_list";
+                        document.getElementById('UserSubmenu').classList.remove('hidden');
+
                         dashboard_tab(elementId);
                     } else if (label === 'Narrative Reports') {
                         const elementId = "dashboard_narrative";
+                        dashboard_tab(elementId);
+                    }else if (label === 'Archived adviser') {
+                        const elementId = "account_archived";
+                        document.getElementById('UserSubmenu').classList.remove('hidden');
+                        dashboard_tab(elementId);
+                    }else if (label === 'Archived student') {
+                        const elementId = "account_archived";
+                        document.getElementById('UserSubmenu').classList.remove('hidden');
                         dashboard_tab(elementId);
                     }
                 }
@@ -270,42 +320,60 @@ function get_studenUsertList (){
 }
 
 function getTotalPendingUploadNarrative(){
-    $.ajax({
-        url: '../ajax.php?action=dshbGePendingFinalReports',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            $('#pendingUploadNarrativeReport').html(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../ajax.php?action=dshbGePendingFinalReports',
+            method: 'GET',
+            success: function(response) {
+                resolve(response);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
     });
 }
 function getTotalDeclinedUploadNarrative(){
-    $.ajax({
-        url: '../ajax.php?action=dshbDeclinedFinalReports',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            $('#declinedUploadNarrativeReport').html(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../ajax.php?action=dshbDeclinedFinalReports',
+            method: 'GET',
+            success: function(response) {
+                resolve(response);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
     });
 }
 function getTotalUnreadStudentWeeklyReport(){
-    $.ajax({
-        url: '../ajax.php?action=dshbPendStudWeeklyReport',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            $('#UnreadStudWeeklyReport').html(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../ajax.php?action=dshbPendStudWeeklyReport',
+            method: 'GET',
+            success: function(response) {
+                resolve(response);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
+    });
+
+}
+function getTotalPendingNotes(){
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../ajax.php?action=pendingADVnoteReq',
+            method: 'GET',
+            success: function(response) {
+                resolve(response);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
     });
 }
 function get_AdvUsertList (){
@@ -335,6 +403,8 @@ function get_dashBoardnotes (){
         }
     });
 }
+
+
 
 function getActivitiesAndSched (){
     $.ajax({
@@ -718,6 +788,27 @@ function renderAddProgramInputs() {
         </div>
     `);
 }
+function EditProgram(Id){
+    $.ajax({
+        url: '../ajax.php?action=getProgJSON&data_id=' + Id,
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data) {
+                renderAddProgramInputs();
+                $('#progYrSecSubmit').html("Submit")
+                $('#sectionProgramForm input[name="action_type"]').val('edit');
+                $('#sectionProgramForm input[name="ID"]').val(data.program_id);
+                $('#sectionProgramForm input[name="ProgramCode"]').val(data.program_code);
+                $('#sectionProgramForm input[name="ProgramName"]').val(data.program_name);
+
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
 
 function renderAddYearSec(){
         $('#SectionProgramFormInputs').html(`
@@ -744,6 +835,28 @@ function renderAddYearSec(){
     `
         );
 }
+function EditYrSec(Id){
+    $.ajax({
+        url: '../ajax.php?action=getYrSecJSON&data_id=' + Id,
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data) {
+                renderAddYearSec();
+                $('#progYrSecSubmit').html("Submit")
+                $('#sectionProgramForm input[name="action_type"]').val('edit');
+                $('#sectionProgramForm input[name="ID"]').val(data.section_id );
+                $('#sectionProgramForm input[name="year"]').val(data.year);
+                $('#sectionProgramForm input[name="section"]').val(data.section);
+
+
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
 
 function renderSelectformOption(){
     $('#option').html(`
@@ -758,6 +871,13 @@ function renderSelectformOption(){
 
 
 function attachSelectEventListener() {
+    $('#sectionProgramForm input[name="action_type"]').val('');
+    $('#sectionProgramForm input[name="ID"]').val('');
+    document.getElementById('sectionProgramForm').reset();
+    $('#progYrSecSubmit').html("Add")
+
+
+
     let formSelect = document.getElementById('formSelect');
     if (formSelect) {
         let selectedValue = 'newProg';
@@ -774,9 +894,14 @@ function attachSelectEventListener() {
     }
 }
 
+
+
 function removeSelectFormOption(){
     $('#formSelect').remove()
 }
+
+
+
 
 
 

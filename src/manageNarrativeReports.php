@@ -79,7 +79,6 @@ session_start()
             </div>
         </div>
     </div>
-
 </div>
 
 <dialog id="newNarrative" class="modal bg-black  bg-opacity-40">

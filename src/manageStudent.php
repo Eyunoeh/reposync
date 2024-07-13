@@ -6,9 +6,9 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 session_start();
 include '../DatabaseConn/databaseConn.php';
 ?>
-<div class="px-9 pt-2 flex justify-between items-stretch flex-wrap  pb-0 bg-transparent">
-    <button class="btn btn-neutral btn-sm bg-slate-500 border-none text-slate-100 " >Export accounts</button>
-    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('newStudentdialog')">New Student</button>
+<div class="px-9 pt-2 flex justify-end items-stretch flex-wrap  pb-0 bg-transparent">
+<!--    <button class="btn btn-neutral btn-sm bg-slate-500 border-none text-slate-100 " >Export accounts</button>
+-->    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('newStudentdialog')">New Student</button>
 </div>
 
 <div class="overflow-y-hidden relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
@@ -176,7 +176,7 @@ include '../DatabaseConn/databaseConn.php';
                                     $stmt->execute();
                                     $res = $stmt->get_result();
                                     while ($row = $res->fetch_assoc()){
-                                        echo '<option value="'.$row['section_id'].'">'.$row['section'].'</option>';
+                                        echo '<option value="'.$row['section_id'].'">'.$row['year'].''.$row['section'].'</option>';
                                     }
                                     ?>
                                 </select>
@@ -194,7 +194,7 @@ include '../DatabaseConn/databaseConn.php';
                                     $adv_option_query = "SELECT ui.*, acc.*
                                  FROM tbl_user_info ui
                                  INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
+                                 WHERE ui.user_type  = 'adviser' AND acc.status = 'active'";
                                     $result = $conn->query($adv_option_query);
 
                                     if ($result->num_rows > 0) {
@@ -350,7 +350,7 @@ include '../DatabaseConn/databaseConn.php';
                                     $stmt->execute();
                                     $res = $stmt->get_result();
                                     while ($row = $res->fetch_assoc()){
-                                        echo '<option value="'.$row['section_id'].'">'.$row['section'].'</option>';
+                                        echo '<option value="'.$row['section_id'].'">'.$row['year'].''.$row['section'].'</option>';
                                     }
                                     ?>
                                 </select>
@@ -369,7 +369,7 @@ include '../DatabaseConn/databaseConn.php';
                                     $adv_option_query = "SELECT ui.*, acc.*
                                  FROM tbl_user_info ui
                                  INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-                                 WHERE ui.user_type IN ('admin', 'adviser') AND acc.status = 'active'";
+                                 WHERE ui.user_type  = 'adviser' AND acc.status = 'active'";
                                     $result = $conn->query($adv_option_query);
 
                                     if ($result->num_rows > 0) {
