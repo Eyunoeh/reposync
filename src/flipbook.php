@@ -19,15 +19,19 @@ include '../functions.php';
     <script type="text/javascript" src="turnjs4/extras/jquery.min.1.7.js"></script>
     <script type="text/javascript" src="turnjs4/extras/modernizr.2.5.3.min.js"></script>
     <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
-
-    <title>Narrative Report flipbook</title>
+    <title>Narrative Report</title>
 </head>
-<body class="bg-slate-200 ">
+<body class="bg-slate-500 ">
 
 <div class="flipbook-viewport overflow-auto ">
-    <div class="container grid place-items-center ">
+    <div class="flex h-[100vh] justify-center items-center gap-5">
+
+        <button id="prev" class="btn btn-neutral"><i class="fa-solid fa-circle-left"></i> Prev</button>
+
         <div class="flipbook">
-            <div style="background-image:url(NarrativeReportsPDF/Capture.PNG)"></div>
+            <div class="hard"></div>
+            <div class="hard"></div>
+
             <?php
             $encrypt_key = 'TheSecretKey#02';
             if (isset($_GET['view'])){
@@ -72,24 +76,35 @@ include '../functions.php';
             }
             $conn->close();
             ?>
-            <div style="background-image:url()"></div>
-
+            <div class="hard"></div>
         </div>
-    </div>
-</div>
-<script type="text/javascript">
 
+        <button id="next" class="btn btn-neutral">Next <i class="fa-solid fa-circle-right"></i></button>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
     function loadApp() {
-      $('.flipbook').turn({
-            width:900,
-            height:600,
+        $('.flipbook').turn({
+            width: 900,
+            height: 600,
             elevation: 50,
             autoCenter: true
+        });
 
+        $('#prev').click(function() {
+            $('.flipbook').turn('previous');
+        });
+
+        $('#next').click(function() {
+            $('.flipbook').turn('next');
         });
     }
+
     yepnope({
-        test : Modernizr.csstransforms,
+        test: Modernizr.csstransforms,
         yep: ['turnjs4/lib/turn.js'],
         nope: ['turnjs4/lib/turn.html4.min.js'],
         both: ['css/basicFlip.css'],

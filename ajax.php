@@ -1132,7 +1132,7 @@ if ($action == 'getAdvisers') {
     $sql = "SELECT ui.*, acc.*
         FROM tbl_user_info ui
         INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-        WHERE ui.user_type IN ('adviser', 'admin')";
+        WHERE ui.user_type = 'adviser'";
 
     $result = $conn->query($sql);
 

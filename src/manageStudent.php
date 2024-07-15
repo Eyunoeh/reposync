@@ -148,7 +148,7 @@ include '../DatabaseConn/databaseConn.php';
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
                                 <select name="stud_Program" required class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select program</option>
+                                    <option value="" selected disabled>Select</option>
                                     <?php
                                     $sql = "SELECT * FROM  program";
                                     $stmt = $conn->prepare($sql);
@@ -166,10 +166,10 @@ include '../DatabaseConn/databaseConn.php';
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">Section</span>
+                                    <span class="label-text text-slate-700">Year & Section</span>
                                 </div>
                                 <select  name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select section</option>
+                                    <option value="" selected disabled>Select</option>
                                     <?php
                                     $sql = "SELECT * FROM  section";
                                     $stmt = $conn->prepare($sql);
@@ -322,7 +322,7 @@ include '../DatabaseConn/databaseConn.php';
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
                                 <select name="stud_Program" required class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select program</option>
+                                    <option value="" selected disabled>Select</option>
                                     <?php
                                     $sql = "SELECT * FROM  program";
                                     $stmt = $conn->prepare($sql);
@@ -340,10 +340,10 @@ include '../DatabaseConn/databaseConn.php';
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">Section</span>
+                                    <span class="label-text text-slate-700">Year & Section</span>
                                 </div>
                                 <select  name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select section</option>
+                                    <option value="" selected disabled>Select</option>
                                     <?php
                                     $sql = "SELECT * FROM  section";
                                     $stmt = $conn->prepare($sql);
