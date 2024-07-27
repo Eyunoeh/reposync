@@ -134,13 +134,15 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
                     Advisers
                 </h1>
 
-                <h1 onclick="dashboard_tab(this.id);" id="account_archived" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
-                    Archived
-                </h1>
+
             <?php endif?>
             <h1 onclick="dashboard_tab(this.id);" id="profile" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Profile
             </h1>
+        </div>
+        <div onclick="dashboard_tab(this.id);" id="account_archived" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+            <i class="fa-solid fa-recycle"></i>
+            <span class="text-[15px] ml-4  font-bold">Archived</span>
         </div>
         <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-error hover:text-slate-700  text-white">
             <i class="fa-solid fa-right-from-bracket"></i>

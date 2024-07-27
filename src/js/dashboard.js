@@ -35,6 +35,7 @@ function navigate(page) {
             getYrSec();
             getAdvNotes();
             getPendingFinalReports();
+            getProfileInfo();
 
             (async () => {
                 try {
@@ -267,11 +268,9 @@ function renderChart(ctx) {
                         dashboard_tab(elementId);
                     }else if (label === 'Archived adviser') {
                         const elementId = "account_archived";
-                        document.getElementById('UserSubmenu').classList.remove('hidden');
                         dashboard_tab(elementId);
                     }else if (label === 'Archived student') {
                         const elementId = "account_archived";
-                        document.getElementById('UserSubmenu').classList.remove('hidden');
                         dashboard_tab(elementId);
                     }
                 }
@@ -619,6 +618,43 @@ function editAdvInfo(user_id){
                 } else if (data.sex === "Female") {
                     $('#EditAdviserForm input[name="user_Sex"][value="Female"]').prop('checked', true);
                 }
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+function getProfileInfo(){
+    $.ajax({
+        url: '../ajax.php?action=get_Profile_info',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data){
+                let profPath
+                if (data.profile_img_file === 'N/A'){
+
+                    profPath = 'assets/profile.jpg'
+                }else {
+                    profPath = 'userProfile/'+data.profile_img_file
+                }
+
+
+                $("#selectedProfile").attr("src", profPath);
+
+                $('#profileForm input[name="user_Fname"]').val(data.first_name);
+                $('#profileForm input[name="user_Lname"]').val(data.last_name);
+                $('#profileForm input[name="user_address"]').val(data.address);
+                $('#profileForm input[name="contactNumber"]').val(data.contact_number);
+                $('#profileForm input[name="school_id"]').val(data.school_id);
+                $('#profileForm input[name="user_Email"]').val(data.email);
+                if (data.sex === "Male") {
+                    $('#profileForm input[name="user_Sex"][value="Male"]').prop('checked', true);
+                } else if (data.sex === "Female") {
+                    $('#profileForm input[name="user_Sex"][value="Female"]').prop('checked', true);
+                }
+
             }
         },
         error: function(xhr, status, error) {

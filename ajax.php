@@ -1951,4 +1951,25 @@ if ($action == 'pendingADVnoteReq') {
     exit();
 }
 
+if ($action == "get_Profile_info"){
+    if (!isset($_SESSION['log_user_id'])){
+        exit();
+    }
+    $user_id = $_SESSION['log_user_id'];
+    $getProfile = "SELECT ui.*, acc.*
+            FROM tbl_user_info ui
+            INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
+            WHERE ui.user_id = ?";
+    $getProfileSTMT = $conn->prepare($getProfile);
+    $getProfileSTMT->bind_param('i',$user_id);
+    if(!$getProfileSTMT->execute()){
+        echo $getProfileSTMT->error;
+    }
+    $result = $getProfileSTMT->get_result();
+    $profile_Info = $result->fetch_assoc();
+    header('Content-Type: application/json');
+    echo json_encode($profile_Info);
+}
+if ($action == 'updUserProfile'){
 
+}

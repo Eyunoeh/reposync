@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Update">
+      <change afterPath="$PROJECT_DIR$/src/userProfile/prof.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/basicFLip.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/basicFLip.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flipbook.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/flipbook.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manage_dhshboardProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage_dhshboardProfile.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +77,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/ReposyncNarrativeManagementSystem/src/assets&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/ReposyncNarrativeManagementSystem/src/userProfile&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -88,11 +90,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\userProfile" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\assets" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\js" />
-      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\NarrativeReports" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem" />
@@ -255,14 +257,10 @@
       <workItem from="1720575906465" duration="9862000" />
       <workItem from="1720828233461" duration="13140000" />
       <workItem from="1720841593158" duration="664000" />
-      <workItem from="1721017426167" duration="4023000" />
-    </task>
-    <task id="LOCAL-00008" summary="update 4/7/2024">
-      <created>1712469022399</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1712469022399</updated>
+      <workItem from="1721017426167" duration="4097000" />
+      <workItem from="1721022318073" duration="150000" />
+      <workItem from="1721712521956" duration="5008000" />
+      <workItem from="1721782196891" duration="6218000" />
     </task>
     <task id="LOCAL-00009" summary="update 4/23/2024">
       <created>1713802169757</created>
@@ -600,7 +598,14 @@
       <option name="project" value="LOCAL" />
       <updated>1720841196322</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="Update">
+      <created>1721021493480</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1721021493480</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,11 +658,6 @@
           <url>file://$PROJECT_DIR$/tailwind.config.js</url>
           <line>6</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/js/dashboard.js</url>
-          <line>317</line>
-          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

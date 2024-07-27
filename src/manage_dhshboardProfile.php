@@ -11,7 +11,6 @@
             <input type="file" id="profileImg" name="profileImg" accept="png, jpg" hidden/>
         </label>
     </div>
-
     <div class="flex flex-col gap-2">
         <div class="flex justify-evenly gap-2">
             <label class="form-control w-full max-w-xs">
@@ -22,32 +21,35 @@
             </label>
             <label class="form-control w-full max-w-xs">
                 <div class="label">
+                    <span class="label-text text-slate-700">Middle name</span>
+                </div>
+                <input type="text" name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+            </label>
+
+        </div>
+        <div class="flex justify-evenly gap-2">
+            <label class="form-control w-full max-w-xs">
+                <div class="label">
                     <span class="label-text text-slate-700">Last name</span>
                 </div>
                 <input type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
             </label>
-        </div>
-        <div class="flex justify-evenly gap-2">
             <label class="form-control w-full max-w-xs">
                 <div class="label">
                     <span class="label-text text-slate-700">Address</span>
                 </div>
                 <input type="text" name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
             </label>
+
+        </div>
+        <div class="flex justify-evenly gap-2">
             <label class="form-control w-full max-w-xs">
                 <div class="label">
                     <span class="label-text text-slate-700">Contact number</span>
                 </div>
                 <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
             </label>
-        </div>
-        <div class="flex justify-evenly gap-2">
-            <label class="form-control w-full max-w-xs">
-                <div class="label">
-                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
-                </div>
-                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
-            </label>
+
             <label class="form-control w-full max-w-xs">
                 <div class="label">
                     <span class="label-text text-slate-700">Sex</span>
@@ -64,10 +66,26 @@
                 </div>
             </label>
         </div>
-        <div class="flex justify-evenly gap-2">
+
+
+        <div class="flex justify-evenly gap-2 ">
             <label class="form-control w-full max-w-xs">
                 <div class="label">
-                    <span class="label-text text-slate-700">Password</span>
+                    <span class="label-text text-slate-700">Email</span>
+                </div>
+                <input type="email" name="user_Email" disabled placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+            </label>
+            <label class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text text-slate-700">School ID number </span>
+                </div>
+                <input type="number" min="0"  disabled name="school_id" placeholder="XXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
+            </label>
+        </div>
+        <div class="flex justify-evenly gap-2 ">
+            <label class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text text-slate-700">New password</span>
                 </div>
                 <input name="user_password"   type="password" placeholder="Enter password" data-theme="light"
                        class="bg-slate-100 input input-bordered w-full max-w-xs" />
@@ -80,6 +98,7 @@
                        class="bg-slate-100 input input-bordered w-full max-w-xs" />
             </label>
         </div>
+
     </div>
 
 

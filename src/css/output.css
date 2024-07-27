@@ -4576,6 +4576,10 @@ details.collapse summary::-webkit-details-marker {
   width: 70%;
 }
 
+.w-\[78\%\] {
+  width: 78%;
+}
+
 .w-\[80\%\] {
   width: 80%;
 }
@@ -4586,6 +4590,22 @@ details.collapse summary::-webkit-details-marker {
 
 .w-full {
   width: 100%;
+}
+
+.w-\[76\%\] {
+  width: 76%;
+}
+
+.w-\[7\%\] {
+  width: 7%;
+}
+
+.w-\[5\%\] {
+  width: 5%;
+}
+
+.w-\[75\%\] {
+  width: 75%;
 }
 
 .min-w-0 {
