@@ -3,7 +3,7 @@
         'name' => 'xpc/reposync-narrative-management-system',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'd1d4894d852ccfd03cc44058f53a2ed24d2ba6d1',
+        'reference' => '2c29972920e2836ebebabe8735df4539b901e189',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -19,6 +19,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.9.1',
+            'version' => '6.9.1.0',
+            'reference' => '039de174cd9c17a8389754d3b877a2ed22743e18',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'spatie/pdf-to-image' => array(
             'pretty_version' => '1.2.2',
             'version' => '1.2.2.0',
@@ -31,7 +40,7 @@
         'xpc/reposync-narrative-management-system' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'd1d4894d852ccfd03cc44058f53a2ed24d2ba6d1',
+            'reference' => '2c29972920e2836ebebabe8735df4539b901e189',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

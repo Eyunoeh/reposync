@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'Xpc\\ReposyncNarrativeManagementSystem\\' => array($baseDir . '/src'),
     'Spatie\\PdfToImage\\' => array($vendorDir . '/spatie/pdf-to-image/src'),
+    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
 );
