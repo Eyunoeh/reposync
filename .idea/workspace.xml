@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="Added Php mailer">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PhpMailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpMailer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ViewStudentWeeklyReport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manamgeAct&amp;Sched.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/installed.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/installed.php" afterDir="false" />
-    </list>
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="added mailing function to announcement, weekly report update, note post request" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -266,14 +257,7 @@
       <workItem from="1722086636048" duration="61000" />
       <workItem from="1722557247110" duration="5738000" />
       <workItem from="1722659577588" duration="5155000" />
-      <workItem from="1722730653461" duration="18549000" />
-    </task>
-    <task id="LOCAL-00011" summary="update 4/23/2024">
-      <created>1713803386705</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1713803386705</updated>
+      <workItem from="1722730653461" duration="18797000" />
     </task>
     <task id="LOCAL-00012" summary="update 4/23/2024">
       <created>1713856002815</created>
@@ -611,7 +595,14 @@
       <option name="project" value="LOCAL" />
       <updated>1722659784638</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="added mailing function to announcement, weekly report update, note post request">
+      <created>1722757392996</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1722757392997</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -630,7 +621,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="4/29/24 Narrative Module Update" />
     <MESSAGE value="New Forms in dashboard working on students list" />
     <MESSAGE value="userModule done CRUD notification need to fix login system done" />
     <MESSAGE value="report checking" />
@@ -655,7 +645,8 @@
     <MESSAGE value="Update managing narrative reports new narrative reports uploaded" />
     <MESSAGE value="Update" />
     <MESSAGE value="Added Php mailer" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Php mailer" />
+    <MESSAGE value="added mailing function to announcement, weekly report update, note post request" />
+    <option name="LAST_COMMIT_MESSAGE" value="added mailing function to announcement, weekly report update, note post request" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
