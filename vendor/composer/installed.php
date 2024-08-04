@@ -3,7 +3,7 @@
         'name' => 'xpc/reposync-narrative-management-system',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '2c29972920e2836ebebabe8735df4539b901e189',
+        'reference' => 'ca556184a7e0386dde0a0253bfa47bba892683e2',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -40,7 +40,7 @@
         'xpc/reposync-narrative-management-system' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '2c29972920e2836ebebabe8735df4539b901e189',
+            'reference' => 'ca556184a7e0386dde0a0253bfa47bba892683e2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

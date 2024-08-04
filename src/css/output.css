@@ -866,6 +866,11 @@ html {
 }
 
 @media (hover:hover) {
+  .checkbox-info:hover {
+    --tw-border-opacity: 1;
+    border-color: var(--fallback-in,oklch(var(--in)/var(--tw-border-opacity)));
+  }
+
   .label a:hover {
     --tw-text-opacity: 1;
     color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
@@ -2494,6 +2499,27 @@ input.tab:checked + .tab-content,
       linear-gradient(0deg, var(--chkbg) 43%, var(--chkfg) 43%, var(--chkfg) 57%, var(--chkbg) 57%);
 }
 
+.checkbox-info {
+  --chkbg: var(--fallback-in,oklch(var(--in)/1));
+  --chkfg: var(--fallback-inc,oklch(var(--inc)/1));
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-in,oklch(var(--in)/var(--tw-border-opacity)));
+}
+
+.checkbox-info:focus-visible {
+  outline-color: var(--fallback-in,oklch(var(--in)/1));
+}
+
+.checkbox-info:checked,
+    .checkbox-info[aria-checked="true"] {
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-in,oklch(var(--in)/var(--tw-border-opacity)));
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-in,oklch(var(--in)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-inc,oklch(var(--inc)/var(--tw-text-opacity)));
+}
+
 .checkbox:disabled {
   cursor: not-allowed;
   border-color: transparent;
@@ -3671,6 +3697,16 @@ details.collapse summary::-webkit-details-marker {
   padding: 0px;
 }
 
+[type="checkbox"].checkbox-xs {
+  height: 1rem;
+  width: 1rem;
+}
+
+[type="checkbox"].checkbox-sm {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
 .indicator :where(.indicator-item) {
   bottom: auto;
   inset-inline-end: 0px;
@@ -4576,10 +4612,6 @@ details.collapse summary::-webkit-details-marker {
   width: 70%;
 }
 
-.w-\[78\%\] {
-  width: 78%;
-}
-
 .w-\[80\%\] {
   width: 80%;
 }
@@ -4590,22 +4622,6 @@ details.collapse summary::-webkit-details-marker {
 
 .w-full {
   width: 100%;
-}
-
-.w-\[76\%\] {
-  width: 76%;
-}
-
-.w-\[7\%\] {
-  width: 7%;
-}
-
-.w-\[5\%\] {
-  width: 5%;
-}
-
-.w-\[75\%\] {
-  width: 75%;
 }
 
 .min-w-0 {
@@ -5076,6 +5092,10 @@ details.collapse summary::-webkit-details-marker {
 
 .pl-2 {
   padding-left: 0.5rem;
+}
+
+.pl-3 {
+  padding-left: 0.75rem;
 }
 
 .pl-5 {

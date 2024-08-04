@@ -140,10 +140,14 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
                 Profile
             </h1>
         </div>
+        <?php
+        if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
+        ?>
         <div onclick="dashboard_tab(this.id);" id="account_archived" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-recycle"></i>
-            <span class="text-[15px] ml-4  font-bold">Archived</span>
+            <span class="text-[15px] ml-4  font-bold">Archive</span>
         </div>
+        <?php endif?>
         <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-error hover:text-slate-700  text-white">
             <i class="fa-solid fa-right-from-bracket"></i>
             <a href="logout.php"><span class="text-[15px] ml-4  font-bold">Logout</span></a>

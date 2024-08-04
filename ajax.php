@@ -11,7 +11,9 @@ session_start();
 date_default_timezone_set('Asia/Manila');
 include_once 'DatabaseConn/databaseConn.php';
 include_once 'FlipbookFunctions.php';
+include_once 'PhpMailer.php';
 include 'functions.php';
+
 
 $action = $_GET['action'];
 extract($_POST);
@@ -1334,6 +1336,31 @@ if ($action === 'Notes') {
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('iss', $user_id, $note_title, $message);
             $stmt->execute();
+
+            $getAdvUserInfo = "SELECT * FROM tbl_user_info where user_id = ?";
+            $getAdvUserInfoSTMT = $conn->prepare($getAdvUserInfo);
+            $getAdvUserInfoSTMT->bind_param('i', $user_id);
+            $getAdvUserInfoSTMT->execute();
+            $result = $getAdvUserInfoSTMT->get_result();
+            $advInfoRows = $result->fetch_assoc();
+            $advFname= $advInfoRows['first_name'];
+            $advLname = $advInfoRows['last_name'];
+
+            $subjectType = 'OJT Adviser note post request';
+            $bodyMessage = "OJT Adviser: <b>". $advFname." ".$advLname."</b> has posted a new note <br>
+                    Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
+                    Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a> ";
+
+            $getAdminID = "SELECT * FROM tbl_user_info where user_type = 'admin'";
+            $getAdminIDSTMT = $conn->prepare($getAdminID);
+            $getAdminIDSTMT->execute();
+            $getAdminRes = $getAdminIDSTMT->get_result();
+            while ($row = $getAdminRes->fetch_assoc()){
+                $recipient = getRecipient($row['user_id']);
+                if(!email_notif_sender($subjectType, $bodyMessage, $recipient)){
+                    exit();
+                }
+            }
             echo 1;
         }
     }
@@ -1410,6 +1437,8 @@ if ($action === 'NewActivity') {
     $startingDate = isset($_POST['startDate']) ? sanitizeInput($_POST['startDate']): null;
     $endinggDate = isset($_POST['endDate']) ? sanitizeInput($_POST['endDate']): Null;
     $announcementTarget = isset($_POST['announcementTarget']) ? sanitizeInput($_POST['announcementTarget']): 'N/A';
+    $emailNotif = isset($_POST['emailNotif']) ? sanitizeInput($_POST['emailNotif']): Null;
+
     if ($note_title !== '' ) {
         if ($actionType == 'edit'){
             $sql = "UPDATE announcement SET 
@@ -1419,14 +1448,51 @@ if ($action === 'NewActivity') {
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('sssssi', $note_title, $actDescription,$startingDate,$endinggDate,  $announcementTarget,$announcement_id);
             $stmt->execute();
-            echo 1;
         }else {
             $sql = "INSERT INTO announcement  (user_id, title, description , starting_date, end_date,type, status, SchedAct_targetViewer)
                     VALUES (?,?,?,?,?,'schedule and activities','Active', ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('isssss', $user_id, $note_title, $actDescription, $startingDate, $endinggDate, $announcementTarget);
             $stmt->execute();
-            echo 1;
+
+        }
+        echo 1;
+        if ($emailNotif){
+            $userAnnouncementTarget = '';
+            $userAnnouncementTargetSTMT = '';
+            $activityDate = '';
+            $subjectType = "Activity and Schedule Announcement";
+            $bodyMessage = "<h1><b>".$note_title."</b></h1><br>"
+                .$actDescription."<br>";
+            if ($startingDate === $endinggDate){
+                $activityDate = date("M d, Y g:i A", strtotime($startingDate));
+                $bodyMessage .= "Date: <b>".$activityDate. "</b>";
+            }else{
+                $bodyMessage .= "Start: <b>". date("M d, Y g:i A", strtotime($startingDate))."</b <br>";
+                $bodyMessage .= "End: <b>". date("M d, Y g:i A", strtotime($endinggDate))."</b <br>";
+            }
+
+            if ($announcementTarget == 'All'){
+                $userAnnouncementTarget = "SELECT tbl_user_info.user_id
+FROM tbl_user_info
+JOIN tbl_accounts ON tbl_accounts.user_id = tbl_user_info.user_id WHERE tbl_accounts.status = 'active' ";
+                $userAnnouncementTargetSTMT = $conn->prepare($userAnnouncementTarget);
+
+            }else{
+                $userAnnouncementTarget = "SELECT tbl_user_info.user_id
+FROM tbl_user_info 
+	JOIN tbl_accounts ON tbl_accounts.user_id = tbl_user_info.user_id 
+	JOIN tbl_students ON tbl_students.user_id = tbl_user_info.user_id, program
+WHERE tbl_accounts.status = 'active' and  program.program_code = ?;";
+                $userAnnouncementTargetSTMT = $conn->prepare($userAnnouncementTarget);
+                $userAnnouncementTargetSTMT->bind_param('s', $announcementTarget);
+            }
+            $userAnnouncementTargetSTMT->execute();
+            $result = $userAnnouncementTargetSTMT->get_result();
+            while ($row = $result->fetch_assoc()){
+                $recipient = getRecipient($row['user_id']);
+                email_notif_sender($subjectType, $bodyMessage, $recipient);
+            }
         }
     }
 }

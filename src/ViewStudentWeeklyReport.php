@@ -3,6 +3,7 @@ $secret_key = 'TheSecretKey#02';
 
 
 include "../DatabaseConn/databaseConn.php";
+include "../PhpMailer.php";
 include '../functions.php';
 session_start();
 
@@ -35,12 +36,46 @@ if (isset($_POST['Update_remark']) and $_POST['Update_remark'] === 'Update'){
 
 
             if ($stmt->affected_rows > 0) {
-                echo 1;
-                header("Location: ViewStudentWeeklyReport.php?checkStudent=".urlencode(encrypt_data($_POST['stud_id'], $secret_key)));
-                exit();
+
+                $getWeeklyReport = "SELECT * FROM weeklyreport where file_id = ?";
+                $getWeeklyReportStmt = $conn->prepare($getWeeklyReport);
+                $getWeeklyReportStmt->bind_param('i', $file_id);
+                $getWeeklyReportStmt->execute();
+                $result = $getWeeklyReportStmt->get_result();
+                $weeklyReportsRow = $result->fetch_assoc();
+                $status = $weeklyReportsRow['upload_status'];
+
+                switch ($status) {
+                    case 'pending':
+                        $formattedStatus = 'Pending';
+                        $status_color = 'text-warning';
+                        break;
+                    case 'revision':
+                        $formattedStatus = 'With Revision';
+                        $status_color = 'text-info';
+
+                        break;
+                    case 'approved':
+                        $formattedStatus = 'Approved';
+                        $status_color = 'text-success';
+                        break;
+                    default:
+                        $formattedStatus = 'Unknown';
+                        break;
+                }
+
+                $subjectType = "Weekly Report Update";
+                $messageBody = "Your submission of weekly report on  <b>".
+                    date("M d, Y g:i A", strtotime($weeklyReportsRow['upload_date'])).
+                    '</b> has been reviewed and updated its status to <b>'.$formattedStatus.'</b>';
+                $recipient =  getRecipient($_POST['stud_id']);
+
+                if (email_notif_sender($subjectType, $messageBody, $recipient)){
+                    echo 1;
+                    header("Location: ViewStudentWeeklyReport.php?checkStudent=".urlencode(encrypt_data($_POST['stud_id'], $secret_key)));
+                    exit();
+                }
             }
-
-
         }
 
     }
@@ -213,7 +248,7 @@ $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
                     <div class="label">
                         <span class="label-text">Update remark</span>
                     </div>
-                    <select name="report_Stat" class="select select-bordered">
+                    <select id="report_Stat" name="report_Stat" class="select select-bordered">
                         <option selected value="pending">Pending</option>
                         <option value="revision">With revision</option>
                         <option value="approved">Approve</option>

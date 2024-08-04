@@ -58,15 +58,14 @@ include '../DatabaseConn/databaseConn.php'
             <h1 class="font-bold text-center text-lg  p-2">Activity and Schedule Form</h1>
             <button class="absolute right-2 btn btn-sm btn-circle btn-ghost "  onclick="closeModalForm('Act&shedModal');removeTrashButton()">✕</button>
         </div>
-        <div class="p-4 h-full">
-            <form id="act_n_schedForm" class=" h-full" enctype="multipart/form-data">
+        <div class="p-4 overflow-auto h-[90vh]">
+            <form id="act_n_schedForm" class="" enctype="multipart/form-data">
                 <input type="hidden" name="actionType" value="new" id="action_type">
                 <input type="hidden" value="" name="announcementID" id="announcementID">
-                <div class="flex flex-col gap-8  overflow-auto h-[80vh]">
+                <div class="flex flex-col gap-8  ">
                     <div class="flex flex-col gap-2">
                         <div class="flex flex-col gap-2">
                             <div class="flex justify-start gap-2">
-
                                 <label class="form-control w-full ">
                                     <div class="label">
                                         <span class="label-text text-slate-700 font-bold">Title</span>
@@ -127,9 +126,15 @@ include '../DatabaseConn/databaseConn.php'
                     </div>
                 </div>
                 <p id="SchedAndActLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
-                <div id="SchedAndActbtn" class="flex justify-center ">
+                <div id="SchedAndActbtn" class="flex justify-center flex-col items-center gap-2">
                     <button id="admin_adv_Submit" class="btn btn-success btn-outline w-1/4" >Submit</button>
+                    <label class="cursor-pointer label">
+
+                        <input type="checkbox"  name="emailNotif" value="Notify" class="checkbox checkbox-xs mr-2 checkbox-info" />
+                        <span class="label-text text-sm"> Notify users through Email?</span>
+                    </label>
                 </div>
+
             </form>
         </div>
     </div>
