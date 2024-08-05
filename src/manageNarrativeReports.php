@@ -8,7 +8,7 @@ include '../DatabaseConn/databaseConn.php';
 function getTotalNarrativeReports($program) {
     include '../DatabaseConn/databaseConn.php';
 
-    $sql = "SELECT COUNT(*) AS total FROM narrativereports WHERE program = ?";
+    $sql = "SELECT COUNT(*) AS total FROM narrativereports WHERE program = ? and file_status = 'OK'";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("s", $program);

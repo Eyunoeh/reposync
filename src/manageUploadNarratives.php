@@ -276,27 +276,25 @@ session_start();
 
                         </div>
                         <?php endif;?>
-
-
                         <div class="flex justify-evenly gap-2">
 
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">First name</span>
                                 </div>
-                                <input type="text" required name="first_name" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text" required name="first_name" <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Middle name</span>
                                 </div>
-                                <input type="text"  name="middle_name" placeholder="Optional" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text"  <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> name="middle_name" placeholder="Optional" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Last name</span>
                                 </div>
-                                <input type="text" required name="last_name" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text" <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> required name="last_name" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                         </div>
                         <div class="flex justify-evenly gap-2">
@@ -304,7 +302,7 @@ session_start();
                                 <div class="label">
                                     <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
                                 </div>
-                                <input type="number" min="0" oninput="this.value = this.value.slice(0, 9)" required name="school_id" placeholder="XXXXXXXX" maxlength="8" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> type="number" min="0" oninput="this.value = this.value.slice(0, 9)" required name="school_id" placeholder="XXXXXXXX" maxlength="8" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -313,11 +311,11 @@ session_start();
                                 <div class="flex justify-start gap-2">
                                     <div class="flex justify-center items-center flex-col">
                                         <label class="text-sm">Male</label>
-                                        <input type="radio" name="stud_Sex" value="Male" class="radio bg-gray-300" checked />
+                                        <input <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> type="radio" name="stud_Sex" value="Male" class="radio bg-gray-300" checked />
                                     </div>
                                     <div class="flex justify-center items-center flex-col">
                                         <label class="text-sm">Female</label>
-                                        <input type="radio" name="stud_Sex" value="Female" class="radio bg-gray-300" />
+                                        <input <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> type="radio" name="stud_Sex" value="Female" class="radio bg-gray-300" />
                                     </div>
                                 </div>
                             </label>
@@ -325,8 +323,8 @@ session_start();
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Adviser</span>
                                 </div>
-                                <select name="ojt_adviser" class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select adviser</option>
+                                <select name="ojt_adviser" <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> class="select select-bordered w-full bg-slate-100 " required>
+                                    <option  value="" selected disabled>Select adviser</option>
                                     <?php
                                     $adv_option_query = "SELECT ui.*, acc.*
                                  FROM tbl_user_info ui
@@ -353,7 +351,7 @@ session_start();
                                 <div class="label">
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
-                                <select required name="program" class="select select-bordered w-full bg-slate-100 ">
+                                <select <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> required name="program" class="select select-bordered w-full bg-slate-100 ">
                                     <option>Select program</option>
                                     <?php
                                     $sql = "SELECT * FROM  program";
@@ -375,7 +373,7 @@ session_start();
                                 <div class="label">
                                     <span class="label-text text-slate-700">Section</span>
                                 </div>
-                                <select required name="section" class="select select-bordered w-full bg-slate-100 ">
+                                <select <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> required name="section" class="select select-bordered w-full bg-slate-100 ">
                                     <option>Select Section</option>
                                     <?php
                                     $sql = "SELECT * FROM  section";
@@ -394,9 +392,9 @@ session_start();
                                     <span class="label-text text-slate-700">School Year</span>
                                 </div>
                                 <div class="flex gap-2 items-center">
-                                    <input type="number" required name="startYear" oninput="this.value = this.value.slice(0, 4)" class="bg-slate-100 input input-bordered w-full max-w-xs" placeholder="0000" />
+                                    <input <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> type="number" required name="startYear" oninput="this.value = this.value.slice(0, 4)" class="bg-slate-100 input input-bordered w-full max-w-xs" placeholder="0000" />
                                     <p class="text-center items-center font-bold text-lg"> - </p>
-                                    <input type="number" required name="endYear" oninput="this.value = this.value.slice(0, 4)" class="bg-slate-100 input input-bordered w-full max-w-xs" placeholder="0000" />
+                                    <input <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> type="number" required name="endYear" oninput="this.value = this.value.slice(0, 4)" class="bg-slate-100 input input-bordered w-full max-w-xs" placeholder="0000" />
                                 </div>
 
                             </label>
@@ -407,26 +405,28 @@ session_start();
                                 <div class="label">
                                     <span class="label-text text-slate-700">Student Company / Institution</span>
                                 </div>
-                                <input type="text" required name="companyName" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> type="text" required name="companyName" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
 
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Training Hours</span>
                                 </div>
-                                <input type="number" required name="trainingHours" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> type="number" required name="trainingHours" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                         </div>
                         <div class="flex justify-evenly gap-2">
-
+                            <?php if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'adviser'):?>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Replace Existing Narrative Report</span>
                                 </div>
                                 <input name="final_report_file" accept="application/pdf" type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
                             </label>
+                            <?php endif;?>
                         </div>
                     </div>
+
                     <p id="loader_narrative_update" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
 
                     <div id="editNarrativeBtn" class="flex justify-center m-3 gap-2">

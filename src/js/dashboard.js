@@ -91,19 +91,27 @@ function navigate(page) {
                 }
             }
             if (document.getElementById('AdvNoteReqForm')){
-                let advNoteStat = document.getElementById('NoteStat');
+                let advNoteStat = document.getElementById('NoteStatReqOptions');
                 if (advNoteStat){
                     advNoteStat.addEventListener("change", function (){
                         if (advNoteStat.value === 'Declined'){
-                            $('#reasonTextArea').append('<label class="form-control w-full ">\n' +
+                            $('#reasonTextArea').html('<label class="form-control w-full ">\n' +
                                 '                            <div class="label">\n' +
-                                '                                <span class="label-text text-slate-700 font-bold">Reason</span>\n' +
+                                '                                <span class="label-text text-slate-700 font-bold">Reason</span> \n' +
                                 '                            </div>\n' +
                                 '                            <input type="text" required  name="reason" class="input input-error w-full" placeholder="Type here">' +
                                 '                        </label>')
+                            $('#emailCheckbox').html('<input type="checkbox"  name="emailNotif" value="Notify" checked class="checkbox checkbox-xs mr-2 checkbox-info" />\n' +
+                                '                        <span class="label-text text-sm"> Notify OJT adviser through Email?</span>')
+                        }else if (advNoteStat.value === 'Active'){
+                            $('#emailCheckbox').html('<input type="checkbox"  name="emailNotif" value="Notify" checked class="checkbox checkbox-xs mr-2 checkbox-info" />\n' +
+                                '                        <span class="label-text text-sm">Notify advisory students of this adviser through Email?</span>')
+                            $('#reasonTextArea').empty();
+
                         }
                         else{
                             $('#reasonTextArea').empty();
+                            $('#emailCheckbox').empty();
                         }
                     })
                 }
@@ -678,7 +686,7 @@ function getNotes(note_id){
                 $('#status_Box').find('#declineReason').remove();
                 switch (status) {
                     case 'Declined':
-                        $('#status_Box').append('<p class="text-slate-700 font-semibold text-xs pl-2" id="declineReason">' +
+                        $('#status_Box').append('<p class="text-slate-700  text-xs pl-2" id="declineReason">' +
                             '<strong>Reason:</strong> ' + data.reason +
                             '</p>');
                         status_class = 'text-error';
@@ -719,13 +727,25 @@ function getAdvReqNotesInfo(id){
         success: function(data) {
             if (data){
                 $('#reasonTextArea').empty();
+                $('#emailCheckbox').empty();
                 if (data.status === 'Declined'){
-                    $('#reasonTextArea').append('<label class="form-control w-full ">\n' +
+                    $('#reasonTextArea').html('<label class="form-control w-full ">\n' +
                         '                            <div class="label">\n' +
                         '                                <span class="label-text text-slate-700 font-bold">Reason</span>\n' +
                         '                            </div>\n' +
                         '                            <input type="text" value="'+ data.reason +'" required  name="reason" class="input input-error w-full" placeholder="Type here">' +
                         '                        </label>')
+
+                }
+                if (data.status === 'Active' || data.status === 'Declined'){
+                    $('#NoteStatReqOptions'). html('<option value="Active">Approve</option>\n' +
+                        '                            <option value="Declined">Declined</option>');
+                    $('#emailCheckbox').html('<input type="checkbox"  name="emailNotif" value="Notify" checked class="checkbox checkbox-xs mr-2 checkbox-info" />\n' +
+                        '                        <span class="label-text text-sm"> Notify OJT adviser through Email?</span>');
+                }else{
+                    $('#NoteStatReqOptions'). html('<option value="Pending">Pending</option>' +
+                        '                            <option value="Active">Approve</option>\n' +
+                        '                            <option value="Declined">Declined</option>');
                 }
                 $('#AdvNoteReqForm select[name="NoteStat"]').val(data.status);
                 $('#AdvNoteReqForm input[name="announcementID"]').val(data.announcement_id);

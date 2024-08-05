@@ -538,12 +538,42 @@ if ($action === 'UpdateNarrativeReport'){
     $uploadStat = isset($_POST['UploadStat']) && in_array($_POST['UploadStat'], $allowed_statuses) ? sanitizeInput($_POST['UploadStat']) : Null;
 
 
+    $narrative_id = decrypt_data($narrative_id,$secret_key);
+
+
+    if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'adviser'){
+        $uploadStat = 'Pending'; //pag nag update ng info the adviser sa
+        // uploaded narrative report gagawing pending ulit
+    }
+    if ($uploadStat !== Null){
+        if ($uploadStat === 'OK'){
+            $uploadDeclineRemark = 'OK';
+        }
+
+        $updateStat = "UPDATE narrativereports
+                                      SET file_status = ?, 
+                                          remarks = ?
+                                    where narrative_id = ? ";
+        $updateStatSTMT = $conn->prepare($updateStat);
+        $updateStatSTMT->bind_param('ssi', $uploadStat, $uploadDeclineRemark, $narrative_id);
+        if (!$updateStatSTMT->execute()){
+            echo $updateStatSTMT->error;
+            exit();
+        }
+        if ($_SESSION['log_user_type'] == 'admin'){
+            echo 1;
+            exit(); //admin can only update the status
+            // of the uploaded narrative report incase na tangalin ung disable sa form hindi na tutuloy
+        }
+    }
+
+
     if ($first_name !== '' && $last_name !== '' && $stud_sex !== '' && $program !== '' && $section !== '' && $ojt_adviser !== '' && $school_id !== ''  && $narrative_id !== ''&& $sySubmitted !== '') {
         $file_first_name = str_replace(' ', '', $first_name);
         $file_last_name = str_replace(' ', '', $last_name);
         $new_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id.".pdf";
         $current_date_time = date('Y-m-d H:i:s');
-        $narrative_id = decrypt_data($narrative_id,$secret_key);
+
         $old_filename = '';
         $sql = "SELECT * FROM narrativereports WHERE narrative_id = ?";
         $stmt = $conn->prepare($sql);
@@ -579,143 +609,129 @@ if ($action === 'UpdateNarrativeReport'){
             $school_id, $ojt_adviser,$stud_sex,$first_name, $middle_name,  $last_name,
             $program, $section, $new_file_name,
             $current_date_time, $trainingHours, $compName,$sySubmitted ,$narrative_id);
-        if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'adviser'){
-            $uploadStat = 'Pending';
-        }
-        if ($uploadStat !== Null){
-            if ($uploadStat === 'OK'){
-                $uploadDeclineRemark = 'OK';
-            }
-            $updateStat = "UPDATE narrativereports
-                                      SET file_status = ?, remarks = ?
-                                    where narrative_id = ?
-                                    ";
-            $updateStatSTMT = $conn->prepare($updateStat);
-            $updateStatSTMT->bind_param('ssi', $uploadStat, $uploadDeclineRemark, $narrative_id);
-            $updateStatSTMT->execute();
-        }
+
 
 
         if (!$update_final_report->execute()){
             echo 'query error';
             exit();
-        }else{
-            if (isset($_FILES['final_report_file']) && $_FILES['final_report_file']['error'] === UPLOAD_ERR_OK){
-                //replace existing by deleting and converting new
+        }
+        if (isset($_FILES['final_report_file']) && $_FILES['final_report_file']['error'] === UPLOAD_ERR_OK){
+            //replace existing by deleting and converting new
 
-                $file_name = $_FILES['final_report_file']['name'];
-                $file_temp = $_FILES['final_report_file']['tmp_name'];
-                $file_type = $_FILES['final_report_file']['type'];
-                $file_error = $_FILES['final_report_file']['error'];
-                $file_size = $_FILES['final_report_file']['size'];
+            $file_name = $_FILES['final_report_file']['name'];
+            $file_temp = $_FILES['final_report_file']['tmp_name'];
+            $file_type = $_FILES['final_report_file']['type'];
+            $file_error = $_FILES['final_report_file']['error'];
+            $file_size = $_FILES['final_report_file']['size'];
 
-                if (isPDF($file_name)){
-                    $pdf = 'src/NarrativeReportsPDF/'.$old_filename;
-                    $flipbook_page_dir = 'src/NarrativeReports_Images/'. str_replace('.pdf','',$old_filename);
-                    if (!delete_pdf($pdf) or !deleteDirectory($flipbook_page_dir)){
-                        echo 'dir not deleted';
-                        exit();
-                    }
-
-                    $file_first_name = str_replace(' ', '', $first_name);
-                    $file_last_name = str_replace(' ', '', $last_name);
-                    $new_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id.".pdf";
-                    $pdf_file_path = "src/NarrativeReportsPDF/" . $new_file_name;
-                    move_uploaded_file($file_temp, $pdf_file_path);
-                    $report_pdf_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id;
-                    if (convert_pdf_to_image($report_pdf_file_name)){
-                        echo 1;
-                        exit();
-                    }
-                    else{
-                        echo 'error Conversion';
-                    }
+            if (isPDF($file_name)){
+                $pdf = 'src/NarrativeReportsPDF/'.$old_filename;
+                $flipbook_page_dir = 'src/NarrativeReports_Images/'. str_replace('.pdf','',$old_filename);
+                if (!delete_pdf($pdf) or !deleteDirectory($flipbook_page_dir)){
+                    echo 'dir not deleted';
+                    exit();
                 }
 
+                $file_first_name = str_replace(' ', '', $first_name);
+                $file_last_name = str_replace(' ', '', $last_name);
+                $new_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id.".pdf";
+                $pdf_file_path = "src/NarrativeReportsPDF/" . $new_file_name;
+                move_uploaded_file($file_temp, $pdf_file_path);
+                $report_pdf_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id;
+                if (convert_pdf_to_image($report_pdf_file_name)){
+                    echo 1;
+                    exit();
+                }
+                else{
+                    echo 'error Conversion';
+                }
             }
-            else {
-                //Nirerename lang ung pdf sa src/NarrativeReportsPDF/  tapos directory
-                // at ung lamang ng directory sa src/NarrativeReports_Images/
-                // ung rename nito naka base lang sa laman ng database
-                // ang purpose para ma reuse ang existing files
 
-                $narrative_reportPDF_path = 'src/NarrativeReportsPDF/';
-                $narrative_reportIMG_path = 'src/NarrativeReports_Images/';
-                if (is_dir($narrative_reportPDF_path)) {
-                    if ($handle = opendir($narrative_reportPDF_path)) {
-                        // Rename the PDF file
-                        while (false !== ($file = readdir($handle))) {
-                            if (pathinfo($file, PATHINFO_EXTENSION) == 'pdf' && $file == $old_filename) {
-                                // Rename the pdf file
-                                $oldFilePath = $narrative_reportPDF_path . $old_filename;
-                                $newFilePath = $narrative_reportPDF_path . $new_file_name;
-                                if (rename($oldFilePath, $newFilePath)) {
-                                    // Rename the flip book image directory
-                                    $old_flipbook_page_directory = str_replace('.pdf', '', $old_filename);
-                                    $new_flipbook_page_directory = str_replace('.pdf', '', $new_file_name);
-                                    if (is_dir($narrative_reportIMG_path . $old_flipbook_page_directory)) {
-                                        if (rename($narrative_reportIMG_path . $old_flipbook_page_directory, $narrative_reportIMG_path . $new_flipbook_page_directory)) {
-                                            // Rename image files inside the flip book directory
-                                            if (is_dir($narrative_reportIMG_path . $new_flipbook_page_directory)) {
-                                                if ($handle_img = opendir($narrative_reportIMG_path . $new_flipbook_page_directory)) {
-                                                    while (false !== ($file_img = readdir($handle_img))) {
-                                                        if ($file_img != "." && $file_img != "..") {
-                                                            // Construct the new filename based on the new directory name pattern
-                                                            $oldImagePath = $narrative_reportIMG_path . $new_flipbook_page_directory . "/" . $file_img;
-                                                            $newImageName = str_replace($old_flipbook_page_directory, $new_flipbook_page_directory, $file_img);
-                                                            $newImagePath = $narrative_reportIMG_path . $new_flipbook_page_directory . "/" . $newImageName;
+        }
+        else {
+            //Nirerename lang ung pdf sa src/NarrativeReportsPDF/  tapos directory
+            // at ung lamang ng directory sa src/NarrativeReports_Images/
+            // ung rename nito naka base lang sa laman ng database
+            // ang purpose para ma reuse ang existing files
 
-                                                            // Rename the image file
-                                                            if (!rename($oldImagePath, $newImagePath)) {
-                                                                echo "* Error renaming image file.";
-                                                                echo 0;
-                                                                exit();
-                                                            }
+            $narrative_reportPDF_path = 'src/NarrativeReportsPDF/';
+            $narrative_reportIMG_path = 'src/NarrativeReports_Images/';
+            if (is_dir($narrative_reportPDF_path)) {
+                if ($handle = opendir($narrative_reportPDF_path)) {
+                    // Rename the PDF file
+                    while (false !== ($file = readdir($handle))) {
+                        if (pathinfo($file, PATHINFO_EXTENSION) == 'pdf' && $file == $old_filename) {
+                            // Rename the pdf file
+                            $oldFilePath = $narrative_reportPDF_path . $old_filename;
+                            $newFilePath = $narrative_reportPDF_path . $new_file_name;
+                            if (rename($oldFilePath, $newFilePath)) {
+                                // Rename the flip book image directory
+                                $old_flipbook_page_directory = str_replace('.pdf', '', $old_filename);
+                                $new_flipbook_page_directory = str_replace('.pdf', '', $new_file_name);
+                                if (is_dir($narrative_reportIMG_path . $old_flipbook_page_directory)) {
+                                    if (rename($narrative_reportIMG_path . $old_flipbook_page_directory, $narrative_reportIMG_path . $new_flipbook_page_directory)) {
+                                        // Rename image files inside the flip book directory
+                                        if (is_dir($narrative_reportIMG_path . $new_flipbook_page_directory)) {
+                                            if ($handle_img = opendir($narrative_reportIMG_path . $new_flipbook_page_directory)) {
+                                                while (false !== ($file_img = readdir($handle_img))) {
+                                                    if ($file_img != "." && $file_img != "..") {
+                                                        // Construct the new filename based on the new directory name pattern
+                                                        $oldImagePath = $narrative_reportIMG_path . $new_flipbook_page_directory . "/" . $file_img;
+                                                        $newImageName = str_replace($old_flipbook_page_directory, $new_flipbook_page_directory, $file_img);
+                                                        $newImagePath = $narrative_reportIMG_path . $new_flipbook_page_directory . "/" . $newImageName;
+
+                                                        // Rename the image file
+                                                        if (!rename($oldImagePath, $newImagePath)) {
+                                                            echo "* Error renaming image file.";
+                                                            echo 0;
+                                                            exit();
                                                         }
                                                     }
-                                                    closedir($handle_img);
-                                                } else {
-                                                    echo "Error opening image directory.";
-                                                    echo 0;
-                                                    exit();
                                                 }
+                                                closedir($handle_img);
                                             } else {
-                                                echo "New directory does not exist.";
+                                                echo "Error opening image directory.";
                                                 echo 0;
                                                 exit();
                                             }
                                         } else {
-                                            echo "Error renaming directory.";
+                                            echo "New directory does not exist.";
                                             echo 0;
                                             exit();
                                         }
                                     } else {
-                                        echo "Directory does not exist.";
+                                        echo "Error renaming directory.";
                                         echo 0;
                                         exit();
                                     }
                                 } else {
-                                    echo "Error renaming PDF file.";
+                                    echo "Directory does not exist.";
                                     echo 0;
                                     exit();
                                 }
+                            } else {
+                                echo "Error renaming PDF file.";
+                                echo 0;
+                                exit();
                             }
                         }
-                        closedir($handle);
-                    } else {
-                        echo "Error opening PDF directory.";
-                        echo 0;
-                        exit();
                     }
+                    closedir($handle);
                 } else {
-                    echo "PDF directory does not exist.";
+                    echo "Error opening PDF directory.";
                     echo 0;
                     exit();
                 }
-                echo 1;
+            } else {
+                echo "PDF directory does not exist.";
+                echo 0;
                 exit();
             }
+            echo 1;
+            exit();
         }
+
     }
 }
 
@@ -1319,16 +1335,20 @@ if ($action === 'Notes') {
     $note_title = isset($_POST['noteTitle']) ? sanitizeInput($_POST['noteTitle']) : '';
     $actionType = isset($_POST['actionType']) ? sanitizeInput($_POST['actionType']) : '';
     $message = isset($_POST['message']) ? sanitizeInput($_POST['message']) : '';
-    $announcement_id = isset($_POST['announcementID']) ? sanitizeInput($_POST['announcementID']) : '';;
+    $announcement_id = isset($_POST['announcementID']) ? sanitizeInput($_POST['announcementID']) : '';
+    $actionMessageType = '';
     if ($note_title !== ''  && $message !== '') {
         if ($actionType == 'edit'){
             $sql = "UPDATE announcement SET 
-                        title = ?, description = ?, 
-                        announcementPosted = NOW() 
+                        title = ?, 
+                        description = ?, 
+                        announcementUpdated = NOW() ,
+                        status = 'Pending'
                     where announcement_id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ssi', $note_title, $message, $announcement_id);
             $stmt->execute();
+            $actionMessageType = 'has updated a note';
             echo 1;
         }else {
             $sql = "INSERT INTO announcement  (user_id, title, description,type)
@@ -1336,39 +1356,42 @@ if ($action === 'Notes') {
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('iss', $user_id, $note_title, $message);
             $stmt->execute();
+            $actionMessageType = 'has posted a new note';
 
-            $getAdvUserInfo = "SELECT * FROM tbl_user_info where user_id = ?";
-            $getAdvUserInfoSTMT = $conn->prepare($getAdvUserInfo);
-            $getAdvUserInfoSTMT->bind_param('i', $user_id);
-            $getAdvUserInfoSTMT->execute();
-            $result = $getAdvUserInfoSTMT->get_result();
-            $advInfoRows = $result->fetch_assoc();
-            $advFname= $advInfoRows['first_name'];
-            $advLname = $advInfoRows['last_name'];
+            echo 1;
+        }
 
-            $subjectType = 'OJT Adviser note post request';
-            $bodyMessage = "OJT Adviser: <b>". $advFname." ".$advLname."</b> has posted a new note <br>
+        //emailing notification
+        $getAdvUserInfo = "SELECT * FROM tbl_user_info where user_id = ?";
+        $getAdvUserInfoSTMT = $conn->prepare($getAdvUserInfo);
+        $getAdvUserInfoSTMT->bind_param('i', $user_id);
+        $getAdvUserInfoSTMT->execute();
+        $result = $getAdvUserInfoSTMT->get_result();
+        $advInfoRows = $result->fetch_assoc();
+        $advFname= $advInfoRows['first_name'];
+        $advLname = $advInfoRows['last_name'];
+
+        $subjectType = 'OJT Adviser note post request';
+        $bodyMessage = "OJT Adviser: <b>". $advFname." ".$advLname."</b> ".$actionMessageType." <br>
                     Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
                     Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a> ";
 
-            $getAdminID = "SELECT * FROM tbl_user_info where user_type = 'admin'";
-            $getAdminIDSTMT = $conn->prepare($getAdminID);
-            $getAdminIDSTMT->execute();
-            $getAdminRes = $getAdminIDSTMT->get_result();
-            while ($row = $getAdminRes->fetch_assoc()){
-                $recipient = getRecipient($row['user_id']);
-                if(!email_notif_sender($subjectType, $bodyMessage, $recipient)){
-                    exit();
-                }
+        $getAdminID = "SELECT * FROM tbl_user_info where user_type = 'admin'";
+        $getAdminIDSTMT = $conn->prepare($getAdminID);
+        $getAdminIDSTMT->execute();
+        $getAdminRes = $getAdminIDSTMT->get_result();
+        while ($row = $getAdminRes->fetch_assoc()){
+            $recipient = getRecipient($row['user_id']);
+            if(!email_notif_sender($subjectType, $bodyMessage, $recipient)){
+                exit();
             }
-            echo 1;
         }
     }
 }
 
 if ($action == 'getDashboardNotes'){
     $user_id = $_SESSION['log_user_id'];
-    $getNotes = "SELECT * from announcement where user_id= ?  and status IN ('Active', 'Pending', 'Declined') and type = 'Notes' ORDER BY  announcementPosted desc";
+    $getNotes = "SELECT * from announcement where user_id= ?  and status IN ('Active', 'Pending', 'Declined') and type = 'Notes' ORDER BY  announcementUpdated desc";
     $stmt = $conn->prepare($getNotes);
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
@@ -1793,9 +1816,9 @@ if ($action == 'getAdvNotes'){
     $getAdvNotes= "SELECT announcement.*, tbl_user_info.*
     FROM announcement 
     JOIN tbl_user_info ON announcement.user_id = tbl_user_info.user_id
-        WHERE announcement.status != 'Hidden'
+        WHERE announcement.status = 'Pending'
             AND type = 'Notes'
-        ORDER BY announcement.announcementPosted desc;";
+        ORDER BY announcement.announcementUpdated desc;";
     $getAdvNotesStmt = $conn->prepare($getAdvNotes);
     $getAdvNotesStmt->execute();
     $res = $getAdvNotesStmt->get_result();
@@ -1819,6 +1842,9 @@ if ($action == 'getAdvNotes'){
                          <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">'.date('M j Y g:i A', strtotime($row['announcementPosted'])).'</span>
                         </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">'.date('M j Y g:i A', strtotime($row['announcementUpdated'])).'</span>
+                        </td>
                         <td class="p-3 text-end">
                             <a href="#" class="hover:cursor-pointer mb-1
                             font-semibold transition-colors duration-200
@@ -1834,11 +1860,16 @@ if ($action == 'UpdateNotePostReq'){
     $declineReason = isset($_POST['reason']) ? sanitizeInput($_POST['reason']): 'N/A';
     $announcement_id = isset($_POST['announcementID']) ? sanitizeInput($_POST['announcementID']): '';
 
+    $noteStatChoices  = array('Pending', 'Hidden', 'Active', 'Declined');
+    if (!in_array($noteStat, $noteStatChoices)){
+        echo "Note status has been modified please reload the page";
+        exit();
+    }
+
     if ($noteStat !== '' && $announcement_id !== ''){
         $sql = "UPDATE announcement SET 
                         status = ?,
-                        reason = ?
-            
+                        reason = ?    
                     where announcement_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ssi', $noteStat, $declineReason, $announcement_id);
@@ -1846,6 +1877,56 @@ if ($action == 'UpdateNotePostReq'){
             echo $stmt->error;
             exit();
         }
+
+        if (isset($_POST['emailNotif']) and $_POST['emailNotif'] == 'Notify'){ // email notification toggled by admin
+            $getAdvNotes= "SELECT * FROM announcement where announcement_id = ?";
+            $getAdvNotesStmt = $conn->prepare($getAdvNotes);
+            $getAdvNotesStmt->bind_param('i',$announcement_id);
+            $getAdvNotesStmt->execute();
+            $res = $getAdvNotesStmt->get_result();
+            $noteDetails = $res->fetch_assoc();
+            $getTargetRecipient = '';
+            $subjectType = 'Note announcement';
+            $bodyMessage = '';
+            if ($noteStat === 'Declined'){
+                $bodyMessage = "<h3>Note post request has been <b>Declined.</b></h3> <br>";
+                $bodyMessage .= "<b>Title: </b>".$noteDetails['title']." <br>";
+                $bodyMessage .= "<b>Description: </b>".$noteDetails['description']." <br>";
+                $bodyMessage .= "<br><b>Reason: </b>".$declineReason." <br>";
+                $bodyMessage .= "Click to review:
+ <a href='http://localhost/ReposyncNarrativeManagementSystem/src/dashboard.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a><br>";
+                $targetRecipient = getRecipient($noteDetails['user_id']);
+                email_notif_sender($subjectType, $bodyMessage, $targetRecipient /*recipient OJT adviser*/);
+            }elseif ($noteStat === 'Active'){
+                $bodyMessage = "<h3>Note post request has been Approved.</h3> <br>";
+                $bodyMessage .= "<b>Title: </b>".$noteDetails['title']." <br>";
+                $bodyMessage .= "<b>Description: </b>".$noteDetails['description'].". <br>";
+                $bodyMessage .= "<br>Your students will also get notified about this post<br>";
+                $bodyMessage .= "Click to review:
+ <a href='http://localhost/ReposyncNarrativeManagementSystem/src/dashboard.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a><br>";
+                $targetRecipient = getRecipient($noteDetails['user_id']);
+                email_notif_sender($subjectType, $bodyMessage, $targetRecipient /*recipient OJT adviser*/);
+
+
+
+                $getAdvStudentsTargetRecipient = "SELECT advisory_list.*, tbl_accounts.status 
+FROM advisory_list JOIN tbl_accounts on tbl_accounts.user_id = advisory_list.adv_sch_user_id
+where adv_sch_user_id = ? and tbl_accounts.status = 'active';";
+                $getAdvStudentsTargetRecipientSTMT = $conn->prepare($getAdvStudentsTargetRecipient);
+                $getAdvStudentsTargetRecipientSTMT ->bind_param('i', $noteDetails['user_id'] /* OJT adviser students*/);
+                $getAdvStudentsTargetRecipientSTMT->execute();
+                $result = $getAdvStudentsTargetRecipientSTMT->get_result();
+                $bodyMessageToStudents = "<h3><b>Title: </b>".$noteDetails['title']." <h3><br>";
+                $bodyMessageToStudents .= "<b>Description: </b> ".$noteDetails['description']." <br>";
+                $bodyMessageToStudents .= "<br>Click to review:
+ <a href='http://localhost/ReposyncNarrativeManagementSystem/src/index.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a><br>";
+                while ($row = $result->fetch_assoc()){
+                    email_notif_sender($subjectType, $bodyMessageToStudents, getRecipient($row['stud_sch_user_id']));
+                }
+
+            }
+        }
+
         echo 1;
     }else{
         echo "Please put the required input fields";

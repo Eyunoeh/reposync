@@ -33,6 +33,7 @@ session_start();
                         <th class="p-3 text-start ">Title</th>
                         <th class="p-3 text-start ">Status</th>
                         <th class="p-3 text-start ">Note posted</th>
+                        <th class="p-3 text-start ">Note updated</th>
                         <th class="p-3 text-end ">Action</th>
 
                     </tr>
@@ -86,10 +87,8 @@ session_start();
                         <div class="label">
                             <span class="label-text">Update status</span>
                         </div>
-                        <select id="NoteStat" name="NoteStat" class="select select-bordered">
-                            <option value="Pending">Pending</option>
-                            <option value="Active">Approve</option>
-                            <option value="Declined">Declined</option>
+                        <select id="NoteStatReqOptions" name="NoteStat" class="select select-bordered">
+
                         </select>
                     </label>
                     <hr>
@@ -103,9 +102,18 @@ session_start();
                     <input type="hidden" name="file_id" value="">
                 </div>
                 <p id="UpdateNoteLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
-                <div id="UpdateNoteBtn" class="flex justify-center m-3">
+                <div id="UpdateNoteBtn" class="flex  justify-center mt-3">
                     <button id="submit_btn" class="btn btn-info bg-opacity-40 btn-outline w-1/2" >OK</button>
+
                 </div>
+
+                <div  class="flex  justify-center mb-3">
+                    <label class="cursor-pointer label" id="emailCheckbox">
+
+                    </label>
+
+                </div>
+
             </form>
         </div>
 
