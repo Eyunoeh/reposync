@@ -60,7 +60,7 @@ if ($action == 'login') {
             $user_id = $row['user_id'];
             $hashed_password = $row['password'];
             if (password_verify($log_password, $hashed_password)) {
-                $fetch_user_info = "SELECT user_type FROM tbl_user_info WHERE user_id = ?";
+                $fetch_user_info = "SELECT * FROM tbl_user_info WHERE user_id = ?";
                 $stmt_user_info = $conn->prepare($fetch_user_info);
                 $stmt_user_info->bind_param('i', $user_id);
                 $stmt_user_info->execute();
@@ -76,6 +76,9 @@ if ($action == 'login') {
                     $row_user_info = $result_user_info->fetch_assoc();
                     $_SESSION['log_user_id'] = $user_id;
                     $_SESSION['log_user_type'] = $row_user_info['user_type'];
+                    $_SESSION['log_user_firstName'] = $row_user_info['first_name'];
+                    $_SESSION['log_user_middleName'] = $row_user_info['middle_name'] !== 'N/A' ? $row_user_info['middle_name'] : '';
+                    $_SESSION['log_user_lastName'] = $row_user_info['last_name'];
                     echo 1; // Login successful
                 } else {
                     echo 2; // Error: User type not found
@@ -403,6 +406,24 @@ if ($action == 'newFinalReport'){
                             $report_pdf_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $section . "_" . $school_id;
 
                             if (convert_pdf_to_image($report_pdf_file_name)) {
+                                if ($_SESSION['log_user_type'] == 'adviser'){       // admin email notification
+                                    $getAdminUser = "SELECT tbl_accounts.status, tbl_accounts.email, tbl_user_info.user_id, tbl_user_info.user_type  FROM tbl_user_info
+                                                   JOIN tbl_accounts on tbl_accounts.user_id = tbl_user_info.user_id where tbl_accounts.status = 'active' and tbl_user_info.user_type = 'admin'";
+                                    $getAdminUserSTMT = $conn->prepare($getAdminUser);
+                                    $getAdminUserSTMT->execute();
+                                    $result =  $getAdminUserSTMT->get_result();
+                                    while ($row= $result->fetch_assoc()){
+                                        $subjectType = "Upload Narrative Report";
+                                        $bodyMessage = "<h1><b>Notification</b></h1><br>";
+                                        $bodyMessage .= "<b>OJT adviser: </b>".$_SESSION['log_user_firstName'].' '.$_SESSION['log_user_middleName'].' '.$_SESSION['log_user_lastName'] .'<br>';
+                                        $bodyMessage .= "Uploaded a new  student narrative report  <br>";
+                                        $bodyMessage .= "Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
+                Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
+                                        $recipient =  $row['email'];
+                                        email_notif_sender($subjectType, $bodyMessage,$recipient );
+                                    }
+                                }
+
                                 echo 1;
                                 exit();
                             } else {
@@ -542,12 +563,12 @@ if ($action === 'UpdateNarrativeReport'){
 
 
     if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'adviser'){
-        $uploadStat = 'Pending'; //pag nag update ng info the adviser sa
-        // uploaded narrative report gagawing pending ulit
+        $uploadStat = 'Pending'; //pag nag update ng info ang adviser sa
+        // uploaded narrative report module gagawing pending ulit status
     }
     if ($uploadStat !== Null){
         if ($uploadStat === 'OK'){
-            $uploadDeclineRemark = 'OK';
+            $uploadDeclineRemark = 'OK'; //pag ok na status ng narrative report gagawing ok ang remarks
         }
 
         $updateStat = "UPDATE narrativereports
@@ -561,6 +582,20 @@ if ($action === 'UpdateNarrativeReport'){
             exit();
         }
         if ($_SESSION['log_user_type'] == 'admin'){
+            if ($uploadStat!=='Pending'){
+                $subjectType = 'Upload Narrative Request'; // email notification for ojt adviser
+                $recipient = getRecipient($ojt_adviser);
+                $bodyMessage = '<h1><b>Notification</b></h1><br>';
+                $bodyMessage .= '<h3>Your upload narrative report request has been reviewed.</h3><br>';
+
+                $bodyMessage .= '   The admin change its status to: <b>'. $uploadStat. '</b><br>';
+                if ($uploadStat == 'Declined'){
+                    $bodyMessage .= '<b>Reason: </b>'. $uploadDeclineRemark. '<br>';
+                }
+                $bodyMessage .= " Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
+                Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
+                email_notif_sender($subjectType, $bodyMessage, $recipient);
+            }
             echo 1;
             exit(); //admin can only update the status
             // of the uploaded narrative report incase na tangalin ung disable sa form hindi na tutuloy
@@ -629,6 +664,7 @@ if ($action === 'UpdateNarrativeReport'){
                 $pdf = 'src/NarrativeReportsPDF/'.$old_filename;
                 $flipbook_page_dir = 'src/NarrativeReports_Images/'. str_replace('.pdf','',$old_filename);
                 if (!delete_pdf($pdf) or !deleteDirectory($flipbook_page_dir)){
+                    //pag nag convert ulit dedelete ung existing directory sa narrative report image
                     echo 'dir not deleted';
                     exit();
                 }
@@ -651,7 +687,7 @@ if ($action === 'UpdateNarrativeReport'){
         }
         else {
             //Nirerename lang ung pdf sa src/NarrativeReportsPDF/  tapos directory
-            // at ung lamang ng directory sa src/NarrativeReports_Images/
+            // at ung laman ng directory sa src/NarrativeReports_Images/
             // ung rename nito naka base lang sa laman ng database
             // ang purpose para ma reuse ang existing files
 
@@ -1372,7 +1408,8 @@ if ($action === 'Notes') {
         $advLname = $advInfoRows['last_name'];
 
         $subjectType = 'OJT Adviser note post request';
-        $bodyMessage = "OJT Adviser: <b>". $advFname." ".$advLname."</b> ".$actionMessageType." <br>
+        $bodyMessage = "<H1><b>Notification</b></H1><br>";
+        $bodyMessage .= "OJT Adviser: <b>". $advFname." ".$advLname."</b> ".$actionMessageType." <br>
                     Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
                     Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a> ";
 
@@ -1485,7 +1522,8 @@ if ($action === 'NewActivity') {
             $userAnnouncementTargetSTMT = '';
             $activityDate = '';
             $subjectType = "Activity and Schedule Announcement";
-            $bodyMessage = "<h1><b>".$note_title."</b></h1><br>"
+            $bodyMessage = "<H1><b>Notification</b></H1><br><br>";
+            $bodyMessage = "<h3><b>".$note_title."</b></h3><br>"
                 .$actDescription."<br>";
             if ($startingDate === $endinggDate){
                 $activityDate = date("M d, Y g:i A", strtotime($startingDate));
@@ -1887,9 +1925,9 @@ if ($action == 'UpdateNotePostReq'){
             $noteDetails = $res->fetch_assoc();
             $getTargetRecipient = '';
             $subjectType = 'Note announcement';
-            $bodyMessage = '';
+            $bodyMessage = "<H1><b>Notification</b></H1><br><br>";
             if ($noteStat === 'Declined'){
-                $bodyMessage = "<h3>Note post request has been <b>Declined.</b></h3> <br>";
+                $bodyMessage .= "<h3>Note post request has been <b>Declined.</b></h3> <br>";
                 $bodyMessage .= "<b>Title: </b>".$noteDetails['title']." <br>";
                 $bodyMessage .= "<b>Description: </b>".$noteDetails['description']." <br>";
                 $bodyMessage .= "<br><b>Reason: </b>".$declineReason." <br>";
@@ -1898,7 +1936,7 @@ if ($action == 'UpdateNotePostReq'){
                 $targetRecipient = getRecipient($noteDetails['user_id']);
                 email_notif_sender($subjectType, $bodyMessage, $targetRecipient /*recipient OJT adviser*/);
             }elseif ($noteStat === 'Active'){
-                $bodyMessage = "<h3>Note post request has been Approved.</h3> <br>";
+                $bodyMessage .= "<h3>Note post request has been Approved.</h3> <br>";
                 $bodyMessage .= "<b>Title: </b>".$noteDetails['title']." <br>";
                 $bodyMessage .= "<b>Description: </b>".$noteDetails['description'].". <br>";
                 $bodyMessage .= "<br>Your students will also get notified about this post<br>";
@@ -1916,7 +1954,9 @@ where adv_sch_user_id = ? and tbl_accounts.status = 'active';";
                 $getAdvStudentsTargetRecipientSTMT ->bind_param('i', $noteDetails['user_id'] /* OJT adviser students*/);
                 $getAdvStudentsTargetRecipientSTMT->execute();
                 $result = $getAdvStudentsTargetRecipientSTMT->get_result();
-                $bodyMessageToStudents = "<h3><b>Title: </b>".$noteDetails['title']." <h3><br>";
+                $bodyMessageToStudents = '<h1>Notification</h1> <br><br>';
+
+                $bodyMessageToStudents .= "<h3><b>Title: </b>".$noteDetails['title']." <h3><br>";
                 $bodyMessageToStudents .= "<b>Description: </b> ".$noteDetails['description']." <br>";
                 $bodyMessageToStudents .= "<br>Click to review:
  <a href='http://localhost/ReposyncNarrativeManagementSystem/src/index.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a><br>";

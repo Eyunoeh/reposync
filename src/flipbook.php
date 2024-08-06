@@ -49,27 +49,28 @@ include '../functions.php';
                     $path = 'NarrativeReports_Images/' . str_replace(' ','',
                             $row['first_name']. "_" ). str_replace(' ','',$row['last_name']). "_" .
                         $row['program'] . "_" . $row['section']. "_" .$row['stud_school_id'];
-
-                    $files = scandir($path);
-                    $files_with_page = [];
-                    $files_without_page = [];
-                    foreach ($files as $file) {
-                        if ($file != "." && $file != "..") {
-                            if (preg_match('/page-\d+\.png$/', $file)) {
-                                $files_with_page[] = $file;
-                            } else {
-                                $files_without_page[] = $file;
+                    if (is_dir($path)) {
+                        $files = scandir($path);
+                        $files_with_page = [];
+                        $files_without_page = [];
+                        foreach ($files as $file) {
+                            if ($file != "." && $file != "..") {
+                                if (preg_match('/page-\d+\.png$/', $file)) {
+                                    $files_with_page[] = $file;
+                                } else {
+                                    $files_without_page[] = $file;
+                                }
                             }
                         }
-                    }
-                    natsort($files_with_page);
-                    natsort($files_without_page);
-                    $sorted_files = array_merge($files_without_page, $files_with_page);
-                    foreach ($sorted_files as $file) {
+                        natsort($files_with_page);
+                        natsort($files_without_page);
+                        $sorted_files = array_merge($files_without_page, $files_with_page);
+                        foreach ($sorted_files as $file) {
 
-                        echo '<div style="background-image:url('.$path.'/'.$file.')"></div>';
-                    }
+                            echo '<div style="background-image:url('.$path.'/'.$file.')"></div>';
+                        }
 
+                    }
                 }
             }else{
                 header("Location: index.php");

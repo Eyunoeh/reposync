@@ -524,6 +524,7 @@ function editNarrativeReq(narrative_id){
 
 
                 document.querySelector('#EditNarrativeReportsReqForm input[name="narrative_id"]').value = data.narrative_id;
+
                 document.querySelector('#EditNarrativeReportsReqForm input[name="trainingHours"]').value = data.training_hours;
                 document.querySelector('#EditNarrativeReportsReqForm input[name="companyName"]').value = data.company_name;
 
@@ -539,6 +540,7 @@ function editNarrativeReq(narrative_id){
                     document.querySelector('#EditNarrativeReportsReqForm input[name="stud_Sex"][value="Female"]').checked = true;
                 }
                 document.querySelector('#EditNarrativeReportsReqForm select[name="ojt_adviser"]').value = data.OJT_adviser_ID;
+                document.querySelector('#EditNarrativeReportsReqForm input[name="ojt_adviser"]').value = data.OJT_adviser_ID;
             }
         },
         error: function(xhr, status, error) {

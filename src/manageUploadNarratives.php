@@ -28,7 +28,7 @@ session_start();
                     <thead class="align-bottom z-20">
                     <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
                         <th class="p-3 text-start ">School ID</th>
-                        <th class="p-3 text-start min-w-10">Name</th>
+                        <th class="p-3 text-start min-w-10">Student name</th>
                         <th class="p-3 text-start min-w-10">OJT adviser</th>
                         <th class="p-3 text-start min-w-10">Status</th>
                         <th class="p-3 text-end ">Action</th>
@@ -115,13 +115,18 @@ session_start();
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Adviser</span>
                                 </div>
+
                                 <select name="ojt_adviser" class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select adviser</option>
                                     <?php
+                                    $adv_option_queryCondition = '';
+                                    if ($_SESSION['log_user_type'] == 'adviser'){
+                                        $adv_option_queryCondition = 'AND ui.user_id = '.$_SESSION['log_user_id'];
+                                    }
                                     $adv_option_query = "SELECT ui.*, acc.*
                                  FROM tbl_user_info ui
                                  INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-                                 WHERE ui.user_type  = 'adviser' AND acc.status = 'active'";
+                                 WHERE ui.user_type  = 'adviser' AND acc.status = 'active' ".$adv_option_queryCondition;
                                     $result = $conn->query($adv_option_query);
 
                                     if ($result->num_rows > 0) {
@@ -326,10 +331,15 @@ session_start();
                                 <select name="ojt_adviser" <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> class="select select-bordered w-full bg-slate-100 " required>
                                     <option  value="" selected disabled>Select adviser</option>
                                     <?php
+
+                                    $adv_option_queryCondition = '';
+                                    if ($_SESSION['log_user_type'] == 'adviser'){
+                                        $adv_option_queryCondition = 'AND ui.user_id = '.$_SESSION['log_user_id'];
+                                    }
                                     $adv_option_query = "SELECT ui.*, acc.*
                                  FROM tbl_user_info ui
                                  INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-                                 WHERE ui.user_type  = 'adviser' AND acc.status = 'active' ";
+                                 WHERE ui.user_type  = 'adviser' AND acc.status = 'active' ".$adv_option_queryCondition;
                                     $result = $conn->query($adv_option_query);
 
                                     if ($result->num_rows > 0) {
@@ -346,6 +356,8 @@ session_start();
                             </label>
                         </div>
                         <input type="hidden" name="narrative_id" value="">
+                        <input type="hidden" name="ojt_adviser" value="">
+
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">

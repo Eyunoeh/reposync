@@ -176,4 +176,5 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 <script src="js/Datatables.js"></script>
 
 
+
 </body>
