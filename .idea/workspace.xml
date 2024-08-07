@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="data test">
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="added middlename insert and update;&#10;added duplicate entry errors contact number, email, school id;">
+      <change afterPath="$PROJECT_DIR$/src/verification.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PhpMailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpMailer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +78,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem",
+    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -271,14 +273,7 @@
       <workItem from="1722845725489" duration="651000" />
       <workItem from="1722901445985" duration="16441000" />
       <workItem from="1722930733347" duration="31000" />
-      <workItem from="1722990448536" duration="4571000" />
-    </task>
-    <task id="LOCAL-00017" summary="4/29/24 Narrative Module Update">
-      <created>1714351587482</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1714351587482</updated>
+      <workItem from="1722990448536" duration="12876000" />
     </task>
     <task id="LOCAL-00018" summary="4/29/24 Narrative Module Update">
       <created>1714351622022</created>
@@ -616,7 +611,14 @@
       <option name="project" value="LOCAL" />
       <updated>1722920154328</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="added middlename insert and update;&#10;added duplicate entry errors contact number, email, school id;">
+      <created>1722995237574</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1722995237575</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -635,7 +637,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value=" weekly report checking update comment nalang kulang" />
     <MESSAGE value="revision Comments under develop" />
     <MESSAGE value="revision Comments adviser Done" />
     <MESSAGE value="Report Checking module done" />
@@ -660,7 +661,8 @@
     <MESSAGE value="added email notification  to Announcement Module" />
     <MESSAGE value="added mailing notif to admin in upload narrative report module" />
     <MESSAGE value="data test" />
-    <option name="LAST_COMMIT_MESSAGE" value="data test" />
+    <MESSAGE value="added middlename insert and update;&#10;added duplicate entry errors contact number, email, school id;" />
+    <option name="LAST_COMMIT_MESSAGE" value="added middlename insert and update;&#10;added duplicate entry errors contact number, email, school id;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

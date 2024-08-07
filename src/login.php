@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 if (isset($_SESSION['log_user_type'])){
     header('Location: dashboard.php');
 }
@@ -11,6 +12,7 @@ if (isset($_SESSION['log_user_type'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
     <link rel="stylesheet" href="css/output.css">
     <link rel="stylesheet" href="css/scrollbar.css">
     <script src="https://kit.fontawesome.com/470d815d8e.js" crossorigin="anonymous"></script>
