@@ -23,7 +23,6 @@ extract($_POST);
 
 function countFileComments($file_id){
     include "DatabaseConn/databaseConn.php";
-
     $sql = "SELECT COUNT(*) AS comment_count FROM tbl_revision WHERE file_id = ?";
 
     $stmt = $conn->prepare($sql);
@@ -837,32 +836,65 @@ if ($action == 'newUser') {
             $user_password = generatePassword($user_shc_id);
         }
 
+
         $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
 
-
-        $insert_sql = "INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number, school_id, sex, user_type) 
+        try{
+            $insert_sql = "INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number, school_id, sex, user_type) 
                 VALUES (?, ?, ? , ?, ?, ?, ?, ?)";
-        $insert_stmt = $conn->prepare($insert_sql);
-        $insert_stmt->bind_param("ssssssss", $user_first_name, $user_middle_name,$user_last_name, $user_address, $user_contact_number,
-            $user_shc_id, $user_sex,$user_type);
-        if (!$insert_stmt->execute()) {
-            if ($conn->errno == 1062) {
-                echo 'Error: Email already exists.';
+            $insert_stmt = $conn->prepare($insert_sql);
+            $insert_stmt->bind_param("ssssssss", $user_first_name, $user_middle_name,$user_last_name, $user_address, $user_contact_number,
+                $user_shc_id, $user_sex,$user_type);
+            $insert_stmt->execute();
+
+
+        }catch (mysqli_sql_exception $e){
+            if ($e->getCode() == 1062) {
+                $errorMessage = $e->getMessage();
+                preg_match("/Duplicate entry '.*' for key '([^']+)'/", $errorMessage, $matches);
+                $keyName = $matches[1] ?? 'unknown key';
+
+                if ($keyName == 'contact_number') {
+                    echo "Contact number already exist.";
+                } elseif ($keyName == 'school_id') {
+                    echo "School id already exists.";
+                } else {
+                    echo "Duplicate entry for key '$keyName'.";
+                }
             } else {
-                echo 'Error: ' . $conn->error;
+                echo 'Error: ' . $e->getMessage();
             }
+            exit;
         }
 
 
-
         $user_id = $insert_stmt->insert_id;
-
-
-        $account_sql = "INSERT INTO tbl_accounts (user_id, email, password, status) 
+        try{
+            $account_sql = "INSERT INTO tbl_accounts (user_id, email, password, status) 
                 VALUES (?, ?, ?, 'active')";
-        $account_stmt = $conn->prepare($account_sql);
-        $account_stmt->bind_param("iss", $user_id, $user_email, $hashed_password);
-        $account_stmt->execute();
+            $account_stmt = $conn->prepare($account_sql);
+            $account_stmt->bind_param("iss", $user_id, $user_email, $hashed_password);
+            $account_stmt->execute();
+
+
+
+
+        }catch (mysqli_sql_exception $e){
+            if ($e->getCode() == 1062) {
+                $errorMessage = $e->getMessage();
+                preg_match("/Duplicate entry '.*' for key '([^']+)'/", $errorMessage, $matches);
+                $keyName = $matches[1] ?? 'unknown key';
+                if ($keyName == 'email') {
+                    echo "Email already exist";
+                }  else {
+                    echo "Duplicate entry for key '$keyName'.";
+                }
+            } else {
+                echo 'Error: ' . $e->getMessage();
+            }
+            exit;
+        }
+
 
         if ( $user_program !== '' && $user_section !== '' && $user_type == 'student' && $stud_adviser !== '')
         {
@@ -876,6 +908,18 @@ if ($action == 'newUser') {
             $advisory_stmt->bind_param('ii', $stud_adviser, $user_id);
             $advisory_stmt->execute();
         }
+
+        $subjectType = "Reposync Account";
+        $recipient = getRecipient($user_id);
+        $bodyMessage = "<h1><b>Notification</b></h1> <br><br>";
+        $bodyMessage .= "Your email has been successfully registered! <br>";
+        $bodyMessage .= "Use these account credentials to log in to the system.<br>";
+        $bodyMessage .= "<h3>Account credential</h3> <br>";
+        $bodyMessage .= "<b>     Email: </b> ".$user_email."<br>";
+        $bodyMessage .= "<b>     Password: </b> ".$user_password."<br><br>";
+        $bodyMessage .= "Click to login : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
+                    Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
+        email_notif_sender($subjectType,$bodyMessage,$recipient);
         echo 1;
 
     } else {
