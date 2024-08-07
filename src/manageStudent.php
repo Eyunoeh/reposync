@@ -22,7 +22,7 @@ include '../DatabaseConn/databaseConn.php';
             </form>
         </div>
         <div class="block  px-9">
-            <div class="overflow-auto h-[70vh] xl: h-[70vh]">
+            <div class="overflow-auto h-[70vh] xl:h-[70vh]">
                 <table id="studListTbl" class="w-full my-0 border-neutral-200 text-sm" >
                     <thead class="align-bottom z-20">
                     <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >

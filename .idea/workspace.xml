@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="added middlename insert and update;&#10;added duplicate entry errors contact number, email, school id;">
-      <change afterPath="$PROJECT_DIR$/src/verification.php" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="new page for account verification/forgot password (for future use)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PhpMailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpMailer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,25 +65,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/JamesCapstone&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\userProfile" />
@@ -273,28 +268,8 @@
       <workItem from="1722845725489" duration="651000" />
       <workItem from="1722901445985" duration="16441000" />
       <workItem from="1722930733347" duration="31000" />
-      <workItem from="1722990448536" duration="12876000" />
-    </task>
-    <task id="LOCAL-00018" summary="4/29/24 Narrative Module Update">
-      <created>1714351622022</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1714351622022</updated>
-    </task>
-    <task id="LOCAL-00019" summary="New Forms in dashboard working on students list">
-      <created>1714495895375</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1714495895375</updated>
-    </task>
-    <task id="LOCAL-00020" summary="New Forms in dashboard working on students list">
-      <created>1714495924033</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1714495924033</updated>
+      <workItem from="1722990448536" duration="13350000" />
+      <workItem from="1723004091127" duration="141000" />
     </task>
     <task id="LOCAL-00021" summary="userModule done CRUD notification need to fix login system done">
       <created>1714756364475</created>
@@ -618,7 +593,28 @@
       <option name="project" value="LOCAL" />
       <updated>1722995237575</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="added mail notification for account registration and added duplicate error handler for contact number , school id and email on account creation">
+      <created>1723003650108</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1723003650108</updated>
+    </task>
+    <task id="LOCAL-00068" summary="fix css">
+      <created>1723003677397</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1723003677397</updated>
+    </task>
+    <task id="LOCAL-00069" summary="new page for account verification/forgot password (for future use)">
+      <created>1723003706884</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1723003706884</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -637,9 +633,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="revision Comments under develop" />
-    <MESSAGE value="revision Comments adviser Done" />
-    <MESSAGE value="Report Checking module done" />
     <MESSAGE value="5/8/2024 minor updates test conversion" />
     <MESSAGE value="notes" />
     <MESSAGE value="adminAnnoucement Fixed new api key" />
@@ -662,7 +655,10 @@
     <MESSAGE value="added mailing notif to admin in upload narrative report module" />
     <MESSAGE value="data test" />
     <MESSAGE value="added middlename insert and update;&#10;added duplicate entry errors contact number, email, school id;" />
-    <option name="LAST_COMMIT_MESSAGE" value="added middlename insert and update;&#10;added duplicate entry errors contact number, email, school id;" />
+    <MESSAGE value="added mail notification for account registration and added duplicate error handler for contact number , school id and email on account creation" />
+    <MESSAGE value="fix css" />
+    <MESSAGE value="new page for account verification/forgot password (for future use)" />
+    <option name="LAST_COMMIT_MESSAGE" value="new page for account verification/forgot password (for future use)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
