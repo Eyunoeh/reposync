@@ -559,6 +559,7 @@ function editUserStud_Info(user_id) {
         success: function(data) {
             if (data) {
                 $('#EditStudentForm input[name="user_Fname"]').val(data.first_name);
+                $('#EditStudentForm input[name="user_Mname"]').val(data.middle_name);
                 $('#EditStudentForm input[name="user_Lname"]').val(data.last_name);
                 $('#EditStudentForm input[name="user_address"]').val(data.address);
                 $('#EditStudentForm input[name="contactNumber"]').val(data.contact_number);
@@ -614,6 +615,7 @@ function editAdvInfo(user_id){
             if (data){
 
                 $('#EditAdviserForm input[name="user_Fname"]').val(data.first_name);
+                $('#EditAdviserForm input[name="user_Mname"]').val(data.middle_name);
                 $('#EditAdviserForm input[name="user_Lname"]').val(data.last_name);
                 $('#EditAdviserForm input[name="user_address"]').val(data.address);
                 $('#EditAdviserForm input[name="contactNumber"]').val(data.contact_number);

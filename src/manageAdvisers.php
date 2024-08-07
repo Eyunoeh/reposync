@@ -203,6 +203,12 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
+                                    <span class="label-text text-slate-700">Middle name</span>
+                                </div>
+                                <input type="text" name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
                                     <span class="label-text text-slate-700">Last name</span>
                                 </div>
                                 <input type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />

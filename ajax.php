@@ -997,6 +997,7 @@ if ($action == 'getStudInfoJson') {
     $fetch_enrolled_stud = "SELECT 
                                 u.user_id,
                                 u.first_name,
+                                u.middle_name,
                                 u.last_name,
                                 u.address,
                                 u.contact_number,
@@ -1059,6 +1060,7 @@ if ($action == 'getStudInfoJson') {
 
 if ($action == 'updateUserInfo'){
     $editUser_first_name = isset($_POST['user_Fname']) ? sanitizeInput($_POST['user_Fname']) : '';
+    $editUser_middle_name = isset($_POST['user_Mname']) ? sanitizeInput($_POST['user_Mname']) : 'N/A';
     $editUser_last_name = isset($_POST['user_Lname']) ? sanitizeInput($_POST['user_Lname']) : '';
     $editUser_shc_id = isset($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
     $editUser_sex = isset($_POST['user_Sex']) ? sanitizeInput($_POST['user_Sex']) : '';
@@ -1085,29 +1087,41 @@ if ($action == 'updateUserInfo'){
         $edituser_type !== '') {
 
 
-        // Proceed with updating student information
-        $sql = "UPDATE tbl_user_info 
-                SET first_name = ?, 
-                    last_name = ?, 
-                    address = ?, 
-                    contact_number = ?, 
-                    sex = ?, 
-                    school_id = ?,
-                    user_type = ?
-                WHERE user_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssi", $editUser_first_name, $editUser_last_name, $editUser_address, $editUser_contact_number, $editUser_sex, $editUser_shc_id,$edituser_type, $editUser_user_id);
-        $stmt->execute();
+        try {
+            $sql = "UPDATE tbl_user_info 
+            SET first_name = ?, 
+                last_name = ?, 
+                middle_name = ?, 
+                address = ?, 
+                contact_number = ?, 
+                sex = ?, 
+                school_id = ?,
+                user_type = ?
+            WHERE user_id = ?";
+            $stmt = $conn->prepare($sql);
 
+            $stmt->bind_param("ssssssssi", $editUser_first_name, $editUser_last_name, $editUser_middle_name, $editUser_address, $editUser_contact_number, $editUser_sex, $editUser_shc_id, $edituser_type, $editUser_user_id);
+            $stmt->execute();
 
-        if ($stmt->errno == 1062) {
-            echo "School id already exist";
-            exit;
-        } else if ($stmt->errno) {
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                $errorMessage = $e->getMessage();
+                preg_match("/Duplicate entry '.*' for key '([^']+)'/", $errorMessage, $matches);
+                $keyName = $matches[1] ?? 'unknown key';
 
-            echo 'Error: ' . $stmt->error;
+                if ($keyName == 'contact_number') {
+                    echo "Duplicate contact number.";
+                } elseif ($keyName == 'school_id') {
+                    echo "School id already exists.";
+                } else {
+                    echo "Duplicate entry for key '$keyName'.";
+                }
+            } else {
+                echo 'Error: ' . $e->getMessage();
+            }
             exit;
         }
+
         if ($editStud_program !== '' && //execute only if the admin editing student type user
             $editStud_section !== '' && $edituser_type == 'student'){
             $update_stud_info = "UPDATE tbl_students 
@@ -1125,7 +1139,8 @@ if ($action == 'updateUserInfo'){
                 $check_stmt->bind_param('i', $editUser_user_id);
                 $check_stmt->execute();
                 $result = $check_stmt->get_result();
-                if ($result->num_rows === 0) {
+                if ($result->num_rows === 0) { // hindi proceed update
+                    //  ang logic kasi may mga student na wala pang adviser pag inarchive
                     $insert_query = "INSERT INTO advisory_list (stud_sch_user_id, adv_sch_user_id) VALUES (?, ?)";
                     $insert_stmt = $conn->prepare($insert_query);
                     $insert_stmt->bind_param('ii', $editUser_user_id, $editStud_adviser);
@@ -1141,22 +1156,21 @@ if ($action == 'updateUserInfo'){
         }
         if (isset($_POST['user_Pass']) and sanitizeInput($_POST['user_Pass'])){
             $hashed_password = password_hash($_POST['user_Pass'], PASSWORD_DEFAULT);
-            $update_account = "UPDATE tbl_accounts 
-                           SET email = ?, 
-                               password = ? 
-                           WHERE user_id = ?";
-            $stmt_update_account = $conn->prepare($update_account);
-            $stmt_update_account->bind_param("ssi", $editUser_email, $hashed_password, $editUser_user_id);
-
-            if (!$stmt_update_account->execute()){
-                if ($stmt_update_account->errno == 1062) {
-                    echo "Email id already exist";
-                    exit;
-                } else if ($stmt_update_account->errno) {
-
-                    echo 'Error: ' . $stmt->error;
-                    exit;
+            try {
+                $update_account = "UPDATE tbl_accounts 
+                               SET email = ?, 
+                                   password = ? 
+                               WHERE user_id = ?";
+                $stmt_update_account = $conn->prepare($update_account);
+                $stmt_update_account->bind_param("ssi", $editUser_email, $hashed_password, $editUser_user_id);
+                $stmt_update_account->execute();
+            } catch (mysqli_sql_exception $e) {
+                if ($e->getCode() == 1062) {
+                    echo "Email already exist";
+                } else {
+                    echo 'Error: ' . $e->getMessage();
                 }
+                exit;
             }
 
         }
