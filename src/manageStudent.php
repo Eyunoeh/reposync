@@ -234,7 +234,7 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">Password <span class="text-info"> (Predefined "CVSUOJT{Student ID}") </span>
                                 </div>
-                                <input   type="password" placeholder="Predefined password" data-theme="light"
+                                <input autocomplete="off"  type="password" placeholder="Predefined password" data-theme="light"
                                        disabled class="disabled disabled:text-black input w-full max-w-xs" />
                             </label>
                         </div>
@@ -399,13 +399,8 @@ include '../DatabaseConn/databaseConn.php';
                         </div>
                         <hr class="w-full border bg-slate-700 mt-10 ">
 
-                        <div class="text-start  cursor-pointer" >
-                            <div class="tooltip tooltip-right tooltip-error"
-                                 data-tip="Both input fields are required to change the account information."><p class=" font-bold">Account Information <i class="fa-solid fa-circle-exclamation text-error"></i></p>
-                            </div>
-                        </div>
 
-                        <div class="flex justify-evenly gap-2">
+                        <div class="flex justify-start gap-2">
 
 
                             <label class="form-control w-full max-w-xs">
@@ -414,13 +409,7 @@ include '../DatabaseConn/databaseConn.php';
                                 </div>
                                 <input name="user_Email" type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Password</span>
-                                </div>
-                                <input name="user_Pass" value="" minlength="8" type="password" placeholder="Change user password"
-                                        class="bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
+
                         </div>
                         <a class="transition-all text-error font-bold font-sans cursor-pointer text-end pr-6 m-3 hover:opacity-50 active:text-slate-500" onclick="openModalForm('deactivate_account-stud')">Deactivate account? </a>
 

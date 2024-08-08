@@ -74,10 +74,12 @@ if ($action == 'login') {
                 if ($result_user_info->num_rows == 1) {
                     $row_user_info = $result_user_info->fetch_assoc();
                     $_SESSION['log_user_id'] = $user_id;
+                    $_SESSION['log_user_email'] = $log_email;
                     $_SESSION['log_user_type'] = $row_user_info['user_type'];
                     $_SESSION['log_user_firstName'] = $row_user_info['first_name'];
                     $_SESSION['log_user_middleName'] = $row_user_info['middle_name'] !== 'N/A' ? $row_user_info['middle_name'] : '';
                     $_SESSION['log_user_lastName'] = $row_user_info['last_name'];
+                    $_SESSION['log_user_profileImg'] = $row_user_info['profile_img_file'];
                     echo 1; // Login successful
                 } else {
                     echo 2; // Error: User type not found
@@ -1198,26 +1200,23 @@ if ($action == 'updateUserInfo'){
             }
 
         }
-        if (isset($_POST['user_Pass']) and sanitizeInput($_POST['user_Pass'])){
-            $hashed_password = password_hash($_POST['user_Pass'], PASSWORD_DEFAULT);
-            try {
-                $update_account = "UPDATE tbl_accounts 
-                               SET email = ?, 
-                                   password = ? 
+        //changeEmail
+        try {
+            $update_account = "UPDATE tbl_accounts 
+                               SET email = ?
                                WHERE user_id = ?";
-                $stmt_update_account = $conn->prepare($update_account);
-                $stmt_update_account->bind_param("ssi", $editUser_email, $hashed_password, $editUser_user_id);
-                $stmt_update_account->execute();
-            } catch (mysqli_sql_exception $e) {
-                if ($e->getCode() == 1062) {
-                    echo "Email already exist";
-                } else {
-                    echo 'Error: ' . $e->getMessage();
-                }
-                exit;
+            $stmt_update_account = $conn->prepare($update_account);
+            $stmt_update_account->bind_param("si", $editUser_email, $editUser_user_id);
+            $stmt_update_account->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                echo "Email already exist";
+            } else {
+                echo 'Error: ' . $e->getMessage();
             }
-
+            exit;
         }
+
         echo 1;
         exit();
 
@@ -2215,6 +2214,134 @@ if ($action == "get_Profile_info"){
     header('Content-Type: application/json');
     echo json_encode($profile_Info);
 }
-if ($action == 'updUserProfile'){
+if ($action == 'profileUpdate'){
+    $profile_fname = sanitizeInput($_POST['user_Fname']) ?? '';
+    $profile_mname = sanitizeInput($_POST['user_Mname']) ?? '';
+    $profile_lname =  sanitizeInput($_POST['user_Lname']) ?? '';
+    $profile_adrs =  sanitizeInput($_POST['user_address'])?? '';
+    $profile_cnum =  sanitizeInput($_POST['contactNumber']) ?? '';
+    $profile_sex = sanitizeInput($_POST['user_Sex']) ?? '';
+    $profile_profileImg =  $_FILES['profileImg'] ?? '';
+
+    $profile_trainingHours = isset($_POST['stud_trainingHours']) ? sanitizeInput($_POST['stud_trainingHours']) : ''; //for user student
+    $profile_compName =  isset($_POST['stud_compName']) ? sanitizeInput($_POST['stud_compName']) : '';
+    $user_id = $_SESSION['log_user_id'];
+
+
+    try {
+        $updUser = "UPDATE tbl_user_info 
+            SET first_name = ?, 
+                last_name = ?, 
+                middle_name = ?, 
+                address = ?, 
+                contact_number = ?, 
+                sex = ?
+            WHERE user_id = ?";
+        $updUserSTMT = $conn->prepare($updUser);
+        $updUserSTMT->bind_param('ssssssi', $profile_fname,
+            $profile_lname, $profile_mname, $profile_adrs, $profile_cnum, $profile_sex, $user_id);
+        $updUserSTMT->execute();
+
+        if ($_SESSION['log_user_type'] === 'student'){
+            $updStud = "UPDATE tbl_students 
+SET company_name = ?, training_hours = ? 
+where user_id = ?";
+            $updStudSTMT = $conn->prepare($updStud);
+            $updStudSTMT->bind_param('si',$profile_compName, $profile_trainingHours , $user_id);
+            $updStudSTMT->execute();
+
+        }
+
+        if (isset($_FILES['profileImg']) && $_FILES['profileImg']['error'] === UPLOAD_ERR_OK) {
+            $fileTmpPath = $_FILES['profileImg']['tmp_name'];
+            $fileName = $_FILES['profileImg']['name'];
+            $fileSize = $_FILES['profileImg']['size'];
+            $fileType = $_FILES['profileImg']['type'];
+            $fileNameCmps = explode(".", $fileName);
+            $fileExtension = strtolower(end($fileNameCmps));
+
+            //  unique name for the file
+            $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+
+            // pwedeng file extensions
+            $allowedfileExtensions = array('jpg', 'png', 'jpeg');
+
+            // check file allowed extensions
+            if (in_array($fileExtension, $allowedfileExtensions)) {
+                $targetDir = "src/userProfile/";
+                $dest_path = $targetDir . $newFileName;
+
+                //replaceImgProfFrom directory
+                $getUserProfile = "SELECT profile_img_file from tbl_user_info where user_id =?";
+                $getUserProfileSTMT = $conn->prepare($getUserProfile);
+                $getUserProfileSTMT->bind_param('i',$user_id);
+                $getUserProfileSTMT->execute();
+                $result = $getUserProfileSTMT->get_result();
+                if ($result->num_rows == 1){
+                    $row = $result->fetch_assoc();
+                    if ($row['profile_img_file'] !== 'N/A'){
+                        $filePath = "src/userProfile/".$row['profile_img_file'];
+                        if (file_exists($filePath)) {
+                            unlink($filePath);
+                        }
+                    }
+                }
+
+                // save file to the target directory
+                if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                    $updProfImg = "UPDATE tbl_user_info 
+            SET profile_img_file = ? WHERE user_id = ?";
+                    $updProfImgSTMT = $conn->prepare($updProfImg);
+                    $updProfImgSTMT->bind_param('si', $newFileName,$user_id);
+                    $updProfImgSTMT->execute();
+                    $_SESSION['log_user_profileImg'] = $newFileName;
+
+                }
+            }else{
+                echo "File type must be ('jpg', 'png', 'jpeg')";
+                exit();
+            }
+        }
+        echo 1;
+
+    }catch (mysqli_sql_exception $e){
+        if ($e->getCode() == 1062) {
+            echo "Contact number already exist";
+        } else {
+            echo 'Error: ' . $e->getMessage();
+        }
+        exit;
+    }
+}
+
+if ($action == 'updateAcc'){
+
+    $user_id = $_SESSION['log_user_id'];
+    $acc_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
+    $acc_newPass = isset($_POST['user_password'])? sanitizeInput($_POST['user_password']) : '';
+    $acc_confPass = isset($_POST['user_password']) ? sanitizeInput($_POST['user_password']) : '';
+    if ($acc_confPass === $acc_newPass){
+        try {
+            $acc_confPass = password_hash($acc_confPass, PASSWORD_DEFAULT);
+
+            $updAcc= "UPDATE tbl_accounts SET email= ?, password = ? where user_id = ?";
+            $updAccStmt = $conn->prepare($updAcc);
+            $updAccStmt -> bind_param('ssi', $acc_email,$acc_confPass, $user_id);
+            $updAccStmt->execute();
+            echo 1;
+        }catch (mysqli_sql_exception $e){
+            if ($e->getCode() == 1062){
+                echo 'Email already exist';
+            }else{
+                echo $e->getMessage();
+            }
+        }
+
+    }else{
+        echo 'Password doesnt match';
+    }
+
 
 }
+
+

@@ -3888,14 +3888,6 @@ details.collapse summary::-webkit-details-marker {
   bottom: auto;
 }
 
-.tooltip-right:before {
-  transform: translateY(-50%);
-  top: 50%;
-  left: var(--tooltip-offset);
-  right: auto;
-  bottom: auto;
-}
-
 .avatar.online:before {
   content: "";
   position: absolute;
@@ -4136,15 +4128,6 @@ details.collapse summary::-webkit-details-marker {
   border-color: transparent transparent var(--tooltip-color) transparent;
   top: var(--tooltip-tail-offset);
   left: 50%;
-  right: auto;
-  bottom: auto;
-}
-
-.tooltip-right:after {
-  transform: translateY(-50%);
-  border-color: transparent var(--tooltip-color) transparent transparent;
-  top: 50%;
-  left: calc(var(--tooltip-tail-offset) + 0.0625rem);
   right: auto;
   bottom: auto;
 }
@@ -4661,6 +4644,10 @@ details.collapse summary::-webkit-details-marker {
 
 .max-w-full {
   max-width: 100%;
+}
+
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .max-w-md {
@@ -5760,6 +5747,12 @@ body{
   .lg\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:h-\[70vh\] {
+    height: 70vh;
   }
 }
 

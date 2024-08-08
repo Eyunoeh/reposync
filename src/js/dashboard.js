@@ -189,6 +189,8 @@ function dashboard_tab(id){
         navigate('manageArchive.php');
     }else if (tab.id === 'profile'){
         navigate('manage_dhshboardProfile.php');
+    }else if (tab.id === 'accountInfo'){
+        navigate('manage_accountInformation.php');
     }
     act_tab(tab.id);
    if(tab.id === 'adviserNotesReq'){
@@ -656,11 +658,10 @@ function getProfileInfo(){
                 $("#selectedProfile").attr("src", profPath);
 
                 $('#profileForm input[name="user_Fname"]').val(data.first_name);
+                $('#profileForm input[name="user_Mname"]').val(data.middle_name);
                 $('#profileForm input[name="user_Lname"]').val(data.last_name);
                 $('#profileForm input[name="user_address"]').val(data.address);
                 $('#profileForm input[name="contactNumber"]').val(data.contact_number);
-                $('#profileForm input[name="school_id"]').val(data.school_id);
-                $('#profileForm input[name="user_Email"]').val(data.email);
                 if (data.sex === "Male") {
                     $('#profileForm input[name="user_Sex"][value="Male"]').prop('checked', true);
                 } else if (data.sex === "Female") {

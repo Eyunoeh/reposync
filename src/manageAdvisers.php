@@ -147,19 +147,19 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                 </select>
                             </label>
                         </div>
-                        <div class="flex justify-evenly gap-2">
+                        <div class="flex justify-evenly gap-2 ">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Password</span>
                                 </div>
-                                <input name="user_password"   type="password" placeholder="Enter password" data-theme="light"
+                                <input name="user_password" autocomplete="off"  type="password" placeholder="Enter password" data-theme="light"
                                        class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Confirm password</span>
                                 </div>
-                                <input name="user_confPass"   type="password" placeholder="Enter password" data-theme="light"
+                                <input name="user_confPass" autocomplete="off"  type="password" placeholder="Enter password" data-theme="light"
                                        class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                         </div>
@@ -264,25 +264,15 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                             </label>
                         </div>
                         <hr class="w-full border bg-slate-700 mt-10 ">
-                        <div class="text-start  cursor-pointer" >
-                            <div class="tooltip tooltip-right tooltip-error"
-                                 data-tip="Both input fields are required to change the account information."><p class=" font-bold">Account Information <i class="fa-solid fa-circle-exclamation text-error"></i></p>
-                            </div>
-                        </div>
-                        <div class="flex justify-evenly gap-2">
+
+                        <div class="flex justify-start gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Account email</span>
                                 </div>
                                 <input name="user_Email" type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Password</span>
-                                </div>
-                                <input name="user_Pass" value="" minlength="8" type="password" placeholder="Change user password"
-                                       class="bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
+
                         </div>
                         <a class="transition-all text-error font-bold font-sans cursor-pointer text-end pr-6 m-3 hover:opacity-50 active:text-slate-500" onclick="openModalForm('deactivate_adv_acc')">Deactivate account? </a>
                     </div>

@@ -140,6 +140,17 @@ document.addEventListener('submit', function(e) {
         btn = 'newNarrativeSubmitbtn';
         notification = 'SuccessLUploadNotif'
         getNewData.push(getPendingFinalReports);
+    }if (e.target.id === 'profileForm'){
+        endpoint = 'profileUpdate'
+        loader_id = 'profileLoader';
+        btn = 'profilSbmt';
+        notification = 'prfupdateNotif'
+        getNewData.push(getProfileInfo);
+    }if (e.target.id === 'Accountform'){
+        endpoint = 'updateAcc'
+        loader_id = 'accountLoader';
+        btn = 'acccountSbmt';
+        notification = 'accupdateNotif'
     }
 
     formData = new FormData(e.target);
@@ -158,10 +169,17 @@ document.addEventListener('submit', function(e) {
             if (parseInt(response) === 1) {
                 enable_button(btn)
                 remove_loader(loader_id);
-                closeModalForm(modal);
+                if (modal){
+                    closeModalForm(modal);
 
+                }
                 openModalForm(notification);
-                getNewData.forEach(func => func());
+                if (getNewData.length > 0){
+                    getNewData.forEach(func => func());
+
+                }
+               
+
             } else {
                 alert(response);
                 remove_loader(loader_id);

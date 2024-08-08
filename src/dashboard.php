@@ -139,6 +139,9 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <h1 onclick="dashboard_tab(this.id);" id="profile" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Profile
             </h1>
+            <h1 onclick="dashboard_tab(this.id);" id="accountInfo" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                Account
+            </h1>
         </div>
         <?php
         if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
