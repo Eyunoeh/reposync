@@ -4,21 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="fix css">
-      <change afterPath="$PROJECT_DIR$/src/manage_accountInformation.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/userProfile/947c4e2df685b1dd0d39aab8bde7f24e.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/userProfile/d0a79978916ab600b1c802a1f6e6a668.png" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="database">
+      <change afterPath="$PROJECT_DIR$/src/js/ArchiveList.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/manage_List.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PhpMailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpMailer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home_nav.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/home_nav.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manage_dhshboardProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage_dhshboardProfile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageArchive.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageArchive.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/userProfile/947c4e2df685b1dd0d39aab8bde7f24e.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,11 +93,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\DatabaseConn" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\userProfile" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\assets" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src" />
-      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\js" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem" />
@@ -284,20 +279,10 @@
       <workItem from="1723004091127" duration="141000" />
       <workItem from="1723019659441" duration="149000" />
       <workItem from="1723077985165" duration="14277000" />
-    </task>
-    <task id="LOCAL-00022" summary="userModule done CRUD notification need to fix login system done">
-      <created>1714756382700</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1714756382700</updated>
-    </task>
-    <task id="LOCAL-00023" summary="report checking">
-      <created>1714911242761</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1714911242761</updated>
+      <workItem from="1723094342562" duration="665000" />
+      <workItem from="1723113615974" duration="23000" />
+      <workItem from="1723162952933" duration="4129000" />
+      <workItem from="1723252268510" duration="8864000" />
     </task>
     <task id="LOCAL-00024" summary="Weekltreport Submission">
       <created>1715008627725</created>
@@ -628,7 +613,21 @@
       <option name="project" value="LOCAL" />
       <updated>1723019777743</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="added update account information and profile update">
+      <created>1723094457261</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1723094457261</updated>
+    </task>
+    <task id="LOCAL-00072" summary="database">
+      <created>1723094668131</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1723094668131</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -647,8 +646,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="5/8/2024 minor updates test conversion" />
-    <MESSAGE value="notes" />
     <MESSAGE value="adminAnnoucement Fixed new api key" />
     <MESSAGE value="added try catch block at uploading narrative reports" />
     <MESSAGE value="added some notif and new data" />
@@ -672,7 +669,9 @@
     <MESSAGE value="added mail notification for account registration and added duplicate error handler for contact number , school id and email on account creation" />
     <MESSAGE value="new page for account verification/forgot password (for future use)" />
     <MESSAGE value="fix css" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix css" />
+    <MESSAGE value="added update account information and profile update" />
+    <MESSAGE value="database" />
+    <option name="LAST_COMMIT_MESSAGE" value="database" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -685,7 +684,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js</url>
           <line>148</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

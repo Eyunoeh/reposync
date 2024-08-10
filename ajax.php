@@ -794,6 +794,41 @@ if ($action == 'ArchiveNarrativeReport'){
         exit();
     }
 }
+if ($action === 'getArchiveNarrative'){
+    $getArchiveNarrative = "SELECT narrativereports.*, tbl_user_info.first_name as 'OJT_adviser_Fname', 
+tbl_user_info.last_name as 'OJT_adviser_Lname'  from narrativereports 
+                            JOIN tbl_user_info ON tbl_user_info.user_id = narrativereports.OJT_adviser_ID
+                        
+                            where file_status = 'Archived'";
+    $getArchiveNarrativeSTMT = $conn->prepare($getArchiveNarrative);
+    header('Content-Type: application/json');
+
+    if ($getArchiveNarrativeSTMT->execute()){
+        $result = $getArchiveNarrativeSTMT->get_result();
+        $resultList = [];
+        $flipbookList = [];
+        if ($result->num_rows > 0){
+            while ($row = $result->fetch_assoc()){
+                $flipbookList [] = urlencode(encrypt_data($row['narrative_id'], $secret_key));
+                $resultList [] = $row;
+            }
+            echo json_encode(['response' => 1,
+                'data' => $resultList,
+                'flipbookCode' => $flipbookList,
+                'message' => 'OK']);
+        }else{
+            echo json_encode(['response' => 0,
+                'message' => 'Empty Result']);
+        }
+
+    }else{
+        echo json_encode(['response' => 2,
+            'message' => $getArchiveNarrativeSTMT->error]);
+    }
+
+
+
+}
 
 if ($action == 'newUser') {
 
@@ -1237,6 +1272,35 @@ if ($action == 'deactivate_account'){
         }
     }
 }
+if ($action === 'getArchiveUsers') {
+    $getArchiveUsers = "SELECT tbl_user_info.*, tbl_accounts.* 
+                        FROM tbl_user_info 
+                        JOIN tbl_accounts ON tbl_user_info.user_id = tbl_accounts.user_id 
+                        WHERE tbl_accounts.status = 'inactive'";
+    $getArchiveUsersSTMT = $conn->prepare($getArchiveUsers);
+    header('Content-Type: application/json');
+
+    if ($getArchiveUsersSTMT->execute()) {
+        $result = $getArchiveUsersSTMT->get_result();
+
+        if ($result->num_rows > 0) {
+            $resultList = [];
+            while ($row = $result->fetch_assoc()) {
+                $resultList[] = $row;
+            }
+            echo json_encode(['response' => 1,
+                'data' => $resultList,
+                'message' => 'OK']);
+        } else {
+            echo json_encode(['response' => 0,
+                'message' => 'Empty Result']);
+        }
+    } else {
+        echo json_encode(['response' => 2,
+            'message' => $getArchiveUsersSTMT->error]);
+    }
+}
+
 
 if ($action == 'getAdvisers') {
 
