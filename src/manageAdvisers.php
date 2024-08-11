@@ -290,7 +290,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
         <dialog id="deactivate_adv_acc" class="modal bg-black  bg-opacity-40 ">
             <div class="card bg-slate-50 w-[80vw] absolute top-10 sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
                 <div  class=" card-title sticky ">
-                    <h3 class="font-bold text-center text-lg  p-5">Are you sure you want to deactivate student account?</h3>
+                    <h3 class="font-bold text-center text-lg  p-5">Are you sure you want to deactivate this OJT Adviser account?</h3>
                 </div>
                 <div class="p-4 w-full flex justify-evenly">
                     <a id="deactivate_adv" class="btn  btn-error w-1/4 " onclick="closeModalForm('deactivate_adv_acc');deactivate_account(this.getAttribute('data-user_id'), 'editAdv_admin')" data-user_id="">Deactivate</a>

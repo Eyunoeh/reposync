@@ -4,16 +4,63 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="database">
-      <change afterPath="$PROJECT_DIR$/src/js/ArchiveList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/manage_List.php" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="fixed vie password eye in login.php add view functionality in ArchiveList.js and ajax.php for viewing archive narrative reports and users">
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/Billy_Jean_BSIT_4B_01235123.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/Gallarde_Jasmin-BSIT.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/LEONARDO_RALPH VICTOR-BSIT.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/Mullet_MonicaJoyceAnn-BSIT.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/NarrativeRerportFormat_SAMPLE.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PhpMailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpMailer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Billyr_Jean_BSIT_4B_01235123.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-18.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-19.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-20.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/ArchiveList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/ArchiveList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/manageArchive.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageArchive.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/userProfile/947c4e2df685b1dd0d39aab8bde7f24e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manage_List.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage_ArchiveList.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +127,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
+    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -282,14 +329,9 @@
       <workItem from="1723094342562" duration="665000" />
       <workItem from="1723113615974" duration="23000" />
       <workItem from="1723162952933" duration="4129000" />
-      <workItem from="1723252268510" duration="8864000" />
-    </task>
-    <task id="LOCAL-00024" summary="Weekltreport Submission">
-      <created>1715008627725</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1715008627726</updated>
+      <workItem from="1723252268510" duration="8984000" />
+      <workItem from="1723272105087" duration="43000" />
+      <workItem from="1723338522647" duration="25112000" />
     </task>
     <task id="LOCAL-00025" summary="Weekltreport Submission">
       <created>1715008640394</created>
@@ -627,7 +669,14 @@
       <option name="project" value="LOCAL" />
       <updated>1723094668131</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="fixed vie password eye in login.php add view functionality in ArchiveList.js and ajax.php for viewing archive narrative reports and users">
+      <created>1723261680021</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1723261680022</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -646,7 +695,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="adminAnnoucement Fixed new api key" />
     <MESSAGE value="added try catch block at uploading narrative reports" />
     <MESSAGE value="added some notif and new data" />
     <MESSAGE value="newdata" />
@@ -671,7 +719,8 @@
     <MESSAGE value="fix css" />
     <MESSAGE value="added update account information and profile update" />
     <MESSAGE value="database" />
-    <option name="LAST_COMMIT_MESSAGE" value="database" />
+    <MESSAGE value="fixed vie password eye in login.php add view functionality in ArchiveList.js and ajax.php for viewing archive narrative reports and users" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed vie password eye in login.php add view functionality in ArchiveList.js and ajax.php for viewing archive narrative reports and users" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -685,6 +734,18 @@
           <url>file://$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js</url>
           <line>148</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/ArchiveList.js</url>
+          <line>54</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/ArchiveList.js</url>
+          <line>71</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
