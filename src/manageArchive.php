@@ -26,7 +26,7 @@
                             <span class="font-semibold text-light-inverse text-md/normal break-words">10</span>
                         </td>
                         <td class="p-3 text-end">
-                            <a href="manage_List.php?route=NarrativeReports" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                            <a href="manage_ArchiveList.php?route=NarrativeReports" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                                 <i class="fa-regular fa-eye"></i>
                             </a>
                         </td>
@@ -39,7 +39,7 @@
                             <span class="font-semibold text-light-inverse text-md/normal break-words">10</span>
                         </td>
                         <td class="p-3 text-end">
-                            <a href="manage_List.php?route=Users" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                            <a href="manage_ArchiveList.php?route=Users" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                                 <i class="fa-regular fa-eye"></i>
                             </a>
                         </td>

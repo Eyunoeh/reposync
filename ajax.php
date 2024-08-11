@@ -794,41 +794,84 @@ if ($action == 'ArchiveNarrativeReport'){
         exit();
     }
 }
-if ($action === 'getArchiveNarrative'){
-    $getArchiveNarrative = "SELECT narrativereports.*, tbl_user_info.first_name as 'OJT_adviser_Fname', 
-tbl_user_info.last_name as 'OJT_adviser_Lname'  from narrativereports 
-                            JOIN tbl_user_info ON tbl_user_info.user_id = narrativereports.OJT_adviser_ID
-                        
-                            where file_status = 'Archived'";
-    $getArchiveNarrativeSTMT = $conn->prepare($getArchiveNarrative);
+
+if ($action === 'recoverNarrativeReport') {
     header('Content-Type: application/json');
 
-    if ($getArchiveNarrativeSTMT->execute()){
+    $narrative_id = isset($_GET['archived_id']) && sanitizeInput($_GET['archived_id']) ? $_GET['archived_id'] : '';
+    if ($narrative_id !== ''){
+        $file_status = 'OK';
+        $archive_final_report = $conn->prepare("UPDATE narrativereports
+                                      SET 
+                                          file_status = ?
+                                      WHERE narrative_id = ?");
+        $archive_final_report->bind_param('si',$file_status, $narrative_id);
+        if (!$archive_final_report->execute()){
+            header('Content-Type: application/json');
+            echo json_encode(['response' => 2,
+                'message' => $archive_final_report->error]);
+            exit();
+        }
+        header('Content-Type: application/json');
+        echo json_encode(['response' => 1]);
+        exit();
+    }else{
+        echo json_encode(['response' => 2,
+            'message' => 'emptyID']);
+        exit();
+    }
+}
+
+if ($action === 'getArchiveNarrative') {
+    header('Content-Type: application/json');
+
+    $archive_id = isset($_GET['archive_id']) ? intval($_GET['archive_id']) : null;
+    if ($archive_id) {
+        $getArchiveNarrative = "SELECT narrativereports.*, tbl_user_info.first_name as 'OJT_adviser_Fname', 
+tbl_user_info.last_name as 'OJT_adviser_Lname' FROM narrativereports 
+                            JOIN tbl_user_info ON tbl_user_info.user_id = narrativereports.OJT_adviser_ID
+                            WHERE narrativereports.narrative_id = ?";
+        $getArchiveNarrativeSTMT = $conn->prepare($getArchiveNarrative);
+        if ($getArchiveNarrativeSTMT) {
+            $getArchiveNarrativeSTMT->bind_param('i', $archive_id);
+        } else {
+            echo json_encode(['response' => 2, 'message' => 'Query preparation failed.']);
+            exit;
+        }
+    } else {
+        $getArchiveNarrative = "SELECT narrativereports.*, tbl_user_info.first_name as 'OJT_adviser_Fname', 
+tbl_user_info.last_name as 'OJT_adviser_Lname' FROM narrativereports 
+                            JOIN tbl_user_info ON tbl_user_info.user_id = narrativereports.OJT_adviser_ID
+                            WHERE file_status = 'Archived'";
+        $getArchiveNarrativeSTMT = $conn->prepare($getArchiveNarrative);
+        if (!$getArchiveNarrativeSTMT) {
+            echo json_encode(['response' => 2, 'message' => 'Query preparation failed.']);
+            exit;
+        }
+    }
+
+
+    if ($getArchiveNarrativeSTMT->execute()) {
         $result = $getArchiveNarrativeSTMT->get_result();
         $resultList = [];
         $flipbookList = [];
-        if ($result->num_rows > 0){
-            while ($row = $result->fetch_assoc()){
-                $flipbookList [] = urlencode(encrypt_data($row['narrative_id'], $secret_key));
-                $resultList [] = $row;
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $flipbookList[] = urlencode(encrypt_data($row['narrative_id'], $secret_key));
+                $resultList[] = $row;
             }
             echo json_encode(['response' => 1,
                 'data' => $resultList,
                 'flipbookCode' => $flipbookList,
                 'message' => 'OK']);
-        }else{
-            echo json_encode(['response' => 0,
-                'message' => 'Empty Result']);
+        } else {
+            echo json_encode(['response' => 0, 'message' => 'Empty Result']);
         }
-
-    }else{
-        echo json_encode(['response' => 2,
-            'message' => $getArchiveNarrativeSTMT->error]);
+    } else {
+        echo json_encode(['response' => 2, 'message' => $getArchiveNarrativeSTMT->error]);
     }
-
-
-
 }
+
 
 if ($action == 'newUser') {
 
@@ -1267,18 +1310,75 @@ if ($action == 'deactivate_account'){
         $sql = "UPDATE tbl_accounts SET status = 'inactive'  where user_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('i',$user_id);
-        if ($stmt->execute()){
+        if ($stmt->execute()){//checck if the deactivated account is a student
+            $checkDeativatedUserType = "SELECT user_type from tbl_user_info where user_id = ?";
+            $checkDeativatedUserTypeSTMT =  $conn->prepare($checkDeativatedUserType);
+            $checkDeativatedUserTypeSTMT->bind_param('i', $user_id);
+            $checkDeativatedUserTypeSTMT->execute();
+            $result = $checkDeativatedUserTypeSTMT->get_result();
+
+            if($result->fetch_assoc()['user_type'] === 'student'){
+                //remove student from adivisory of  the OJT adviser
+                $deleteAdvisory = "DELETE FROM advisory_list where stud_sch_user_id = ?";
+                $deleteAdvisorySTMT = $conn->prepare($deleteAdvisory);
+                $deleteAdvisorySTMT->bind_param('i', $user_id);
+                $deleteAdvisorySTMT->execute();
+            }
+
+
             echo 1;
         }
     }
 }
+if ($action == 'recoverUser'){
+    $user_id = isset($_GET['archived_id']) && sanitizeInput($_GET['archived_id']) ? $_GET['archived_id'] : '';
+    if (isset($user_id)){
+        $sql = "UPDATE tbl_accounts SET status = 'active'  where user_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i',$user_id);
+        if ($stmt->execute()){
+            header('Content-Type: application/json');
+            echo json_encode(['response' => 1]);
+        }
+    }
+}
+
 if ($action === 'getArchiveUsers') {
-    $getArchiveUsers = "SELECT tbl_user_info.*, tbl_accounts.* 
+    $archive_id = isset($_GET['archive_id']) ? intval($_GET['archive_id']) : null;
+    header('Content-Type: application/json');
+
+
+    if ($archive_id) {
+        //student , admin, adviser query
+        $getArchiveUsers = "SELECT tbl_user_info.*, tbl_accounts.*,  
+       program.program_code, 
+       section.year, 
+       section.section  
+FROM tbl_user_info 
+JOIN tbl_accounts ON tbl_user_info.user_id = tbl_accounts.user_id 
+LEFT JOIN tbl_students ON tbl_user_info.user_id = tbl_students.user_id
+LEFT JOIN program ON tbl_students.program_id = program.program_id
+LEFT JOIN section ON tbl_students.section_id = section.section_id
+WHERE tbl_user_info.user_id = ?";
+        $getArchiveUsersSTMT = $conn->prepare($getArchiveUsers);
+        if ($getArchiveUsersSTMT) {
+            $getArchiveUsersSTMT->bind_param('i', $archive_id);
+        } else {
+            echo json_encode(['response' => 2, 'message' => 'Query preparation failed.']);
+            exit;
+        }
+    } else {
+        $getArchiveUsers = "SELECT tbl_user_info.*, tbl_accounts.* 
                         FROM tbl_user_info 
                         JOIN tbl_accounts ON tbl_user_info.user_id = tbl_accounts.user_id 
                         WHERE tbl_accounts.status = 'inactive'";
-    $getArchiveUsersSTMT = $conn->prepare($getArchiveUsers);
-    header('Content-Type: application/json');
+        $getArchiveUsersSTMT = $conn->prepare($getArchiveUsers);
+        if (!$getArchiveUsersSTMT) {
+            echo json_encode(['response' => 2, 'message' => 'Query preparation failed.']);
+            exit;
+        }
+    }
+
 
     if ($getArchiveUsersSTMT->execute()) {
         $result = $getArchiveUsersSTMT->get_result();
@@ -1288,18 +1388,15 @@ if ($action === 'getArchiveUsers') {
             while ($row = $result->fetch_assoc()) {
                 $resultList[] = $row;
             }
-            echo json_encode(['response' => 1,
-                'data' => $resultList,
-                'message' => 'OK']);
+            echo json_encode(['response' => 1, 'data' => $resultList, 'message' => 'OK']);
         } else {
-            echo json_encode(['response' => 0,
-                'message' => 'Empty Result']);
+            echo json_encode(['response' => 0, 'message' => 'Empty Result']);
         }
     } else {
-        echo json_encode(['response' => 2,
-            'message' => $getArchiveUsersSTMT->error]);
+        echo json_encode(['response' => 2, 'message' => $getArchiveUsersSTMT->error]);
     }
 }
+
 
 
 if ($action == 'getAdvisers') {
@@ -2404,7 +2501,6 @@ if ($action == 'updateAcc'){
     }else{
         echo 'Password doesnt match';
     }
-
 
 }
 

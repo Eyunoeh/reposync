@@ -85,7 +85,38 @@ if ($_GET['route'] === 'NarrativeReports'){
         </div>
     </div>
     <hr class="w-full p-2">
+
+    <dialog id="ArhiveModal" class="modal bg-black  bg-opacity-40">
+        <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] max-h-[38rem]  flex flex-col text-slate-700">
+            <div  class=" card-title sticky ">
+                <a class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('ArhiveModal')">✕</a>
+                <?php  if($_GET['route'] === 'NarrativeReports'):?>
+                <h3 class="font-bold text-center text-lg  p-5">Archived student narrative report</h3>
+                    <div data-tip="Download PDF" class="tooltip tooltip-bottom">
+
+                        <a id="dlLink" href="" target="_blank" class="btn btn-circle  hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2 text-info"><i class="fa-solid fa-download"></i></a>
+                    </div>
+                <?php  elseif($_GET['route'] === 'Users'):?>
+                    <h3 class="font-bold text-center text-lg  p-5">Archived User</h3>
+
+                <?php  endif;?>
+
+            </div>
+
+
+            <div class="p-4" id="ArhiveForm">
+
+
+            </div>
+            <p id="loader_narrative_update" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
+
+            <div id="editNarrativeBtn" class="flex justify-center m-3 gap-2">
+                <a id="retrieve_btn" class="btn btn-warning btn-outline" >Retrieve</a>
+            </div>
+        </div>
+    </dialog>
 </div>
 <script src="js/ArchiveList.js"></script>
+<script src="js/buttons_modal.js"></script>
 </body>
 </html>
