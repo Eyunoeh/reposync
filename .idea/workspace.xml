@@ -4,63 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="fixed vie password eye in login.php add view functionality in ArchiveList.js and ajax.php for viewing archive narrative reports and users">
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/Billy_Jean_BSIT_4B_01235123.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-11.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-12.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-13.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-14.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-15.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-16.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-17.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-18.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-19.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-20.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-21.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page-9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Billy_Jean_BSIT_4B_01235123/Billy_Jean_BSIT_4B_01235123_page.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/Gallarde_Jasmin-BSIT.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/LEONARDO_RALPH VICTOR-BSIT.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/Mullet_MonicaJoyceAnn-BSIT.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/NarrativeRerportFormat_SAMPLE.pdf" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="css fix">
+      <change afterPath="$PROJECT_DIR$/src/comments_img/sample.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/studentSettings.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PhpMailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpMailer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReportsPDF/Billyr_Jean_BSIT_4B_01235123.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page-9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NarrativeReports_Images/Billyr_Jean_BSIT_4B_01235123/Billyr_Jean_BSIT_4B_01235123_page.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adminLogin.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/announcement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/announcement.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/ArchiveList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/ArchiveList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageAdvisers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageAdvisers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageArchive.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageArchive.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manage_List.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage_ArchiveList.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home_nav.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/home_nav.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/student.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/student.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageUploadNarratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageUploadNarratives.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manage_accountInformation.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage_accountInformation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/narratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/narratives.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,17 +52,19 @@
     &quot;state&quot;: &quot;OPEN&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="9a6fbdee-b1b7-4390-a8e8-0a32f67d4cd4" />
-        <option name="url" value="https://github.com/Eyunoeh/reposync.git" />
-      </UrlAndAccount>
-    </option>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Eyunoeh/reposync.git&quot;,
+    &quot;accountId&quot;: &quot;9c34bd07-90f8-453a-b58a-2411076a8145&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/ajax.php" root0="FORCE_HIGHLIGHTING" root1="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/convertapi/convertapi-php" />
@@ -111,6 +73,13 @@
       <path value="$PROJECT_DIR$/vendor/phpmailer/phpmailer" />
     </include_path>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+    <option name="showPreview" value="true" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2ecKpYvq3J7bVxNejoU1HgOVQIV" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -126,30 +95,40 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "full.screen.before.presentation.mode": "false",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem",
+    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem/src/comments_img",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\comments_img" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\DatabaseConn" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\userProfile" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\assets" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
-      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-PS-242.20224.427" />
+        <option value="bundled-php-predefined-a98d8de5180a-d6acee4cb394-com.jetbrains.php.sharedIndexes-PS-242.20224.427" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -331,35 +310,21 @@
       <workItem from="1723162952933" duration="4129000" />
       <workItem from="1723252268510" duration="8984000" />
       <workItem from="1723272105087" duration="43000" />
-      <workItem from="1723338522647" duration="25112000" />
-    </task>
-    <task id="LOCAL-00025" summary="Weekltreport Submission">
-      <created>1715008640394</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1715008640394</updated>
-    </task>
-    <task id="LOCAL-00026" summary=" weekly report checking update comment nalang kulang">
-      <created>1715015890649</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1715015890649</updated>
-    </task>
-    <task id="LOCAL-00027" summary=" weekly report checking update comment nalang kulang">
-      <created>1715015902776</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1715015902776</updated>
-    </task>
-    <task id="LOCAL-00028" summary="revision Comments under develop">
-      <created>1715083549993</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1715083549993</updated>
+      <workItem from="1723338522647" duration="25428000" />
+      <workItem from="1723436734399" duration="47000" />
+      <workItem from="1723521084308" duration="150000" />
+      <workItem from="1723525245396" duration="1178000" />
+      <workItem from="1723611875245" duration="28000" />
+      <workItem from="1723785027554" duration="417000" />
+      <workItem from="1723808025302" duration="371000" />
+      <workItem from="1724397316274" duration="350000" />
+      <workItem from="1724721949156" duration="198000" />
+      <workItem from="1724722337946" duration="493000" />
+      <workItem from="1724723296461" duration="99000" />
+      <workItem from="1724723426086" duration="4761000" />
+      <workItem from="1724730570333" duration="2473000" />
+      <workItem from="1724808657360" duration="197000" />
+      <workItem from="1724808875613" duration="14828000" />
     </task>
     <task id="LOCAL-00029" summary="revision Comments under develop">
       <created>1715083562511</created>
@@ -676,7 +641,35 @@
       <option name="project" value="LOCAL" />
       <updated>1723261680022</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="finish archive module">
+      <created>1723370549836</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1723370549838</updated>
+    </task>
+    <task id="LOCAL-00075" summary="data test">
+      <created>1723370582873</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1723370582873</updated>
+    </task>
+    <task id="LOCAL-00076" summary="test data">
+      <created>1723370603583</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1723370603583</updated>
+    </task>
+    <task id="LOCAL-00077" summary="css fix">
+      <created>1723370620734</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1723370620735</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -695,9 +688,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="added try catch block at uploading narrative reports" />
-    <MESSAGE value="added some notif and new data" />
-    <MESSAGE value="newdata" />
     <MESSAGE value="login Notif" />
     <MESSAGE value="revised viewing narrative reports" />
     <MESSAGE value="revising checking notes" />
@@ -712,7 +702,6 @@
     <MESSAGE value="update" />
     <MESSAGE value="added email notification  to Announcement Module" />
     <MESSAGE value="added mailing notif to admin in upload narrative report module" />
-    <MESSAGE value="data test" />
     <MESSAGE value="added middlename insert and update;&#10;added duplicate entry errors contact number, email, school id;" />
     <MESSAGE value="added mail notification for account registration and added duplicate error handler for contact number , school id and email on account creation" />
     <MESSAGE value="new page for account verification/forgot password (for future use)" />
@@ -720,7 +709,11 @@
     <MESSAGE value="added update account information and profile update" />
     <MESSAGE value="database" />
     <MESSAGE value="fixed vie password eye in login.php add view functionality in ArchiveList.js and ajax.php for viewing archive narrative reports and users" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed vie password eye in login.php add view functionality in ArchiveList.js and ajax.php for viewing archive narrative reports and users" />
+    <MESSAGE value="finish archive module" />
+    <MESSAGE value="data test" />
+    <MESSAGE value="test data" />
+    <MESSAGE value="css fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="css fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -738,16 +731,28 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/ArchiveList.js</url>
           <line>54</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/ArchiveList.js</url>
           <line>71</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/js/main.js</url>
+          <line>235</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/PhpMailer.php</url>
+          <line>28</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

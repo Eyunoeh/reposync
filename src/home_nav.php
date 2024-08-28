@@ -27,28 +27,34 @@
                  <div class="dropdown dropdown-bottom dropdown-end flex  items-center gap-2">
                      <a href=" login.php" tabindex="0" role="button" class="text-lg/normal btn btn-success">Login</a>
                  </div>
+                <?php else:?>
+                    <a href="#" id="narrativesLink" class="transition-all hover:cursor-pointer
+                hover:text-black hover:bg-gray-300  hover:rounded p-2 " >Narrative Reports</a>
+
+                    <?php if ($_SESSION['log_user_type'] == 'student') {?>
+                        <a href="#" id="reportLink" class="transition-all hover:cursor-pointer
+                hover:text-black hover:bg-gray-300 hover:rounded p-2
+                ">Weekly Reports</a>
+                   <?php
+                    }?>
+
+
+
                 <?php
                 endif;?>
-                <a href="#" id="narrativesLink" class="transition-all hover:cursor-pointer
-                hover:text-black hover:bg-gray-300  hover:rounded p-2  <?php echo isset($_SESSION['log_user_type'])  ? '' : 'hidden'; ?>" >Narrative Reports</a>
-
-
-                <a href="#" id="reportLink" class="transition-all hover:cursor-pointer
-                hover:text-black hover:bg-gray-300 hover:rounded p-2
-                <?php echo isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'student' ? '' : 'hidden'; ?>">Weekly Reports</a>
 
 
                <?php if (isset($_SESSION['log_user_type'])):?>
                 <div class="dropdown dropdown-bottom dropdown-end flex  items-center gap-2">
                     <div class="avatar"  role="button" tabindex="0" >
                         <div class="w-10 rounded-full">
-                            <img src="userProfile/<?=$_SESSION['log_user_profileImg']?>" />
+                            <img src="userProfile/<?=$_SESSION['log_user_profileImg'] !== 'N/A' ? $_SESSION['log_user_profileImg'] : 'prof.jpg'?>" />
                         </div>
                     </div>
                     <ul tabindex="0" class="absolute bg-slate-100 text-black right-0 dropdown-content z-[1] menu p-2 shadow  rounded w-52">
 
                         <?php echo $_SESSION['log_user_type'] != 'student' ? '<li><a href="dashboard.php">Dashboard</a></li>': ''?>
-                        <?php echo $_SESSION['log_user_type'] == 'student' ? '<li><a href="#">Account Settings</a></li>': ''?>
+                        <?php echo $_SESSION['log_user_type'] == 'student' ? '<li><a id="accountSettings" href="#">Account Settings</a></li>': ''?>
                         <li><a href="logout.php">Logout</a></li>
                     </ul>
                 </div><?php

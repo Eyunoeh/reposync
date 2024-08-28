@@ -5,20 +5,20 @@
         <div class="flex justify-center m-5">
             <label class=" w-full max-w-lg flex-col flex items-center">
 
-                <input type="email" name="user_Email" value="<?=$_SESSION['log_user_email']?>"  placeholder="Email" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                <input type="email" required name="user_Email" value="<?=$_SESSION['log_user_email']?>"  placeholder="Email" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
             </label>
         </div>
         <div class="flex justify-center m-5">
 
             <label class=" w-full max-w-lg flex-col flex items-center">
-                <input name="user_password"   type="password" autocomplete="off" placeholder="New password" data-theme="light"
+                <input name="user_password"  required type="password" autocomplete="off" placeholder="New password" data-theme="light"
                        class="bg-slate-100 input input-bordered w-full max-w-xs" />
             </label>
         </div>
         <div class="flex justify-center m-5">
 
             <label class="w-full flex-col flex items-center max-w-lg">
-                <input name="user_confPass"   type="password" autocomplete="off" placeholder="Confirm password" data-theme="light"
+                <input name="user_confPass" required  type="password" autocomplete="off" placeholder="Confirm password" data-theme="light"
                        class="bg-slate-100 input input-bordered w-full max-w-xs" />
             </label>
 

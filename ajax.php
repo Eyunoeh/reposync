@@ -22,17 +22,13 @@ extract($_POST);
 
 
 function countFileComments($file_id){
-    include "DatabaseConn/databaseConn.php";
+
     $sql = "SELECT COUNT(*) AS comment_count FROM tbl_revision WHERE file_id = ?";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $file_id);
-    $stmt->execute();
 
-    $result = $stmt->get_result();
+    $result = mysqlQuery($sql, 'i', [$file_id]);
 
-    $row = $result->fetch_assoc();
-    $comment_count = $row['comment_count'];
+    $comment_count = $result[0]['comment_count'];
 
     return $comment_count;
 }
@@ -43,36 +39,19 @@ if ($action == 'login') {
     if ($log_email !== '' && $log_password !== '') {
 
         $fetch_acc = "SELECT user_id, password FROM tbl_accounts WHERE email = ? and status = 'active'";
-        $stmt = $conn->prepare($fetch_acc);
-        $stmt->bind_param("s", $log_email);
-        $stmt->execute();
 
-        if ($stmt->error) {
-            echo "Error executing statement: " . $stmt->error;
-            exit;
-        }
+        $result = mysqlQuery($fetch_acc, 's', [$log_email]);
 
-        $result = $stmt->get_result();
-
-        if ($result->num_rows == 1) {
-            $row = $result->fetch_assoc();
+        if (count($result) === 1) {
+            $row = $result[0];
             $user_id = $row['user_id'];
             $hashed_password = $row['password'];
             if (password_verify($log_password, $hashed_password)) {
                 $fetch_user_info = "SELECT * FROM tbl_user_info WHERE user_id = ?";
-                $stmt_user_info = $conn->prepare($fetch_user_info);
-                $stmt_user_info->bind_param('i', $user_id);
-                $stmt_user_info->execute();
 
-                if ($stmt_user_info->error) {
-                    echo "Error executing statement: " . $stmt_user_info->error;
-                    exit; // Stop execution
-                }
-
-                $result_user_info = $stmt_user_info->get_result();
-
-                if ($result_user_info->num_rows == 1) {
-                    $row_user_info = $result_user_info->fetch_assoc();
+                $result_user_info = mysqlQuery($fetch_user_info, 'i', [$user_id]);
+                if (count($result_user_info) == 1) {
+                    $row_user_info = $result_user_info[0];
                     $_SESSION['log_user_id'] = $user_id;
                     $_SESSION['log_user_email'] = $log_email;
                     $_SESSION['log_user_type'] = $row_user_info['user_type'];
@@ -106,20 +85,14 @@ if ($action == 'addWeeklyReport') {
             if (isPDF($_FILES['weeklyReport']['name'])) {
                 if ($_FILES['weeklyReport']['error'] === UPLOAD_ERR_OK) {
                     $get_weeklyReportCount = "SELECT COUNT(*) AS weeklyReportCount FROM weeklyReport WHERE stud_user_id = ?";
-                    $report_count_stmt = $conn->prepare($get_weeklyReportCount);
-                    $report_count_stmt->bind_param('i', $user_id);
-                    $report_count_stmt->execute();
-                    $res = $report_count_stmt->get_result();
-                    $weeklyReport_count = $res->fetch_assoc();
 
-
+                    $res = mysqlQuery($get_weeklyReportCount, 'i', [$user_id]);
+                    $weeklyReport_count = $res[0];
 
                     $get_User_info = "SELECT * FROM tbl_user_info WHERE user_id = ?";
-                    $stmt = $conn->prepare($get_User_info);
-                    $stmt->bind_param("i", $user_id);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $row = $result->fetch_assoc();
+
+                    $result = mysqlQuery($get_User_info, 'i', [$user_id]);
+                    $row = $result[0];
 
                     $file_name = '';
 
@@ -130,14 +103,11 @@ if ($action == 'addWeeklyReport') {
                     } else {
                         $file_name = $row['school_id'] . "_WeeklyReport_week_1.pdf";
                     }
-                    $status = "Pending";
 
                     $insert_weekly_report = "INSERT INTO weeklyReport (stud_user_id, weeklyFileReport, upload_date, upload_status) 
-                         VALUES (?, ?, CURRENT_TIMESTAMP, ?)";
-                    $stmt = $conn->prepare($insert_weekly_report);
-                    $stmt->bind_param("iss", $user_id, $file_name, $status);
-                    $stmt->execute();
-                    $file_id = $stmt->insert_id;
+                         VALUES (?, ?, CURRENT_TIMESTAMP, 1)";
+
+                    $file_id = mysqlQuery($insert_weekly_report, 'is', [$user_id, $file_name])[1];
                     insertActivityLog('upload',$file_id);
                     $temp_file = $_FILES['weeklyReport']['tmp_name'];
                     $final_destination = 'src/StudentWeeklyReports/' . $file_name;
@@ -2480,7 +2450,7 @@ if ($action == 'updateAcc'){
     $user_id = $_SESSION['log_user_id'];
     $acc_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
     $acc_newPass = isset($_POST['user_password'])? sanitizeInput($_POST['user_password']) : '';
-    $acc_confPass = isset($_POST['user_password']) ? sanitizeInput($_POST['user_password']) : '';
+    $acc_confPass = isset($_POST['user_confPass']) ? sanitizeInput($_POST['user_confPass']) : '';
     if ($acc_confPass === $acc_newPass){
         try {
             $acc_confPass = password_hash($acc_confPass, PASSWORD_DEFAULT);

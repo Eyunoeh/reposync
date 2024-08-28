@@ -19,7 +19,7 @@ document.addEventListener('submit', function(e) {
       processData: false,
       contentType: false,
       success: function(response) {
-         if (response == 1) {
+         if (parseInt(response) === 1) {
             closeModalForm(modal);
             get_WeeklyReports();
             getUploadLogs();
@@ -54,6 +54,25 @@ function getVisibleTableId() {
       return 'logsTable';
    } else {
       return 'weeklyReportTable';
+   }
+}
+
+
+function changeProfileSettingForm(){
+   let accountSettingbtN=  document.getElementById('accountSettingbtN');
+   let profile = document.getElementById('StudprofileForm')
+   let accountInfo = document.getElementById('StudAccountInfo')
+   if (accountSettingbtN.innerHTML === 'Profile Information'){
+      accountSettingbtN.innerHTML ='Account Information'
+
+      profile.classList.add('hidden')
+      accountInfo.classList.remove('hidden');
+
+
+   }else {
+      profile.classList.remove('hidden')
+      accountInfo.classList.add('hidden');
+      accountSettingbtN.innerHTML ='Profile Information'
    }
 }
 

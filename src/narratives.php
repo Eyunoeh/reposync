@@ -12,9 +12,9 @@ include '../functions.php';
 include '../DatabaseConn/databaseConn.php';
 ?>
 
+<section class="w-full min-h-screen flex justify-center  mt-2">
 
-<div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
-    <div class="relative flex flex-col min-w-0 break-words  h-full rounded-2xl border-stone-200 bg-light/30">
+    <div class="w-full max-w-7xl mx-auto p-5 rounded-lg shadow-lg bg-white min-h-[600px]">
         <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent ">
             <form class="flex w-full justify-start">
                 <div class="w-[40%]">
@@ -65,7 +65,7 @@ include '../DatabaseConn/databaseConn.php';
             </div>
         </div>
     </div>
-</div>
+</section>
 
 
 

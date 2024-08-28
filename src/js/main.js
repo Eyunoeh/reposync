@@ -74,8 +74,6 @@ function updateActiveLink(page) {
         } else if (page === 'weeklyReports') {
             reportLink.classList.add('text-black', 'bg-gray-300', 'rounded');
         }
-    } else {
-        console.error('One or more elements not found.');
     }
 }
 
@@ -84,11 +82,13 @@ document.getElementById('homeLink').addEventListener('click', function(event) {
     navigate('home');
 });
 
-document.getElementById('narrativesLink').addEventListener('click', function(event) {
+const narrativesLink = document.getElementById('narrativesLink')
+narrativesLink?.addEventListener('click', function(event) {
     event.preventDefault();
     navigate('narratives');
 });
-document.getElementById('reportLink').addEventListener('click', function(event) {
+let reportLink = document.getElementById('reportLink')
+reportLink?.addEventListener('click', function(event) {
     event.preventDefault();
     navigate('weeklyReports');
 });
@@ -98,7 +98,15 @@ document.getElementById('announcement').addEventListener('click', function(event
     navigate('announcement');
 });
 
-document.getElementById('side-narrativesLink').addEventListener('click', function(event) {
+const accountSettings = document.getElementById('accountSettings');
+accountSettings?.addEventListener('click', (e) => {
+    e.preventDefault();
+    navigate('studentSettings');
+});
+
+
+const side_narrativesLink = document.getElementById('side-narrativesLink')
+side_narrativesLink?.addEventListener('click', function(event) {
     event.preventDefault();
     navigate('narratives');
 });
@@ -226,7 +234,6 @@ function getHomeActSched(){
         method: 'GET',
         dataType: 'html',
         success: function(response) {
-            console.log(response);
             if (response){
                 $('#actSched').html(response);
             }

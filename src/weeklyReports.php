@@ -1,13 +1,12 @@
 <?php
 session_start();
 if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
-    header("Location: 404.php");
+    header("Location: index.php");
     exit();
 }
 
 if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'student') {
-    header("Location: index.php");
-    exit();
+    return;
 }
 include '../DatabaseConn/databaseConn.php';
 $user_id = $_SESSION['log_user_id'];
@@ -28,92 +27,85 @@ function countFileComments($file_id){
     return $comment_count;
 }
 ?>
-<div class="grid place-items-center  text-gray-700 h-[95%]">
-    <div class="w-full max-w-full ">
-        <div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
-            <div class="relative flex flex-col min-w-0 break-words  border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
-                <!-- card header -->
-                <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
-                    <form class="flex w-[40%] justify-between hidden sm:inline-flex">
-                        <div class="w-full">
-                            <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-        focus:outline-none focus:shadow-outline" id="weeklyReportSearch" type="text" placeholder="Search"
-                                   onkeyup="handleSearch('weeklyReportSearch',getVisibleTableId())">
-                        </div>
-                    </form>
+<section class="w-full min-h-screen flex justify-center mt-2">
 
-                    <div class="flex justify-evenly ">
-                        <button class="h font-semibold btn btn-ghost" id="stud-weekly-rpt-btn" onclick="change_stud_table()">View logs</button>
-                        <button class="btn btn-neutral btn-outline" onclick="openModalForm('newReport')">New Report</button>
-                    </div>
-                </div>
-                <div class="px-9 flex justify-end w-full">
-                </div>
-                <div class="block py-8 pt-6 px-9">
-                    <div id="table_card" class="overflow-y-auto overflow-x-hidden h-[70vh] scroll-smooth">
-                        <table class="w-full my-0  border-neutral-200 " id="weeklyReportTable" >
-                            <thead class="align-bottom  z-20">
-                                <tr class="font-semibold text-[0.95rem] sticky top-0  z-20 text-secondary-dark bg-slate-200 rounded">
-                                    <th class="p-3  ">Week</th>
-                                    <th class="p-3 ">Status</th>
-                                    <th class="p-3 ">View Comments</th>
-                                    <th class="p-3 text-end">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="Weeklyreports" class=" text-center ">
+    <div class="w-full max-w-7xl mx-auto p-5 rounded-lg  shadow-lg bg-white min-h-[600px]">
+        <div class="px-9  flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
+            <div class="w-[40%]">
+                <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-none focus:shadow-outline" id="weeklyReportSearch" type="text" placeholder="Search"
+                       onkeyup="handleSearch('weeklyReportSearch',getVisibleTableId())">
+            </div>
+
+            <div class="flex justify-evenly ">
+                <button class="h font-semibold btn btn-ghost" id="stud-weekly-rpt-btn" onclick="change_stud_table()">View logs</button>
+                <button class="btn btn-neutral btn-outline" onclick="openModalForm('newReport')">New Report</button>
+            </div>
+        </div>
+        <div class="px-9 flex justify-end w-full">
+        </div>
+        <div class="block py-8 pt-6 px-9">
+            <div id="table_card" class="overflow-y-auto overflow-x-hidden h-[90vh] scroll-smooth">
+                <table class="w-full my-0  border-neutral-200 " id="weeklyReportTable" >
+                    <thead class="align-bottom  ">
+                    <tr class="font-semibold text-[0.95rem] z-10 sticky top-0  text-secondary-dark bg-slate-200 rounded">
+                        <th class="p-3  ">Week</th>
+                        <th class="p-3 ">Status</th>
+                        <th class="p-3 ">View Comments</th>
+                        <th class="p-3 text-end">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="Weeklyreports" class=" text-center ">
 
 
 
 
-                            </tbody>
-                        </table>
-                        <table class="w-full my-0   border-neutral-200 hidden" id="logsTable" >
-                            <thead class="align-bottom  z-20">
-                                <tr class="font-semibold text-[0.95rem] sticky top-0  z-20 text-secondary-dark bg-slate-200 rounded">
-                                    <th class="p-3 ">Week</th>
-                                    <th class="p-3">Activity Date</th>
-                                    <th class="p-3">Type</th>
-                                </tr>
-                            </thead>
-                            <tbody class=" text-center " id="logsTable_body">
+                    </tbody>
+                </table>
+                <table class="w-full my-0   border-neutral-200 hidden" id="logsTable" >
+                    <thead class="align-bottom  z-20">
+                    <tr class="font-semibold text-[0.95rem] sticky top-0  text-secondary-dark bg-slate-200 rounded">
+                        <th class="p-3 ">Week</th>
+                        <th class="p-3">Activity Date</th>
+                        <th class="p-3">Type</th>
+                    </tr>
+                    </thead>
+                    <tbody class=" text-center " id="logsTable_body">
 
-                            <tr class="border-b border-dashed last:border-b-0">
+                    <tr class="border-b border-dashed last:border-b-0">
 
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">1</span>
-                                </td>
+                        <td class="p-3 pr-0 ">
+                            <span class="font-semibold text-light-inverse text-md/normal">1</span>
+                        </td>
 
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">4/7/2024</span>
-                                </td>
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">Resubmit</span>
-                                </td>
+                        <td class="p-3 pr-0 ">
+                            <span class="font-semibold text-light-inverse text-md/normal">4/7/2024</span>
+                        </td>
+                        <td class="p-3 pr-0 ">
+                            <span class="font-semibold text-light-inverse text-md/normal">Resubmit</span>
+                        </td>
 
-                            </tr>
-                            <tr class="border-b border-dashed last:border-b-0">
+                    </tr>
+                    <tr class="border-b border-dashed last:border-b-0">
 
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">1</span>
-                                </td>
+                        <td class="p-3 pr-0 ">
+                            <span class="font-semibold text-light-inverse text-md/normal">1</span>
+                        </td>
 
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">4/5/2024</span>
-                                </td>
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">Upload</span>
-                                </td>
+                        <td class="p-3 pr-0 ">
+                            <span class="font-semibold text-light-inverse text-md/normal">4/5/2024</span>
+                        </td>
+                        <td class="p-3 pr-0 ">
+                            <span class="font-semibold text-light-inverse text-md/normal">Upload</span>
+                        </td>
 
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-</div>
-
+</section>
 
 <dialog id="comments" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] h-[100vh] lg:h-[37rem]  flex flex-col text-slate-700 overflow-auto">
@@ -138,10 +130,9 @@ function countFileComments($file_id){
                 </div>
 
                 <div class="flex flex-wrap gap-1 w-full justify-end">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
+
                 </div>
             </div>
             <hr>
@@ -162,10 +153,9 @@ function countFileComments($file_id){
                         ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!aaaa</p>
                 </div>
                 <div class="flex flex-wrap gap-1 w-full justify-start mb-2">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
+
                 </div>
             </div>
             <hr>
@@ -186,10 +176,9 @@ function countFileComments($file_id){
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-1">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
-                    <img onclick="openModalForm('img_modal')"  class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/Capture.PNG" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
+
                 </div>
             </div>
             <hr>
@@ -200,7 +189,7 @@ function countFileComments($file_id){
         </div>
         <div class="m-3 shadow-2xl rounded bg-gray-300 bg-opacity-70 ">
             <form enctype="multipart/form-data" id="chatBox" class="flex sm:flex-row flex-col justify-evenly items-center p-2 flex-wrap sm:gap-2 gap-0">
-                <textarea name="revision_comment" class=" sm:w-auto w-full flex-grow textarea  max-h-24 textarea-bordered  bg-slate-100" placeholder="Type here"></textarea>
+                <textarea name="revision_comment" required class=" sm:w-auto w-full flex-grow textarea  max-h-24 textarea-bordered  bg-slate-100" placeholder="Type here"></textarea>
                 <input type="hidden" name="file_id" value="">
                 <div class=" flex  justify-center sm:justify-evenly sm:w-auto w-full flex-grow items-center p-2 sm:p-0">
                     <label class="form-control max-w-xs">
