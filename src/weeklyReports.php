@@ -72,34 +72,7 @@ function countFileComments($file_id){
                     </thead>
                     <tbody class=" text-center " id="logsTable_body">
 
-                    <tr class="border-b border-dashed last:border-b-0">
 
-                        <td class="p-3 pr-0 ">
-                            <span class="font-semibold text-light-inverse text-md/normal">1</span>
-                        </td>
-
-                        <td class="p-3 pr-0 ">
-                            <span class="font-semibold text-light-inverse text-md/normal">4/7/2024</span>
-                        </td>
-                        <td class="p-3 pr-0 ">
-                            <span class="font-semibold text-light-inverse text-md/normal">Resubmit</span>
-                        </td>
-
-                    </tr>
-                    <tr class="border-b border-dashed last:border-b-0">
-
-                        <td class="p-3 pr-0 ">
-                            <span class="font-semibold text-light-inverse text-md/normal">1</span>
-                        </td>
-
-                        <td class="p-3 pr-0 ">
-                            <span class="font-semibold text-light-inverse text-md/normal">4/5/2024</span>
-                        </td>
-                        <td class="p-3 pr-0 ">
-                            <span class="font-semibold text-light-inverse text-md/normal">Upload</span>
-                        </td>
-
-                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -110,9 +83,9 @@ function countFileComments($file_id){
 <dialog id="comments" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] h-[100vh] lg:h-[37rem]  flex flex-col text-slate-700 overflow-auto">
         <div class="card-title sticky">
-            <form method="dialog">
-                <button class=" btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('comments')">✕</button>
-            </form>
+
+            <button class=" btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('comments')">✕</button>
+
             <h3 class="font-bold text-lg text-center text-black  top-0  p-5">Report Comments</h3>
         </div>
         <div class="overflow-auto card-body" id="comment_body">
@@ -211,9 +184,9 @@ function countFileComments($file_id){
     <div class="card  w-[100vw] sm:w-[55rem] h-[100vh]
           flex flex-col text-slate-700 overflow-auto">
         <div class="card-title sticky">
-            <form method="dialog">
-                <button class=" btn btn-sm btn-circle absolute right-2 top-2" onclick="closeModalForm('img_modal')">✕</button>
-            </form>
+
+            <button class=" btn btn-sm btn-circle absolute right-2 top-2" onclick="closeModalForm('img_modal')">✕</button>
+
         </div>
         <div class="card-body flex justify-center items-center max-h-[100vh] overflow-auto">
             <img id="viewImage" src="" class="h-full sm:h-[75vh] object-scale-down">
@@ -243,7 +216,7 @@ function countFileComments($file_id){
         <h3 class="font-bold text-center text-lg mb-5">Resubmit report</h3>
         <form id="resubmitReportForm">
             <div class="flex flex-col gap-8">
-                <input name="resubmitReport" required type="file" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
+                <input name="resubmitReport" required type="file" accept="application/pdf" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
                 <input type="hidden" name="file_id" value="">
                 <button class="btn btn-neutral btn-outline ">Submit</button>
             </div>

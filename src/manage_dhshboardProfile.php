@@ -8,7 +8,7 @@
                     <img class="hover:opacity-50 transition-all" id="selectedProfile" src="assets/profile.jpg" />
                 </div>
             </div>
-            <input type="file" id="profileImg" name="profileImg" accept="png, jpg" hidden/>
+            <input type="file" id="profileImg" name="profileImg" accept=".png, .jpg, .jpeg" hidden/>
         </label>
     </div>
     <div class="flex flex-col gap-2">

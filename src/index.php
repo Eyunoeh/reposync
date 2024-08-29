@@ -17,6 +17,7 @@ session_start();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
+    <script src="js/main.js" defer></script>
     <title>Home</title>
 </head>
 <body  class="min-h-screen bg-slate-200">
@@ -25,17 +26,27 @@ session_start();
     <main class=" mx-auto overflow-hidden" id="mainContent">
 
     </main>
-    <script src="js/buttons_modal.js"></script>
-    <script src="js/Datatables.js"></script>
 
-    <script src="js/main.js"></script>
+
+
     <?php
     if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'student'):
-    ?>
-    <script src="js/student.js"></script>
+        ?>
+        <div id="notifBox" onclick="resetAlertBox(this.id)">
+
+        </div>
+
+        <script src="js/Datatables.js"></script>
+
+
+        <script src="js/buttons_modal.js"></script>
+
+        <script src="js/student.js"></script>
     <?php
     endif;
     ?>
+
+
 
 </body>
 </html>

@@ -11,10 +11,22 @@ function navigate(page) {
             document.getElementById('mainContent').innerHTML = html ;
 
             updateActiveLink(page);
-            get_WeeklyReports();
-            getUploadLogs();
+
             getHomeActSched();
             getHomeNotes();
+            let profileImgInput = document.getElementById('profileImg');
+            profileImgInput?.addEventListener('change', function(event) {
+
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('selectedProfile').src = e.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
 
             let chatBoxElement = document.getElementById('chatBox');
 
@@ -77,43 +89,6 @@ function updateActiveLink(page) {
     }
 }
 
-document.getElementById('homeLink').addEventListener('click', function(event) {
-    event.preventDefault();
-    navigate('home');
-});
-
-const narrativesLink = document.getElementById('narrativesLink')
-narrativesLink?.addEventListener('click', function(event) {
-    event.preventDefault();
-    navigate('narratives');
-});
-let reportLink = document.getElementById('reportLink')
-reportLink?.addEventListener('click', function(event) {
-    event.preventDefault();
-    navigate('weeklyReports');
-});
-
-document.getElementById('announcement').addEventListener('click', function(event) {
-    event.preventDefault();
-    navigate('announcement');
-});
-
-const accountSettings = document.getElementById('accountSettings');
-accountSettings?.addEventListener('click', (e) => {
-    e.preventDefault();
-    navigate('studentSettings');
-});
-
-
-const side_narrativesLink = document.getElementById('side-narrativesLink')
-side_narrativesLink?.addEventListener('click', function(event) {
-    event.preventDefault();
-    navigate('narratives');
-});
-document.getElementById('side-announcement').addEventListener('click', function(event) {
-    event.preventDefault();
-    navigate('announcement');
-});
 
 document.addEventListener('DOMContentLoaded', function() {
     var urlParams = new URLSearchParams(window.location.search);
@@ -152,82 +127,6 @@ function toggleNav() {
 }
 
 
-
-
-
-function home_student_NarrativeReports() {
-    $.ajax({
-        url: '../ajax.php?action=get_narrativeReports&homeTable=request',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            $('#narrativeReportsTableBody').html(response);
-        },
-        error: function(xhr, status, error) {
-
-            console.error('Error fetching data:', error);
-        }
-    });
-}
-
-function get_WeeklyReports (){
-    $.ajax({
-        url: '../ajax.php?action=getWeeklyReports',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            $('#Weeklyreports').html(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
-
-function resubmitWeeklyReport(weeklyReport_id){
-    document.querySelector('#resubmitReport input[name="file_id"]').value = weeklyReport_id;
-}
-
-function getUploadLogs(){
-    $.ajax({
-        url: '../ajax.php?action=getUploadLogs',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            $('#logsTable_body').html(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
-function getComments(file_id){
-    $.ajax({
-        url: '../ajax.php?action=getCommentst&file_id=' + file_id,
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            if (response){
-                $('#comment_body').html(response);
-                $('#chatBox input[name="file_id"]').val(file_id);
-                scrollToBottom();
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
-function viewImage(srcPath){
-    let path = 'comments_img/'+ srcPath;
-    $('#viewImage').attr('src', path);
-}
-function scrollToBottom() {
-    let commentBody = document.getElementById('comment_body');
-    commentBody.scrollTop = commentBody.scrollHeight;
-}
-
-
 function getHomeActSched(){
     $.ajax({
         url: '../ajax.php?action=getHomeActSched' ,
@@ -261,3 +160,45 @@ function getHomeNotes(){
 
 }
 
+document.getElementById('homeLink').addEventListener('click', function(event) {
+    event.preventDefault();
+    navigate('home');
+});
+
+const narrativesLink = document.getElementById('narrativesLink')
+narrativesLink?.addEventListener('click', function(event) {
+    event.preventDefault();
+    navigate('narratives');
+});
+let reportLink = document.getElementById('reportLink')
+reportLink?.addEventListener('click', function(event) {
+    event.preventDefault();
+    navigate('weeklyReports');
+    getUploadLogs();
+    get_WeeklyReports();
+});
+
+document.getElementById('announcement').addEventListener('click', function(event) {
+    event.preventDefault();
+    navigate('announcement');
+});
+
+const accountSettings = document.getElementById('accountSettings');
+accountSettings?.addEventListener('click', (e) => {
+    e.preventDefault();
+    navigate('studentSettings');
+    getProfileInfo();
+    console.log(123123);
+
+});
+
+
+const side_narrativesLink = document.getElementById('side-narrativesLink')
+side_narrativesLink?.addEventListener('click', function(event) {
+    event.preventDefault();
+    navigate('narratives');
+});
+document.getElementById('side-announcement').addEventListener('click', function(event) {
+    event.preventDefault();
+    navigate('announcement');
+});

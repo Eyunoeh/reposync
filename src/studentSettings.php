@@ -1,3 +1,15 @@
+<?php
+session_start();
+if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
+    header("Location: index.php");
+    exit();
+}
+
+if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'student') {
+    return;
+}
+?>
+
 <section class="w-full min-h-screen flex justify-center  mt-2">
 
     <div class="w-full max-w-7xl mx-auto p-5 rounded-lg shadow-lg bg-white min-h-[70vh]">
@@ -6,15 +18,15 @@
                 <span id="accountSettingbtN">Profile Information</span>
             </a>
         </div>
-        <form id="StudprofileForm" class=""   enctype="multipart/form-data">
+        <form id="StudprofileForm" class=""   enctype="multipart/form-data" >
             <div class="flex justify-center">
                 <label for="profileImg" class=" rounded-3xl  cursor-pointer">
                     <div class="avatar">
                         <div class="w-40 rounded-full shadow-xl">
-                            <img class="hover:opacity-50 transition-all" id="selectedProfile" src="assets/profile.jpg" />
+                            <img class="hover:opacity-50 transition-all" id="selectedProfile"  />
                         </div>
                     </div>
-                    <input type="file" id="profileImg" name="profileImg" accept="png, jpg" hidden/>
+                    <input type="file" id="profileImg" name="profileImg" accept=".png, .jpg, .jpeg" hidden/>
                 </label>
             </div>
             <hr class="m-5">
@@ -64,7 +76,7 @@
                         <div class="label">
                             <span class="label-text text-slate-700">Sex</span>
                         </div>
-                        <select name="stud_Sex" class="select select-bordered bg-slate-100 w-full">
+                        <select name="user_Sex" class="select select-bordered bg-slate-100 w-full">
                             <option disabled selected>Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -84,7 +96,7 @@
                         <div class="label">
                             <span class="label-text text-slate-700">Training hours</span>
                         </div>
-                        <input type="text" name="stud_TrainingHours" placeholder="Type here"    class=" bg-slate-100 input input-bordered w-full " />
+                        <input type="number" name="stud_trainingHours" placeholder="Type here"    class=" bg-slate-100 input input-bordered w-full " />
                     </label>
                 </div>
             </div>
@@ -103,7 +115,7 @@
                         <div class="label">
                             <span class="label-text text-slate-700">Email</span>
                         </div>
-                        <input type="text" name="user_Email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full " />
+                        <input type="text" value="<?=$_SESSION['log_user_email']?>" name="user_Email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full " />
                     </label>
                 </div>
                 <div class="flex justify-center">
@@ -136,11 +148,4 @@
 
     </div>
 </section>
-<dialog id="prfupdateNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('prfupdateNotif')">
-    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
-        <div role="alert" class="alert alert-success absolute top-50" >
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span>Profile has been updated</span>
-        </div>
-    </div>
-</dialog>
+

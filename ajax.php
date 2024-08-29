@@ -1430,7 +1430,9 @@ if ($action == 'getAdvInfoJson') {
 if ($action == "getCommentst") {
     $user_id = $_SESSION['log_user_id'];
     $file_id = $_GET['file_id'];
-    $sql = "SELECT * FROM tbl_revision WHERE file_id = ?";
+    $sql = "SELECT tbl_revision.*, tbl_user_info.* 
+FROM tbl_revision JOIN tbl_user_info ON tbl_user_info.user_id = tbl_revision.user_id
+WHERE tbl_revision.file_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $file_id);
     $stmt->execute();
@@ -1443,10 +1445,13 @@ if ($action == "getCommentst") {
                             <div>
                                 <p class="py-4 px-2 bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-end ' . (isset($row['comment']) && $row['comment'] !== '' ? '' : 'hidden') . '" id="ref_id">' . $row['comment'] . '</p>
                             </div>
-                            <div class="avatar">
-                                <div class="w-10 rounded-full">
-                                    <img src="assets/prof.jpg" />
-                                </div>
+                            <div class="flex flex-col justify-center items-center">
+                                <div class="avatar">
+                                    <div class="w-10 rounded-full">
+                                     <img src="userProfile/'. ($row['profile_img_file'] != 'N/A' ? $row['profile_img_file'] : 'prof.jpg' ).'" />                               
+                                     </div>
+                                    </div>
+                             <span class="text-xs">You</span>
                             </div>
                         </div>';
 
@@ -1471,10 +1476,13 @@ if ($action == "getCommentst") {
                // Render the comment to the left
                echo '<div class="grid place-items-center">
                     <div class="flex justify-start items-start w-full mb-2">
-                       <div class="avatar">
-                            <div class="w-10 rounded-full">
-                                <img src="assets/prof.jpg" />
+                        <div class="flex flex-col justify-center items-center">
+                           <div class="avatar">
+                                <div class="w-10 rounded-full">
+                                    <img src="userProfile/'. ($row['profile_img_file'] != 'N/A' ? $row['profile_img_file'] : 'prof.jpg' ).'" />
+                                </div>
                             </div>
+                            <span class="text-xs">'.$row['first_name'].'</span>
                         </div>
                         <div>
                                 <p class="py-4 px-2 bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-start ' . (isset($row['comment']) && $row['comment'] !== '' ? '' : 'hidden') . '" id="ref_id">' . $row['comment'] . '</p>
@@ -2331,9 +2339,10 @@ if ($action == "get_Profile_info"){
         exit();
     }
     $user_id = $_SESSION['log_user_id'];
-    $getProfile = "SELECT ui.*, acc.*
+    $getProfile = "SELECT ui.*, acc.*, stud.*
             FROM tbl_user_info ui
             INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
+            LEFT JOIN tbl_students stud on ui.user_id = stud.user_id
             WHERE ui.user_id = ?";
     $getProfileSTMT = $conn->prepare($getProfile);
     $getProfileSTMT->bind_param('i',$user_id);
@@ -2378,7 +2387,7 @@ if ($action == 'profileUpdate'){
 SET company_name = ?, training_hours = ? 
 where user_id = ?";
             $updStudSTMT = $conn->prepare($updStud);
-            $updStudSTMT->bind_param('si',$profile_compName, $profile_trainingHours , $user_id);
+            $updStudSTMT->bind_param('sii',$profile_compName, $profile_trainingHours , $user_id);
             $updStudSTMT->execute();
 
         }
@@ -2469,7 +2478,7 @@ if ($action == 'updateAcc'){
         }
 
     }else{
-        echo 'Password doesnt match';
+        echo "Password doesn't match";
     }
 
 }

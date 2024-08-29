@@ -48,7 +48,7 @@
                 <div class="dropdown dropdown-bottom dropdown-end flex  items-center gap-2">
                     <div class="avatar"  role="button" tabindex="0" >
                         <div class="w-10 rounded-full">
-                            <img src="userProfile/<?=$_SESSION['log_user_profileImg'] !== 'N/A' ? $_SESSION['log_user_profileImg'] : 'prof.jpg'?>" />
+                            <img id="profile_nav" src="userProfile/<?=$_SESSION['log_user_profileImg'] !== 'N/A' ? $_SESSION['log_user_profileImg'] : 'prof.jpg'?>" />
                         </div>
                     </div>
                     <ul tabindex="0" class="absolute bg-slate-100 text-black right-0 dropdown-content z-[1] menu p-2 shadow  rounded w-52">

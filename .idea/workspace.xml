@@ -4,22 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="css fix">
-      <change afterPath="$PROJECT_DIR$/src/comments_img/sample.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/studentSettings.php" afterDir="false" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="css fix&#10;added profile student.js sidee&#10;studentSettings.php student.js&#10;added mysql function for refactoring ajax.php">
+      <change afterPath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_5.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PhpMailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpMailer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adminLogin.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/announcement.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/announcement.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_3.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_3.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home_nav.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/home_nav.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/buttons_modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/buttons_modal.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/student.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/student.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageUploadNarratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageUploadNarratives.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manage_accountInformation.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage_accountInformation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/narratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/narratives.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manage_dhshboardProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage_dhshboardProfile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/studentSettings.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/studentSettings.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -98,7 +96,7 @@
     "full.screen.before.presentation.mode": "false",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/ReposyncNarrativeManagementSystem/src/comments_img",
+    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -324,7 +322,8 @@
       <workItem from="1724723426086" duration="4761000" />
       <workItem from="1724730570333" duration="2473000" />
       <workItem from="1724808657360" duration="197000" />
-      <workItem from="1724808875613" duration="14828000" />
+      <workItem from="1724808875613" duration="15216000" />
+      <workItem from="1724893845239" duration="12282000" />
     </task>
     <task id="LOCAL-00029" summary="revision Comments under develop">
       <created>1715083562511</created>
@@ -669,7 +668,7 @@
       <option name="project" value="LOCAL" />
       <updated>1723370620735</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -688,8 +687,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="login Notif" />
-    <MESSAGE value="revised viewing narrative reports" />
     <MESSAGE value="revising checking notes" />
     <MESSAGE value="Checking adviser posted notes OK" />
     <MESSAGE value="revise viewing Narratives" />
@@ -713,7 +710,9 @@
     <MESSAGE value="data test" />
     <MESSAGE value="test data" />
     <MESSAGE value="css fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="css fix" />
+    <MESSAGE value="css fix&#10;added profile student.js sidee&#10;studentSettings.php student.js" />
+    <MESSAGE value="css fix&#10;added profile student.js sidee&#10;studentSettings.php student.js&#10;added mysql function for refactoring ajax.php" />
+    <option name="LAST_COMMIT_MESSAGE" value="css fix&#10;added profile student.js sidee&#10;studentSettings.php student.js&#10;added mysql function for refactoring ajax.php" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -740,7 +739,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/main.js</url>
-          <line>235</line>
+          <line>134</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
