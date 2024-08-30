@@ -390,14 +390,14 @@ while ($row = $res->fetch_assoc()) {
             processData: false,
             contentType: false,
             success: function(response) {
-                if (parseInt(response) === 1) {
+                if (response.response === 1) {
                     enable_button(btn)
                     remove_loader(loader_id);
                     closeModalForm(modal);
                     openModalForm(notification);
                     getNewData.forEach(func => func());
                 } else {
-                    alert(response);
+                    alert(response.message);
                     remove_loader(loader_id);
                     enable_button(btn);
                 }

@@ -116,6 +116,9 @@ if ($_GET['route'] === 'NarrativeReports'){
         </div>
     </dialog>
 </div>
+<div id="notifBox" onclick="resetAlertBox(this.id)">
+
+</div>
 <script src="js/ArchiveList.js"></script>
 <script src="js/buttons_modal.js"></script>
 </body>

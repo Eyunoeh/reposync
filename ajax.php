@@ -327,6 +327,12 @@ if ($action == 'getUploadLogs'){
 
 
 if ($action == 'newFinalReport'){
+    header('Content-Type: application/json');
+
+    $response = 1;
+    $responseMessage = $_SESSION['log_user_type'] == 'admin' ? 'New narrative report has been uploaded!': 'New narrative report has been uploaded! Please wait for admin approval';
+
+
     $first_name = isset($_POST['first_name']) ? sanitizeInput($_POST['first_name']) : '';
     $middle_name = isset($_POST['middle_name']) ? sanitizeInput($_POST['middle_name']) : 'N/A';
     $last_name = isset($_POST['last_name']) ? sanitizeInput($_POST['last_name']) : '';
@@ -338,9 +344,11 @@ if ($action == 'newFinalReport'){
     $trainingHours = isset($_POST['trainingHours']) ? sanitizeInput($_POST['trainingHours']) : 0;
     $sySubmitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
 
-    $school_id = isset($_POST['school_id']) && is_numeric($_POST['school_id']) && check_uniq_stud_id($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
+    $school_id = isset($_POST['school_id']) && is_numeric($_POST['school_id'])  ? sanitizeInput($_POST['school_id']) : '';
 
-        if ($first_name !== '' && $stud_sex !== '' && $last_name !== '' && $program !== '' && $section !== '' && $ojt_adviser !== '' && $school_id !== '' && $sySubmitted !== '') {
+        if ($first_name !== '' && $stud_sex !== '' && $last_name !== '' && $program !== ''
+            && $section !== '' && $ojt_adviser !== ''
+            && $school_id !== '' && $sySubmitted !== '') {
             if (isset($_FILES['final_report_file'])) {
                 $file_name = $_FILES['final_report_file']['name'];
                 $file_temp = $_FILES['final_report_file']['tmp_name'];
@@ -356,22 +364,18 @@ if ($action == 'newFinalReport'){
                     $narrative_status = isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'admin' ? 'OK' : 'Pending';
                     if ($file_error === UPLOAD_ERR_OK) {
                         try {
-                            $new_final_report = $conn->prepare("INSERT INTO narrativereports
+                            $new_final_report = "INSERT INTO narrativereports
     (stud_school_id, OJT_adviser_ID, sex, first_name, middle_name, last_name, program, section, narrative_file_name, upload_date, file_status, training_hours, company_name, sySubmitted)
-    values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-                            $new_final_report->bind_param("sisssssssssiss",
-                                $school_id, $ojt_adviser, $stud_sex, $first_name, $middle_name, $last_name,
+                            $valueTypes = "sisssssssssiss";
+                            $params = [$school_id, $ojt_adviser, $stud_sex, $first_name, $middle_name, $last_name,
                                 $program, $section, $new_file_name, $current_date_time, $narrative_status,
-                                $trainingHours, $compName, $sySubmitted);
+                                $trainingHours, $compName, $sySubmitted];
 
 
+                            mysqlQuery($new_final_report,$valueTypes, $params);
 
-                            if (!$new_final_report->execute()) {
-                                echo 'query error';
-                                exit();
-                            }
-                            $new_final_report->close();
                             $destination = "src/NarrativeReportsPDF/" . $new_file_name;
                             move_uploaded_file($file_temp, $destination);
                             $report_pdf_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $section . "_" . $school_id;
@@ -380,10 +384,9 @@ if ($action == 'newFinalReport'){
                                 if ($_SESSION['log_user_type'] == 'adviser'){       // admin email notification
                                     $getAdminUser = "SELECT tbl_accounts.status, tbl_accounts.email, tbl_user_info.user_id, tbl_user_info.user_type  FROM tbl_user_info
                                                    JOIN tbl_accounts on tbl_accounts.user_id = tbl_user_info.user_id where tbl_accounts.status = 'active' and tbl_user_info.user_type = 'admin'";
-                                    $getAdminUserSTMT = $conn->prepare($getAdminUser);
-                                    $getAdminUserSTMT->execute();
-                                    $result =  $getAdminUserSTMT->get_result();
-                                    while ($row= $result->fetch_assoc()){
+
+                                    $result =  mysqlQuery($getAdminUser, '', []);
+                                    foreach ($result as $row){
                                         $subjectType = "Upload Narrative Report";
                                         $bodyMessage = "<h1><b>Notification</b></h1><br>";
                                         $bodyMessage .= "<b>OJT adviser: </b>".$_SESSION['log_user_firstName'].' '.$_SESSION['log_user_middleName'].' '.$_SESSION['log_user_lastName'] .'<br>';
@@ -394,27 +397,38 @@ if ($action == 'newFinalReport'){
                                         email_notif_sender($subjectType, $bodyMessage,$recipient );
                                     }
                                 }
+                                echo json_encode(['response' => $response,
+                                    'message' => $responseMessage]);
 
-                                echo 1;
+
                                 exit();
                             } else {
-                                echo 'Flip book Conversion error';
+                                $responseMessage = 'Flip book Conversion error';
                             }
-                        }catch (Exception $e) {
-                            echo "Some error occurred when  uploading pleas contact developer";
+                        }catch (mysqli_sql_exception $e) {
+                            if ($e->getCode() == 1062) {
+                                $responseMessage = "School id already exists.";
+                            } else {
+                                $responseMessage = $e->getMessage();
+                            }
+
                         }
                     } else {
-                        echo 'file error';
+                        $responseMessage = 'file error';
                     }
                 } else {
-                    echo 'not pdf';
+                    $responseMessage = 'not pdf';
                 }
             } else {
-                echo 'empty file';
+                $responseMessage = 'empty file';
             }
         } else {
-            echo 'form data are empty';
+
+            $responseMessage =  'form data are empty';
         }
+        $response = 2;
+        echo json_encode(['response' => $response,
+        'message' => $responseMessage]);
         exit();
 }
 if ($action == 'get_narrativeReports') {
@@ -509,259 +523,166 @@ if ($action == 'narrativeReportsJson'){
     }
 }
 
-if ($action === 'UpdateNarrativeReport'){
+if ($action === 'UpdateNarrativeReport') {
+    header('Content-Type: application/json');
+    $response = 1;
+    $responseMessage = 'Narrative report has been updated!';
 
-    $first_name = isset($_POST['first_name']) ? sanitizeInput($_POST['first_name']) : '';
-    $middle_name = isset($_POST['middle_name']) ? sanitizeInput($_POST['middle_name']) : 'N/A';
+    $fields = [
+        'first_name' => '',
+        'middle_name' => 'N/A',
+        'last_name' => '',
+        'program' => '',
+        'section' => '',
+        'ojt_adviser' => '',
+        'stud_Sex' => '',
+        'school_id' => '',
+        'narrative_id' => '',
+        'companyName' => 'N/A',
+        'trainingHours' => 0,
+        'startYear' => '',
+        'endYear' => '',
+        'remark' => '',
+        'UploadStat' => null,
+    ];
 
-    $last_name = isset($_POST['last_name']) ? sanitizeInput($_POST['last_name']) : '';
-    $program = isset($_POST['program']) ? sanitizeInput($_POST['program']) : '';
-    $section = isset($_POST['section']) ? sanitizeInput($_POST['section']) : '';
-    $ojt_adviser = isset($_POST['ojt_adviser']) ? sanitizeInput($_POST['ojt_adviser']) : '';
-    $stud_sex = isset($_POST['stud_Sex']) ? sanitizeInput($_POST['stud_Sex']) : '';
-    $school_id = isset($_POST['school_id']) && is_numeric($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
-    $narrative_id = isset($_POST['narrative_id']) ? sanitizeInput($_POST['narrative_id']) : '';
-    $compName = isset($_POST['companyName']) ? sanitizeInput($_POST['companyName']) : 'N/A';
-    $trainingHours = isset($_POST['trainingHours']) ? sanitizeInput($_POST['trainingHours']) : 0;
-    $sySubmitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
-
-    $uploadDeclineRemark = isset($_POST['remark']) ? sanitizeInput($_POST['remark']) : '';
-    $allowed_statuses = array('OK', 'Pending', 'Declined');
-    $uploadStat = isset($_POST['UploadStat']) && in_array($_POST['UploadStat'], $allowed_statuses) ? sanitizeInput($_POST['UploadStat']) : Null;
-
-
-    $narrative_id = decrypt_data($narrative_id,$secret_key);
-
-
-    if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'adviser'){
-        $uploadStat = 'Pending'; //pag nag update ng info ang adviser sa
-        // uploaded narrative report module gagawing pending ulit status
+    foreach ($fields as $key => $default) {
+        $fields[$key] = isset($_POST[$key]) ? sanitizeInput($_POST[$key]) : $default;
     }
-    if ($uploadStat !== Null){
-        if ($uploadStat === 'OK'){
-            $uploadDeclineRemark = 'OK'; //pag ok na status ng narrative report gagawing ok ang remarks
+
+    $fields['school_id'] = (is_numeric($fields['school_id'])) ? $fields['school_id'] : '';
+    $fields['sySubmitted'] = ($fields['startYear'] && $fields['endYear']) ? $fields['startYear'] . ',' . $fields['endYear'] : '';
+    $fields['UploadStat'] = isset($_POST['UploadStat']) && in_array($_POST['UploadStat'], ['OK', 'Pending', 'Declined']) ? $fields['UploadStat'] : null;
+    $fields['narrative_id'] = decrypt_data($fields['narrative_id'], $secret_key);
+
+    if ($_SESSION['log_user_type'] === 'adviser') {
+        $fields['UploadStat'] = 'Pending'; // Set to pending when an adviser updates the report
+    }
+
+    if ($fields['UploadStat'] !== null) {
+        if ($fields['UploadStat'] === 'OK') {
+            $fields['remark'] = 'OK'; // Set remark to OK if status is OK
         }
 
-        $updateStat = "UPDATE narrativereports
-                                      SET file_status = ?, 
-                                          remarks = ?
-                                    where narrative_id = ? ";
-        $updateStatSTMT = $conn->prepare($updateStat);
-        $updateStatSTMT->bind_param('ssi', $uploadStat, $uploadDeclineRemark, $narrative_id);
-        if (!$updateStatSTMT->execute()){
-            echo $updateStatSTMT->error;
+        $updateStat = "UPDATE narrativereports SET file_status = ?, remarks = ? WHERE narrative_id = ?";
+        try {
+            mysqlQuery($updateStat, 'ssi', [$fields['UploadStat'], $fields['remark'], $fields['narrative_id']]);
+        } catch (mysqli_sql_exception $e) {
+            $responseMessage = $e->getMessage();
+        }
+
+        if ($_SESSION['log_user_type'] === 'admin' && $fields['UploadStat'] !== 'Pending') {
+            $recipient = getRecipient($fields['ojt_adviser']);
+            $subjectType = 'Upload Narrative Request';
+            $bodyMessage = "<h1><b>Notification</b></h1><br>
+                            <h3>Your upload narrative report request has been reviewed.</h3><br>
+                            The admin changed its status to: <b>{$fields['UploadStat']}</b><br>";
+            if ($fields['UploadStat'] === 'Declined') {
+                $bodyMessage .= "<b>Reason: </b>{$fields['remark']}<br>";
+            }
+            $bodyMessage .= "Click to review: <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
+            email_notif_sender($subjectType, $bodyMessage, $recipient);
+            echo json_encode(['response' => $response, 'message' => $responseMessage]);
+
+            //for admin code block
             exit();
         }
-        if ($_SESSION['log_user_type'] == 'admin'){
-            if ($uploadStat!=='Pending'){
-                $subjectType = 'Upload Narrative Request'; // email notification for ojt adviser
-                $recipient = getRecipient($ojt_adviser);
-                $bodyMessage = '<h1><b>Notification</b></h1><br>';
-                $bodyMessage .= '<h3>Your upload narrative report request has been reviewed.</h3><br>';
-
-                $bodyMessage .= '   The admin change its status to: <b>'. $uploadStat. '</b><br>';
-                if ($uploadStat == 'Declined'){
-                    $bodyMessage .= '<b>Reason: </b>'. $uploadDeclineRemark. '<br>';
-                }
-                $bodyMessage .= " Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
-                Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
-                email_notif_sender($subjectType, $bodyMessage, $recipient);
-            }
-            echo 1;
-            exit(); //admin can only update the status
-            // of the uploaded narrative report incase na tangalin ung disable sa form hindi na tutuloy
-        }
     }
 
+    // Check required fields
+    $required_fields = ['first_name', 'last_name', 'stud_Sex', 'program',
+        'section', 'ojt_adviser', 'school_id', 'narrative_id',
+        'sySubmitted'];
+    $all_fields_filled = array_reduce($required_fields, fn($carry, $item) => $carry && $fields[$item] !== '', true);
 
-    if ($first_name !== '' && $last_name !== '' && $stud_sex !== '' && $program !== '' && $section !== '' && $ojt_adviser !== '' && $school_id !== ''  && $narrative_id !== ''&& $sySubmitted !== '') {
-        $file_first_name = str_replace(' ', '', $first_name);
-        $file_last_name = str_replace(' ', '', $last_name);
-        $new_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id.".pdf";
+
+    if ($all_fields_filled) {
+        $file_first_name = str_replace(' ', '', $fields['first_name']);
+        $file_last_name = str_replace(' ', '', $fields['last_name']);
+        $new_file_name = "{$file_first_name}_{$file_last_name}_{$fields['program']}_{$fields['section']}_{$fields['school_id']}.pdf";
         $current_date_time = date('Y-m-d H:i:s');
 
-        $old_filename = '';
-        $sql = "SELECT * FROM narrativereports WHERE narrative_id = ?";
-        $stmt = $conn->prepare($sql);
+        $old_filename = mysqlQuery("SELECT narrative_file_name FROM narrativereports WHERE narrative_id = ?", 'i', [$fields['narrative_id']])[0]['narrative_file_name'];
 
-        if ($stmt) {
-            $stmt->bind_param("i", $narrative_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result && $result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $old_filename = $row['narrative_file_name'];
-            }
-        }
-        $update_final_report = $conn->prepare("UPDATE narrativereports
-                                      SET stud_school_id = ?,
-                                          OJT_adviser_ID = ?,
-                                          sex = ?,
-                                          first_name = ?,
-                                          middle_name = ?,
-                                          last_name = ?,
-                                          program = ?,
-                                          section = ?,
-                                        
-                                          narrative_file_name = ?,
-                                          upload_date = ?,
-                                          training_hours = ?,
-                                          company_name = ?,
-                                          sySubmitted = ?
-                                    
-                                      WHERE narrative_id = ?");
-        $update_final_report->bind_param("sisssssssssssi",
-            $school_id, $ojt_adviser,$stud_sex,$first_name, $middle_name,  $last_name,
-            $program, $section, $new_file_name,
-            $current_date_time, $trainingHours, $compName,$sySubmitted ,$narrative_id);
-
-
-
-        if (!$update_final_report->execute()){
-            echo 'query error';
+        $update_final_report = "UPDATE narrativereports SET 
+                                    stud_school_id = ?, 
+                                    OJT_adviser_ID = ?, 
+                                    sex = ?, 
+                                    first_name = ?, 
+                                    middle_name = ?, 
+                                    last_name = ?, 
+                                    program = ?, 
+                                    section = ?, 
+                                    narrative_file_name = ?, 
+                                    upload_date = ?, 
+                                    training_hours = ?, 
+                                    company_name = ?, 
+                                    sySubmitted = ? 
+                                WHERE narrative_id = ?";
+        try {
+            mysqlQuery($update_final_report, "sisssssssssssi", [
+                $fields['school_id'], $fields['ojt_adviser'], $fields['stud_Sex'],
+                $fields['first_name'], $fields['middle_name'], $fields['last_name'],
+                $fields['program'], $fields['section'], $new_file_name,
+                $current_date_time, $fields['trainingHours'], $fields['companyName'],
+                $fields['sySubmitted'], $fields['narrative_id']
+            ]);
+        } catch (mysqli_sql_exception $e) {
+            $responseMessage = $e->getCode() == 1062 ? "School id already exists." : $e->getMessage();
+            echo json_encode(['response' => 2, 'message' => $responseMessage]);
             exit();
         }
-        if (isset($_FILES['final_report_file']) && $_FILES['final_report_file']['error'] === UPLOAD_ERR_OK){
-            //replace existing by deleting and converting new
 
-            $file_name = $_FILES['final_report_file']['name'];
-            $file_temp = $_FILES['final_report_file']['tmp_name'];
-            $file_type = $_FILES['final_report_file']['type'];
-            $file_error = $_FILES['final_report_file']['error'];
-            $file_size = $_FILES['final_report_file']['size'];
-
-            if (isPDF($file_name)){
-                $pdf = 'src/NarrativeReportsPDF/'.$old_filename;
-                $flipbook_page_dir = 'src/NarrativeReports_Images/'. str_replace('.pdf','',$old_filename);
-                if (!delete_pdf($pdf) or !deleteDirectory($flipbook_page_dir)){
-                    //pag nag convert ulit dedelete ung existing directory sa narrative report image
-                    echo 'dir not deleted';
-                    exit();
-                }
-
-                $file_first_name = str_replace(' ', '', $first_name);
-                $file_last_name = str_replace(' ', '', $last_name);
-                $new_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id.".pdf";
-                $pdf_file_path = "src/NarrativeReportsPDF/" . $new_file_name;
-                move_uploaded_file($file_temp, $pdf_file_path);
-                $report_pdf_file_name = $file_first_name."_".$file_last_name."_".$program."_".$section."_".$school_id;
-                if (convert_pdf_to_image($report_pdf_file_name)){
-                    echo 1;
-                    exit();
-                }
-                else{
-                    echo 'error Conversion';
-                }
-            }
-
+        // Handle file upload and renaming logic
+        if (isset($_FILES['final_report_file']) && $_FILES['final_report_file']['error'] === UPLOAD_ERR_OK) {
+            // Handle file upload
+            handleNarrativeUpload($fields, $old_filename, $new_file_name);
+        } else {
+            // Handle file renaming
+            handleNarrativeFileRename($old_filename, $new_file_name);
         }
-        else {
-            //Nirerename lang ung pdf sa src/NarrativeReportsPDF/  tapos directory
-            // at ung laman ng directory sa src/NarrativeReports_Images/
-            // ung rename nito naka base lang sa laman ng database
-            // ang purpose para ma reuse ang existing files
 
-            $narrative_reportPDF_path = 'src/NarrativeReportsPDF/';
-            $narrative_reportIMG_path = 'src/NarrativeReports_Images/';
-            if (is_dir($narrative_reportPDF_path)) {
-                if ($handle = opendir($narrative_reportPDF_path)) {
-                    // Rename the PDF file
-                    while (false !== ($file = readdir($handle))) {
-                        if (pathinfo($file, PATHINFO_EXTENSION) == 'pdf' && $file == $old_filename) {
-                            // Rename the pdf file
-                            $oldFilePath = $narrative_reportPDF_path . $old_filename;
-                            $newFilePath = $narrative_reportPDF_path . $new_file_name;
-                            if (rename($oldFilePath, $newFilePath)) {
-                                // Rename the flip book image directory
-                                $old_flipbook_page_directory = str_replace('.pdf', '', $old_filename);
-                                $new_flipbook_page_directory = str_replace('.pdf', '', $new_file_name);
-                                if (is_dir($narrative_reportIMG_path . $old_flipbook_page_directory)) {
-                                    if (rename($narrative_reportIMG_path . $old_flipbook_page_directory, $narrative_reportIMG_path . $new_flipbook_page_directory)) {
-                                        // Rename image files inside the flip book directory
-                                        if (is_dir($narrative_reportIMG_path . $new_flipbook_page_directory)) {
-                                            if ($handle_img = opendir($narrative_reportIMG_path . $new_flipbook_page_directory)) {
-                                                while (false !== ($file_img = readdir($handle_img))) {
-                                                    if ($file_img != "." && $file_img != "..") {
-                                                        // Construct the new filename based on the new directory name pattern
-                                                        $oldImagePath = $narrative_reportIMG_path . $new_flipbook_page_directory . "/" . $file_img;
-                                                        $newImageName = str_replace($old_flipbook_page_directory, $new_flipbook_page_directory, $file_img);
-                                                        $newImagePath = $narrative_reportIMG_path . $new_flipbook_page_directory . "/" . $newImageName;
+    } else {
+        $responseMessage = "Required fields are missing.";
 
-                                                        // Rename the image file
-                                                        if (!rename($oldImagePath, $newImagePath)) {
-                                                            echo "* Error renaming image file.";
-                                                            echo 0;
-                                                            exit();
-                                                        }
-                                                    }
-                                                }
-                                                closedir($handle_img);
-                                            } else {
-                                                echo "Error opening image directory.";
-                                                echo 0;
-                                                exit();
-                                            }
-                                        } else {
-                                            echo "New directory does not exist.";
-                                            echo 0;
-                                            exit();
-                                        }
-                                    } else {
-                                        echo "Error renaming directory.";
-                                        echo 0;
-                                        exit();
-                                    }
-                                } else {
-                                    echo "Directory does not exist.";
-                                    echo 0;
-                                    exit();
-                                }
-                            } else {
-                                echo "Error renaming PDF file.";
-                                echo 0;
-                                exit();
-                            }
-                        }
-                    }
-                    closedir($handle);
-                } else {
-                    echo "Error opening PDF directory.";
-                    echo 0;
-                    exit();
-                }
-            } else {
-                echo "PDF directory does not exist.";
-                echo 0;
-                exit();
-            }
-            echo 1;
-            exit();
-        }
+        handleError($responseMessage);
 
     }
+
+    echo json_encode(['response' => $response, 'message' => $responseMessage]);
 }
 
-if ($action == 'ArchiveNarrativeReport'){
 
+
+
+
+
+
+if ($action == 'ArchiveNarrativeReport'){
+    header('Content-Type: application/json');
+    $response = 1;
+    $responseMessage = 'Narrative report has been archived!';
     $narrative_id = isset($_POST['narrative_id']) ? sanitizeInput($_POST['narrative_id']) : '';
     if ($narrative_id !== ''){
         $narrative_id = decrypt_data($narrative_id, $secret_key);
         $file_status = 'Archived';
-        $archive_final_report = $conn->prepare("UPDATE narrativereports
+        $archive_final_report = "UPDATE narrativereports
                                       SET 
                                           file_status = ?
-                                      WHERE narrative_id = ?");
-        $archive_final_report->bind_param('si',$file_status, $narrative_id);
-        if (!$archive_final_report->execute()){
-            echo 'Query Error';
-            exit();
+                                      WHERE narrative_id = ?";
+
+        try {
+            mysqlQuery($archive_final_report, 'si' , [$file_status, $narrative_id]);
+        }catch (mysqli_sql_exception $e){
+            $responseMessage = $e->getMessage();
+            $response = 2;
         }
-        echo 1;
+
+        echo json_encode(['response' => $response,
+            'message' => $responseMessage ]);
         exit();
     }else{
-        echo 2;// empty id
-        exit();
+        handleError('Student Narrative ID is empty');
     }
 }
 
@@ -783,7 +704,8 @@ if ($action === 'recoverNarrativeReport') {
             exit();
         }
         header('Content-Type: application/json');
-        echo json_encode(['response' => 1]);
+        echo json_encode(['response' => 1,
+            'message' => 'Report has been successfully recovered']);
         exit();
     }else{
         echo json_encode(['response' => 2,
@@ -844,6 +766,12 @@ tbl_user_info.last_name as 'OJT_adviser_Lname' FROM narrativereports
 
 
 if ($action == 'newUser') {
+    header('Content-Type: application/json');
+    $resMes_adv = 'New adviser account has been created!';
+    $resMes_adm = 'New admin account has been created!';
+    $resMes_stud = 'New student account has been created!';
+    $responseMessage = '';
+    $response = 1;
 
 
     $user_first_name = isset($_POST['user_Fname']) ? sanitizeInput($_POST['user_Fname']) : '';
@@ -861,6 +789,9 @@ if ($action == 'newUser') {
     $user_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
     $user_type = isset($_POST['user_type']) ?sanitizeInput($_POST['user_type']) : '';
     $user_password = isset($_POST['user_password']) && sanitizeInput($_POST['user_password']) ? $_POST['user_password'] :'';
+    $user_confPass = isset($_POST['user_confPass']) && sanitizeInput($_POST['user_confPass']) ? $_POST['user_confPass'] :'';
+
+
 
     if ($user_first_name !== '' &&
         $user_last_name !== '' &&
@@ -870,93 +801,84 @@ if ($action == 'newUser') {
         $user_address !== '' &&
         $user_type !== '' &&
         $user_email !== '') {
-        $check_sql = "SELECT user_id FROM tbl_user_info WHERE school_id = ?";
-        $check_stmt = $conn->prepare($check_sql);
-        $check_stmt->bind_param("s", $newStud_shc_id);
-        $check_stmt->execute();
-        $check_stmt->store_result();
 
-        if ($check_stmt->num_rows > 0) {
-            // Student ID already exists, echo "2" and exit
-            echo 2;
-            exit();
-        }
 
-        if ( $user_program !== '' && $user_section !== '' && $user_password == '') {
+
+        if ( $user_program !== '' && $user_section !== '' && $user_password == '' && $user_confPass == '') {
             $user_password = generatePassword($user_shc_id);
+        }else{
+            if ($user_password != $user_confPass){
+                handleError("Password do not match");
+            }
         }
+        $conn->begin_transaction();
 
-
-        $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
-
-        try{
+        try {
+            // Insert into tbl_user_info
+            $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
             $insert_sql = "INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number, school_id, sex, user_type) 
-                VALUES (?, ?, ? , ?, ?, ?, ?, ?)";
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $valueTypes = "ssssssss";
+            $params = [$user_first_name, $user_middle_name, $user_last_name, $user_address, $user_contact_number, $user_shc_id, $user_sex, $user_type];
+
             $insert_stmt = $conn->prepare($insert_sql);
-            $insert_stmt->bind_param("ssssssss", $user_first_name, $user_middle_name,$user_last_name, $user_address, $user_contact_number,
-                $user_shc_id, $user_sex,$user_type);
+            $insert_stmt->bind_param($valueTypes, ...$params);
             $insert_stmt->execute();
 
+            $user_id = $insert_stmt->insert_id;
 
-        }catch (mysqli_sql_exception $e){
+            // Insert into tbl_accounts
+            $account_sql = "INSERT INTO tbl_accounts (user_id, email, password, status) 
+                    VALUES (?, ?, ?, 'active')";
+            $account_stmt = $conn->prepare($account_sql);
+            $account_stmt->bind_param("iss", $user_id, $user_email, $hashed_password);
+            $account_stmt->execute();
+
+            // Commit transaction
+            $conn->commit();
+
+            // Set response message based on user_type
+            $responseMessage = $user_type === 'admin' ? $resMes_adm : $resMes_adv;
+
+        } catch (mysqli_sql_exception $e) {
+            // Rollback transaction on error
+            $conn->rollback();
+
             if ($e->getCode() == 1062) {
                 $errorMessage = $e->getMessage();
                 preg_match("/Duplicate entry '.*' for key '([^']+)'/", $errorMessage, $matches);
                 $keyName = $matches[1] ?? 'unknown key';
 
                 if ($keyName == 'contact_number') {
-                    echo "Contact number already exist.";
+                    $responseMessage = "Contact number already exists.";
                 } elseif ($keyName == 'school_id') {
-                    echo "School id already exists.";
+                    $responseMessage = "School ID already exists.";
+                } elseif ($keyName == 'email') {
+                    $responseMessage = "Email already exists.";
                 } else {
-                    echo "Duplicate entry for key '$keyName'.";
+                    $responseMessage = "Duplicate entry for key '$keyName'.";
                 }
             } else {
-                echo 'Error: ' . $e->getMessage();
+                $responseMessage = $e->getMessage();
             }
-            exit;
+
+            handleError($responseMessage);
+            exit();
         }
 
-
-        $user_id = $insert_stmt->insert_id;
-        try{
-            $account_sql = "INSERT INTO tbl_accounts (user_id, email, password, status) 
-                VALUES (?, ?, ?, 'active')";
-            $account_stmt = $conn->prepare($account_sql);
-            $account_stmt->bind_param("iss", $user_id, $user_email, $hashed_password);
-            $account_stmt->execute();
-
-
-
-
-        }catch (mysqli_sql_exception $e){
-            if ($e->getCode() == 1062) {
-                $errorMessage = $e->getMessage();
-                preg_match("/Duplicate entry '.*' for key '([^']+)'/", $errorMessage, $matches);
-                $keyName = $matches[1] ?? 'unknown key';
-                if ($keyName == 'email') {
-                    echo "Email already exist";
-                }  else {
-                    echo "Duplicate entry for key '$keyName'.";
-                }
-            } else {
-                echo 'Error: ' . $e->getMessage();
-            }
-            exit;
-        }
 
 
         if ( $user_program !== '' && $user_section !== '' && $user_type == 'student' && $stud_adviser !== '')
         {
             $student_sql = "INSERT INTO tbl_students (user_id, program_id, section_id, company_name, training_hours) 
                 VALUES (?, ?, ?, ?, ?)";
-            $student_stmt = $conn->prepare($student_sql);
-            $student_stmt->bind_param("iiiss", $user_id, $user_program, $user_section,$stud_compName, $stud_trainingHours);
-            $student_stmt->execute();
+
+            mysqlQuery($student_sql, 'iiiss', [$user_id, $user_program, $user_section,$stud_compName, $stud_trainingHours]);
+
             $advisory_sql = "INSERT INTO advisory_list (adv_sch_user_id, stud_sch_user_id) VALUES (?,?)";
-            $advisory_stmt = $conn->prepare($advisory_sql);
-            $advisory_stmt->bind_param('ii', $stud_adviser, $user_id);
-            $advisory_stmt->execute();
+            mysqlQuery($advisory_sql , 'ii', [$stud_adviser, $user_id]);
+
+            $responseMessage = $resMes_stud;
         }
 
         $subjectType = "Reposync Account";
@@ -970,13 +892,20 @@ if ($action == 'newUser') {
         $bodyMessage .= "Click to login : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
                     Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
         email_notif_sender($subjectType,$bodyMessage,$recipient);
-        echo 1;
+
 
     } else {
-        // Output error message if any required field is empty
-        echo 'Some required fields are empty.';
+
+        $response = 2;
+        $responseMessage =  'Some required fields are empty.';
     }
+
+    echo json_encode(['response' => $response,
+        'message' => $responseMessage]);
 }
+
+
+
 if ($action == 'getStudentsList'){
     $fetch_enrolled_stud = "SELECT 
                                 u.user_id,
@@ -1153,6 +1082,14 @@ if ($action == 'getStudInfoJson') {
 
 
 if ($action == 'updateUserInfo'){
+    header('Content-Type: application/json');
+    $response = 1;
+    $responseMessage = '';
+    $resMes_adv = 'Adviser Information has been updated!';
+    $resMes_stud = 'Student Information has been updated!';
+    $responseMessage = '';
+
+
     $editUser_first_name = isset($_POST['user_Fname']) ? sanitizeInput($_POST['user_Fname']) : '';
     $editUser_middle_name = isset($_POST['user_Mname']) ? sanitizeInput($_POST['user_Mname']) : 'N/A';
     $editUser_last_name = isset($_POST['user_Lname']) ? sanitizeInput($_POST['user_Lname']) : '';
@@ -1179,6 +1116,7 @@ if ($action == 'updateUserInfo'){
         $editUser_user_id !== '' &&
         $editUser_email !== ''&&
         $edituser_type !== '') {
+        $responseMessage = $edituser_type == 'student' ? $resMes_stud : $resMes_adv;
 
 
         try {
@@ -1204,16 +1142,17 @@ if ($action == 'updateUserInfo'){
                 $keyName = $matches[1] ?? 'unknown key';
 
                 if ($keyName == 'contact_number') {
-                    echo "Duplicate contact number.";
+                    $responseMessage ="Duplicate contact number.";
                 } elseif ($keyName == 'school_id') {
-                    echo "School id already exists.";
+                    $responseMessage ="School id already exists.";
                 } else {
-                    echo "Duplicate entry for key '$keyName'.";
+                    $responseMessage = "Duplicate entry for key '$keyName'.";
                 }
             } else {
-                echo 'Error: ' . $e->getMessage();
+                $responseMessage = $e->getMessage();
             }
-            exit;
+            handleError($responseMessage);
+
         }
 
         if ($editStud_program !== '' && //execute only if the admin editing student type user
@@ -1258,19 +1197,21 @@ if ($action == 'updateUserInfo'){
             $stmt_update_account->execute();
         } catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) {
-                echo "Email already exist";
+                $responseMessage = "Email already exist";
             } else {
-                echo 'Error: ' . $e->getMessage();
+                $responseMessage = 'Error: ' . $e->getMessage();
             }
-            exit;
+            handleError($responseMessage);
         }
 
-        echo 1;
+        echo json_encode(['response' => $response,
+            'message' => $responseMessage]);
         exit();
 
 
     } else {
-        echo 'Error: Some required fields are empty.';
+        $responseMessage = 'Error: Some required fields are empty.';
+        handleError($responseMessage);
     }
 }
 
@@ -1308,7 +1249,8 @@ if ($action == 'recoverUser'){
         $stmt->bind_param('i',$user_id);
         if ($stmt->execute()){
             header('Content-Type: application/json');
-            echo json_encode(['response' => 1]);
+            echo json_encode(['response' => 1,
+                'message' => 'User status has been set to active']);
         }
     }
 }
@@ -1563,6 +1505,10 @@ if ($action == 'giveComment') {
 
 
 if ($action === 'Notes') {
+    header('Content-Type: application/json');
+
+    $response = 1;
+    $responseMessage = '';
     $user_id = $_SESSION['log_user_id'];
     $note_title = isset($_POST['noteTitle']) ? sanitizeInput($_POST['noteTitle']) : '';
     $actionType = isset($_POST['actionType']) ? sanitizeInput($_POST['actionType']) : '';
@@ -1577,31 +1523,27 @@ if ($action === 'Notes') {
                         announcementUpdated = NOW() ,
                         status = 'Pending'
                     where announcement_id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssi', $note_title, $message, $announcement_id);
-            $stmt->execute();
+
+            mysqlQuery($sql, 'ssi', [$note_title, $message, $announcement_id]);
+
             $actionMessageType = 'has updated a note';
-            echo 1;
+
+            $responseMessage = 'Status has been updated! Please wait for admin approval';
+
+
         }else {
             $sql = "INSERT INTO announcement  (user_id, title, description,type)
                     VALUES (?,?,?,'Notes')";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('iss', $user_id, $note_title, $message);
-            $stmt->execute();
+            mysqlQuery($sql, 'iss', [$user_id, $note_title, $message]);
             $actionMessageType = 'has posted a new note';
+            $responseMessage = 'Note has been posted! Please wait for admin approval';
 
-            echo 1;
         }
 
         //emailing notification
-        $getAdvUserInfo = "SELECT * FROM tbl_user_info where user_id = ?";
-        $getAdvUserInfoSTMT = $conn->prepare($getAdvUserInfo);
-        $getAdvUserInfoSTMT->bind_param('i', $user_id);
-        $getAdvUserInfoSTMT->execute();
-        $result = $getAdvUserInfoSTMT->get_result();
-        $advInfoRows = $result->fetch_assoc();
-        $advFname= $advInfoRows['first_name'];
-        $advLname = $advInfoRows['last_name'];
+
+        $advFname= $_SESSION['log_user_firstName'];
+        $advLname = $_SESSION['log_user_lastName'];
 
         $subjectType = 'OJT Adviser note post request';
         $bodyMessage = "<H1><b>Notification</b></H1><br>";
@@ -1610,15 +1552,16 @@ if ($action === 'Notes') {
                     Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a> ";
 
         $getAdminID = "SELECT * FROM tbl_user_info where user_type = 'admin'";
-        $getAdminIDSTMT = $conn->prepare($getAdminID);
-        $getAdminIDSTMT->execute();
-        $getAdminRes = $getAdminIDSTMT->get_result();
-        while ($row = $getAdminRes->fetch_assoc()){
+
+        $getAdminRes = mysqlQuery($getAdminID,'', []);
+        foreach ($getAdminRes as $row){
             $recipient = getRecipient($row['user_id']);
             if(!email_notif_sender($subjectType, $bodyMessage, $recipient)){
-                exit();
+                handleError('Admin didnt notified through email');
             }
         }
+        echo json_encode(['response' => $response,
+            'message' => $responseMessage]);
     }
 }
 
@@ -1685,6 +1628,10 @@ if ($action == 'deleteAnnouncement'){
 }
 
 if ($action === 'NewActivity') {
+    header('Content-Type: application/json');
+    $response = 1;
+    $responseMessage = '';
+
     $user_id = $_SESSION['log_user_id'];
     $note_title = isset($_POST['Activitytitle']) ? sanitizeInput($_POST['Activitytitle']) : Null;
     $actionType = isset($_POST['actionType']) ? sanitizeInput($_POST['actionType']) : '';
@@ -1704,16 +1651,21 @@ if ($action === 'NewActivity') {
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('sssssi', $note_title, $actDescription,$startingDate,$endinggDate,  $announcementTarget,$announcement_id);
             $stmt->execute();
+            $responseMessage = '';
+            $responseMessage = 'Activity has been updated';
+
         }else {
             $sql = "INSERT INTO announcement  (user_id, title, description , starting_date, end_date,type, status, SchedAct_targetViewer)
                     VALUES (?,?,?,?,?,'schedule and activities','Active', ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('isssss', $user_id, $note_title, $actDescription, $startingDate, $endinggDate, $announcementTarget);
             $stmt->execute();
+            $responseMessage = 'New activity has been posted';
 
         }
-        echo 1;
+
         if ($emailNotif){
+            $responseMessage .= ' ,users will get notified through email!';
             $userAnnouncementTarget = '';
             $userAnnouncementTargetSTMT = '';
             $activityDate = '';
@@ -1751,6 +1703,7 @@ WHERE tbl_accounts.status = 'active' and  program.program_code = ?;";
                 email_notif_sender($subjectType, $bodyMessage, $recipient);
             }
         }
+        echo json_encode(['response' => $response, 'message' => $responseMessage]);
     }
 }
 
@@ -1797,6 +1750,10 @@ if ($action == 'getDashboardActSched'){
     }
 }
 if ($action == 'ProgYrSec') {
+    header('Content-Type: application/json');
+    $response = 1;
+    $responseMessage = '';
+
     $program_code = isset($_POST['ProgramCode']) ? sanitizeInput($_POST['ProgramCode']) : '';
     $program_name = isset($_POST['ProgramName']) ? sanitizeInput($_POST['ProgramName']) : '';
     $year = isset($_POST['year']) ? sanitizeInput($_POST['year']) : '';
@@ -1804,28 +1761,36 @@ if ($action == 'ProgYrSec') {
     $actionType = isset($_POST['action_type']) ? sanitizeInput($_POST['action_type']) : '';
     $id = isset($_POST['ID']) ? sanitizeInput($_POST['ID']) : '';
 
+
+
     if ($program_code !== '' && $program_name !== '') {
         if (isset($actionType) && $actionType == 'edit') {
             $sql = "UPDATE program SET program_code = ?, program_name = ? WHERE program_id = ?";
             $updateProgStmt = $conn->prepare($sql);
             $updateProgStmt->bind_param('ssi', $program_code, $program_name, $id);
             if ($updateProgStmt->execute()) {
-                echo 1;
+                $responseMessage = 'Program information has been updated.';
+
+                echo json_encode(['response' => $response,
+                    'message' => $responseMessage]);
                 exit();
             } else {
-                echo $updateProgStmt->error;
-                exit();
+                handleError($updateProgStmt->error);
+
             }
         } else {
             $sql = "INSERT INTO program (program_code, program_name) VALUES (?, ?)";
             $insertProgStmt = $conn->prepare($sql);
             $insertProgStmt->bind_param('ss', $program_code, $program_name);
             if ($insertProgStmt->execute()) {
-                echo 1;
+                $responseMessage = 'New program has been added.';
+
+                echo json_encode(['response' => $response,
+                    'message' => $responseMessage]);
                 exit();
             } else {
-                echo $insertProgStmt->error;
-                exit();
+                handleError($updateProgStmt->error);
+
             }
         }
     } elseif ($year !== '' && $section !== '') {
@@ -1838,11 +1803,17 @@ if ($action == 'ProgYrSec') {
             $updateSecStmt = $conn->prepare($sql);
             $updateSecStmt->bind_param('isi', $year, $section, $id);
             if ($updateSecStmt->execute()) {
-                echo 1;
+                $responseMessage = 'Year and section information has been upddted';
+
+                echo json_encode(['response' => $response,
+                    'message' => $responseMessage]);
                 exit();
+
             } else {
-                echo $updateSecStmt->error;
-                exit();
+                handleError($updateSecStmt->error);
+
+
+
             }
         } else {
 
@@ -1851,15 +1822,18 @@ if ($action == 'ProgYrSec') {
             $insertSecStmt = $conn->prepare($sql);
             $insertSecStmt->bind_param('is', $year,$section);
             if ($insertSecStmt->execute()) {
-                echo 1;
+                $responseMessage = 'New year and section added!';
+
+                echo json_encode(['response' => $response,
+                    'message' => $responseMessage]);
                 exit();
             } else {
-                echo $insertSecStmt->error;
-                exit();
+                handleError($insertSecStmt->error);
+
             }
         }
     } else {
-        echo "Please provide valid input.";
+        handleError("Please provide valid input.");
     }
 }
 
@@ -2090,13 +2064,15 @@ if ($action == 'getAdvNotes'){
     }
 }
 if ($action == 'UpdateNotePostReq'){
+    header('Content-Type: application/json');
     $noteStat = isset($_POST['NoteStat']) ? sanitizeInput($_POST['NoteStat']): '';
     $declineReason = isset($_POST['reason']) ? sanitizeInput($_POST['reason']): 'N/A';
     $announcement_id = isset($_POST['announcementID']) ? sanitizeInput($_POST['announcementID']): '';
 
     $noteStatChoices  = array('Pending', 'Hidden', 'Active', 'Declined');
     if (!in_array($noteStat, $noteStatChoices)){
-        echo "Note status has been modified please reload the page";
+        handleError("Note status has been modified please reload the page");
+
         exit();
     }
 
@@ -2108,7 +2084,7 @@ if ($action == 'UpdateNotePostReq'){
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ssi', $noteStat, $declineReason, $announcement_id);
         if (!$stmt->execute()){
-            echo $stmt->error;
+           handleError( $stmt->erro);
             exit();
         }
 
@@ -2163,7 +2139,9 @@ where adv_sch_user_id = ? and tbl_accounts.status = 'active';";
             }
         }
 
-        echo 1;
+        echo json_encode(['response'=> 1,
+            'message' => 'Status has been updated']);
+        exit();
     }else{
         echo "Please put the required input fields";
         exit();
@@ -2355,6 +2333,9 @@ if ($action == "get_Profile_info"){
     echo json_encode($profile_Info);
 }
 if ($action == 'profileUpdate'){
+    header('Content-Type: application/json');
+    $response = 1;
+    $responseMessage = 'Profile has been updated';
     $profile_fname = sanitizeInput($_POST['user_Fname']) ?? '';
     $profile_mname = sanitizeInput($_POST['user_Mname']) ?? '';
     $profile_lname =  sanitizeInput($_POST['user_Lname']) ?? '';
@@ -2438,24 +2419,28 @@ where user_id = ?";
 
                 }
             }else{
-                echo "File type must be ('jpg', 'png', 'jpeg')";
-                exit();
+                handleError("File type must be ('jpg', 'png', 'jpeg')");
+
             }
         }
-        echo 1;
+        echo json_encode(['response' => $response,
+            'message' => $responseMessage]);
 
     }catch (mysqli_sql_exception $e){
         if ($e->getCode() == 1062) {
-            echo "Contact number already exist";
+            handleError("Contact number already exist");
+
         } else {
-            echo 'Error: ' . $e->getMessage();
+           handleError('Error: ' . $e->getMessage());
         }
         exit;
     }
 }
 
 if ($action == 'updateAcc'){
-
+    header('Content-Type: application/json');
+    $response = 1;
+    $responseMessage = 'Acccount Information has been updated';
     $user_id = $_SESSION['log_user_id'];
     $acc_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
     $acc_newPass = isset($_POST['user_password'])? sanitizeInput($_POST['user_password']) : '';
@@ -2468,17 +2453,18 @@ if ($action == 'updateAcc'){
             $updAccStmt = $conn->prepare($updAcc);
             $updAccStmt -> bind_param('ssi', $acc_email,$acc_confPass, $user_id);
             $updAccStmt->execute();
-            echo 1;
+            echo json_encode(['response' => $response,'message' => $responseMessage]);
+
         }catch (mysqli_sql_exception $e){
             if ($e->getCode() == 1062){
-                echo 'Email already exist';
+                handleError( 'Email already exist');
             }else{
-                echo $e->getMessage();
+                handleError($e->getMessage());
             }
         }
 
     }else{
-        echo "Password doesn't match";
+        handleError("Password doesn't match");
     }
 
 }

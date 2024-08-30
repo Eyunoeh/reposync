@@ -90,21 +90,7 @@ function delete_pdf($pdf){
 }
 
 
-function check_uniq_stud_id($stud_id){
-    include 'DatabaseConn/databaseConn.php';
-    $sql = 'SELECT stud_school_id FROM narrativereports WHERE stud_school_id = ?';
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $stud_id);
-    $stmt->execute();
-    $stmt->store_result();
-    if ($stmt->num_rows > 0) {
-        $stmt->close();
-        return false;
-    } else {
-        $stmt->close();
-        return true;
-    }
-}
+
 function generatePassword($school_id) {
     return "CVSUOJT".$school_id;
 }
@@ -135,3 +121,96 @@ function insertActivityLog($activity_type, $file_id) {
         return false; // Insertion failed
     }
 }
+
+function handleNarrativeUpload($fields, $old_filename, $new_file_name) {
+    $file_name = $_FILES['final_report_file']['name'];
+    $file_temp = $_FILES['final_report_file']['tmp_name'];
+
+    if (isPDF($file_name)) {
+        $pdf = 'src/NarrativeReportsPDF/' . $old_filename;
+        $flipbook_page_dir = 'src/NarrativeReports_Images/' . str_replace('.pdf', '', $old_filename);
+        if (!delete_pdf($pdf) || !deleteDirectory($flipbook_page_dir)) {
+            $message = 'Error deleting old files.';
+            handleError($message);
+            exit();
+        }
+
+        $pdf_file_path = "src/NarrativeReportsPDF/" . $new_file_name;
+        move_uploaded_file($file_temp, $pdf_file_path);
+
+        $report_pdf_file_name = "{$fields['first_name']}_{$fields['last_name']}_{$fields['program']}_{$fields['section']}_{$fields['school_id']}";
+        if (convert_pdf_to_image($report_pdf_file_name)) {
+            echo json_encode(['response' => 1, 'message' => 'Narrative report has been updated!']);
+            exit();
+        } else {
+            echo json_encode(['response' => 2, 'message' => 'Error during PDF to image conversion.']);
+            exit();
+        }
+    }
+}
+
+
+function handleNarrativeFileRename($old_filename, $new_file_name) {
+    $pdf_dir = 'src/NarrativeReportsPDF/';
+    $img_dir = 'src/NarrativeReports_Images/';
+    if (is_dir($pdf_dir)) {
+        if ($handle = opendir($pdf_dir)) {
+            while (false !== ($file = readdir($handle))) {
+                if ($file == $old_filename) {
+                    $oldFilePath = $pdf_dir . $old_filename;
+                    $newFilePath = $pdf_dir . $new_file_name;
+                    if (rename($oldFilePath, $newFilePath)) {
+                        $old_flipbook_page_dir = str_replace('.pdf', '', $old_filename);
+                        $new_flipbook_page_dir = str_replace('.pdf', '', $new_file_name);
+                        renameFlipbookDirectory($img_dir, $old_flipbook_page_dir, $new_flipbook_page_dir);
+                    } else {
+                        handleError("Error renaming PDF file.");
+                    }
+                }
+            }
+            closedir($handle);
+        } else {
+            handleError("Error opening PDF directory.");
+        }
+    } else {
+        handleError("PDF directory does not exist.");
+    }
+}
+
+
+function renameFlipbookDirectory($img_dir, $old_dir, $new_dir) {
+    if (is_dir($img_dir . $old_dir)) {
+        if (rename($img_dir . $old_dir, $img_dir . $new_dir)) {
+            if (is_dir($img_dir . $new_dir)) {
+                if ($handle_img = opendir($img_dir . $new_dir)) {
+                    while (false !== ($file_img = readdir($handle_img))) {
+                        if ($file_img != "." && $file_img != "..") {
+                            $oldImagePath = $img_dir . $new_dir . "/" . $file_img;
+                            $newImageName = str_replace($old_dir, $new_dir, $file_img);
+                            $newImagePath = $img_dir . $new_dir . "/" . $newImageName;
+                            if (!rename($oldImagePath, $newImagePath)) {
+                                handleError("Error renaming image file.");
+                            }
+                        }
+                    }
+                    closedir($handle_img);
+                } else {
+                    handleError("Error opening image directory.");
+                }
+            } else {
+                handleError("New image directory does not exist.");
+            }
+        } else {
+            handleError("Error renaming image directory.");
+        }
+    } else {
+        handleError("Old image directory does not exist.");
+    }
+}
+
+
+function handleError($message) {
+    echo json_encode(['response' => 0, 'message' => $message]);
+    exit();
+}
+

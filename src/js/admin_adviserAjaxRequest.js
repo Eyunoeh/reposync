@@ -1,25 +1,28 @@
 
 document.addEventListener('submit', function(e) {
     e.preventDefault();
-    let modal,formData,endpoint,loader_id,btn, notification;
+    let modal,formData,endpoint,loader_id,btn, notification, notifType, notifMessaage;
+    let  alertContainer = 'notifBox';
     let getNewData = [];
 
     if (e.target.id === 'narrativeReportsForm'){
         endpoint = 'newFinalReport'
         modal =  'newNarrative';
         loader_id = 'loader_narrative';
+        notifType = 'success'
         btn = 'newNarrativeSubmitbtn';
-        notification = 'SuccessLUploadNotif'
+
          getNewData.push(dashboard_student_NarrativeReports);
     }if (e.target.id === 'EditNarrativeReportsForm'){
          if (e.submitter.id === 'update_btn'){
              endpoint = 'UpdateNarrativeReport';
-             notification = 'SuccessNarrativeEdit'
+
          }
          else if (e.submitter.id === 'archive_btn'){
              endpoint = 'ArchiveNarrativeReport';
-             notification = 'archiveNarrativeNotif'
+
          }
+        notifType = 'info'
         getNewData.push(dashboard_student_NarrativeReports);
 
         loader_id = 'loader_narrative_update';
@@ -29,7 +32,7 @@ document.addEventListener('submit', function(e) {
          if (e.submitter.id === 'stud_Submit') {
              endpoint = "newUser";
          }
-         notification = 'NewStudentNotif';
+        notifType = 'success'
         modal = 'newStudentdialog';
         btn = 'newStudBtn';
         loader_id = 'newStudentLoader';
@@ -39,11 +42,12 @@ document.addEventListener('submit', function(e) {
          if (e.submitter.id === 'update_stud_btn'){
              endpoint = 'updateUserInfo';
          }
+        notifType = 'info'
         modal = 'editStuInfo';
          btn = 'editStudBtn';
          loader_id = 'editStudentLoader'
         getNewData.push(get_studenUsertList);
-        notification = 'EditStudentNotif';
+
 
     }
      if (e.target.id === 'admin_adv_Form'){
@@ -54,10 +58,11 @@ document.addEventListener('submit', function(e) {
              openModalForm('passNotmatchNotif')
              return false;
          }
-         notification = 'NewadvNotif';
+
          loader_id ='new_adv_adminLoader'
          btn = 'new_adv_adminBtn';
          modal = 'newAdvierDialog';
+         notifType = 'success'
          getNewData.push(get_AdvUsertList);
 
      }
@@ -66,8 +71,9 @@ document.addEventListener('submit', function(e) {
          loader_id = 'editAdVLoader';
          btn = 'editStudBtn'
          modal = 'editAdv_admin';
+         notifType = 'info'
          getNewData.push(get_AdvUsertList);
-         notification = 'EditAdvNotif';
+
 
      }
      if (e.target.id === 'NotesForm'){
@@ -76,9 +82,9 @@ document.addEventListener('submit', function(e) {
          btn = 'noteSubmit';
          modal = 'Notes';
          if (e.target.querySelector('input[name="actionType"]').value === 'edit') {
-             notification = 'UpdateNoteNotif';
+             notifType = 'info';
          } else {
-             notification = 'NewNoteNotif';
+             notifType = 'success';
          }
 
          getNewData.push(get_dashBoardnotes);
@@ -89,9 +95,9 @@ document.addEventListener('submit', function(e) {
         btn = 'SchedAndActbtn';
         modal = 'Act&shedModal';
         if (e.target.querySelector('input[name="actionType"]').value === 'edit') {
-            notification = 'UpdateaActSchedNotif';
+            notifType = 'info';
         } else {
-            notification = 'NewActSchedNotif';
+            notifType = 'success';
         }
         getNewData.push(getActivitiesAndSched);
     }if (e.target.id === 'sectionProgramForm'){
@@ -106,7 +112,7 @@ document.addEventListener('submit', function(e) {
         }else {
             if (e.target.querySelector('input[name="ProgramCode"]') &&
                 e.target.querySelector('input[name="ProgramName"]')) {
-                $('#ProgrYrSecNotifText').html('New program has been added!!')
+                $('#ProgrYrSecNotifText').html('New program has been added!')
 
             }else if (e.target.querySelector('input[name="year"]') &&
                 e.target.querySelector('input[name="section"]')) {
@@ -140,7 +146,9 @@ document.addEventListener('submit', function(e) {
         btn = 'newNarrativeSubmitbtn';
         notification = 'SuccessLUploadNotif'
         getNewData.push(getPendingFinalReports);
-    }if (e.target.id === 'profileForm'){
+    }
+
+    if (e.target.id === 'profileForm'){
         endpoint = 'profileUpdate'
         loader_id = 'profileLoader';
         btn = 'profilSbmt';
@@ -166,14 +174,16 @@ document.addEventListener('submit', function(e) {
         processData: false,
         contentType: false,
         success: function(response) {
-            if (parseInt(response) === 1) {
+            if (modal){
+                closeModalForm(modal);
+
+            }
+            if (response.response === 1) {
                 enable_button(btn)
                 remove_loader(loader_id);
-                if (modal){
-                    closeModalForm(modal);
 
-                }
-                openModalForm(notification);
+                Alert(alertContainer, response.message,notifType)
+                //openModalForm(notification);
                 if (getNewData.length > 0){
                     getNewData.forEach(func => func());
 
@@ -181,10 +191,13 @@ document.addEventListener('submit', function(e) {
                
 
             } else {
-                alert(response);
+
                 remove_loader(loader_id);
                 enable_button(btn);
+                Alert(alertContainer, response.message,'warning')
+                console.log(response.message)
             }
+            console.log(response)
         },
     });
 });
