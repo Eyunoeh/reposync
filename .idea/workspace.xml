@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="notif fix dashboard.php" />
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="css fix&#10;added profile student.js sidee&#10;studentSettings.php student.js&#10;added mysql function for refactoring ajax.php">
+      <change afterPath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_5.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpMailer.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpMailer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_3.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/src/StudentWeeklyReports/210132436_WeeklyReport_week_3.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home_nav.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/home_nav.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/buttons_modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/buttons_modal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/student.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/student.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manage_dhshboardProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manage_dhshboardProfile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/studentSettings.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/studentSettings.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/weeklyReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/weeklyReports.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,6 +43,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -70,28 +86,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/JamesCapstone&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.Mappings&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\PhpStorm 2023.1.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "full.screen.before.presentation.mode": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/xampp/htdocs/JamesCapstone",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\comments_img" />
@@ -308,9 +323,7 @@
       <workItem from="1724730570333" duration="2473000" />
       <workItem from="1724808657360" duration="197000" />
       <workItem from="1724808875613" duration="15216000" />
-      <workItem from="1724893845239" duration="12568000" />
-      <workItem from="1724906641747" duration="80000" />
-      <workItem from="1724978734872" duration="21556000" />
+      <workItem from="1724893845239" duration="12282000" />
     </task>
     <task id="LOCAL-00029" summary="revision Comments under develop">
       <created>1715083562511</created>
@@ -655,7 +668,7 @@
       <option name="project" value="LOCAL" />
       <updated>1723370620735</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -674,6 +687,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="revising checking notes" />
+    <MESSAGE value="Checking adviser posted notes OK" />
     <MESSAGE value="revise viewing Narratives" />
     <MESSAGE value="add new narrative this is pages" />
     <MESSAGE value="update 2nd revision" />
@@ -697,9 +712,7 @@
     <MESSAGE value="css fix" />
     <MESSAGE value="css fix&#10;added profile student.js sidee&#10;studentSettings.php student.js" />
     <MESSAGE value="css fix&#10;added profile student.js sidee&#10;studentSettings.php student.js&#10;added mysql function for refactoring ajax.php" />
-    <MESSAGE value="backend profile settings add notification buttons_modal.js  on update and submmit on student side clear code main.js and student.js add profile on comments" />
-    <MESSAGE value="notif fix dashboard.php" />
-    <option name="LAST_COMMIT_MESSAGE" value="notif fix dashboard.php" />
+    <option name="LAST_COMMIT_MESSAGE" value="css fix&#10;added profile student.js sidee&#10;studentSettings.php student.js&#10;added mysql function for refactoring ajax.php" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -711,7 +724,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/js/admin_adviserAjaxRequest.js</url>
-          <line>156</line>
+          <line>148</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
