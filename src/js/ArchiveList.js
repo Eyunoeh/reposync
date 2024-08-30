@@ -503,7 +503,12 @@ function UnarchiveData(id, route) {
         dataType: 'json',
         success: function(response) {
             if (response.response === 1) {
-                window.location.href = 'manage_ArchiveList.php?route=' + route;
+                closeModalForm('ArhiveModal')
+                Alert('notifBox', response.message, 'info');
+                setTimeout(function (){
+                    window.location.href = 'manage_ArchiveList.php?route=' + route;
+
+                },3000)
             } else {
                 alert('Error: ' + response.message || 'Unknown error occurred.');
             }

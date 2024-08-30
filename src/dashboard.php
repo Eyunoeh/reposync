@@ -162,15 +162,13 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
     </section>
 
 </main>
+<div id="notifBox" onclick="resetAlertBox(this.id)">
+
+</div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-
-
-
-</script>
 <script src="js/dashboard.js"></script>
 
 <script src="js/admin_adviserAjaxRequest.js"></script>

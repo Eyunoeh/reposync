@@ -598,6 +598,7 @@ function deactivate_account(id, modal_id){
             if (response){
                if (parseInt(response) === 1){
                    closeModalForm(modal_id);
+                   Alert('notifBox', 'User account has been archived', 'warning');
                    get_studenUsertList();
                }
             }
