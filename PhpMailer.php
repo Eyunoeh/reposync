@@ -20,8 +20,7 @@ function email_notif_sender($subjectType,$bodyMessage, $emailAddress){
         $mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth = true;                                   //Enable SMTP authentication
         $mail->Username = '';                     //SMTP username
-        $mail->Password = 'dfwdemcynrsgwlbj
-';                               //SMTP password
+        $mail->Password = '';                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            // ENCRYPTION_SMTPS 465 Enable implicit TLS encryption
         $mail->Port = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 

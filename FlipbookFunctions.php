@@ -5,24 +5,25 @@ use \ConvertApi\ConvertApi;
 function convert_pdf_to_image($file_name):bool{
 
     $basePath = "src/NarrativeReports_Images/";
-    $subdirectoryName = $file_name;
+    $subdirectoryName = str_replace(".pdf","",$file_name);
 
     if (!is_dir($basePath . $subdirectoryName)) {
         mkdir($basePath . $subdirectoryName, 0755);
 
-        ConvertApi::setApiSecret('oc2ymqnjEq3ZQDbk');
-        $result = ConvertApi::convert('png', [
-            'File' => 'src/NarrativeReportsPDF/'.$file_name.'.pdf',
-            'FileName' => $file_name."_page",
-            'ImageResolution' => '800',
-        ], 'pdf'
-        );
-
-        $result->saveFiles($basePath.$subdirectoryName);
-        return true;
-    } else {
-        return false;
     }
+    try {
+        ConvertApi::setApiSecret('');
+        $result = ConvertApi::convert('jpg', [
+            'File' => 'src/NarrativeReportsPDF/'.$file_name,
+            'FileName' => $subdirectoryName."_page",
+            ], 'pdf'
+        );
+        $result->saveFiles($basePath.$subdirectoryName);
+    }catch (Exception $exception){
+        handleError("Code: ".$exception->getCode()."Error: ".$exception->getMessage());
+    }
+
+    return true;
 }
 function sanitizeInput($data) {
     $data = trim($data);
@@ -122,30 +123,27 @@ function insertActivityLog($activity_type, $file_id) {
     }
 }
 
-function handleNarrativeUpload($fields, $old_filename, $new_file_name) {
+function handleNarrativeUpload($old_filename, $new_file_name) {
     $file_name = $_FILES['final_report_file']['name'];
     $file_temp = $_FILES['final_report_file']['tmp_name'];
 
     if (isPDF($file_name)) {
         $pdf = 'src/NarrativeReportsPDF/' . $old_filename;
         $flipbook_page_dir = 'src/NarrativeReports_Images/' . str_replace('.pdf', '', $old_filename);
-        if (!delete_pdf($pdf) || !deleteDirectory($flipbook_page_dir)) {
-            $message = 'Error deleting old files.';
-            handleError($message);
-            exit();
-        }
+        delete_pdf($pdf);
+        deleteDirectory($flipbook_page_dir);
+
 
         $pdf_file_path = "src/NarrativeReportsPDF/" . $new_file_name;
         move_uploaded_file($file_temp, $pdf_file_path);
 
-        $report_pdf_file_name = "{$fields['first_name']}_{$fields['last_name']}_{$fields['program']}_{$fields['section']}_{$fields['school_id']}";
-        if (convert_pdf_to_image($report_pdf_file_name)) {
+        if (convert_pdf_to_image($new_file_name)) {
             echo json_encode(['response' => 1, 'message' => 'Narrative report has been updated!']);
             exit();
         } else {
-            echo json_encode(['response' => 2, 'message' => 'Error during PDF to image conversion.']);
-            exit();
+            handleError('Error during PDF to image conversion.');
         }
+
     }
 }
 
@@ -214,3 +212,5 @@ function handleError($message) {
     exit();
 }
 
+
+//convert_pdf_to_image('Lando_Norrisss_BSCS_4B_212512123.pdf');

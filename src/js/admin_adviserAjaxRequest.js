@@ -4,7 +4,8 @@ document.addEventListener('submit', function(e) {
     let modal,formData,endpoint,loader_id,btn, notification, notifType, notifMessaage;
     let  alertContainer = 'notifBox';
     let getNewData = [];
-
+/*
+//adviser to
     if (e.target.id === 'narrativeReportsForm'){
         endpoint = 'newFinalReport'
         modal =  'newNarrative';
@@ -28,7 +29,10 @@ document.addEventListener('submit', function(e) {
         loader_id = 'loader_narrative_update';
          btn = 'editNarrativeBtn';
          modal = 'EditNarrative';
-    }if (e.target.id === 'studentForm'){
+    }
+    //adviser to end
+*/
+    if (e.target.id === 'studentForm'){
          if (e.submitter.id === 'stud_Submit') {
              endpoint = "newUser";
          }
@@ -131,6 +135,8 @@ document.addEventListener('submit', function(e) {
         notification = 'NoteStatUpdateNotif';
         getNewData.push(getAdvNotes);
     }
+
+    //admin to
     if (e.target.id === 'EditNarrativeReportsReqForm'){
         endpoint = 'UpdateNarrativeReport';
         loader_id = 'loader_narrative_update';
@@ -146,7 +152,7 @@ document.addEventListener('submit', function(e) {
         btn = 'newNarrativeSubmitbtn';
         notification = 'SuccessLUploadNotif'
         getNewData.push(getPendingFinalReports);
-    }
+    }//adminto end
 
     if (e.target.id === 'profileForm'){
         endpoint = 'profileUpdate'

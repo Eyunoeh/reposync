@@ -543,6 +543,8 @@ function editNarrativeReq(narrative_id){
                 }
                 document.querySelector('#EditNarrativeReportsReqForm select[name="ojt_adviser"]').value = data.OJT_adviser_ID;
                 document.querySelector('#EditNarrativeReportsReqForm input[name="ojt_adviser"]').value = data.OJT_adviser_ID;
+                $('#EditNarrativeReportsReqForm input[type="file"][name="final_report_file"]').val('');
+
             }
         },
         error: function(xhr, status, error) {

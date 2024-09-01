@@ -325,6 +325,7 @@ while ($row = $res->fetch_assoc()) {
                             let years = data.sySubmitted.split(',');
                             startSchYear = years[0].trim();
                             endSchYear = years[1].trim();
+                        }
 
                         document.getElementById('dlLink').href='NarrativeReportsPDF/'+ data.narrative_file_name;
 
@@ -351,8 +352,9 @@ while ($row = $res->fetch_assoc()) {
                         }
 
                         document.querySelector('#EditNarrativeReportsForm select[name="ojt_adviser"]').value = data.OJT_adviser_ID;
+                        $('#EditNarrativeReportsReqForm input[type="file"][name="final_report_file"]').val('');
 
-                    }
+
                 }
             },
             error: function(xhr, status, error) {

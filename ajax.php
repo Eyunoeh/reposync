@@ -380,7 +380,7 @@ if ($action == 'newFinalReport'){
                             move_uploaded_file($file_temp, $destination);
                             $report_pdf_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $section . "_" . $school_id;
 
-                            if (convert_pdf_to_image($report_pdf_file_name)) {
+                            if (convert_pdf_to_image($new_file_name)) {
                                 if ($_SESSION['log_user_type'] == 'adviser'){       // admin email notification
                                     $getAdminUser = "SELECT tbl_accounts.status, tbl_accounts.email, tbl_user_info.user_id, tbl_user_info.user_type  FROM tbl_user_info
                                                    JOIN tbl_accounts on tbl_accounts.user_id = tbl_user_info.user_id where tbl_accounts.status = 'active' and tbl_user_info.user_type = 'admin'";
@@ -636,7 +636,7 @@ if ($action === 'UpdateNarrativeReport') {
         // Handle file upload and renaming logic
         if (isset($_FILES['final_report_file']) && $_FILES['final_report_file']['error'] === UPLOAD_ERR_OK) {
             // Handle file upload
-            handleNarrativeUpload($fields, $old_filename, $new_file_name);
+            handleNarrativeUpload($old_filename, $new_file_name);
         } else {
             // Handle file renaming
             handleNarrativeFileRename($old_filename, $new_file_name);
@@ -1316,7 +1316,7 @@ if ($action == 'getAdvisers') {
     $sql = "SELECT ui.*, acc.*
         FROM tbl_user_info ui
         INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-        WHERE ui.user_type = 'adviser'";
+        WHERE ui.user_type = 'adviser' and acc.status = 1";
 
     $result = $conn->query($sql);
 

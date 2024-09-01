@@ -21,7 +21,7 @@ include '../functions.php';
     <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
     <title>Narrative Report</title>
 </head>
-<body class="bg-slate-500 ">
+<body class="bg-slate-700 ">
 
 <div class="flipbook-viewport overflow-auto ">
     <div class="flex h-[100vh] justify-center items-center gap-5">
@@ -29,8 +29,8 @@ include '../functions.php';
         <button id="prev" class="btn btn-neutral"><i class="fa-solid fa-circle-left"></i> Prev</button>
 
         <div class="flipbook">
-            <div class="hard"></div>
-            <div class="hard"></div>
+            <div class="hard" style="background-image:url('assets/reposync signup image-01.jpg')"></div>
+            <div class="bg-slate-200" ></div>
 
             <?php
             $encrypt_key = 'TheSecretKey#02';
@@ -46,16 +46,15 @@ include '../functions.php';
                 $stmt->execute();
                 $result = $stmt->get_result();
                 if ($row = $result->fetch_assoc()) {
-                    $path = 'NarrativeReports_Images/' . str_replace(' ','',
-                            $row['first_name']. "_" ). str_replace(' ','',$row['last_name']). "_" .
-                        $row['program'] . "_" . $row['section']. "_" .$row['stud_school_id'];
+                    $path = 'NarrativeReports_Images/' . str_replace(' ','', $row['first_name']. "_" ). str_replace(' ','',$row['last_name']). "_" . $row['program'] . "_" . $row['section']. "_" .$row['stud_school_id'];
                     if (is_dir($path)) {
                         $files = scandir($path);
                         $files_with_page = [];
                         $files_without_page = [];
                         foreach ($files as $file) {
                             if ($file != "." && $file != "..") {
-                                if (preg_match('/page-\d+\.png$/', $file)) {
+                                if (preg_match('/page-\d+\.png$/', $file) or
+                                    preg_match('/page-\d+\.jpg$/', $file)) {
                                     $files_with_page[] = $file;
                                 } else {
                                     $files_without_page[] = $file;
@@ -77,6 +76,7 @@ include '../functions.php';
             }
             $conn->close();
             ?>
+            <div class="hard"></div>
             <div class="hard"></div>
         </div>
 
