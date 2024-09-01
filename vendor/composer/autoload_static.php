@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitf1c0b6d696ea5b852996a16e7a5bd2ba
 {
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'setasign\\Fpdi\\' => 14,
+        ),
         'X' => 
         array (
             'Xpc\\ReposyncNarrativeManagementSystem\\' => 38,
@@ -22,6 +26,10 @@ class ComposerStaticInitf1c0b6d696ea5b852996a16e7a5bd2ba
     );
 
     public static $prefixDirsPsr4 = array (
+        'setasign\\Fpdi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
         'Xpc\\ReposyncNarrativeManagementSystem\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -48,6 +56,7 @@ class ComposerStaticInitf1c0b6d696ea5b852996a16e7a5bd2ba
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
