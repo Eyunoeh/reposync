@@ -53,6 +53,109 @@ function mysqlQuery($query, $valueType, $params){
 }
 
 
+function generatePassword($school_id) {
+    return "CVSUOJT".$school_id;
+}
+function getTotalAdvList($adv_user_id){
+    include 'DatabaseConn/databaseConn.php';
 
+    $sql = "SELECT COUNT(*) AS total FROM advisory_list WHERE adv_sch_user_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $adv_user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $total = $row['total'];
+    $stmt->close();
 
+    return $total;
+}
+function insertActivityLog($activity_type, $file_id) {
+    include 'DatabaseConn/databaseConn.php';
+    $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
+                            VALUES (?, ?, CURRENT_TIMESTAMP)";
+    $stmt = $conn->prepare($insert_activity_log);
+    $stmt->bind_param("is", $file_id, $activity_type);
+    $stmt->execute();
+    if ($stmt->affected_rows > 0) {
+        return true;
+    } else {
+        return false; // Insertion failed
+    }
+}
+
+function checkConversionStatus($jobId) {
+    $url = "https://v2.convertapi.com/async/job/$jobId";
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        curl_close($ch);
+        return ['error' => $error];
+    }
+
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode == 200) {
+
+        $decodedResponse = json_decode($response, true);
+        if (json_last_error() === JSON_ERROR_NONE) {
+            return ['responseStatus' => $httpCode, 'JobId' => $jobId, 'dataResponse' => $decodedResponse];
+        } else {
+            return ['error' => 'Failed to decode JSON response'];
+        }
+    } else {
+        return ['responseStatus' => $httpCode, 'JobId' => $jobId];
+    }
+}
+
+function saveFlipbookPages($response, $file_name) {
+    $basePath = "NarrativeReports_Images/";
+    $subdirectoryName = str_replace(".pdf","",$file_name);
+
+    if (!is_dir($basePath . $subdirectoryName)) {
+        mkdir($basePath . $subdirectoryName, 0755);
+
+    }
+    $saveDirectory = $basePath . $subdirectoryName;
+
+    $results = [];
+
+    if (isset($response['Files']) && is_array($response['Files'])) {
+        foreach ($response['Files'] as $file) {
+
+            $fileData = $file['FileData'];
+            $fileName = $file['FileName'];
+            $savePath = $saveDirectory . '/' . $fileName;
+
+            // Decode the base64 data
+            $fileContent = base64_decode($fileData);
+
+            if ($fileContent === false) {
+                $results[] = ['error' => "Failed to decode base64 data for $fileName"];
+                continue;
+            }
+
+            // Save the decoded content to a file
+            if (file_put_contents($savePath, $fileContent) === false) {
+                $results[] = ['error' => "Failed to save $fileName"];
+            } else {
+                $results[] = ['status' => "File saved successfully as $fileName"];
+            }
+        }
+    } else {
+        $results[] = ['error' => 'No files found in the response.'];
+    }
+
+    return $results;
+}
+function handleError($message) {
+    echo json_encode(['response' => 0, 'message' => $message]);
+    exit();
+}
 

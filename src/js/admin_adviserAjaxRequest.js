@@ -4,34 +4,7 @@ document.addEventListener('submit', function(e) {
     let modal,formData,endpoint,loader_id,btn, notification, notifType, notifMessaage;
     let  alertContainer = 'notifBox';
     let getNewData = [];
-/*
-//adviser to
-    if (e.target.id === 'narrativeReportsForm'){
-        endpoint = 'newFinalReport'
-        modal =  'newNarrative';
-        loader_id = 'loader_narrative';
-        notifType = 'success'
-        btn = 'newNarrativeSubmitbtn';
 
-         getNewData.push(dashboard_student_NarrativeReports);
-    }if (e.target.id === 'EditNarrativeReportsForm'){
-         if (e.submitter.id === 'update_btn'){
-             endpoint = 'UpdateNarrativeReport';
-
-         }
-         else if (e.submitter.id === 'archive_btn'){
-             endpoint = 'ArchiveNarrativeReport';
-
-         }
-        notifType = 'info'
-        getNewData.push(dashboard_student_NarrativeReports);
-
-        loader_id = 'loader_narrative_update';
-         btn = 'editNarrativeBtn';
-         modal = 'EditNarrative';
-    }
-    //adviser to end
-*/
     if (e.target.id === 'studentForm'){
          if (e.submitter.id === 'stud_Submit') {
              endpoint = "newUser";

@@ -1,30 +1,72 @@
 <?php
+
+
+
 include 'vendor/autoload.php';
 use \ConvertApi\ConvertApi;
+use setasign\Fpdi\Fpdi;
 
-function convert_pdf_to_image($file_name):bool{
-
-    $basePath = "src/NarrativeReports_Images/";
-    $subdirectoryName = str_replace(".pdf","",$file_name);
-
-    if (!is_dir($basePath . $subdirectoryName)) {
-        mkdir($basePath . $subdirectoryName, 0755);
-
-    }
-    try {
-        ConvertApi::setApiSecret('');
-        $result = ConvertApi::convert('jpg', [
-            'File' => 'src/NarrativeReportsPDF/'.$file_name,
-            'FileName' => $subdirectoryName."_page",
-            ], 'pdf'
-        );
-        $result->saveFiles($basePath.$subdirectoryName);
-    }catch (Exception $exception){
-        handleError("Code: ".$exception->getCode()."Error: ".$exception->getMessage());
+class PDFWithWatermark extends FPDI
+{
+    function Header()
+    {
     }
 
-    return true;
+    function Footer()
+    {
+
+    }
 }
+
+
+
+
+function initiateAsyncPDFtoJPGConversion($localFilePath, $apiSecret, $file_name) {
+    $apiUrl = "https://v2.convertapi.com/async/convert/pdf/to/jpg?Secret=$apiSecret";
+
+    $postData = [
+        'File' => new CURLFile($localFilePath),
+        'FileName' => $file_name. "_page"
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+
+    $result = json_decode($response, true);
+
+    return $result;
+}
+function pageWatermark($pdfPath, $watermarkImagePath)
+{
+    $pdf = new PDFWithWatermark();
+
+    $pageCount = $pdf->setSourceFile($pdfPath);
+
+// Loop through each page
+    for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+        $templateId = $pdf->importPage($pageNo);
+        $size = $pdf->getTemplateSize($templateId);
+
+        $pdf->AddPage();
+        $pdf->useTemplate($templateId, 0, 0, $size['width'], $size['height']);
+
+        // Add the watermark image centered on the page
+        $watermarkWidth =150; // Width of the watermark
+        $pdf->Image($watermarkImagePath, ($size['width'] - $watermarkWidth) / 2, ($size['height'] - $watermarkWidth) / 2, $watermarkWidth);
+    }
+
+
+    return $pdf->Output('F', $pdfPath);
+}
+
+
+
 function sanitizeInput($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -92,59 +134,45 @@ function delete_pdf($pdf){
 
 
 
-function generatePassword($school_id) {
-    return "CVSUOJT".$school_id;
-}
-function getTotalAdvList($adv_user_id){
-    include 'DatabaseConn/databaseConn.php';
 
-    $sql = "SELECT COUNT(*) AS total FROM advisory_list WHERE adv_sch_user_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $adv_user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $total = $row['total'];
-    $stmt->close();
 
-    return $total;
-}
-function insertActivityLog($activity_type, $file_id) {
-    include 'DatabaseConn/databaseConn.php';
-    $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
-                            VALUES (?, ?, CURRENT_TIMESTAMP)";
-    $stmt = $conn->prepare($insert_activity_log);
-    $stmt->bind_param("is", $file_id, $activity_type);
-    $stmt->execute();
-    if ($stmt->affected_rows > 0) {
-        return true;
-    } else {
-        return false; // Insertion failed
-    }
-}
+function handleNarrativeUpload($old_filename, $new_file_name, $narrative_id) {
+    $apiSecret = '';
 
-function handleNarrativeUpload($old_filename, $new_file_name) {
-    $file_name = $_FILES['final_report_file']['name'];
+
     $file_temp = $_FILES['final_report_file']['tmp_name'];
-
-    if (isPDF($file_name)) {
+    if ($old_filename !== ''){
         $pdf = 'src/NarrativeReportsPDF/' . $old_filename;
         $flipbook_page_dir = 'src/NarrativeReports_Images/' . str_replace('.pdf', '', $old_filename);
         delete_pdf($pdf);
         deleteDirectory($flipbook_page_dir);
-
-
-        $pdf_file_path = "src/NarrativeReportsPDF/" . $new_file_name;
-        move_uploaded_file($file_temp, $pdf_file_path);
-
-        if (convert_pdf_to_image($new_file_name)) {
-            echo json_encode(['response' => 1, 'message' => 'Narrative report has been updated!']);
-            exit();
-        } else {
-            handleError('Error during PDF to image conversion.');
-        }
-
     }
+    $watermarkIMG = 'src/assets/cvsuproperty.png';
+    $pdf_file_path = "src/NarrativeReportsPDF/" . $new_file_name;
+    move_uploaded_file($file_temp, $pdf_file_path);
+
+
+
+
+    pageWatermark($pdf_file_path, $watermarkIMG);
+
+
+    $updtNarrativeJobID = "UPDATE narrativereports SET narrativeConvertJobID  = ? where narrative_id = ? ";
+    try {
+        $job_id = initiateAsyncPDFtoJPGConversion($pdf_file_path,$apiSecret, $new_file_name)['JobId'];
+
+        mysqlQuery($updtNarrativeJobID, 'si',[$job_id,$narrative_id]);
+
+    }catch (Exception $exception){
+        handleError( $exception->getMessage());
+    }
+
+
+
+
+   // convert_pdf_to_image($new_file_name);
+
+
 }
 
 
@@ -207,10 +235,10 @@ function renameFlipbookDirectory($img_dir, $old_dir, $new_dir) {
 }
 
 
-function handleError($message) {
-    echo json_encode(['response' => 0, 'message' => $message]);
-    exit();
-}
+
+
+
+
 
 
 //convert_pdf_to_image('Lando_Norrisss_BSCS_4B_212512123.pdf');
