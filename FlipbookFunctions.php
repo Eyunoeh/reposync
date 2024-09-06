@@ -1,7 +1,5 @@
 <?php
 
-
-
 include 'vendor/autoload.php';
 use \ConvertApi\ConvertApi;
 use setasign\Fpdi\Fpdi;
@@ -137,7 +135,7 @@ function delete_pdf($pdf){
 
 
 function handleNarrativeUpload($old_filename, $new_file_name, $narrative_id) {
-    $apiSecret = '';
+
 
 
     $file_temp = $_FILES['final_report_file']['tmp_name'];
@@ -159,6 +157,7 @@ function handleNarrativeUpload($old_filename, $new_file_name, $narrative_id) {
 
     $updtNarrativeJobID = "UPDATE narrativereports SET narrativeConvertJobID  = ? where narrative_id = ? ";
     try {
+        $apiSecret = '';
         $job_id = initiateAsyncPDFtoJPGConversion($pdf_file_path,$apiSecret, $new_file_name)['JobId'];
 
         mysqlQuery($updtNarrativeJobID, 'si',[$job_id,$narrative_id]);
@@ -166,11 +165,6 @@ function handleNarrativeUpload($old_filename, $new_file_name, $narrative_id) {
     }catch (Exception $exception){
         handleError( $exception->getMessage());
     }
-
-
-
-
-   // convert_pdf_to_image($new_file_name);
 
 
 }

@@ -348,83 +348,84 @@ if ($action == 'newFinalReport'){
 
     $school_id = isset($_POST['school_id']) && is_numeric($_POST['school_id'])  ? sanitizeInput($_POST['school_id']) : '';
 
-        if ($first_name !== '' && $stud_sex !== '' && $last_name !== '' && $program !== ''
-            && $section !== '' && $ojt_adviser !== ''
-            && $school_id !== '' && $sySubmitted !== '') {
-            if (isset($_FILES['final_report_file'])) {
-                $file_name = $_FILES['final_report_file']['name'];
-                $file_temp = $_FILES['final_report_file']['tmp_name'];
-                $file_type = $_FILES['final_report_file']['type'];
-                $file_error = $_FILES['final_report_file']['error'];
-                $file_size = $_FILES['final_report_file']['size'];
-                if (!isPDF($file_name)){
-                    handleError('Invalid file format: Not pdf');
-                }
-                if ($file_error === UPLOAD_ERR_OK) {
-                    $file_first_name = str_replace(' ', '', $first_name);
-                    $file_last_name = str_replace(' ', '', $last_name);
-                    $new_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $section . "_" . $school_id . ".pdf";
-                    $current_date_time = date('Y-m-d H:i:s');
-                    $narrative_status = isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'admin' ? 'OK' : 'Pending';
+    if ($first_name !== '' && $stud_sex !== '' && $last_name !== '' && $program !== ''
+        && $section !== '' && $ojt_adviser !== ''
+        && $school_id !== '' && $sySubmitted !== '') {
+        if (isset($_FILES['final_report_file'])) {
+            $file_name = $_FILES['final_report_file']['name'];
+            $file_temp = $_FILES['final_report_file']['tmp_name'];
+            $file_type = $_FILES['final_report_file']['type'];
+            $file_error = $_FILES['final_report_file']['error'];
+            $file_size = $_FILES['final_report_file']['size'];
+            if (!isPDF($file_name)){
+                handleError('Invalid file format: Not pdf');
+            }
+            if ($file_error === UPLOAD_ERR_OK) {
+                $file_first_name = str_replace(' ', '', $first_name);
+                $file_last_name = str_replace(' ', '', $last_name);
+                $new_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $section . "_" . $school_id . ".pdf";
+                $current_date_time = date('Y-m-d H:i:s');
+                $narrative_status = isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'admin' ? 'OK' : 'Pending';
 
-                    try {
-                        $new_final_report = "INSERT INTO narrativereports
+                try {
+                    $new_final_report = "INSERT INTO narrativereports
     (stud_school_id, OJT_adviser_ID, sex, first_name, middle_name, last_name, program, section, narrative_file_name, upload_date, file_status, training_hours, company_name, sySubmitted)
     values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-                        $valueTypes = "sisssssssssiss";
-                        $params = [$school_id, $ojt_adviser, $stud_sex, $first_name, $middle_name, $last_name,
-                            $program, $section, $new_file_name, $current_date_time, $narrative_status,
-                            $trainingHours, $compName, $sySubmitted];
+                    $valueTypes = "sisssssssssiss";
+                    $params = [$school_id, $ojt_adviser, $stud_sex, $first_name, $middle_name, $last_name,
+                        $program, $section, $new_file_name, $current_date_time, $narrative_status,
+                        $trainingHours, $compName, $sySubmitted];
 
-                        $narrative_id = mysqlQuery($new_final_report,$valueTypes, $params)[1];
+                    $narrative_id = mysqlQuery($new_final_report,$valueTypes, $params)[1];
 
-                    }catch (mysqli_sql_exception $e) {
-                        if ($e->getCode() == 1062) {
+                }catch (mysqli_sql_exception $e) {
+                    if ($e->getCode() == 1062) {
 
-                            $responseMessage = "School id already exists.";
-                        } else {
-                            $responseMessage = $e->getMessage();
-                        }
-                        handleError($responseMessage);
-
+                        $responseMessage = "School id already exists.";
+                    } else {
+                        $responseMessage = $e->getMessage();
                     }
+                    handleError($responseMessage);
 
-                    if ($_SESSION['log_user_type'] == 'adviser'){       // admin email notification
-                        $getAdminUser = "SELECT tbl_accounts.status, tbl_accounts.email, tbl_user_info.user_id, tbl_user_info.user_type  FROM tbl_user_info
-                                                   JOIN tbl_accounts on tbl_accounts.user_id = tbl_user_info.user_id where tbl_accounts.status = 'active' and tbl_user_info.user_type = 'admin'";
-
-                        $result =  mysqlQuery($getAdminUser, '', []);
-                        foreach ($result as $row){
-                            $subjectType = "Upload Narrative Report";
-                            $bodyMessage = "<h1><b>Notification</b></h1><br>";
-                            $bodyMessage .= "<b>OJT adviser: </b>".$_SESSION['log_user_firstName'].' '.$_SESSION['log_user_middleName'].' '.$_SESSION['log_user_lastName'] .'<br>';
-                            $bodyMessage .= "Uploaded a new  student narrative report  <br>";
-                            $bodyMessage .= "Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
-                Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
-                            $recipient =  $row['email'];
-                            email_notif_sender($subjectType, $bodyMessage,$recipient );
-                        }
-                    }
-                    handleNarrativeUpload('', $new_file_name, $narrative_id);
-
-                    echo json_encode(['response' => $response,
-                        'message' => $responseMessage]);
-
-
-
-                } else {
-                    $responseMessage = 'file error';
                 }
 
-            } else {
-                $responseMessage = 'empty file';
-            }
-        } else {
+                if ($_SESSION['log_user_type'] == 'adviser'){       // admin email notification
+                    $getAdminUser = "SELECT tbl_accounts.status, tbl_accounts.email, tbl_user_info.user_id, tbl_user_info.user_type  FROM tbl_user_info
+                                                   JOIN tbl_accounts on tbl_accounts.user_id = tbl_user_info.user_id where tbl_accounts.status = 'active' and tbl_user_info.user_type = 'admin'";
 
-            $responseMessage =  'form data are empty';
+                    $result =  mysqlQuery($getAdminUser, '', []);
+                    foreach ($result as $row){
+                        $subjectType = "Upload Narrative Report";
+                        $bodyMessage = "<h1><b>Notification</b></h1><br>";
+                        $bodyMessage .= "<b>OJT adviser: </b>".$_SESSION['log_user_firstName'].' '.$_SESSION['log_user_middleName'].' '.$_SESSION['log_user_lastName'] .'<br>';
+                        $bodyMessage .= "Uploaded a new  student narrative report  <br>";
+                        $bodyMessage .= "Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
+                Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
+                        $recipient =  $row['email'];
+                        email_notif_sender($subjectType, $bodyMessage,$recipient );
+                    }
+                }
+                handleNarrativeUpload('', $new_file_name, $narrative_id);
+
+                echo json_encode(['response' => $response,
+                    'message' => $responseMessage]);
+                exit();
+
+
+
+            } else {
+                $responseMessage = 'file error';
+            }
+
+        } else {
+            $responseMessage = 'empty file';
         }
-        handleError($responseMessage);
+    } else {
+
+        $responseMessage =  'form data are empty';
+    }
+    handleError($responseMessage);
 
 }
 if ($action == 'get_narrativeReports') {
