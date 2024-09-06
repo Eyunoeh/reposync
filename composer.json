@@ -6,7 +6,7 @@
         }
     },
     "require": {
-        "spatie/pdf-to-image": "^1.2",
+        "spatie/pdf-to-image": "^3.0",
         "convertapi/convertapi-php": "^2.0",
       "ext-json": "*",
         "ext-curl": "*",

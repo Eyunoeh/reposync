@@ -16,14 +16,20 @@
             "email": "freek@spatie.be",
             "homepage": "https://spatie.be",
             "role": "Developer"
+        },
+        {
+            "name": "Patrick Organ",
+            "email": "patrick@permafrost.dev",
+            "homepage": "https://permafrost.dev",
+            "role": "Developer"
         }
     ],
     "require": {
-        "php" : ">=5.5.0"
+        "php" : "^8.2",
+        "ext-imagick" : "*"
     },
     "require-dev": {
-        "phpunit/phpunit" : "4.*",
-        "scrutinizer/ocular": "~1.1"
+        "pestphp/pest": "^2.34"
     },
     "autoload": {
         "psr-4": {
@@ -36,6 +42,12 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "vendor/bin/pest"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }

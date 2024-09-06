@@ -2,17 +2,17 @@
     "packages": [
         {
             "name": "convertapi/convertapi-php",
-            "version": "v2.0.0",
-            "version_normalized": "2.0.0.0",
+            "version": "v2.0.1",
+            "version_normalized": "2.0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ConvertAPI/convertapi-php.git",
-                "reference": "a4c67b10a4e300536170ea729248a92de70efd36"
+                "reference": "f770866365c306e8c6fe2b8d67c9e64d4ca453d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ConvertAPI/convertapi-php/zipball/a4c67b10a4e300536170ea729248a92de70efd36",
-                "reference": "a4c67b10a4e300536170ea729248a92de70efd36",
+                "url": "https://api.github.com/repos/ConvertAPI/convertapi-php/zipball/f770866365c306e8c6fe2b8d67c9e64d4ca453d3",
+                "reference": "f770866365c306e8c6fe2b8d67c9e64d4ca453d3",
                 "shasum": ""
             },
             "require": {
@@ -23,9 +23,9 @@
             "require-dev": {
                 "phpunit/phpunit": "~10.0"
             },
-            "time": "2024-02-16T14:30:01+00:00",
+            "time": "2024-06-24T18:18:21+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "ConvertApi\\": "lib/"
@@ -51,7 +51,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ConvertAPI/convertapi-php/issues",
-                "source": "https://github.com/ConvertAPI/convertapi-php/tree/v2.0.0"
+                "source": "https://github.com/ConvertAPI/convertapi-php/tree/v2.0.1"
             },
             "install-path": "../convertapi/convertapi-php"
         },
@@ -186,17 +186,17 @@
         },
         {
             "name": "setasign/fpdi",
-            "version": "v2.6.0",
-            "version_normalized": "2.6.0.0",
+            "version": "v2.6.1",
+            "version_normalized": "2.6.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Setasign/FPDI.git",
-                "reference": "a6db878129ec6c7e141316ee71872923e7f1b7ad"
+                "reference": "09a816004fcee9ed3405bd164147e3fdbb79a56f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/a6db878129ec6c7e141316ee71872923e7f1b7ad",
-                "reference": "a6db878129ec6c7e141316ee71872923e7f1b7ad",
+                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/09a816004fcee9ed3405bd164147e3fdbb79a56f",
+                "reference": "09a816004fcee9ed3405bd164147e3fdbb79a56f",
                 "shasum": ""
             },
             "require": {
@@ -216,7 +216,7 @@
             "suggest": {
                 "setasign/fpdf": "FPDI will extend this class but as it is also possible to use TCPDF or tFPDF as an alternative. There's no fixed dependency configured."
             },
-            "time": "2023-12-11T16:03:32+00:00",
+            "time": "2024-09-02T10:17:15+00:00",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -249,7 +249,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Setasign/FPDI/issues",
-                "source": "https://github.com/Setasign/FPDI/tree/v2.6.0"
+                "source": "https://github.com/Setasign/FPDI/tree/v2.6.1"
             },
             "funding": [
                 {
@@ -261,29 +261,29 @@
         },
         {
             "name": "spatie/pdf-to-image",
-            "version": "1.2.2",
-            "version_normalized": "1.2.2.0",
+            "version": "3.0.0",
+            "version_normalized": "3.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/pdf-to-image.git",
-                "reference": "9a5cb264a99e87e010c65d4ece03b51f821d55bd"
+                "reference": "b145cf49cd232921e7d13d6d52e72c9f2581f446"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/pdf-to-image/zipball/9a5cb264a99e87e010c65d4ece03b51f821d55bd",
-                "reference": "9a5cb264a99e87e010c65d4ece03b51f821d55bd",
+                "url": "https://api.github.com/repos/spatie/pdf-to-image/zipball/b145cf49cd232921e7d13d6d52e72c9f2581f446",
+                "reference": "b145cf49cd232921e7d13d6d52e72c9f2581f446",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0"
+                "ext-imagick": "*",
+                "php": "^8.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*",
-                "scrutinizer/ocular": "~1.1"
+                "pestphp/pest": "^2.34"
             },
-            "time": "2016-12-14T15:37:00+00:00",
+            "time": "2024-06-10T18:40:38+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Spatie\\PdfToImage\\": "src"
@@ -299,6 +299,12 @@
                     "email": "freek@spatie.be",
                     "homepage": "https://spatie.be",
                     "role": "Developer"
+                },
+                {
+                    "name": "Patrick Organ",
+                    "email": "patrick@permafrost.dev",
+                    "homepage": "https://permafrost.dev",
+                    "role": "Developer"
                 }
             ],
             "description": "Convert a pdf to an image",
@@ -312,9 +318,13 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/pdf-to-image/issues",
-                "source": "https://github.com/spatie/pdf-to-image/tree/1.2.2"
+                "source": "https://github.com/spatie/pdf-to-image/tree/3.0.0"
             },
             "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
                 {
                     "url": "https://github.com/spatie",
                     "type": "github"
