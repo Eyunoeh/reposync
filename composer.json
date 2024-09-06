@@ -14,6 +14,9 @@
       "ext-openssl": "*",
         "phpmailer/phpmailer": "^6.9",
         "setasign/fpdf": "^1.8",
-        "setasign/fpdi": "^2.6"
+        "setasign/fpdi": "^2.6",
+        "enqueue/amqp-lib": "^0.8.42",
+        "enqueue/amqp-tools": "^0.8.42",
+        "php-amqplib/php-amqplib": "^2.12"
     }
 }

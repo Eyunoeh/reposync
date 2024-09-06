@@ -6,10 +6,18 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitf1c0b6d696ea5b852996a16e7a5bd2ba
 {
+    public static $files = array (
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
             'setasign\\Fpdi\\' => 14,
+        ),
+        'p' => 
+        array (
+            'phpseclib\\' => 10,
         ),
         'X' => 
         array (
@@ -21,7 +29,18 @@ class ComposerStaticInitf1c0b6d696ea5b852996a16e7a5bd2ba
         ),
         'P' => 
         array (
+            'PhpAmqpLib\\' => 11,
             'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'I' => 
+        array (
+            'Interop\\Queue\\' => 14,
+            'Interop\\Amqp\\' => 13,
+        ),
+        'E' => 
+        array (
+            'Enqueue\\AmqpTools\\' => 18,
+            'Enqueue\\AmqpLib\\' => 16,
         ),
     );
 
@@ -29,6 +48,10 @@ class ComposerStaticInitf1c0b6d696ea5b852996a16e7a5bd2ba
         'setasign\\Fpdi\\' => 
         array (
             0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
+        'phpseclib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
         ),
         'Xpc\\ReposyncNarrativeManagementSystem\\' => 
         array (
@@ -38,9 +61,29 @@ class ComposerStaticInitf1c0b6d696ea5b852996a16e7a5bd2ba
         array (
             0 => __DIR__ . '/..' . '/spatie/pdf-to-image/src',
         ),
+        'PhpAmqpLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-amqplib/php-amqplib/PhpAmqpLib',
+        ),
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Interop\\Queue\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/queue-interop/queue-interop/src',
+        ),
+        'Interop\\Amqp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/queue-interop/amqp-interop/src',
+        ),
+        'Enqueue\\AmqpTools\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/enqueue/amqp-tools',
+        ),
+        'Enqueue\\AmqpLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/enqueue/amqp-lib',
         ),
     );
 

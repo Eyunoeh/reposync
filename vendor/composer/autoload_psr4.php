@@ -7,7 +7,13 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'setasign\\Fpdi\\' => array($vendorDir . '/setasign/fpdi/src'),
+    'phpseclib\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'Xpc\\ReposyncNarrativeManagementSystem\\' => array($baseDir . '/src'),
     'Spatie\\PdfToImage\\' => array($vendorDir . '/spatie/pdf-to-image/src'),
+    'PhpAmqpLib\\' => array($vendorDir . '/php-amqplib/php-amqplib/PhpAmqpLib'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
+    'Interop\\Queue\\' => array($vendorDir . '/queue-interop/queue-interop/src'),
+    'Interop\\Amqp\\' => array($vendorDir . '/queue-interop/amqp-interop/src'),
+    'Enqueue\\AmqpTools\\' => array($vendorDir . '/enqueue/amqp-tools'),
+    'Enqueue\\AmqpLib\\' => array($vendorDir . '/enqueue/amqp-lib'),
 );

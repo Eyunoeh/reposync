@@ -16,8 +16,9 @@ if (count($result) === 1) {
     $row = $result[0];
     if ($row['narrativeConvertJobID'] !== null){
         $job_id = $row['narrativeConvertJobID'];
-        $conversionStat = checkConversionStatus($job_id);
-        if ($conversionStat['responseStatus'] == 200){
+        //$conversionStat = checkConversionStatus($job_id);
+        $conversionStat = $row['convertStatus'];
+ /*       if ($conversionStat['responseStatus'] == 200){
             $response = $conversionStat['dataResponse'];
             $saveRes = saveFlipbookPages($response,$row['narrative_file_name']);
             if (isset($saveRes['error'])){
@@ -33,7 +34,7 @@ if (count($result) === 1) {
                 }
 
             }
-        }
+        }*/
     }
 
 
@@ -118,13 +119,15 @@ if (count($result) === 1) {
 </div>
 
 <?php if (isset($conversionStat)){
-    if ($conversionStat['responseStatus'] !== 200){
+    if ($conversionStat != 'success'){
 
         $message = "";
-      if ($conversionStat['responseStatus'] == 202){
-          $message = 'Conversion of narrative report is still in progress please wait';
+      if ($conversionStat == 'pending'){
+          $message = 'Conversion of narrative report is  on queue please wait';
+      }elseif ($conversionStat == 'processing'){
+          $message = 'Converting uploaded narrative report into flip book please wait';
       }else{
-          $message = $conversionStat['responseStatus'];
+          $message = 'Conversion failed please try again';
       }
 
 

@@ -1,8 +1,12 @@
 <?php
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 
 include 'vendor/autoload.php';
 use \ConvertApi\ConvertApi;
 use setasign\Fpdi\Fpdi;
+
+use Enqueue\AmqpLib\AmqpConnectionFactory;
+use Enqueue\AmqpTools\RabbitMqDlxDelayStrategy;
 
 class PDFWithWatermark extends FPDI
 {
@@ -135,6 +139,13 @@ function delete_pdf($pdf){
 
 
 function handleNarrativeUpload($old_filename, $new_file_name, $narrative_id) {
+    $factory = new AmqpConnectionFactory([
+        'host' => 'localhost',
+        'port' => 5672,
+        'login' => 'guest',
+        'password' => 'guest',
+        'vhost' => '/',
+    ]);
 
 
 
@@ -157,10 +168,32 @@ function handleNarrativeUpload($old_filename, $new_file_name, $narrative_id) {
 
     $updtNarrativeJobID = "UPDATE narrativereports SET narrativeConvertJobID  = ? where narrative_id = ? ";
     try {
-        $apiSecret = '';
-        $job_id = initiateAsyncPDFtoJPGConversion($pdf_file_path,$apiSecret, $new_file_name)['JobId'];
+       // $apiSecret = '';
+       // $job_id = initiateAsyncPDFtoJPGConversion($pdf_file_path,$apiSecret, $new_file_name)['JobId'];
+        $job_id = uniqid();
 
         mysqlQuery($updtNarrativeJobID, 'si',[$job_id,$narrative_id]);
+
+
+
+        $context = $factory->createContext();
+
+        $queue = $context->createQueue('pdf_conversion_queue');
+        $context->declareQueue($queue);
+
+
+
+        $jobData = json_encode([
+            'job_id' => $job_id,
+            'pdf_path' => $pdf_file_path,
+            'file_name' => $new_file_name,
+            'narrative_id' => $narrative_id,
+        ]);
+
+        $message = $context->createMessage($jobData);
+        $context->createProducer()->send($queue, $message);
+
+
 
     }catch (Exception $exception){
         handleError( $exception->getMessage());
