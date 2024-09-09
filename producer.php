@@ -28,8 +28,6 @@ $factory = new AmqpConnectionFactory([
 
 
 
-
-
 // Establish a connection to RabbitMQ
 /*
 

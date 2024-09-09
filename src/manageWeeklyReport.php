@@ -115,19 +115,15 @@ session_start();
         </td>
         <td class="p-3 text-end">
             <span class="font-semibold text-light-inverse text-md/normal">'.$formatted_date_time.'</span>
-        </td>';
-            if (checkNewWeeklyReports($row['stud_sch_user_id'])){
-                echo '<td class="p-3 text-end relative">
-            <span class="absolute top-0 right-0 badge badge-sm badge-info">New</span>
+        </td>
+        <td class="p-3 text-end relative">
+        ';
 
-            <a href="ViewStudentWeeklyReport.php?checkStudent=' . urlencode(encrypt_data($row['stud_sch_user_id'], $secret_key)) . '" >
-                <div class="relative hover:cursor-pointer h-auto mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </div>
-            </a>
-        </td>';
-            }else{
-                echo '<td class="p-3 text-end relative">
+            if (checkNewWeeklyReports($row['stud_sch_user_id'])){
+                echo '<span class="absolute top-0 right-0 badge badge-sm badge-info">New</span>';
+            }
+
+            echo '
 
             <a href="ViewStudentWeeklyReport.php?checkStudent=' . urlencode(encrypt_data($row['stud_sch_user_id'], $secret_key)) . '">
                 <div class="relative hover:cursor-pointer h-auto mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
@@ -135,7 +131,6 @@ session_start();
                 </div>
             </a>
         </td>';
-            }
 
 
         echo '

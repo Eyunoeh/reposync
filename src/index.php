@@ -29,8 +29,7 @@ session_start();
 
 
 
-    <?php
-    if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'student'):
+    <?php    if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'student'):
         ?>
         <div id="notifBox" onclick="resetAlertBox(this.id)">
 

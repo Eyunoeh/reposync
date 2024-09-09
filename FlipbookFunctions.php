@@ -1,7 +1,5 @@
 <?php
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 
-include 'vendor/autoload.php';
 use \ConvertApi\ConvertApi;
 use setasign\Fpdi\Fpdi;
 

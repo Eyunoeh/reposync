@@ -9,11 +9,15 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 
 session_start();
 date_default_timezone_set('Asia/Manila');
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+
+include 'vendor/autoload.php';
 
 include_once 'DatabaseConn/databaseConn.php';
 include 'functions.php';
 include_once 'FlipbookFunctions.php';
-include_once 'PhpMailer.php';
+include_once 'PhpMailer_producer.php';
+
 
 
 
@@ -403,7 +407,7 @@ if ($action == 'newFinalReport'){
                         $bodyMessage .= "Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
                 Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
                         $recipient =  $row['email'];
-                        email_notif_sender($subjectType, $bodyMessage,$recipient );
+                        email_queuing($subjectType, $bodyMessage,$recipient );
                     }
                 }
                 handleNarrativeUpload('', $new_file_name, $narrative_id);
@@ -578,7 +582,7 @@ if ($action === 'UpdateNarrativeReport') {
                 $bodyMessage .= "<b>Reason: </b>{$fields['remark']}<br>";
             }
             $bodyMessage .= "Click to review: <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
-            email_notif_sender($subjectType, $bodyMessage, $recipient);
+            email_queuing($subjectType, $bodyMessage, $recipient);
             echo json_encode(['response' => $response, 'message' => $responseMessage]);
 
             //for admin code block
@@ -897,7 +901,7 @@ if ($action == 'newUser') {
         $bodyMessage .= "<b>     Password: </b> ".$user_password."<br><br>";
         $bodyMessage .= "Click to login : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
                     Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
-        email_notif_sender($subjectType,$bodyMessage,$recipient);
+        email_queuing($subjectType,$bodyMessage,$recipient);
 
 
     } else {
@@ -1562,7 +1566,7 @@ if ($action === 'Notes') {
         $getAdminRes = mysqlQuery($getAdminID,'', []);
         foreach ($getAdminRes as $row){
             $recipient = getRecipient($row['user_id']);
-            if(!email_notif_sender($subjectType, $bodyMessage, $recipient)){
+            if(!email_queuing($subjectType, $bodyMessage, $recipient)){
                 handleError('Admin didnt notified through email');
             }
         }
@@ -1706,7 +1710,7 @@ WHERE tbl_accounts.status = 'active' and  program.program_code = ?;";
             $result = $userAnnouncementTargetSTMT->get_result();
             while ($row = $result->fetch_assoc()){
                 $recipient = getRecipient($row['user_id']);
-                email_notif_sender($subjectType, $bodyMessage, $recipient);
+                email_queuing($subjectType, $bodyMessage, $recipient);
             }
         }
         echo json_encode(['response' => $response, 'message' => $responseMessage]);
@@ -1767,81 +1771,52 @@ if ($action == 'ProgYrSec') {
     $actionType = isset($_POST['action_type']) ? sanitizeInput($_POST['action_type']) : '';
     $id = isset($_POST['ID']) ? sanitizeInput($_POST['ID']) : '';
 
+    $update_proram = "UPDATE program SET program_code = ?, program_name = ? WHERE program_id = ?";
+    $insert_program = "INSERT INTO program (program_code, program_name) VALUES (?, ?)";
+    $update_yrSec = "UPDATE section SET year = ?, section = ? WHERE section_id = ?";
+    $insert_yrSec = "INSERT INTO section (year,section) VALUES (?,?)";
+    $sql = '';
+    $params = [];
+    $types = '';
 
-
-    if ($program_code !== '' && $program_name !== '') {
-        if (isset($actionType) && $actionType == 'edit') {
-            $sql = "UPDATE program SET program_code = ?, program_name = ? WHERE program_id = ?";
-            $updateProgStmt = $conn->prepare($sql);
-            $updateProgStmt->bind_param('ssi', $program_code, $program_name, $id);
-            if ($updateProgStmt->execute()) {
+    try {
+        if ($program_code !== '' && $program_name !== '') {
+            if (isset($actionType) && $actionType == 'edit') {
+                $sql = $update_proram;
+                $params = [$program_code, $program_name, $id];
+                $types = 'ssi';
                 $responseMessage = 'Program information has been updated.';
-
-                echo json_encode(['response' => $response,
-                    'message' => $responseMessage]);
-                exit();
             } else {
-                handleError($updateProgStmt->error);
-
-            }
-        } else {
-            $sql = "INSERT INTO program (program_code, program_name) VALUES (?, ?)";
-            $insertProgStmt = $conn->prepare($sql);
-            $insertProgStmt->bind_param('ss', $program_code, $program_name);
-            if ($insertProgStmt->execute()) {
+                $sql = $insert_program;
+                $params = [$program_code, $program_name];
+                $types = 'ss';
                 $responseMessage = 'New program has been added.';
-
-                echo json_encode(['response' => $response,
-                    'message' => $responseMessage]);
-                exit();
-            } else {
-                handleError($updateProgStmt->error);
-
             }
-        }
-    } elseif ($year !== '' && $section !== '') {
-
-        if (isset($actionType) && $actionType == 'edit') {
-            $sql = "UPDATE section SET
-                   year = ?,
-                   section = ?
-               WHERE section_id  = ?";
-            $updateSecStmt = $conn->prepare($sql);
-            $updateSecStmt->bind_param('isi', $year, $section, $id);
-            if ($updateSecStmt->execute()) {
+            mysqlQuery($sql, $types, $params);
+        } elseif ($year !== '' && $section !== '') {
+            if (isset($actionType) && $actionType == 'edit') {
+                $sql = $update_yrSec;
+                $params = [$year, $section, $id];
+                $types = 'isi';
                 $responseMessage = 'Year and section information has been upddted';
-
-                echo json_encode(['response' => $response,
-                    'message' => $responseMessage]);
-                exit();
-
             } else {
-                handleError($updateSecStmt->error);
-
-
-
-            }
-        } else {
-
-
-            $sql = "INSERT INTO section (year,section)  VALUES (?,?)";
-            $insertSecStmt = $conn->prepare($sql);
-            $insertSecStmt->bind_param('is', $year,$section);
-            if ($insertSecStmt->execute()) {
+                $sql = $insert_yrSec;
+                $params = [$year, $section];
+                $types = 'is';
                 $responseMessage = 'New year and section added!';
-
-                echo json_encode(['response' => $response,
-                    'message' => $responseMessage]);
-                exit();
-            } else {
-                handleError($insertSecStmt->error);
-
             }
+            mysqlQuery($sql, $types, $params);
+        } else {
+            handleError("Please provide valid input.");
         }
-    } else {
-        handleError("Please provide valid input.");
+
+        echo json_encode(['response' => $response, 'message' => $responseMessage]);
+        exit();
+    } catch (Exception $e) {
+        handleError($e->getMessage());
     }
 }
+
 
 if ($action == 'getDasboardYrSec'){
 
@@ -2039,7 +2014,7 @@ if ($action == 'getAdvNotes'){
 
     if ($res->num_rows > 0){
         while ($row = $res->fetch_assoc()){
-            $middle_initial = $row['middle_name']!== 'N/A' ? ' ' . substr($row['middle_name'], 0, 1) . '.' : '';
+            $middle_initial = !in_array($row['middle_name'], ['N/A', '']) ? ' ' . substr($row['middle_name'], 0, 1) . '.' : '';
 
             echo '<tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
@@ -2112,7 +2087,7 @@ if ($action == 'UpdateNotePostReq'){
                 $bodyMessage .= "Click to review:
  <a href='http://localhost/ReposyncNarrativeManagementSystem/src/dashboard.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a><br>";
                 $targetRecipient = getRecipient($noteDetails['user_id']);
-                email_notif_sender($subjectType, $bodyMessage, $targetRecipient /*recipient OJT adviser*/);
+                email_queuing($subjectType, $bodyMessage, $targetRecipient /*recipient OJT adviser*/);
             }elseif ($noteStat === 'Active'){
                 $bodyMessage .= "<h3>Note post request has been Approved.</h3> <br>";
                 $bodyMessage .= "<b>Title: </b>".$noteDetails['title']." <br>";
@@ -2121,7 +2096,7 @@ if ($action == 'UpdateNotePostReq'){
                 $bodyMessage .= "Click to review:
  <a href='http://localhost/ReposyncNarrativeManagementSystem/src/dashboard.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a><br>";
                 $targetRecipient = getRecipient($noteDetails['user_id']);
-                email_notif_sender($subjectType, $bodyMessage, $targetRecipient /*recipient OJT adviser*/);
+                email_queuing($subjectType, $bodyMessage, $targetRecipient /*recipient OJT adviser*/);
 
 
 
@@ -2139,7 +2114,7 @@ where adv_sch_user_id = ? and tbl_accounts.status = 'active';";
                 $bodyMessageToStudents .= "<br>Click to review:
  <a href='http://localhost/ReposyncNarrativeManagementSystem/src/index.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a><br>";
                 while ($row = $result->fetch_assoc()){
-                    email_notif_sender($subjectType, $bodyMessageToStudents, getRecipient($row['stud_sch_user_id']));
+                    email_queuing($subjectType, $bodyMessageToStudents, getRecipient($row['stud_sch_user_id']));
                 }
 
             }

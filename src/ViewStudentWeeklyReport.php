@@ -1,9 +1,12 @@
 <?php
-$secret_key = 'TheSecretKey#02';
+include '../vendor/autoload.php';
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+
+
 
 
 include "../DatabaseConn/databaseConn.php";
-include "../PhpMailer.php";
+include "../PhpMailer_producer.php";
 include '../functions.php';
 session_start();
 
@@ -13,9 +16,7 @@ if (!isset($_SESSION['log_user_type']) || ($_SESSION['log_user_type'] !== 'admin
     exit();
 }
 
-if (!isset($_GET['checkStudent']) or !decrypt_data($_GET['checkStudent'], $secret_key)){
-    header("Location: 404.php");
-}
+
 
 if (isset($_POST['Update_remark']) and $_POST['Update_remark'] === 'Update'){
     $remark = $_POST['report_Stat'];
@@ -70,17 +71,21 @@ if (isset($_POST['Update_remark']) and $_POST['Update_remark'] === 'Update'){
                     '</b> has been reviewed and updated its status to <b>'.$formattedStatus.'</b>';
                 $recipient =  getRecipient($_POST['stud_id']);
 
-                if (email_notif_sender($subjectType, $messageBody, $recipient)){
-                    echo 1;
-                    header("Location: ViewStudentWeeklyReport.php?checkStudent=".urlencode(encrypt_data($_POST['stud_id'], $secret_key)));
-                    exit();
-                }
+                email_queuing($subjectType, $messageBody, $recipient);
+                $secret_key = 'TheSecretKey#02';
+                echo 1;
+                header("Location: ViewStudentWeeklyReport.php?checkStudent=".urlencode(encrypt_data($_POST['stud_id'], $secret_key)));
+                exit();
+
             }
         }
 
     }
 
 }
+
+
+
 function countFileComments($file_id){
     include "../DatabaseConn/databaseConn.php";
 
@@ -99,7 +104,18 @@ function countFileComments($file_id){
 }
 
 
+
+if (!isset($_GET['checkStudent'])) {
+    header("Location: 404.php");
+    exit();
+}
+$secret_key = 'TheSecretKey#02';
 $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
+
+if (!$student_user_id){
+    header("Location: 404.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
