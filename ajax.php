@@ -983,7 +983,7 @@ if ($action == 'getStudentsList'){
                         <td class="p-3 text-end">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['program_code'].'</span>
                         </td>
-                        <td class="p-3 text-end">
+                        <td class="p-3 text-end w-[300px] break-words">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['company_name'].'</span>
                         </td>
                         
@@ -1008,7 +1008,7 @@ if ($action == 'getStudentsList'){
                         <td class="p-3 text-end">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['program_code'].'</span>
                         </td>
-                        <td class="p-3 text-end">
+                        <td class="p-3 text-end w-[300px] break-words">
                             <span class="font-semibold text-light-inverse text-md/normal">'.$row['company_name'].'</span>
                         </td>
                         
@@ -1749,7 +1749,7 @@ if ($action == 'getDashboardActSched'){
             echo '
             </div>
             <div class="flex flex-col justify-center max-h-[10rem] overflow-auto p-3">
-                <h1 class="font-semibold">'.$row['title'].'</h1>
+                <h1 class="font-semibold w-[150px] break-words">'.$row['title'].'</h1>
                 <div class=" max-h-[10rem] overflow-auto">
                     <p class="text-justify text-sm pr-5 break-words">'.$row['description'].'
                     </p>
@@ -1786,6 +1786,13 @@ if ($action == 'ProgYrSec') {
                 $params = [$program_code, $program_name, $id];
                 $types = 'ssi';
                 $responseMessage = 'Program information has been updated.';
+                $old_programCode = mysqlQuery("SELECT program_code
+from program where program_id = ?", 'i', [$id])[0]['program_code'];
+
+
+                mysqlQuery("UPDATE narrativereports 
+SET program = ? where program = ?", 'ss', [$program_code, $old_programCode]);
+
             } else {
                 $sql = $insert_program;
                 $params = [$program_code, $program_name];
@@ -1793,12 +1800,23 @@ if ($action == 'ProgYrSec') {
                 $responseMessage = 'New program has been added.';
             }
             mysqlQuery($sql, $types, $params);
+
         } elseif ($year !== '' && $section !== '') {
             if (isset($actionType) && $actionType == 'edit') {
                 $sql = $update_yrSec;
                 $params = [$year, $section, $id];
                 $types = 'isi';
-                $responseMessage = 'Year and section information has been upddted';
+
+                $old_yrSec = mysqlQuery("SELECT CONCAT(year, section)
+AS yearSec FROM `section` where section_id = ?;", 'i', [$id])[0]['yearSec'];
+
+                $new_yrSec = $year .  $section;
+
+
+                mysqlQuery("UPDATE narrativereports SET section = ?
+                        where section = ?", 'ss', [$new_yrSec, $old_yrSec]);
+                $responseMessage = 'Year and section information has been updated';
+
             } else {
                 $sql = $insert_yrSec;
                 $params = [$year, $section];
@@ -2215,27 +2233,61 @@ if ($action === 'getPendingFinalReports'){
 
 if ($action == 'dshbGePendingFinalReports') {
     if ($_SESSION['log_user_type'] == 'admin') {
-        $getPendingFinalUpdload = "SELECT COUNT(*) as totalPending FROM narrativereports 
-                                   WHERE file_status = 'Pending';";
-        $getPendingFinalUpdloadSTMT = $conn->prepare($getPendingFinalUpdload);
-        $getPendingFinalUpdloadSTMT->execute();
-        $result = $getPendingFinalUpdloadSTMT->get_result();
+
+        $result = getTotalNarrativeReports('', 1,'');
 
     } else if ($_SESSION['log_user_type'] == 'adviser') {
-        $getPendingFinalUpdload = "SELECT COUNT(*) as totalPending FROM narrativereports
-                                   WHERE OJT_adviser_ID = ? AND file_status = 'Pending';";
-        $getPendingFinalUpdloadSTMT = $conn->prepare($getPendingFinalUpdload);
-        $getPendingFinalUpdloadSTMT->bind_param('i', $_SESSION['log_user_id']);
-        $getPendingFinalUpdloadSTMT->execute();
-        $result = $getPendingFinalUpdloadSTMT->get_result();
+
+        $result = getTotalNarrativeReports('', 1, $_SESSION['log_user_id']);
     }
 
-    if ($result->num_rows > 0) {
-        echo $result->fetch_assoc()['totalPending'];
-    } else {
-        echo 0;
-    }
+    echo $result;
+
     exit();
+
+}
+if ($action == 'totalPublihedReport'){
+    $result = getTotalNarrativeReports('', 3,'');
+    echo $result;
+    exit();
+}
+
+
+if ($action === 'total_Users'){
+    $userType = $_GET['userType'];
+    $accStatType = $_GET['accType'];
+    $types = '';
+    $params = [];
+    if ($userType !== '' &$accStatType !== ''){
+        $totalUserquery = "SELECT COUNT(tbl_user_info.user_id) AS totaluserCount 
+FROM tbl_user_info JOIN tbl_accounts ON tbl_accounts.user_id = tbl_user_info.user_id 
+WHERE tbl_user_info.user_type = ? AND tbl_accounts.status = ?";
+        $types = 'ii';
+        $params[] = $userType;
+        $params[] = $accStatType;
+
+    }else{ // total adviser advisory
+        $totalUserquery = "SELECT COUNT(advisory_list.adv_list_id) 
+    as totaluserCount FROM advisory_list JOIN tbl_accounts 
+        ON advisory_list.stud_sch_user_id = tbl_accounts.user_id 
+                     WHERE tbl_accounts.status = 1 
+                       AND advisory_list.adv_sch_user_id = ?;";
+        $types = 'i';
+        $params [] =$_SESSION['log_user_id'];
+
+    }
+
+
+
+
+
+    $result = mysqlQuery($totalUserquery, $types, $params)[0]['totaluserCount'];
+
+
+    echo $result;
+
+
+
 
 }
 if ($action == 'dshbDeclinedFinalReports') {
@@ -2280,16 +2332,16 @@ if ($action == 'pendingADVnoteReq') {
 
     $query = "SELECT COUNT(*) AS totalPendingNoteReq FROM announcement WHERE  type = 'Notes'
                                                            and status = 'Pending'";
+    $types = '';
+    $params = [];
     if ($userType == 'adviser') {
         $query .= " AND user_id = ?";
+        $types .= 'i';
+        $params[] = $userId;
     }
-    $stmt = $conn->prepare($query);
-    if ($userType == 'adviser') {
-        $stmt->bind_param('i', $userId);
-    }
-    $stmt->execute();
-    $result = $stmt->get_result();
-    echo $result->fetch_assoc()['totalPendingNoteReq'];
+
+    $result = mysqlQuery($query, $types, $params)[0];
+    echo $result['totalPendingNoteReq'];
     exit();
 }
 
@@ -2417,7 +2469,6 @@ where user_id = ?";
         exit;
     }
 }
-
 if ($action == 'updateAcc'){
     header('Content-Type: application/json');
     $response = 1;
@@ -2450,4 +2501,8 @@ if ($action == 'updateAcc'){
 
 }
 
+
+if ($action == 'totalApproveFFinalReport'){
+    $getTotalQuery = "SEL";
+}
 

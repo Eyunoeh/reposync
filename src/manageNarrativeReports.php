@@ -5,22 +5,10 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 }
 
 include '../DatabaseConn/databaseConn.php';
-function getTotalNarrativeReports($program) {
-    include '../DatabaseConn/databaseConn.php';
 
-    $sql = "SELECT COUNT(*) AS total FROM narrativereports WHERE program = ? and file_status = 'OK'";
 
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("s", $program);
-        $stmt->execute();
-        $stmt->bind_result($total);
-        $stmt->fetch();
-        $stmt->close();
-        return $total;
-    } else {
-        return "Error preparing the SQL statement: " . $conn->error;
-    }
-}
+include '../functions.php';
+
 
 session_start()
 ?>
@@ -62,7 +50,7 @@ session_start()
                             <span class="font-semibold text-light-inverse text-md/normal break-words">'.$row['program_name'].'</span>
                         </td>
                         <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.getTotalNarrativeReports($row['program_code']).'</span>
+                            <span class="font-semibold text-light-inverse text-md/normal">'.getTotalNarrativeReports($row['program_code'], 3, '').'</span>
                         </td>
                         <td class="p-3 text-center">
                             <a href="dashboardViewnarrativeReports.php?program='.$row['program_code'].'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>

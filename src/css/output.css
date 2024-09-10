@@ -4609,6 +4609,10 @@ details.collapse summary::-webkit-details-marker {
   width: 12rem;
 }
 
+.w-\[200px\] {
+  width: 200px;
+}
+
 .w-\[300px\] {
   width: 300px;
 }

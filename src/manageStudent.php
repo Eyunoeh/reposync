@@ -61,7 +61,7 @@ include '../DatabaseConn/databaseConn.php';
                         <td class="p-3 text-end">
                             <span class="font-semibold text-light-inverse text-md/normal">4A</span>
                         </td>
-                        <td class="p-3 text-end">
+                        <td class="p-3 text-end w-[200px] break-words">
                             <span class="font-semibold text-light-inverse text-md/normal">BSIT</span>
                         </td>
                         <td class="p-3 text-end">

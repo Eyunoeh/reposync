@@ -43,11 +43,12 @@ function navigate(page) {
                     let unreadWeeklyreports = await getTotalUnreadStudentWeeklyReport();
                     let pendingUploadNarrative =  await getTotalPendingUploadNarrative();
                     let declinedUploadNarrative =  await  getTotalDeclinedUploadNarrative();
-
+                    let totalAdv = await totalUser('','');
                     $('#pendingNoteCount').html(pendingNoteCount)
                     $('#UnreadStudWeeklyReport').html(unreadWeeklyreports)
                     $('#pendingUploadNarrativeReport').html(pendingUploadNarrative);
                     $('#declinedUploadNarrativeReport').html(declinedUploadNarrative);
+                    $('#totalAdvisory').html(totalAdv);
 
                 } catch (error) {
                     console.error('Error:', error);
@@ -213,29 +214,46 @@ function dashboard_tab(id){
         act_tab('dashboard_ReviewUploadNarrative');
     }
 }
-function renderChart(ctx) {
+async function renderChart(ctx) {
+    let activeNarrative = 0;
+    let total_activeStudent ;
+    let total_activeAdv;
+    let totalArchiveStud;
+    let totalAchiveAdv;
 
+    try {
+        // Fetch the narrative data
+        activeNarrative = await getTotalPublihed();
+        total_activeStudent = await totalUser(1, 3);
+        total_activeAdv = await totalUser(1, 2);
+        totalArchiveStud = await totalUser(2, 3);
+        totalAchiveAdv = await totalUser(2, 2);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+    // Initialize the chart only after activeNarrative has been fetched
     const myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [ 'Narrative Reports', 'Active student', 'Active adviser',  'Archived adviser', 'Archived student'],
+            labels: ['Published Narrative Reports', 'Active student', 'Active adviser', 'Archived adviser', 'Archived student'],
             datasets: [{
                 label: '',
-                data: [500, 300, 7,  5, 2],
+                data: [activeNarrative, total_activeStudent, total_activeAdv, totalArchiveStud, totalAchiveAdv], // Use activeNarrative here
                 borderWidth: 1,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)', // Color for 'Active student'
-                    'rgba(54, 162, 235, 0.2)', // Color for 'Active adviser'
-                    'rgba(255, 206, 86, 0.2)', // Color for 'Narrative Reports'
-                    'rgba(75, 192, 192, 0.2)', // Color for 'Archived adviser'
-                    'rgba(153, 102, 255, 0.2)' // Color for 'Archived student'
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)', // Border color for 'Active student'
-                    'rgba(54, 162, 235, 1)', // Border color for 'Active adviser'
-                    'rgba(255, 206, 86, 1)', // Border color for 'Narrative Reports'
-                    'rgba(75, 192, 192, 1)', // Border color for 'Archived adviser'
-                    'rgba(153, 102, 255, 1)' // Border color for 'Archived student'
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
                 ]
             }]
         },
@@ -273,7 +291,7 @@ function renderChart(ctx) {
                         document.getElementById('UserSubmenu').classList.remove('hidden');
 
                         dashboard_tab(elementId);
-                    } else if (label === 'Narrative Reports') {
+                    } else if (label === 'Published Narrative Reports') {
                         const elementId = "dashboard_narrative";
                         dashboard_tab(elementId);
                     }else if (label === 'Archived adviser') {
@@ -288,6 +306,7 @@ function renderChart(ctx) {
         }
     });
 }
+
 function act_tab(id){
     const allTabs = document.querySelectorAll('.dashboard_tab'); // Assuming all tabs have the 'tab' class
     allTabs.forEach(tab => {
@@ -375,6 +394,34 @@ function getTotalPendingNotes(){
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '../ajax.php?action=pendingADVnoteReq',
+            method: 'GET',
+            success: function(response) {
+                resolve(response);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
+    });
+}function getTotalPublihed(){
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../ajax.php?action=totalPublihedReport',
+            method: 'GET',
+            success: function(response) {
+                resolve(response);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
+    });
+}
+
+function totalUser(accountType, userType){
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../ajax.php?action=total_Users&userType=' + userType + '&accType=' + accountType,
             method: 'GET',
             success: function(response) {
                 resolve(response);

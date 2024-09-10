@@ -56,6 +56,32 @@ function mysqlQuery($query, $valueType, $params){
 function generatePassword($school_id) {
     return "CVSUOJT".$school_id;
 }
+
+function getTotalNarrativeReports($program, $file_status, $ojtAdviser) {
+
+    $sql = "SELECT COUNT(*) AS total FROM narrativereports WHERE 1 = 1";
+    $types = '';
+    $params = [];
+    if ($program !== '') {
+        $sql .= ' AND program = ?';
+        $types .= 's';
+        $params[] = $program;
+    }
+    if ($file_status !== ''){
+        $sql .= ' AND file_status = ?';
+        $types .= 'i';
+        $params[] = $file_status;
+    }if ($ojtAdviser !== ''){
+        $sql .= ' AND OJT_adviser_ID = ?';
+        $types .= 'i';
+        $params[] = $ojtAdviser;
+    }
+
+    $result = mysqlQuery($sql, $types, $params)[0];
+    return $result['total'];
+
+}
+
 function getTotalAdvList($adv_user_id){
     include 'DatabaseConn/databaseConn.php';
 

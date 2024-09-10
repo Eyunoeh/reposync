@@ -10,7 +10,9 @@ session_start();
     <div class="flex gap-5 ml-3 my-3 flex-wrap justify-evenly sm:justify-start items-center text-slate-700">
 
         <div onclick="dashboard_tab(this.id)" id="adviserNotesReq" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
-            <h1 class="font-bold font-sans text-[4rem]">60</h1>
+            <h1 class="font-bold font-sans text-[4rem]" id="pendingNoteCount">
+                <span class="loading loading-spinner loading-lg"></span>
+            </h1>
             <h1 class="font-sans ">Pending Adviser Notes</h1>
         </div>
         <div onclick="dashboard_tab(this.id)" id="dshbuploadNarrativeReq" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
@@ -55,7 +57,9 @@ session_start();
             <h1 class="font-sans ">Pending Notes</h1>
         </div>
         <div onclick="dashboard_tab(this.id)" id="stud_list" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
-            <h1 class="font-bold font-sans text-[4rem]">60</h1>
+            <h1 class="font-bold font-sans text-[4rem]" id="totalAdvisory">
+                <span class="loading loading-spinner loading-lg"></span>
+            </h1>
             <h1 class="font-sans ">Total active student</h1>
         </div>
     </div>
