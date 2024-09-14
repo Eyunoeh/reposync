@@ -46,6 +46,8 @@ while (true) {
             echo " [!] Error: " . $e->getMessage() . "\n";
             $consumer->reject($message); // Requeue the message after failure
             echo " [!] Rejected message\n";
+            mysqlQuery('UPDATE narrativereports SET convertStatus = 4 WHERE narrative_id = ?', 'i', [$narrative_id]);
+
         }
     } else {
         echo " [*] No message received\n";
@@ -54,6 +56,10 @@ while (true) {
 }
 
 
+/**
+ * @throws \Spatie\PdfToImage\Exceptions\PdfDoesNotExist
+ * @throws Exception
+ */
 function convertPDFtoJPEG($pdfPath, $file_name){
     $pdf = new \Spatie\PdfToImage\Pdf($pdfPath);
     $pdf->format(\Spatie\PdfToImage\Enums\OutputFormat::Jpeg);
@@ -75,7 +81,9 @@ function convertPDFtoJPEG($pdfPath, $file_name){
             $pdf->selectPages($i)->save($outputPath);
         }
     }catch (Exception $e) {
-        handleError($e->getMessage());
+
+        throw new Exception($e->getMessage());
+
     }
     return true;
 

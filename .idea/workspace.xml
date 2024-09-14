@@ -4,18 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="sa IDE to">
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="project set up github modififation">
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/Gus_Fring_BSIT_4B_220201123.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReportsPDF/Ken_Guico_BSIT_4C_210122444.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_1.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_10.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_11.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_2.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_3.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_4.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_5.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_6.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_7.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_8.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/NarrativeReports_Images/Gus_Fring_BSIT_4B_220201123/Gus_Fring_BSIT_4B_220201123.pdf_page_9.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ReposyncNarrativeManagementSystem.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ReposyncNarrativeManagementSystem.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PhpMailerWorker.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpMailerWorker.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pdf2jpeg_worker.php" beforeDir="false" afterPath="$PROJECT_DIR$/pdf2jpeg_worker.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboardContent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardContent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageNarrativeReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageNarrativeReports.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageStudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageStudent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/manageWeeklyReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageWeeklyReport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/userProfile/b5ff42226e818798543aaf88f5f67bef.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manageUploadNarratives.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/manageUploadNarratives.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +92,9 @@
       <path value="$PROJECT_DIR$/vendor/queue-interop/queue-interop" />
       <path value="$PROJECT_DIR$/vendor/php-amqplib/php-amqplib" />
       <path value="$PROJECT_DIR$/vendor/phpseclib/phpseclib" />
+      <path value="$PROJECT_DIR$/vendor/paragonie/constant_time_encoding" />
+      <path value="$PROJECT_DIR$/vendor/enqueue/dsn" />
+      <path value="$PROJECT_DIR$/vendor/paragonie/random_compat" />
     </include_path>
   </component>
   <component name="ProblemsViewState">
@@ -140,7 +152,9 @@
       <set>
         <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-PS-242.20224.427" />
         <option value="bundled-php-predefined-a98d8de5180a-d6acee4cb394-com.jetbrains.php.sharedIndexes-PS-242.20224.427" />
+        <option value="php-paragonie_random_compat-970fd879c5a4-b58dbecb" />
         <option value="php-phpseclib_phpseclib-970fd879c5a4-4c2fbee2" />
+        <option value="php-phpseclib_phpseclib-970fd879c5a4-c318b385" />
       </set>
     </attachedChunks>
   </component>
@@ -366,6 +380,8 @@
       <workItem from="1725933040672" duration="4955000" />
       <workItem from="1725938115175" duration="13223000" />
       <workItem from="1725954323209" duration="226000" />
+      <workItem from="1726281504538" duration="3651000" />
+      <workItem from="1726286662777" duration="1189000" />
     </task>
     <task id="LOCAL-00029" summary="revision Comments under develop">
       <created>1715083562511</created>
