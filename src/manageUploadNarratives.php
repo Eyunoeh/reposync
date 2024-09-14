@@ -22,39 +22,42 @@ session_start();
                 <button class="btn btn-success btn-outline btn-md text-slate-100" onclick="openModalForm('newNarrative')">New Narrative Report</button>
             </div>
         </div>
-        <div class="block py-8 pt-6 px-9">
-            <div class="overflow-auto h-screen">
-                <table id="narrativeReportsTable" class="w-full my-0 border-neutral-200 text-sm" >
-                    <thead class="align-bottom z-20">
-                    <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
-                        <th class="p-3 text-start ">School ID</th>
-                        <th class="p-3 text-start min-w-10">Student name</th>
-                        <th class="p-3 text-start min-w-10">OJT adviser</th>
-                        <th class="p-3 text-start min-w-10">Status</th>
-                        <th class="p-3 text-end ">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody id="narrativeReportsReqTableBody" class="text-center text-slate-600">
-                    <tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start w-[10rem]">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">012344454</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">ADVNAME</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">Pending</span>
-                        </td>
-                        <td class="p-3 text-end">
-                            <a onclick="openModalForm('EditNarrativeReq')" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="m-5 h-[85vh] overflow-auto">
+            <table id="narrativeReportsTable" class="
+            w-full my-0 border-neutral-200 text-sm" >
+                <thead class="align-bottom  sticky top-0 z-20
+            font-semibold text-[0.95rem]  text-secondary-dark bg-slate-200 rounded text-neutral">
+                <tr >
+                    <th class="p-3 text-start ">School ID</th>
+                    <th class="p-3 text-start">Student name</th>
+                    <th class="p-3 text-start ">OJT adviser</th>
+                    <th class="p-3 text-start">Status</th>
+                    <th class="p-3 text-end ">Action</th>
+                </tr>
+                </thead>
+                <tbody id="narrativeReportsReqTableBody" class="text-center text-slate-600">
+                <tr class="border-b border-dashed last:border-b-0 p-3">
+                    <td class="p-3 text-start w-[10rem]">
+                        <span class="font-semibold text-light-inverse text-md/normal break-words">012344454</span>
+                    </td>
+                    <td class="p-3 text-start">
+                        <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
+                    </td>
+                    <td class="p-3 text-start">
+                        <span class="font-semibold text-light-inverse text-md/normal">ADVNAME</span>
+                    </td>
+                    <td class="p-3 text-start">
+                        <span class="font-semibold text-light-inverse text-md/normal">Pending</span>
+                    </td>
+                    <td class="p-3 text-end">
+                        <a onclick="openModalForm('EditNarrativeReq')" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+
         </div>
     </div>
 </div>
@@ -116,8 +119,10 @@ session_start();
                                     <span class="label-text text-slate-700">OJT Adviser</span>
                                 </div>
 
-                                <select name="ojt_adviser" class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select adviser</option>
+                                <select  name="ojt_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                    <?php if ($_SESSION['log_user_type'] === 'admin'):?>
+                                        <option selected disabled >Select</option>
+                                    <?php endif;?>
                                     <?php
                                     $adv_option_queryCondition = '';
                                     if ($_SESSION['log_user_type'] == 'adviser'){
@@ -134,11 +139,9 @@ session_start();
                                             echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
                                         }
                                     } else {
-                                        echo "<option value=''>No users found</option>";
+                                        echo "<option disabled value=''>No users found</option>";
                                     }
                                     ?>
-
-
                                 </select>
                             </label>
                         </div>
@@ -149,7 +152,7 @@ session_start();
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
                                 <select required name="program" class="select select-bordered w-full bg-slate-100 ">
-                                    <option selected disabled>Select program</option>
+                                    <option value="" selected disabled>Select</option>
                                     <?php
                                     $sql = "SELECT * FROM  program";
                                     $stmt = $conn->prepare($sql);
@@ -170,7 +173,7 @@ session_start();
                                     <span class="label-text text-slate-700">Section</span>
                                 </div>
                                 <select required name="section" class="select select-bordered w-full bg-slate-100 ">
-                                    <option>Select Section</option>
+                                    <option value="" selected disabled>Select</option>
                                     <?php
                                     $sql = "SELECT * FROM  section";
                                     $stmt = $conn->prepare($sql);
@@ -329,8 +332,12 @@ session_start();
                                     <span class="label-text text-slate-700">OJT Adviser</span>
                                 </div>
                                 <select name="ojt_adviser" <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> class="disabled:text-black select select-bordered w-full bg-slate-100 " required>
-                                    <option  value="" selected disabled>Select adviser</option>
+                                    <?php if ($_SESSION['log_user_type'] === 'admin'):?>
+                                    <option selected disabled >Select</option>
+                                    <?php endif;?>
+
                                     <?php
+
 
                                     $adv_option_queryCondition = '';
                                     if ($_SESSION['log_user_type'] == 'adviser'){
@@ -363,8 +370,8 @@ session_start();
                                 <div class="label">
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
-                                <select <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> required name="program" class="disabled:text-black select select-bordered w-full bg-slate-100 ">
-                                    <option>Select program</option>
+                                <select  <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> required name="program" class="disabled:text-black select select-bordered w-full bg-slate-100 ">
+                                    <option value="" selected disabled>Select</option>
                                     <?php
                                     $sql = "SELECT * FROM  program";
                                     $stmt = $conn->prepare($sql);
@@ -386,7 +393,7 @@ session_start();
                                     <span class="label-text text-slate-700">Section</span>
                                 </div>
                                 <select <?php echo $_SESSION['log_user_type'] == 'admin' ? 'disabled': ''?> required name="section" class="disabled:text-black select select-bordered w-full bg-slate-100 ">
-                                    <option>Select Section</option>
+                                    <option value="" selected disabled>Select</option>
                                     <?php
                                     $sql = "SELECT * FROM  section";
                                     $stmt = $conn->prepare($sql);
