@@ -85,6 +85,9 @@ if ($action == 'login') {
 
 
 if ($action == 'addWeeklyReport') {
+    $response =  1;
+    $responseMessage = 'Weekly report has been submitted';
+    header('Content-Type: application/json');
     $user_id = isset($_POST['stud_user_id']) ? sanitizeInput($_POST['stud_user_id']) : '';
     if ($user_id !== '') {
         if (isset($_FILES['weeklyReport'])) {
@@ -118,23 +121,28 @@ if ($action == 'addWeeklyReport') {
                     $temp_file = $_FILES['weeklyReport']['tmp_name'];
                     $final_destination = 'src/StudentWeeklyReports/' . $file_name;
                     if (move_uploaded_file($temp_file, $final_destination)) {
-                        echo 1;
+
+                        echo json_encode(['response' => $response,
+                            'message' => $responseMessage]);
+                        exit();
+
                     } else {
-                        echo 'move_error';
+                        handleError('move_error');
                     }
-                    exit();
+
                 } else {
-                    echo 'upload_error';
+                    handleError('upload_error');
                 }
             } else {
-                echo 'format_error';
+                handleError('format_error');
             }
         } else {
-            echo 'file_missing';
+            handleError('file_missing');
         }
     } else {
-        echo 'missing_user_id';
+        handleError('missing_user_id');
     }
+
 }
 if ($action == 'getWeeklyReports'){
     $user_id = $_SESSION['log_user_id'];
@@ -239,6 +247,11 @@ if ($action == 'updateWeeklyreportStat'){
 
 
 if ($action == 'resubmitReport'){
+    $response =  1;
+    $responseMessage = 'Weekly report has been resubmitted';
+    header('Content-Type: application/json');
+
+
     $file_id = isset($_POST['file_id']) ? sanitizeInput($_POST['file_id']) : '';
     if ($file_id !== '') {
         if (isset($_FILES['resubmitReport'])) {
@@ -264,18 +277,20 @@ if ($action == 'resubmitReport'){
                     $updateReadStatSTMT->execute();
 
                     insertActivityLog('resubmit', $file_id);
-                    echo 1;
+                    echo json_encode(['response' => $response,
+                        'message' => $responseMessage]);
+                    exit();
                 } else {
-                    echo 'upload_error';
+                    handleError('upload_error');
                 }
             } else {
-                echo 'format_error';
+                handleError('format_error');
             }
         } else {
-            echo 'file_missing';
+            handleError('file_missing');
         }
     } else {
-        echo 'missing_file_id';
+        handleError('missing_file_id');
     }
 }
 

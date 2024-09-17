@@ -41,11 +41,10 @@ document.addEventListener('submit', function(e) {
       processData: false,
       contentType: false,
       success: function(response) {
-         if (parseInt(response) === 1) {
+         if (response.response === 1) {
             Alert(alertContainer, alertMessage, alertType);
             if (modal){
                closeModalForm(modal)
-
             }
 
             if (loadData.length > 0){
@@ -137,7 +136,7 @@ function getProfileInfo(){
             }
 
          }
-         console.log(data)
+         //console.log(data)
       },
       error: function(xhr, status, error) {
          console.error('Error fetching data:', error);
