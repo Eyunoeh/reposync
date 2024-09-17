@@ -188,7 +188,6 @@ accountSettings?.addEventListener('click', (e) => {
     e.preventDefault();
     navigate('studentSettings');
     getProfileInfo();
-    console.log(123123);
 
 });
 

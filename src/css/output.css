@@ -4465,6 +4465,10 @@ details.collapse summary::-webkit-details-marker {
   height: 80vh;
 }
 
+.h-\[85vh\] {
+  height: 85vh;
+}
+
 .h-\[8rem\] {
   height: 8rem;
 }
@@ -4483,10 +4487,6 @@ details.collapse summary::-webkit-details-marker {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[85vh\] {
-  height: 85vh;
 }
 
 .max-h-24 {
