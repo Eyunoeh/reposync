@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="css">
+    <list default="true" id="96016707-ff0c-4bec-941c-39341bf0485c" name="Changes" comment="remove composer.jjson and lock">
+      <change afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ReposyncNarrativeManagementSystem.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ReposyncNarrativeManagementSystem.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhpMailerWorker.php" beforeDir="false" afterPath="$PROJECT_DIR$/PhpMailerWorker.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/output.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/output.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/student.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/student.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/userProfile/f8d0ca4c3c4fac35bb90c223b5c15052.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,11 +125,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\assets" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\comments_img" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\DatabaseConn" />
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\userProfile" />
-      <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem\src\css" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\ReposyncNarrativeManagementSystem" />
@@ -366,7 +373,13 @@
       <workItem from="1726286662777" duration="2099000" />
       <workItem from="1726551842831" duration="601000" />
       <workItem from="1726614922297" duration="1798000" />
-      <workItem from="1726641912835" duration="5435000" />
+      <workItem from="1726641912835" duration="6453000" />
+      <workItem from="1726655023432" duration="1579000" />
+      <workItem from="1726714874841" duration="673000" />
+      <workItem from="1726789786096" duration="339000" />
+      <workItem from="1726889032209" duration="42000" />
+      <workItem from="1726891298004" duration="1921000" />
+      <workItem from="1726923855454" duration="1378000" />
     </task>
     <task id="LOCAL-00029" summary="revision Comments under develop">
       <created>1715083562511</created>
@@ -711,7 +724,7 @@
       <option name="project" value="LOCAL" />
       <updated>1723370620735</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <option name="localTasksCounter" value="97" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -730,7 +743,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="added mail notification for account registration and added duplicate error handler for contact number , school id and email on account creation" />
     <MESSAGE value="new page for account verification/forgot password (for future use)" />
     <MESSAGE value="fix css" />
     <MESSAGE value="added update account information and profile update" />
@@ -755,7 +767,8 @@
     <MESSAGE value="css" />
     <MESSAGE value="iDE" />
     <MESSAGE value="composer" />
-    <option name="LAST_COMMIT_MESSAGE" value="composer" />
+    <MESSAGE value="remove composer.jjson and lock" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove composer.jjson and lock" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

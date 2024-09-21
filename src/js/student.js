@@ -52,7 +52,7 @@ document.addEventListener('submit', function(e) {
             }
 
          } else {
-            Alert(alertContainer,response, 'error')
+            Alert(alertContainer,response.message, 'warning')
          }
          e.target.reset();
       },
