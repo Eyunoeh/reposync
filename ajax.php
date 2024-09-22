@@ -1266,19 +1266,21 @@ if ($action == 'deactivate_account'){
         }
     }
 }
-if ($action == 'recoverUser'){
+if ($action == 'recoverUser') {
     $user_id = isset($_GET['archived_id']) && sanitizeInput($_GET['archived_id']) ? $_GET['archived_id'] : '';
-    if (isset($user_id)){
-        $sql = "UPDATE tbl_accounts SET status = 'active'  where user_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('i',$user_id);
-        if ($stmt->execute()){
-            header('Content-Type: application/json');
-            echo json_encode(['response' => 1,
-                'message' => 'User status has been set to active']);
-        }
+
+    header('Content-Type: application/json');
+    if (isset($user_id) && $user_id !== '') {
+        $sql = "UPDATE tbl_accounts SET status = 1 WHERE acc_id = ?";
+        mysqlQuery($sql, 'i', [$user_id]);
     }
+
+    echo json_encode([
+        'response' => 1,
+        'message' => 'User account has been retrived'
+    ]);
 }
+
 
 if ($action === 'getArchiveUsers') {
     $archive_id = isset($_GET['archive_id']) ? intval($_GET['archive_id']) : null;
