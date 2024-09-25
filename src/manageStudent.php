@@ -79,7 +79,7 @@ include '../DatabaseConn/databaseConn.php';
     <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] max-h-[40rem]  flex flex-col text-slate-700">
         <div  class=" card-title sticky ">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('newStudentdialog')">✕</button>
-            <h3 class="font-bold text-center text-lg  p-5">Add new student </h3>
+            <h3 class="font-bold text-center text-lg p-5">Add new student </h3>
         </div>
         <div class="p-4">
             <form id="studentForm"  enctype="multipart/form-data">

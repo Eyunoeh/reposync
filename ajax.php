@@ -820,7 +820,7 @@ if ($action == 'newUser') {
 
     if ($user_first_name !== '' &&
         $user_last_name !== '' &&
-        $user_shc_id !== '' &&
+       /* $user_shc_id !== '' &&*/
         $user_sex !== '' &&
         $user_contact_number !== '' &&
         $user_address !== '' &&
@@ -1863,7 +1863,7 @@ if ($action == 'getDasboardYrSec'){
         echo '<tr class="hover">
                     <td>'.$row['year'].''.$row['section'].'</td>
                     <td class="text-center cursor-pointer">   
-                     <a onclick="openModalForm(\'ProgSecFormModal\'); EditYrSec('.$row['section_id'].')">
+                     <a onclick="openModalForm(\'ProgSecFormModal\'); EditYrSec('.$row['year_sec_Id'].')">
                      <i class="fa-solid fa-pen-to-square"></i>
                     </a></td>
                 </tr>';

@@ -69,35 +69,42 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
         </div>
     </div>
 </div>
-<dialog id="newAdvierDialog" class="modal bg-black  bg-opacity-40">
-    <div class="card bg-slate-50 w-[100vw] sm:w-[40rem] max-h-[40rem]  flex flex-col text-slate-700">
+<dialog id="newAdvierDialog"  class="modal bg-black  bg-opacity-40">
+    <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] h-[40rem]  flex flex-col text-slate-700">
         <div  class=" card-title sticky flex justify-end mr-2">
             <button class="btn btn-sm btn-circle btn-ghost " onclick="closeModalForm('newAdvierDialog')">✕</button>
         </div>
         <div class="p-4">
             <form id="admin_adv_Form"  enctype="multipart/form-data">
-                <div class="flex flex-col gap-8 mb-2 overflow-auto h-[27rem]">
-                    <div class="flex flex-col gap-2">
-                        <div class="flex justify-evenly gap-2">
+                <div class="flex flex-col gap-8 mb-2 overflow-auto h-[30rem]">
+                    <div id="adv_formFirstPage" class="flex flex-col gap-2 ">
+                        <div class="flex justify-evenly sm:gap-2 flex-wrap sm:flex-nowrap">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">First name</span>
                                 </div>
-                                <input type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input required type="text"  name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Middle name</span>
+                                </div>
+                                <input type="text"  name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Last name</span>
                                 </div>
-                                <input type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text" required name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
+
                         </div>
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Address</span>
                                 </div>
-                                <input type="text" name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text" required name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -105,14 +112,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                 </div>
                                 <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
-                        </div>
-                        <div class="flex justify-evenly gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
-                                </div>
-                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Sex</span>
@@ -120,15 +120,56 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                 <div class="flex justify-start gap-2">
                                     <div class="flex justify-center items-center flex-col">
                                         <label class="text-sm">Male</label>
-                                        <input type="radio" name="user_Sex" value="Male" class="radio bg-gray-300" checked />
+                                        <input required type="radio" name="user_Sex" value="Male" class="radio bg-gray-300"  />
                                     </div>
                                     <div class="flex justify-center items-center flex-col">
                                         <label class="text-sm">Female</label>
-                                        <input type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
+                                        <input required type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
                                     </div>
                                 </div>
                             </label>
                         </div>
+
+                        <hr class="m-2">
+
+                        <h1>Handle Advisory</h1>
+
+
+                        <div class="flex justify-start gap-2">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Program</span>
+                                </div>
+                                <select required name="user_address"  class=" select-sm bg-slate-100 select-bordered
+                                 select w-full max-w-xs" >
+                                    <option>
+                                        BSIT
+                                    </option>
+
+                                </select>
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Year and Section</span>
+                                </div>
+                                <select required name="YearSec"  class="select-sm  bg-slate-100 select-bordered
+                                 select w-full max-w-xs" >
+                                    <option>4A</option>
+
+                                </select>
+                            </label>
+                            <div class="flex justify-center items-end flex-grow">
+                                <div>
+                                    <a class="btn  btn-md btn-neutral">Add</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pl-10 p-5">
+                            <li>Empty advisory</li>
+                        </div>
+
+                    </div>
+                    <div id="adv_formSecPage" class="flex flex-col gap-2 justify-center h-full hidden" >
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -164,11 +205,23 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                             </label>
                         </div>
                     </div>
+
                 </div>
-                <p id="new_adv_adminLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
-                <div id="new_adv_adminBtn" class="flex justify-center m-3">
-                    <button id="admin_adv_Submit" class="btn btn-success btn-outline w-1/4" >Submit</button>
+
+
+
+                <div id="adv_formsbtBTN" class="hidden">
+                    <p id="new_adv_adminLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
+                    <div id="new_adv_adminBtn" class="flex items-end justify-center m-3">
+                        <button id="admin_adv_Submit" class="btn btn-success btn-outline w-1/4" >Submit</button>
+                    </div>
                 </div>
+                <div id="flipPageBTN">
+                    <div id="" class="flex items-end justify-center m-3">
+                        <a id="admin_adv_Submit" class="btn btn-success btn-outline w-1/4" >Next</a>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
@@ -184,137 +237,137 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     </dialog>
 </dialog>
 
-
-<dialog id="editAdv_admin" class="modal bg-black  bg-opacity-40">
-    <div class="card bg-slate-50 w-[100vw] sm:w-[43rem] max-h-[35rem]  flex flex-col text-slate-700">
-        <div  class=" card-title sticky  flex justify-end">
-            <button class="btn btn-sm btn-circle btn-ghost mt-2 mr-2" onclick="closeModalForm('editAdv_admin')">✕</button>
-        </div>
-        <div class="p-4">
-            <form id="EditAdviserForm"  enctype="multipart/form-data">
-                <div class="flex flex-col gap-8 mb-2 overflow-y-auto h-[25rem]">
-                    <div class="flex flex-col gap-2">
-                        <div class="flex justify-evenly gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">First name</span>
-                                </div>
-                                <input type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Middle name</span>
-                                </div>
-                                <input type="text" name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Last name</span>
-                                </div>
-                                <input type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                        </div>
-                        <div class="flex justify-evenly gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Address</span>
-                                </div>
-                                <input type="text" name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Contact number</span>
-                                </div>
-                                <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                        </div>
-                        <div class="flex justify-evenly gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
-                                </div>
-                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Sex</span>
-                                </div>
-                                <div class="flex justify-start gap-2">
-                                    <div class="flex justify-center items-center flex-col">
-                                        <label class="text-sm">Male</label>
-                                        <input type="radio" name="user_Sex" value="Male" class="radio bg-gray-300" checked />
-                                    </div>
-                                    <div class="flex justify-center items-center flex-col">
-                                        <label class="text-sm">Female</label>
-                                        <input type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="flex justify-start">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Access type</span>
-                                </div>
-                                <select name="user_type" class=" select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Change role</option>
-                                    <option value="adviser">OJT adviser</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </label>
-                        </div>
-                        <hr class="w-full border bg-slate-700 mt-10 ">
-
-                        <div class="flex justify-start gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Account email</span>
-                                </div>
-                                <input name="user_Email" type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-
-                        </div>
-                        <a class="transition-all text-error font-bold font-sans cursor-pointer text-end pr-6 m-3 hover:opacity-50 active:text-slate-500" onclick="openModalForm('deactivate_adv_acc')">Deactivate account? </a>
-                    </div>
-                </div>
-                <input name="user_id" type="hidden" value="">
-
-                <p id="editAdVLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
-
-                <div id="editStudBtn" class="flex justify-center m-3 gap-2.5 ">
-                    <button id="update_stud_btn" class="btn btn-info btn-outline w-1/2" >Update</button>
-                    <!--<button id="archive_stud_btn" class="btn btn-error btn-outline" >Archive</button>-->
-                </div>
-            </form>
-        </div>
-        <dialog id="deactivate_adv_acc" class="modal bg-black  bg-opacity-40 ">
-            <div class="card bg-slate-50 w-[80vw] absolute top-10 sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
-                <div  class=" card-title sticky ">
-                    <h3 class="font-bold text-center text-lg  p-5">Are you sure you want to deactivate this OJT Adviser account?</h3>
-                </div>
-                <div class="p-4 w-full flex justify-evenly">
-                    <a id="deactivate_adv" class="btn  btn-error w-1/4 " onclick="closeModalForm('deactivate_adv_acc');deactivate_account(this.getAttribute('data-user_id'), 'editAdv_admin')" data-user_id="">Deactivate</a>
-                    <button class="btn  btn-info  w-1/4 " onclick="closeModalForm('deactivate_adv_acc')">Close</button>
-                </div>
-            </div>
-        </dialog>
-    </div>
-</dialog>
-<dialog id="NewadvNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('NewadvNotif')">
-    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
-        <div role="alert" class="alert alert-success absolute top-50" >
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span>New adviser account has been created!</span>
-        </div>
-    </div>
-</dialog>
-<dialog id="EditAdvNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('EditAdvNotif')">
-    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
-        <div role="alert" class="alert alert-info absolute top-50" >
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span>Adviser information has been updated!</span>
-        </div>
-    </div>
-</dialog>
+<!---->
+<!--<dialog id="editAdv_admin" class="modal bg-black  bg-opacity-40">-->
+<!--    <div class="card bg-slate-50 w-[100vw] sm:w-[43rem] max-h-[35rem]  flex flex-col text-slate-700">-->
+<!--        <div  class=" card-title sticky  flex justify-end">-->
+<!--            <button class="btn btn-sm btn-circle btn-ghost mt-2 mr-2" onclick="closeModalForm('editAdv_admin')">✕</button>-->
+<!--        </div>-->
+<!--        <div class="p-4">-->
+<!--            <form id="EditAdviserForm"  enctype="multipart/form-data">-->
+<!--                <div class="flex flex-col gap-8 mb-2 overflow-y-auto h-[25rem]">-->
+<!--                    <div class="flex flex-col gap-2">-->
+<!--                        <div class="flex justify-evenly gap-2">-->
+<!--                            <label class="form-control w-full max-w-xs">-->
+<!--                                <div class="label">-->
+<!--                                    <span class="label-text text-slate-700">First name</span>-->
+<!--                                </div>-->
+<!--                                <input type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />-->
+<!--                            </label>-->
+<!--                            <label class="form-control w-full max-w-xs">-->
+<!--                                <div class="label">-->
+<!--                                    <span class="label-text text-slate-700">Middle name</span>-->
+<!--                                </div>-->
+<!--                                <input type="text" name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />-->
+<!--                            </label>-->
+<!--                            <label class="form-control w-full max-w-xs">-->
+<!--                                <div class="label">-->
+<!--                                    <span class="label-text text-slate-700">Last name</span>-->
+<!--                                </div>-->
+<!--                                <input type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div class="flex justify-evenly gap-2">-->
+<!--                            <label class="form-control w-full max-w-xs">-->
+<!--                                <div class="label">-->
+<!--                                    <span class="label-text text-slate-700">Address</span>-->
+<!--                                </div>-->
+<!--                                <input type="text" name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />-->
+<!--                            </label>-->
+<!--                            <label class="form-control w-full max-w-xs">-->
+<!--                                <div class="label">-->
+<!--                                    <span class="label-text text-slate-700">Contact number</span>-->
+<!--                                </div>-->
+<!--                                <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div class="flex justify-evenly gap-2">-->
+<!--                            <label class="form-control w-full max-w-xs">-->
+<!--                                <div class="label">-->
+<!--                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>-->
+<!--                                </div>-->
+<!--                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />-->
+<!--                            </label>-->
+<!--                            <label class="form-control w-full max-w-xs">-->
+<!--                                <div class="label">-->
+<!--                                    <span class="label-text text-slate-700">Sex</span>-->
+<!--                                </div>-->
+<!--                                <div class="flex justify-start gap-2">-->
+<!--                                    <div class="flex justify-center items-center flex-col">-->
+<!--                                        <label class="text-sm">Male</label>-->
+<!--                                        <input type="radio" name="user_Sex" value="Male" class="radio bg-gray-300" checked />-->
+<!--                                    </div>-->
+<!--                                    <div class="flex justify-center items-center flex-col">-->
+<!--                                        <label class="text-sm">Female</label>-->
+<!--                                        <input type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div class="flex justify-start">-->
+<!--                            <label class="form-control w-full max-w-xs">-->
+<!--                                <div class="label">-->
+<!--                                    <span class="label-text text-slate-700">Access type</span>-->
+<!--                                </div>-->
+<!--                                <select name="user_type" class=" select select-bordered w-full bg-slate-100 " required>-->
+<!--                                    <option value="" selected disabled>Change role</option>-->
+<!--                                    <option value="adviser">OJT adviser</option>-->
+<!--                                    <option value="admin">Admin</option>-->
+<!--                                </select>-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <hr class="w-full border bg-slate-700 mt-10 ">-->
+<!---->
+<!--                        <div class="flex justify-start gap-2">-->
+<!--                            <label class="form-control w-full max-w-xs">-->
+<!--                                <div class="label">-->
+<!--                                    <span class="label-text text-slate-700">Account email</span>-->
+<!--                                </div>-->
+<!--                                <input name="user_Email" type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />-->
+<!--                            </label>-->
+<!---->
+<!--                        </div>-->
+<!--                        <a class="transition-all text-error font-bold font-sans cursor-pointer text-end pr-6 m-3 hover:opacity-50 active:text-slate-500" onclick="openModalForm('deactivate_adv_acc')">Deactivate account? </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <input name="user_id" type="hidden" value="">-->
+<!---->
+<!--                <p id="editAdVLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>-->
+<!---->
+<!--                <div id="editStudBtn" class="flex justify-center m-3 gap-2.5 ">-->
+<!--                    <button id="update_stud_btn" class="btn btn-info btn-outline w-1/2" >Update</button>-->
+<!--                    <!--<button id="archive_stud_btn" class="btn btn-error btn-outline" >Archive</button>-->-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--        <dialog id="deactivate_adv_acc" class="modal bg-black  bg-opacity-40 ">-->
+<!--            <div class="card bg-slate-50 w-[80vw] absolute top-10 sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">-->
+<!--                <div  class=" card-title sticky ">-->
+<!--                    <h3 class="font-bold text-center text-lg  p-5">Are you sure you want to deactivate this OJT Adviser account?</h3>-->
+<!--                </div>-->
+<!--                <div class="p-4 w-full flex justify-evenly">-->
+<!--                    <a id="deactivate_adv" class="btn  btn-error w-1/4 " onclick="closeModalForm('deactivate_adv_acc');deactivate_account(this.getAttribute('data-user_id'), 'editAdv_admin')" data-user_id="">Deactivate</a>-->
+<!--                    <button class="btn  btn-info  w-1/4 " onclick="closeModalForm('deactivate_adv_acc')">Close</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </dialog>-->
+<!--    </div>-->
+<!--</dialog>-->
+<!--<dialog id="NewadvNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('NewadvNotif')">-->
+<!--    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">-->
+<!--        <div role="alert" class="alert alert-success absolute top-50" >-->
+<!--            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>-->
+<!--            <span>New adviser account has been created!</span>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</dialog>-->
+<!--<dialog id="EditAdvNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('EditAdvNotif')">-->
+<!--    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">-->
+<!--        <div role="alert" class="alert alert-info absolute top-50" >-->
+<!--            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>-->
+<!--            <span>Adviser information has been updated!</span>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</dialog>-->
 
 
