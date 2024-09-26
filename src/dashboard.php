@@ -45,13 +45,18 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 
             </div>
         </a>
-        <div id="dashboard" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <div id="dashboard"
+             onclick="dashboard_tab(
+                     this.id, [<?= $_SESSION['log_user_type'] == 'admin' ? "'Admin.js'"  : "'Adviser.js'" ?>, 'dashboardContent.js']
+
+                     )" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-gauge"></i>
             <span class="text-[15px] ml-4  font-bold">Dashboard</span>
         </div>
+
         <?php if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'adviser'):?>
 
-            <div id="dashBoardWeeklyReport" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+            <div id="dashBoardWeeklyReport" onclick="dashboard_tab(this.id, ['Adviser.js'])" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
                 <i class="fa-brands fa-font-awesome"></i>
                 <span class="text-[15px] ml-4  font-bold">Students Weekly Report</span>
             </div>
@@ -73,28 +78,28 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <?php
             if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
             ?>
-                <h1 onclick="dashboard_tab(this.id)" id="notesReq" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <h1 onclick="dashboard_tab(this.id, ['Admin.js'])" id="notesReq" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                     <i class="fa-regular fa-note-sticky"></i>
                     Advisers Notes
                 </h1>
 
-                <h1 onclick="dashboard_tab(this.id)" id="schedule&Act" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <h1 onclick="dashboard_tab(this.id, ['Admin.js'])" id="schedule&Act" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 <i class="fa-regular fa-calendar-days"></i>
                  Activities & Schedule
             </h1>
 
             <?php elseif ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'adviser'):?>
-                <h1 onclick="dashboard_tab(this.id)" id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <h1 onclick="dashboard_tab(this.id, ['Adviser.js'])" id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                     <i class="fa-regular fa-note-sticky"></i>
                     Notes
                 </h1>
             <?php endif;?>
         </div>
-        <div id="dashboard_ReviewUploadNarrative" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-start rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <div id="dashboard_ReviewUploadNarrative" onclick="dashboard_tab(this.id, ['<?=$_SESSION['log_user_type'] == 'admin' ? 'Admin.js': 'Adviser.js'?>'])" class="dashboard_tab p-2.5 mt-3 flex items-start rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-upload"></i>
             <span class="text-[15px] ml-4  font-bold">Upload Narrative Report</span>
         </div>
-        <div id="dashboard_narrative" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <div id="dashboard_narrative" onclick="dashboard_tab(this.id, [])" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-book"></i>
             <span class="text-[15px] ml-4  font-bold">Narrative Reports</span>
         </div>
@@ -106,7 +111,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
         if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'admin'):
 
         ?>
-        <div id="dashBoardProg_n_Section" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <div id="dashBoardProg_n_Section" onclick="dashboard_tab(this.id,  ['Admin.js'])" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-graduation-cap"></i>
             <span class="text-[15px] ml-4  font-bold">Prog-Yr-Sec</span>
         </div>
@@ -124,29 +129,29 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <i class="fa-solid fa-chevron-down"></i>
         </div>
         <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="UserSubmenu">
-            <h1 onclick="dashboard_tab(this.id);" id="stud_list" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+            <h1 onclick="dashboard_tab(this.id,[]);" id="stud_list" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Student
             </h1>
             <?php
             if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
             ?>
-                <h1 onclick="dashboard_tab(this.id);" id="adv_list" class="dashboard_tab w-full cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <h1 onclick="dashboard_tab(this.id, ['Admin.js']);" id="adv_list" class="dashboard_tab w-full cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                     Advisers
                 </h1>
 
 
             <?php endif?>
-            <h1 onclick="dashboard_tab(this.id);" id="profile" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+            <h1 onclick="dashboard_tab(this.id,[]);" id="profile" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Profile
             </h1>
-            <h1 onclick="dashboard_tab(this.id);" id="accountInfo" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+            <h1 onclick="dashboard_tab(this.id,[]);" id="accountInfo" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Account
             </h1>
         </div>
         <?php
         if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
         ?>
-        <div onclick="dashboard_tab(this.id);" id="account_archived" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <div onclick="dashboard_tab(this.id, ['Admin.js']);" id="account_archived" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-recycle"></i>
             <span class="text-[15px] ml-4  font-bold">Archive</span>
         </div>
