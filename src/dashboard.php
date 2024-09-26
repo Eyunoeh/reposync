@@ -135,7 +135,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <?php
             if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
             ?>
-                <h1 onclick="dashboard_tab(this.id, ['Admin.js']);" id="adv_list" class="dashboard_tab w-full cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <h1 onclick="dashboard_tab(this.id, ['Admin.js', 'manageAdviser.js']);" id="adv_list" class="dashboard_tab w-full cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                     Advisers
                 </h1>
 

@@ -3828,21 +3828,6 @@ details.collapse summary::-webkit-details-marker {
   border-start-end-radius: inherit;
 }
 
-.select-md {
-  height: 3rem;
-  min-height: 3rem;
-  padding-left: 1rem;
-  padding-right: 2.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  line-height: 2;
-}
-
-[dir="rtl"] .select-md {
-  padding-left: 2.5rem;
-  padding-right: 1rem;
-}
-
 .select-sm {
   height: 2rem;
   min-height: 2rem;
@@ -5144,10 +5129,6 @@ details.collapse summary::-webkit-details-marker {
   padding: 1.5rem;
 }
 
-.p-10 {
-  padding: 2.5rem;
-}
-
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -5191,6 +5172,10 @@ details.collapse summary::-webkit-details-marker {
   padding-bottom: 1.25rem;
 }
 
+.pl-10 {
+  padding-left: 2.5rem;
+}
+
 .pl-2 {
   padding-left: 0.5rem;
 }
@@ -5231,8 +5216,8 @@ details.collapse summary::-webkit-details-marker {
   padding-top: 1.5rem;
 }
 
-.pl-10 {
-  padding-left: 2.5rem;
+.pr-10 {
+  padding-right: 2.5rem;
 }
 
 .text-left {
@@ -5661,6 +5646,10 @@ body{
 
 .hover\:opacity-90:hover {
   opacity: 0.9;
+}
+
+.hover\:opacity-80:hover {
+  opacity: 0.8;
 }
 
 .hover\:file\:bg-slate-200::file-selector-button:hover {

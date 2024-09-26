@@ -3,6 +3,8 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     header("Location: 404.php");
     exit();
 }
+session_start();
+include '../DatabaseConn/databaseConn.php';
 ?>
 
 <div class="px-9 pt-2 flex justify-end items-stretch flex-wrap  pb-0 bg-transparent">
@@ -140,11 +142,20 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                 <div class="label">
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
-                                <select required name="user_address"  class=" select-sm bg-slate-100 select-bordered
+                                <select required name="assignedProg" id="assignedProg"  class=" select-sm bg-slate-100 select-bordered
                                  select w-full max-w-xs" >
-                                    <option>
-                                        BSIT
-                                    </option>
+                                    <?php
+                                    $sql = "SELECT * FROM  program";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option value="'.$row['program_id'].'">'.$row['program_code'].'</option>
+                                               ';
+
+                                    }
+
+                                    ?>
 
                                 </select>
                             </label>
@@ -152,24 +163,34 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                                 <div class="label">
                                     <span class="label-text text-slate-700">Year and Section</span>
                                 </div>
-                                <select required name="YearSec"  class="select-sm  bg-slate-100 select-bordered
+                                <select required name="assignedYearSec" id="assignedYearSec" class="select-sm  bg-slate-100 select-bordered
                                  select w-full max-w-xs" >
-                                    <option>4A</option>
-
+                                    <?php
+                                    $sql = "SELECT * FROM  section";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option value="'.$row['year_sec_Id'].'">'.$row['year'].$row['section'].'</option>';
+                                    }
+                                    ?>
                                 </select>
                             </label>
                             <div class="flex justify-center items-end flex-grow">
                                 <div>
-                                    <a class="btn  btn-md btn-neutral">Add</a>
+                                    <a class="btn  btn-md btn-neutral" onclick="addAssignment()">Add</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="pl-10 p-5">
+                        <div class="pl-10 p-5" id="hndl_adv_list">
                             <li>Empty advisory</li>
+
+
                         </div>
 
+
                     </div>
-                    <div id="adv_formSecPage" class="flex flex-col gap-2 justify-center h-full hidden" >
+                    <div id="adv_formSecPage" class="flex flex-col gap-2 justify-center h-full " >
                         <div class="flex justify-evenly gap-2">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
@@ -207,20 +228,18 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                     </div>
 
                 </div>
+                <hr class="mb-5">
+                <input type="hidden" id="assignedAdvList" name="assignedAdvList">
 
 
-
-                <div id="adv_formsbtBTN" class="hidden">
+                <div id="formAlertbox" onclick="resetAlertBox(this.id)"></div>
+                <div id="adv_formsbtBTN" >
                     <p id="new_adv_adminLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
                     <div id="new_adv_adminBtn" class="flex items-end justify-center m-3">
                         <button id="admin_adv_Submit" class="btn btn-success btn-outline w-1/4" >Submit</button>
                     </div>
                 </div>
-                <div id="flipPageBTN">
-                    <div id="" class="flex items-end justify-center m-3">
-                        <a id="admin_adv_Submit" class="btn btn-success btn-outline w-1/4" >Next</a>
-                    </div>
-                </div>
+
 
             </form>
         </div>
@@ -336,7 +355,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 <!---->
 <!--                <div id="editStudBtn" class="flex justify-center m-3 gap-2.5 ">-->
 <!--                    <button id="update_stud_btn" class="btn btn-info btn-outline w-1/2" >Update</button>-->
-<!--                    <!--<button id="archive_stud_btn" class="btn btn-error btn-outline" >Archive</button>-->-->
+<!--                    <<button id="archive_stud_btn" class="btn btn-error btn-outline" >Archive</button>-->
 <!--                </div>-->
 <!--            </form>-->
 <!--        </div>-->

@@ -23,6 +23,7 @@ for (let i = 0; i< domScript.length; i++){
     const scriptTag = document.createElement('script');
     scriptTag.src ='js/' + domScript[i];
     document.body.appendChild(scriptTag);
+    oldScripts.push(domScript[i]);
 
 }
 
@@ -142,24 +143,28 @@ function dashboard_tab(id , newScripts){
 
 
     if (oldScripts.length > 0){
+
         const existingScript = document.getElementsByTagName('script');
-        for (let i = 0; i< existingScript.length; i++) {
+        for (let i = 0; i < existingScript.length; i++) {
             let scriptSrc = existingScript[i].getAttribute('src');
+
 
             if (oldScripts.includes(scriptSrc.replace('js/', ''))) {
                 existingScript[i].remove();
             }
+
         }
 
     }
-    if (newScripts.length > 0){
-        oldScripts = [];
-        for (let i = 0; i < newScripts.length; i++) {
-            const scriptTag = document.createElement('script');
-            scriptTag.src = 'js/' + newScripts[i];
-            document.body.appendChild(scriptTag);
-            oldScripts.push(newScripts[i]);
-        }
+
+    oldScripts = [];
+
+    for (let i = 0; i < newScripts.length; i++) {
+        const scriptTag = document.createElement('script');
+        scriptTag.src = 'js/' + newScripts[i];
+        document.body.appendChild(scriptTag);
+        oldScripts.push(newScripts[i]);
+
     }
 
 
