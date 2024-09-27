@@ -26,18 +26,21 @@ include '../DatabaseConn/databaseConn.php';
                 <table id="AdvListTbl" class="w-full my-0 border-neutral-200" >
                     <thead class="align-bottom z-20">
                     <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
-                        <th class="p-3 text-start ">School ID</th>
                         <th class="p-3 text-start ">Name</th>
-
-
-                        <th class="p-3 text-end ">Total advisory</th>
+                        <th class="p-3 text-center ">Program</th>
+                        <th class="p-3 text-center ">Year and Section</th>
+                        <th class="p-3 text-center ">Total advisory</th>
                         <th class="p-3 text-end ">Action</th>
                     </tr>
                     </thead>
                     <tbody id="advList" class="text-center text-slate-600">
                     <tr class="border-b border-dashed last:border-b-0 p-3">
+
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">210101223</span>
+                            <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
                         </td>
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
@@ -50,21 +53,7 @@ include '../DatabaseConn/databaseConn.php';
                             <a onclick="openModalForm('editAdv_admin');" href="#" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
                         </td>
                     </tr>
-                    <tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">210101279</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
-                        </td>
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">50</span>
-                        </td>
 
-                        <td class="p-3 text-end">
-                            <a onclick="openModalForm('editAdv_admin')" href="#" class=" "><i class="fa-solid fa-circle-info"></i></a>
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -131,6 +120,26 @@ include '../DatabaseConn/databaseConn.php';
                                 </div>
                             </label>
                         </div>
+                        <div id="adv_formSecPage" class="flex flex-col gap-2 justify-center h-full " >
+                            <div class="flex justify-evenly gap-2">
+                                <label class="form-control w-full max-w-xs">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700">Account email</span>
+                                    </div>
+                                    <input name="user_Email" type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                </label>
+                                <label class="form-control w-full max-w-xs">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700">Access Type</span>
+                                    </div>
+                                    <select name="user_type" class=" select select-bordered w-full bg-slate-100 " required>
+                                        <option value="" selected disabled>Select role</option>
+                                        <option value="adviser">OJT adviser</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
 
                         <hr class="m-2">
 
@@ -188,44 +197,9 @@ include '../DatabaseConn/databaseConn.php';
 
                         </div>
 
+                    </div>
 
-                    </div>
-                    <div id="adv_formSecPage" class="flex flex-col gap-2 justify-center h-full " >
-                        <div class="flex justify-evenly gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Account email</span>
-                                </div>
-                                <input name="user_Email" type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Access Type</span>
-                                </div>
-                                <select name="user_type" class=" select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select role</option>
-                                    <option value="adviser">OJT adviser</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div class="flex justify-evenly gap-2 ">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Password</span>
-                                </div>
-                                <input name="user_password" autocomplete="off"  type="password" placeholder="Enter password" data-theme="light"
-                                       class="bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Confirm password</span>
-                                </div>
-                                <input name="user_confPass" autocomplete="off"  type="password" placeholder="Enter password" data-theme="light"
-                                       class="bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                        </div>
-                    </div>
+
 
                 </div>
                 <hr class="mb-5">

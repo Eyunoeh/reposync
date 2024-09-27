@@ -34,12 +34,14 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
                 <h1 class="font-bold text-gray-200 text-[15px] ml-3">Reposync</h1>
                 <i class="bi bi-x cursor-pointer ml-28 lg:hidden" onclick="//openSidebar()"></i>
             </div>
+            <div class="text-start">
+                <p class="pl-2.5 text-slate-100 font-semibold text-sm"><?=$_SESSION['log_user_firstName']?> - <?=strtoupper($_SESSION['log_user_type'])?></p>
+            </div>
             <div class="my-2 bg-gray-600 h-[1px]"></div>
         </div>
 
         <a href="index.php">
             <div class=" p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 active:bg-slate-200 text-white">
-
                     <i class="fa-solid fa-house"></i>
                 <span class="text-[15px] ml-4  font-bold">Home</span>
 

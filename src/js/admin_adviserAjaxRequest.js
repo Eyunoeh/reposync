@@ -29,12 +29,7 @@ document.addEventListener('submit', function(e) {
     }
      if (e.target.id === 'admin_adv_Form'){
          endpoint = 'newUser';
-         let password = e.target.querySelector('input[name="user_password"]').value;
-         let confirmPassword = e.target.querySelector('input[name="user_confPass"]').value;
-         if (password !== confirmPassword) {
-             openModalForm('passNotmatchNotif')
-             return false;
-         }
+
 
          loader_id ='new_adv_adminLoader'
          btn = 'new_adv_adminBtn';

@@ -379,19 +379,63 @@ function getActSched(actId){
         }
     });
 }
+
+
+
+
+
+
 function get_AdvUsertList (){
     $.ajax({
         url: '../ajax.php?action=getAdvisers',
         method: 'GET',
-        dataType: 'html',
+        dataType: 'json',
         success: function(response) {
-            $('#advList').html(response);
+            if (response.response === 1){
+                let data = response.data;
+                console.log(data)
+                let table_data = 'No result';
+                if (data.length > 0){
+                    for (let i = 0 ; i < data.length; i++){
+                        table_data += `<tr class="border-b border-dashed last:border-b-0 p-3">
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal">${data[i]['first_name']} ${data[i]['last_name']} </span>
+                        </td>
+                        <td class="p-3 text-center">
+                            <span class="font-semibold text-light-inverse text-md/normal">BSBM MM</span>
+                            <hr>
+                            <span class="font-semibold text-light-inverse text-md/normal">BSBM MM </span>
+                        </td>
+                        <td class="p-3 text-center">
+                            <span class="font-semibold text-light-inverse text-md/normal">4A</span>
+                            <hr>
+                            <span class="font-semibold text-light-inverse text-md/normal">4B</span>
+                        </td>
+                        
+             
+                        <td class="p-3 text-center">
+                            <span class="font-semibold text-light-inverse text-md/normal">10</span>
+                            <hr>
+                            <span class="font-semibold text-light-inverse text-md/normal">10</span>
+                        </td>
+                        <td class="p-3 text-end">
+                            <a onclick="" data-id="'.$row['user_id'].'" href="#" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
+                        </td>
+                    </tr>`
+                    }
+                }
+                $('#advList').html(table_data)
+
+            }
         },
         error: function(xhr, status, error) {
             console.error('Error fetching data:', error);
         }
     });
 }
+
+
+
 
 if (document.getElementById('act_n_schedForm')) {
     const startDateInput = document.querySelector('input[name="startDate"]');

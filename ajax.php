@@ -804,7 +804,7 @@ if ($action == 'newUser') {
     $user_middle_name = isset($_POST['user_Mname']) ? sanitizeInput($_POST['user_Mname']) : 'N/A';
     $user_shc_id = isset($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
     $user_sex = isset($_POST['user_Sex']) ? sanitizeInput($_POST['user_Sex']) : '';
-    $user_contact_number = isset($_POST['contactNumber']) ? sanitizeInput($_POST['contactNumber']) : '';
+    $user_contact_number = isset($_POST['contactNumber']) ? (int) sanitizeInput($_POST['contactNumber']) : 0;
     $user_address = isset($_POST['user_address']) ? sanitizeInput($_POST['user_address']) : '';
     $user_program = isset($_POST['stud_Program']) ? sanitizeInput($_POST['stud_Program']) : '';
     $user_section = isset($_POST['stud_Section']) ? sanitizeInput($_POST['stud_Section']) : '';
@@ -813,8 +813,6 @@ if ($action == 'newUser') {
     $stud_trainingHours = isset($_POST['stud_TrainingHours']) ? sanitizeInput($_POST['stud_TrainingHours']) : 'N/A';
     $user_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
     $user_type = isset($_POST['user_type']) ?sanitizeInput($_POST['user_type']) : '';
-    $user_password = isset($_POST['user_password']) && sanitizeInput($_POST['user_password']) ? $_POST['user_password'] :'';
-    $user_confPass = isset($_POST['user_confPass']) && sanitizeInput($_POST['user_confPass']) ? $_POST['user_confPass'] :'';
 
 
 
@@ -827,24 +825,31 @@ if ($action == 'newUser') {
         $user_type !== '' &&
         $user_email !== '') {
 
-
-
-        if ( $user_program !== '' && $user_section !== '' && $user_password == '' && $user_confPass == '') {
-            $user_password = generatePassword($user_shc_id);
-        }else{
-            if ($user_password != $user_confPass){
-                handleError("Password do not match");
-            }
+        if (!is_int($user_contact_number)){
+            handleError('Invalid contact number!');
         }
+        if (strlen($user_contact_number) > 11 || strlen($user_contact_number) < 10){
+            handleError('Invalid contact number length format!');
+        }
+
+        if ($user_type == 'student'){
+            $user_password = generatePassword($user_shc_id);
+        }else if($user_type == 'admin' || $user_type == 'adviser'){
+            $user_password = 'CVSUOJT_'.strtoupper($user_type).'_'.uniqid();
+        }else{
+            handleError('Invalid registration: user type not valid!');
+        }
+
+
         $conn->begin_transaction();
 
         try {
             // Insert into tbl_user_info
             $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
-            $insert_sql = "INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number, school_id, sex, user_type) 
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            $valueTypes = "ssssssss";
-            $params = [$user_first_name, $user_middle_name, $user_last_name, $user_address, $user_contact_number, $user_shc_id, $user_sex, $user_type];
+            $insert_sql = "INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number,  sex, user_type) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $valueTypes = "sssssss";
+            $params = [$user_first_name, $user_middle_name, $user_last_name, $user_address, $user_contact_number, $user_sex, $user_type];
 
             $insert_stmt = $conn->prepare($insert_sql);
             $insert_stmt->bind_param($valueTypes, ...$params);
@@ -889,6 +894,25 @@ if ($action == 'newUser') {
 
             handleError($responseMessage);
             exit();
+        }
+        if ($user_type == 'adviser'){
+
+            $adviserTbl  = "INSERT INTO  tbl_adviser ( adv_sch_user_id  ) values (?)";
+            $adv_id = mysqlQuery($adviserTbl, 'i', [$user_id])[1];//last inserted id to adviser table
+            try {
+                $assignedadvList = json_decode($_POST['assignedAdvList'],true) ?? '';
+                if ($assignedadvList !== ''){
+                    foreach ($assignedadvList as $assignedadv){
+                        $assignedadvsql = "INSERT INTO  tbl_advisoryhandle (program_id,year_sec_Id,  adv_id  )
+                                        values (?, ?, ?)";
+                        $types = 'iii';
+                        $params = [$assignedadv['program'], $assignedadv['section'], $adv_id];
+                        mysqlQuery($assignedadvsql, $types, $params);
+                    }
+                }
+            }catch (Exception $e){
+                handleError($e->getMessage());
+            }
         }
 
 
@@ -1339,38 +1363,26 @@ WHERE tbl_user_info.user_id = ?";
 
 
 if ($action == 'getAdvisers') {
-
-    $sql = "SELECT ui.*, acc.*
+    header('Content-Type: application/json');
+    $getAdvListsql = "SELECT ui.*, acc.*
         FROM tbl_user_info ui
         INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
         WHERE ui.user_type = 'adviser' and acc.status = 1";
 
-    $result = $conn->query($sql);
+    $advList = mysqlQuery($getAdvListsql, '', []);
 
-    if ($result->num_rows > 0) {
 
-        $advisers = array();
+    $advisoryList =
 
-        // Fetch data row by row
-        while ($row = $result->fetch_assoc()) {
-            echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['school_id'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$row['last_name'].'</span>
-                        </td>
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.getTotalAdvList($row['user_id']).'</span>
-                        </td>
-                        <td class="p-3 text-end">
-                            <a onclick="openModalForm(\'editAdv_admin\');editAdvInfo(this.getAttribute(\'data-id\'))" data-id="'.$row['user_id'].'" href="#" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
-                        </td>
-                    </tr>';
-        }
-    }
+
+
+    $data = [];
+    echo json_encode(['response' => 1, 'data' => $advList]);
     exit();
 }
+
+
+
 if ($action == 'getAdvInfoJson') {
     $user_id = $_GET['data_id'];
 

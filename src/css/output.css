@@ -5216,8 +5216,8 @@ details.collapse summary::-webkit-details-marker {
   padding-top: 1.5rem;
 }
 
-.pr-10 {
-  padding-right: 2.5rem;
+.pl-2\.5 {
+  padding-left: 0.625rem;
 }
 
 .text-left {
@@ -5646,10 +5646,6 @@ body{
 
 .hover\:opacity-90:hover {
   opacity: 0.9;
-}
-
-.hover\:opacity-80:hover {
-  opacity: 0.8;
 }
 
 .hover\:file\:bg-slate-200::file-selector-button:hover {
