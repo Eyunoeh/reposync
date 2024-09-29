@@ -13,7 +13,7 @@ document.addEventListener('submit', function(e) {
         modal = 'newStudentdialog';
         btn = 'newStudBtn';
         loader_id = 'newStudentLoader';
-        getNewData.push(get_studenUsertList);
+        getNewData.push(get_studentUserList);
 
     }if (e.target.id === 'EditStudentForm'){
          if (e.submitter.id === 'update_stud_btn'){
@@ -23,31 +23,26 @@ document.addEventListener('submit', function(e) {
         modal = 'editStuInfo';
          btn = 'editStudBtn';
          loader_id = 'editStudentLoader'
-        getNewData.push(get_studenUsertList);
+        getNewData.push(get_studentUserList);
 
 
     }
      if (e.target.id === 'admin_adv_Form'){
-         endpoint = 'newUser';
 
-
+        let submitterName = $('#admin_adv_Submit').text();
+        if ( submitterName === 'Submit'){
+            endpoint = 'newUser'
+        }else if (submitterName === 'Save'){
+            endpoint =  'updateUserInfo'
+        }
          loader_id ='new_adv_adminLoader'
          btn = 'new_adv_adminBtn';
          modal = 'newAdvierDialog';
          notifType = 'success'
-         getNewData.push(get_AdvUsertList);
+         getNewData.push(render_AdvUsertList);
 
      }
-     if (e.target.id === 'EditAdviserForm'){
-         endpoint = 'updateUserInfo';
-         loader_id = 'editAdVLoader';
-         btn = 'editStudBtn'
-         modal = 'editAdv_admin';
-         notifType = 'info'
-         getNewData.push(get_AdvUsertList);
 
-
-     }
      if (e.target.id === 'NotesForm'){
          endpoint = 'Notes';
          loader_id = 'notes';

@@ -1,6 +1,10 @@
 <?php
 $secret_key = 'TheSecretKey#02'; //id encryption password dont remove
 
+function handleError($message) {
+    echo json_encode(['response' => 0, 'message' => $message]);
+    exit();
+}
 function encrypt_data($data, $key) {
     $cipher = "aes-256-cbc";
     $ivlen = openssl_cipher_iv_length($cipher);
@@ -82,20 +86,16 @@ function getTotalNarrativeReports($program, $file_status, $ojtAdviser) {
 
 }
 
-function getTotalAdvList($adv_user_id){
-    include 'DatabaseConn/databaseConn.php';
+function getTotalAdvList($adv_user_id, $program_id, $section_id){
 
-    $sql = "SELECT COUNT(*) AS total FROM advisory_list WHERE adv_sch_user_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $adv_user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $total = $row['total'];
-    $stmt->close();
+    $sql = "SELECT COUNT(*) AS total FROM tbl_students WHERE adv_id = ? 
+                                             and program_id = ? and year_sec_Id = ?";
+
+    $total = mysqlQuery($sql, 'iii', [$adv_user_id, $program_id, $section_id])[0]['total'];
 
     return $total;
 }
+
 function insertActivityLog($activity_type, $file_id) {
     include 'DatabaseConn/databaseConn.php';
     $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
@@ -180,8 +180,7 @@ function saveFlipbookPages($response, $file_name) {
 
     return $results;
 }
-function handleError($message) {
-    echo json_encode(['response' => 0, 'message' => $message]);
-    exit();
-}
+
+
+
 

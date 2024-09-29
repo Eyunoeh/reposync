@@ -1,4 +1,4 @@
-get_AdvUsertList();
+
 getActivitiesAndSched();
 getPrograms();
 getYrSec();
@@ -71,38 +71,6 @@ function getPendingFinalReports(){
         }
     });
 }
-function editAdvInfo(user_id){
-    $.ajax({
-        url: '../ajax.php?action=getAdvInfoJson&data_id=' + user_id,
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            if (data){
-
-                $('#EditAdviserForm input[name="user_Fname"]').val(data.first_name);
-                $('#EditAdviserForm input[name="user_Mname"]').val(data.middle_name);
-                $('#EditAdviserForm input[name="user_Lname"]').val(data.last_name);
-                $('#EditAdviserForm input[name="user_address"]').val(data.address);
-                $('#EditAdviserForm input[name="contactNumber"]').val(data.contact_number);
-                $('#EditAdviserForm input[name="school_id"]').val(data.school_id);
-                $('#EditAdviserForm input[name="user_Email"]').val(data.email);
-                $('#EditAdviserForm input[name="user_id"]').val(data.user_id);
-                $('#EditAdviserForm select[name="user_type"]').val(data.user_type);
-                $('#deactivate_adv').attr('data-user_id', data.user_id);
-
-                if (data.sex === "Male") {
-                    $('#EditAdviserForm input[name="user_Sex"][value="Male"]').prop('checked', true);
-                } else if (data.sex === "Female") {
-                    $('#EditAdviserForm input[name="user_Sex"][value="Female"]').prop('checked', true);
-                }
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
-
 
 
 
@@ -384,55 +352,6 @@ function getActSched(actId){
 
 
 
-
-function get_AdvUsertList (){
-    $.ajax({
-        url: '../ajax.php?action=getAdvisers',
-        method: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            if (response.response === 1){
-                let data = response.data;
-                console.log(data)
-                let table_data = 'No result';
-                if (data.length > 0){
-                    for (let i = 0 ; i < data.length; i++){
-                        table_data += `<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${data[i]['first_name']} ${data[i]['last_name']} </span>
-                        </td>
-                        <td class="p-3 text-center">
-                            <span class="font-semibold text-light-inverse text-md/normal">BSBM MM</span>
-                            <hr>
-                            <span class="font-semibold text-light-inverse text-md/normal">BSBM MM </span>
-                        </td>
-                        <td class="p-3 text-center">
-                            <span class="font-semibold text-light-inverse text-md/normal">4A</span>
-                            <hr>
-                            <span class="font-semibold text-light-inverse text-md/normal">4B</span>
-                        </td>
-                        
-             
-                        <td class="p-3 text-center">
-                            <span class="font-semibold text-light-inverse text-md/normal">10</span>
-                            <hr>
-                            <span class="font-semibold text-light-inverse text-md/normal">10</span>
-                        </td>
-                        <td class="p-3 text-end">
-                            <a onclick="" data-id="'.$row['user_id'].'" href="#" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
-                        </td>
-                    </tr>`
-                    }
-                }
-                $('#advList').html(table_data)
-
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
 
 
 

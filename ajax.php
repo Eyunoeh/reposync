@@ -15,6 +15,7 @@ include 'vendor/autoload.php';
 
 include_once 'DatabaseConn/databaseConn.php';
 include 'functions.php';
+include 'ajaxreq_processFunc.php';
 include_once 'FlipbookFunctions.php';
 include_once 'PhpMailer_producer.php';
 
@@ -78,7 +79,6 @@ if ($action == 'login') {
     } else {
         echo 2; // Error: Email or password empty
     }
-
 }
 
 
@@ -896,23 +896,7 @@ if ($action == 'newUser') {
             exit();
         }
         if ($user_type == 'adviser'){
-
-            $adviserTbl  = "INSERT INTO  tbl_adviser ( adv_sch_user_id  ) values (?)";
-            $adv_id = mysqlQuery($adviserTbl, 'i', [$user_id])[1];//last inserted id to adviser table
-            try {
-                $assignedadvList = json_decode($_POST['assignedAdvList'],true) ?? '';
-                if ($assignedadvList !== ''){
-                    foreach ($assignedadvList as $assignedadv){
-                        $assignedadvsql = "INSERT INTO  tbl_advisoryhandle (program_id,year_sec_Id,  adv_id  )
-                                        values (?, ?, ?)";
-                        $types = 'iii';
-                        $params = [$assignedadv['program'], $assignedadv['section'], $adv_id];
-                        mysqlQuery($assignedadvsql, $types, $params);
-                    }
-                }
-            }catch (Exception $e){
-                handleError($e->getMessage());
-            }
+            updAdvisory();
         }
 
 
@@ -956,28 +940,13 @@ if ($action == 'newUser') {
 
 
 if ($action == 'getStudentsList'){
+    header('Contten-Type: application/json');
     $fetch_enrolled_stud = "SELECT 
-                                u.user_id,
-                                u.first_name,
-                                u.last_name,
-                                u.address,
-                                u.contact_number,
-                                u.sex,
-                                u.school_id,
-                                u.user_type,
-                                s.program_id,
-                                p.program_code,
-                                p.program_name,
-                                a.acc_id,
-                                a.email,
-                                a.password,
-                                a.status,
-                                a.date_created,
-                                se.section_id,
-                                se.section,
-                                ad.adv_sch_user_id as adviserUserId,
+                                u.*,
                                 s.*,
-                                IFNULL(CONCAT(adv.first_name, ' ', adv.last_name), 'N/A') AS adviser_name
+                                p.*,
+                                a.*,
+                                se.*
                             FROM 
                                 tbl_students s
                             JOIN 
@@ -987,20 +956,19 @@ if ($action == 'getStudentsList'){
                             JOIN 
                                 tbl_accounts a ON s.user_id = a.user_id
                             JOIN 
-                                section se ON s.section_id = se.section_id
-                            LEFT JOIN 
-                                advisory_list ad ON s.user_id = ad.stud_sch_user_id
-                            LEFT JOIN 
-                                tbl_user_info adv ON ad.adv_sch_user_id = adv.user_id
+                                section se ON s.year_sec_Id = se.year_sec_Id
+                  
                             WHERE 
                                 a.status = 'active' 
                                 AND u.user_type = 'student'
                             ORDER BY 
-                                a.date_created desc";
-    $result = $conn->query($fetch_enrolled_stud);
-    if ($result === false){
-        echo "Error: " . $conn->error;
-    }
+                                a.date_created desc;";
+    $data = mysqlQuery($fetch_enrolled_stud, '', []);
+    echo json_encode(['response' => 1, 'data' => $data]);
+    exit();
+
+
+
     if ($result->num_rows > 0){
         while ($row = $result->fetch_assoc()){
             if ($_SESSION['log_user_type'] == 'admin'){
@@ -1133,135 +1101,72 @@ if ($action == 'getStudInfoJson') {
 if ($action == 'updateUserInfo'){
     header('Content-Type: application/json');
     $response = 1;
-    $responseMessage = '';
-    $resMes_adv = 'Adviser Information has been updated!';
-    $resMes_stud = 'Student Information has been updated!';
-    $responseMessage = '';
+
+    $editUser_user_id = isset($_POST['user_id']) ? sanitizeInput($_POST['user_id']) : '';
+    $edituser_type = isset($_POST['user_type']) ? sanitizeInput($_POST['user_type']) : '';
 
 
-    $editUser_first_name = isset($_POST['user_Fname']) ? sanitizeInput($_POST['user_Fname']) : '';
-    $editUser_middle_name = isset($_POST['user_Mname']) ? sanitizeInput($_POST['user_Mname']) : 'N/A';
-    $editUser_last_name = isset($_POST['user_Lname']) ? sanitizeInput($_POST['user_Lname']) : '';
+    $responseMessage = updateBasicInfo($editUser_user_id, $edituser_type);
+
+    if ($edituser_type == 'adviser'){
+        updAdvisory($editUser_user_id);
+    }
+
+
+
+
+/*    $editStud_compName = isset($_POST['stud_compName']) ? sanitizeInput($_POST['stud_compName']) : 'N/A';
+    $edit_trainingHours = isset($_POST['stud_TrainingHours']) ? sanitizeInput($_POST['stud_TrainingHours']) : 'N/A';
     $editUser_shc_id = isset($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
-    $editUser_sex = isset($_POST['user_Sex']) ? sanitizeInput($_POST['user_Sex']) : '';
-    $editUser_contact_number = isset($_POST['contactNumber']) ? sanitizeInput($_POST['contactNumber']) : '';
-    $editUser_address = isset($_POST['user_address']) ? sanitizeInput($_POST['user_address']) : '';
     $editStud_program = isset($_POST['stud_Program']) ? sanitizeInput($_POST['stud_Program']) : '';
     $editStud_section = isset($_POST['stud_Section']) ? sanitizeInput($_POST['stud_Section']) : '';
     $editStud_adviser = isset($_POST['stud_adviser']) ? sanitizeInput($_POST['stud_adviser']) : '';
-    $editUser_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
-    $editUser_user_id = isset($_POST['user_id']) ? sanitizeInput($_POST['user_id']) : '';
-    $edituser_type = isset($_POST['user_type']) && sanitizeInput($_POST['user_type']) ? $_POST['user_type']: '';
-    $editStud_compName = isset($_POST['stud_compName']) ? sanitizeInput($_POST['stud_compName']) : 'N/A';
-    $edit_trainingHours = isset($_POST['stud_TrainingHours']) ? sanitizeInput($_POST['stud_TrainingHours']) : 'N/A';
 
 
-    if ($editUser_first_name !== '' &&
-        $editUser_last_name !== '' &&
-        $editUser_shc_id !== '' &&
-        $editUser_sex !== '' &&
-        $editUser_contact_number !== '' &&
-        $editUser_address !== '' &&
-        $editUser_user_id !== '' &&
-        $editUser_email !== ''&&
-        $edituser_type !== '') {
-        $responseMessage = $edituser_type == 'student' ? $resMes_stud : $resMes_adv;
-
-
-        try {
-            $sql = "UPDATE tbl_user_info 
-            SET first_name = ?, 
-                last_name = ?, 
-                middle_name = ?, 
-                address = ?, 
-                contact_number = ?, 
-                sex = ?, 
-                school_id = ?,
-                user_type = ?
-            WHERE user_id = ?";
-            $stmt = $conn->prepare($sql);
-
-            $stmt->bind_param("ssssssssi", $editUser_first_name, $editUser_last_name, $editUser_middle_name, $editUser_address, $editUser_contact_number, $editUser_sex, $editUser_shc_id, $edituser_type, $editUser_user_id);
-            $stmt->execute();
-
-        } catch (mysqli_sql_exception $e) {
-            if ($e->getCode() == 1062) {
-                $errorMessage = $e->getMessage();
-                preg_match("/Duplicate entry '.*' for key '([^']+)'/", $errorMessage, $matches);
-                $keyName = $matches[1] ?? 'unknown key';
-
-                if ($keyName == 'contact_number') {
-                    $responseMessage ="Duplicate contact number.";
-                } elseif ($keyName == 'school_id') {
-                    $responseMessage ="School id already exists.";
-                } else {
-                    $responseMessage = "Duplicate entry for key '$keyName'.";
-                }
-            } else {
-                $responseMessage = $e->getMessage();
-            }
-            handleError($responseMessage);
-
-        }
-
-        if ($editStud_program !== '' && //execute only if the admin editing student type user
-            $editStud_section !== '' && $edituser_type == 'student'){
-            $update_stud_info = "UPDATE tbl_students 
+    if ($editStud_program !== '' && //execute only if the admin editing student type user
+        $editStud_section !== '' && $edituser_type == 'student'){
+        $update_stud_info = "UPDATE tbl_students 
                             SET program_id = ?, 
                                 section_id = ? ,
                                 company_name= ?, 
                                 training_hours = ?
                             WHERE user_id = ?";
-            $stmt_update_info = $conn->prepare($update_stud_info);
-            $stmt_update_info->bind_param("iissi", $editStud_program, $editStud_section, $editStud_compName, $edit_trainingHours , $editUser_user_id);
-            $stmt_update_info->execute();
-            if ($editStud_adviser !== ''){
-                $check_query = "SELECT * FROM advisory_list WHERE stud_sch_user_id = ?";
-                $check_stmt = $conn->prepare($check_query);
-                $check_stmt->bind_param('i', $editUser_user_id);
-                $check_stmt->execute();
-                $result = $check_stmt->get_result();
-                if ($result->num_rows === 0) { // hindi proceed update
-                    //  ang logic kasi may mga student na wala pang adviser pag inarchive
-                    $insert_query = "INSERT INTO advisory_list (stud_sch_user_id, adv_sch_user_id) VALUES (?, ?)";
-                    $insert_stmt = $conn->prepare($insert_query);
-                    $insert_stmt->bind_param('ii', $editUser_user_id, $editStud_adviser);
-                    $insert_stmt->execute();
-                } else {
-                    $update_query = "UPDATE advisory_list SET adv_sch_user_id = ? WHERE stud_sch_user_id = ?";
-                    $update_stmt = $conn->prepare($update_query);
-                    $update_stmt->bind_param('ii', $editStud_adviser, $editUser_user_id);
-                    $update_stmt->execute();
-                }
-            }
-
-        }
-        //changeEmail
-        try {
-            $update_account = "UPDATE tbl_accounts 
-                               SET email = ?
-                               WHERE user_id = ?";
-            $stmt_update_account = $conn->prepare($update_account);
-            $stmt_update_account->bind_param("si", $editUser_email, $editUser_user_id);
-            $stmt_update_account->execute();
-        } catch (mysqli_sql_exception $e) {
-            if ($e->getCode() == 1062) {
-                $responseMessage = "Email already exist";
+        $stmt_update_info = $conn->prepare($update_stud_info);
+        $stmt_update_info->bind_param("iissi", $editStud_program, $editStud_section, $editStud_compName, $edit_trainingHours , $editUser_user_id);
+        $stmt_update_info->execute();
+        if ($editStud_adviser !== ''){
+            $check_query = "SELECT * FROM advisory_list WHERE stud_sch_user_id = ?";
+            $check_stmt = $conn->prepare($check_query);
+            $check_stmt->bind_param('i', $editUser_user_id);
+            $check_stmt->execute();
+            $result = $check_stmt->get_result();
+            if ($result->num_rows === 0) { // hindi proceed update
+                //  ang logic kasi may mga student na wala pang adviser pag inarchive
+                $insert_query = "INSERT INTO advisory_list (stud_sch_user_id, adv_sch_user_id) VALUES (?, ?)";
+                $insert_stmt = $conn->prepare($insert_query);
+                $insert_stmt->bind_param('ii', $editUser_user_id, $editStud_adviser);
+                $insert_stmt->execute();
             } else {
-                $responseMessage = 'Error: ' . $e->getMessage();
+                $update_query = "UPDATE advisory_list SET adv_sch_user_id = ? WHERE stud_sch_user_id = ?";
+                $update_stmt = $conn->prepare($update_query);
+                $update_stmt->bind_param('ii', $editStud_adviser, $editUser_user_id);
+                $update_stmt->execute();
             }
-            handleError($responseMessage);
         }
 
-        echo json_encode(['response' => $response,
-            'message' => $responseMessage]);
-        exit();
+    }*/
+
+    echo json_encode(['response' => $response,
+        'message' => $responseMessage]);
+    exit();
 
 
-    } else {
-        $responseMessage = 'Error: Some required fields are empty.';
-        handleError($responseMessage);
-    }
+
+
+
+
+
+
 }
 
 if ($action == 'deactivate_account'){
@@ -1364,22 +1269,34 @@ WHERE tbl_user_info.user_id = ?";
 
 if ($action == 'getAdvisers') {
     header('Content-Type: application/json');
-    $getAdvListsql = "SELECT ui.*, acc.*
-        FROM tbl_user_info ui
-        INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
-        WHERE ui.user_type = 'adviser' and acc.status = 1";
+
+
+    $getAdvListsql = "SELECT ui.*, prog.*, sec.* 
+    FROM tbl_advisoryhandle hndl_class 
+    INNER JOIN tbl_user_info ui ON hndl_class.adv_id = ui.user_id 
+    INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id 
+    INNER JOIN program prog ON hndl_class.program_id = prog.program_id 
+    INNER JOIN section sec ON hndl_class.year_sec_Id = sec.year_sec_Id 
+    WHERE acc.status = 1 AND ui.user_type = 2;";
+
 
     $advList = mysqlQuery($getAdvListsql, '', []);
 
+    for ($i = 0; $i < count($advList); $i++){
+        $advList[$i]['totalStud'] = getTotalAdvList($advList[$i]['user_id'],
+            $advList[$i]['program_id'], $advList[$i]['year_sec_Id']);
+    }
 
-    $advisoryList =
+    $data = [
+        'response' => 1,
+        'data' => $advList
+    ];
 
 
-
-    $data = [];
-    echo json_encode(['response' => 1, 'data' => $advList]);
+    echo json_encode($data);
     exit();
 }
+
 
 
 
@@ -2374,26 +2291,28 @@ if ($action == 'pendingADVnoteReq') {
     exit();
 }
 
-if ($action == "get_Profile_info"){
+if ($action == "get_User_info"){
     if (!isset($_SESSION['log_user_id'])){
         exit();
     }
-    $user_id = $_SESSION['log_user_id'];
-    $getProfile = "SELECT ui.*, acc.*, stud.*
+
+    $user_id = isset($_GET['data_id']) ? $_GET['data_id'] : $_SESSION['log_user_id'];
+
+    $get_User_info = "SELECT ui.*, acc.*, stud.enrolled_stud_id, stud.adv_id, stud.program_id,
+       stud.year_sec_Id, stud.ojt_center, stud.ojt_location
             FROM tbl_user_info ui
             INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
             LEFT JOIN tbl_students stud on ui.user_id = stud.user_id
             WHERE ui.user_id = ?";
-    $getProfileSTMT = $conn->prepare($getProfile);
-    $getProfileSTMT->bind_param('i',$user_id);
-    if(!$getProfileSTMT->execute()){
-        echo $getProfileSTMT->error;
-    }
-    $result = $getProfileSTMT->get_result();
-    $profile_Info = $result->fetch_assoc();
+
+    $profile_Info = mysqlQuery($get_User_info, 'i', [$user_id])[0];
     header('Content-Type: application/json');
-    echo json_encode($profile_Info);
+
+    echo json_encode(['response' => 1,
+        'data'=>$profile_Info]);
 }
+
+
 if ($action == 'profileUpdate'){
     header('Content-Type: application/json');
     $response = 1;

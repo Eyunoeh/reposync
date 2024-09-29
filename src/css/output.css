@@ -5180,6 +5180,10 @@ details.collapse summary::-webkit-details-marker {
   padding-left: 0.5rem;
 }
 
+.pl-2\.5 {
+  padding-left: 0.625rem;
+}
+
 .pl-5 {
   padding-left: 1.25rem;
 }
@@ -5214,10 +5218,6 @@ details.collapse summary::-webkit-details-marker {
 
 .pt-6 {
   padding-top: 1.5rem;
-}
-
-.pl-2\.5 {
-  padding-left: 0.625rem;
 }
 
 .text-left {
@@ -5377,6 +5377,11 @@ details.collapse summary::-webkit-details-marker {
   color: rgb(241 245 249 / var(--tw-text-opacity));
 }
 
+.text-slate-200 {
+  --tw-text-opacity: 1;
+  color: rgb(226 232 240 / var(--tw-text-opacity));
+}
+
 .text-slate-400 {
   --tw-text-opacity: 1;
   color: rgb(148 163 184 / var(--tw-text-opacity));
@@ -5410,6 +5415,11 @@ details.collapse summary::-webkit-details-marker {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-slate-300 {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -5726,10 +5736,6 @@ body{
     width: 40rem;
   }
 
-  .sm\:w-\[43rem\] {
-    width: 43rem;
-  }
-
   .sm\:w-\[50rem\] {
     width: 50rem;
   }
@@ -5748,6 +5754,10 @@ body{
 
   .sm\:w-auto {
     width: auto;
+  }
+
+  .sm\:w-\[43rem\] {
+    width: 43rem;
   }
 
   .sm\:grid-cols-2 {
