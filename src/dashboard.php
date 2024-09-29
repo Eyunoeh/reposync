@@ -35,7 +35,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
                 <i class="bi bi-x cursor-pointer ml-28 lg:hidden" onclick="//openSidebar()"></i>
             </div>
             <div class="text-start">
-                <p class="pl-2.5 text-slate-100 font-semibold text-sm"><?=$_SESSION['log_user_firstName']?> - <?=strtoupper($_SESSION['log_user_type'])?></p>
+                <p class="pl-2.5 text-slate-300 font-semibold text-sm" id="side_tabName"></p>
             </div>
             <div class="my-2 bg-gray-600 h-[1px]"></div>
         </div>
@@ -158,10 +158,10 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <span class="text-[15px] ml-4  font-bold">Archive</span>
         </div>
         <?php endif?>
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-error hover:text-slate-700  text-white">
+        <a href="logout.php" class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-error hover:text-slate-700  text-white">
             <i class="fa-solid fa-right-from-bracket"></i>
-            <a href="logout.php"><span class="text-[15px] ml-4  font-bold">Logout</span></a>
-        </div>
+            <h1 ><span class="text-[15px] ml-4  font-bold">Logout</span></h1>
+        </a>
 
     </div>
     <section id="dashboard_main_content" class="flex gap-2 flex-col   w-full overflow-auto">
