@@ -30,17 +30,14 @@ include '../DatabaseConn/databaseConn.php';
                             <th class="p-3 text-start ">School ID</th>
                             <th class="p-3 text-start ">Name</th>
                             <th class="p-3 text-start ">OJT Adviser</th>
-                            <th class="p-3 text-end ">Training Hours</th>
-
                             <th class="p-3 text-end ">Program</th>
-                            <th class="p-3 text-end ">Company</th>
+                            <th class="p-3 text-end ">Year and Section</th>
                             <th class="p-3 text-end ">Action</th>
                         <?php elseif ($_SESSION['log_user_type'] == 'adviser'):?>
                             <th class="p-3 text-start ">School ID</th>
                             <th class="p-3 text-start ">Name</th>
-                            <th class="p-3 text-end ">Training Hours</th>
                             <th class="p-3 text-end ">Program</th>
-                            <th class="p-3 text-end ">Company</th>
+                            <th class="p-3 text-end ">Year and Section</th>
                             <th class="p-3 text-end ">Action</th>
 
                         <?php endif;?>
