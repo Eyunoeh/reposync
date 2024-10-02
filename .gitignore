@@ -1,5 +1,6 @@
 /vendor/
 /src/NarrativeReports_Images/
 /src/NarrativeReportsPDF/
-/PhpMailerWorker.php/
+
 /.idea/
+/src/userProfile/

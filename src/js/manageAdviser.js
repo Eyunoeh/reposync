@@ -12,13 +12,22 @@ function addAssignment() {
 
     let combination = { program: programValue, section: yearSectionValue };
 
-    // Check for duplicates
-    let exists = assignments.some(item => item.program === combination.program && item.section === combination.section);
+    // Check for dif prog
+    let diffprog = assignments.some(item => item.program !== combination.program)
+    let prog_yr_sec_exist = assignments.some(item => item.program === combination.program && item.section === combination.section);
 
-    if (exists) {
+    if (diffprog){
+        Alert('formAlertbox', 'Select only one program!', 'warning');
+        return;
+    }
+
+    // Check for duplicates
+    if (prog_yr_sec_exist) {
         Alert('formAlertbox', 'This program and section is already assigned!', 'warning');
         return;
     }
+
+
 
     // Add the new assignment
     assignments.push(combination);
@@ -138,10 +147,10 @@ async function editAdvInfo(user_id){
             $('#deactivate_adv').attr('data-user_id', user_data.user_id);
             $('#admin_adv_Submit').html('Save');
 
-            if (user_data.sex === "Male") {
-                $('#admin_adv_Form input[name="user_Sex"][value="Male"]').prop('checked', true);
-            } else if (user_data.sex === "Female") {
-                $('#admin_adv_Form input[name="user_Sex"][value="Female"]').prop('checked', true);
+            if (user_data.sex === "male") {
+                $('#admin_adv_Form input[name="user_Sex"][value="male"]').prop('checked', true);
+            } else if (user_data.sex === "female") {
+                $('#admin_adv_Form input[name="user_Sex"][value="female"]').prop('checked', true);
             }
 
 
@@ -184,7 +193,7 @@ async function render_AdvUsertList() {
 
 
             let table_data = Object.values(advisers).map(({ name, user_id, programs }) => `
-                    <tr class="border-b border-dashed last:border-b-0 p-3">
+                    <tr class="border-b border-dashed last:border-b-0 p-3 hover">
                         <td class="p-3 text-start">
                             <span class="text-light-inverse text-md/normal">${name}</span>
                         </td>

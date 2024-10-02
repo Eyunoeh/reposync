@@ -8,12 +8,13 @@
     <div class="flex sm:w-[90%]  transition  shadow rounded
               justify-center  ">
         <div class="w-full  overflow-hidden hover:overflow-auto">
-            <table class="table ">
+            <table class="table bordered">
                 <!-- head -->
                 <thead class="w-full sticky top-0 shadow bg-slate-100 rounded text-slate-700">
                 <tr>
                     <th>Program Code</th>
                     <th>Program Name</th>
+                    <th>OJT Hours</th>
                     <th class="text-center">Action</th>
 
                 </tr>
@@ -109,6 +110,14 @@
                                         <span class="label-text text-slate-700 font-bold">Program Name</span>
                                     </div>
                                     <input type="text" required name="ProgramName" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
+                                </label>
+                            </div>
+                            <div class="flex justify-start gap-2">
+                                <label class="form-control w-full">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700 font-bold">Total OJT Hours</span>
+                                    </div>
+                                    <input type="number" min="1" required name="ojt_hours" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
                                 </label>
                             </div>
                         </div>

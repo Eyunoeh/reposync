@@ -6,10 +6,13 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 session_start();
 include '../DatabaseConn/databaseConn.php';
 ?>
-<div class="px-9 pt-2 flex justify-end items-stretch flex-wrap  pb-0 bg-transparent">
+<div class="px-9 pt-2 flex justify-end items-stretch flex-wrap gap-5 pb-0 bg-transparent">
 <!--    <button class="btn btn-neutral btn-sm bg-slate-500 border-none text-slate-100 " >Export accounts</button>
--->    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('newStudentdialog')">New Student</button>
+-->    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalForm')">New Student form</button>
+        <button class="btn btn-neutral bg-slate-500 border-none text-slate-100">Import excel <i class="fa-solid fa-download"></i></button>
 </div>
+
+
 
 <div class="overflow-y-hidden relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
     <div class="relative flex flex-col min-w-0 break-words  h-full rounded-2xl border-stone-200 bg-light/30">
@@ -23,28 +26,25 @@ include '../DatabaseConn/databaseConn.php';
         </div>
         <div class="block  px-9">
             <div class="overflow-auto h-[70vh] xl:h-[70vh]">
-                <table id="studListTbl" class="w-full my-0 border-neutral-200 text-sm" >
+                <table id="studListTbl" class="w-full my-0 border-neutral-200 text-sm   table table-xs" >
                     <thead class="align-bottom z-20">
-                    <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
+                    <tr class="font-bold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
+                        <th onclick="sortTable(0, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">School ID<span class="sort-icon text-xs"></span></th>
+                        <th onclick="sortTable(1, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Name<span class="sort-icon text-xs"></span></th>
+                        <th onclick="sortTable(2, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Program<span class="sort-icon text-xs"></span></th>
+                        <th onclick="sortTable(3, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Yr & Sec<span class="sort-icon text-xs"></span></th>
+
                         <?php if ($_SESSION['log_user_type'] == 'admin'):?>
-                            <th class="p-3 text-start ">School ID</th>
-                            <th class="p-3 text-start ">Name</th>
-                            <th class="p-3 text-start ">OJT Adviser</th>
-                            <th class="p-3 text-end ">Program</th>
-                            <th class="p-3 text-end ">Year and Section</th>
-                            <th class="p-3 text-end ">Action</th>
-                        <?php elseif ($_SESSION['log_user_type'] == 'adviser'):?>
-                            <th class="p-3 text-start ">School ID</th>
-                            <th class="p-3 text-start ">Name</th>
-                            <th class="p-3 text-end ">Program</th>
-                            <th class="p-3 text-end ">Year and Section</th>
-                            <th class="p-3 text-end ">Action</th>
+                            <th onclick="sortTable(4, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT center<span class="sort-icon text-xs"></span></th>
+                            <th onclick="sortTable(5, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT location<span class="sort-icon text-xs"></span></th>
+                            <th onclick="sortTable(6, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT Adviser<span class="sort-icon text-xs"></span></th>
 
                         <?php endif;?>
+                        <th class="p-3 text-end w-32 ">Action</th>
                     </tr>
                     </thead>
                     <tbody id="studentsList" class="text-center text-slate-600">
-                    <tr class="border-b border-dashed last:border-b-0 p-3">
+          <!--          <tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal">210101279</span>
                         </td>
@@ -64,19 +64,23 @@ include '../DatabaseConn/databaseConn.php';
                         <td class="p-3 text-end">
                             <a href="#" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
                         </td>
-                    </tr>
+                    </tr>-->
                     </tbody>
                 </table>
+                <div id="tableadvLoader" class="flex justify-center items-center">
+                    <span class="loading loading-spinner loading-lg"></span>
+                </div>
             </div>
         </div>
     </div>
 
 </div>
-<dialog id="newStudentdialog" class="modal bg-black  bg-opacity-40">
+<dialog id="manageStudModalForm" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[50rem] max-h-[40rem]  flex flex-col text-slate-700">
         <div  class=" card-title sticky ">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('newStudentdialog')">✕</button>
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('manageStudModalForm')">✕</button>
             <h3 class="font-bold text-center text-lg p-5">Add new student </h3>
+
         </div>
         <div class="p-4">
             <form id="studentForm"  enctype="multipart/form-data">
@@ -103,7 +107,7 @@ include '../DatabaseConn/databaseConn.php';
                             </label>
 
                         </div>
-                        <div class="flex justify-evenly gap-2">
+                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Address</span>
@@ -117,70 +121,29 @@ include '../DatabaseConn/databaseConn.php';
                                 <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
 
-                            <label class="form-control w-full max-w-xs">
+                            <label class="form-control w-full w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Sex</span>
                                 </div>
                                 <div class="flex justify-start gap-2">
                                     <div class="flex justify-center items-center flex-col">
                                         <label class="text-sm">Male</label>
-                                        <input required type="radio" name="user_Sex" value="Male" class="radio bg-gray-300"  />
+                                        <input required type="radio" name="user_Sex" value="male" class="radio bg-gray-300"  />
                                     </div>
                                     <div class="flex justify-center items-center flex-col">
                                         <label class="text-sm">Female</label>
-                                        <input required type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
+                                        <input required type="radio" name="user_Sex" value="female" class="radio bg-gray-300" />
                                     </div>
                                 </div>
                             </label>
                         </div>
-                        <div class="flex justify-evenly gap-2">
+                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
                                 </div>
                                 <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Program</span>
-                                </div>
-                                <select name="stud_Program" required class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select</option>
-                                    <?php
-                                    $sql = "SELECT * FROM  program";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $res = $stmt->get_result();
-                                    while ($row = $res->fetch_assoc()){
-                                        echo '<option value="'.$row['program_id'].'">'.$row['program_code'].'</option>
-                                               ';
-
-                                    }
-
-                                    ?>
-                                </select>
-
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Year & Section</span>
-                                </div>
-                                <select  name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select</option>
-                                    <?php
-                                    $sql = "SELECT * FROM  section";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $res = $stmt->get_result();
-                                    while ($row = $res->fetch_assoc()){
-                                        echo '<option value="'.$row['section_id'].'">'.$row['year'].''.$row['section'].'</option>';
-                                    }
-                                    ?>
-                                </select>
-                            </label>
-                        </div>
-                        <div class="flex justify-evenly gap-2">
-
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Adviser</span>
@@ -206,23 +169,68 @@ include '../DatabaseConn/databaseConn.php';
 
                                 </select>
                             </label>
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">Company Name</span>
+                                    <span class="label-text text-slate-700">Program</span>
                                 </div>
-                                <input type="text" name="stud_compName" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Training Hours</span>
-                                </div>
-                                <input type="text" name="stud_TrainingHours" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <select name="stud_Program" required class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select</option>
+                                    <?php
+                                    $sql = "SELECT * FROM  program";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option value="'.$row['program_id'].'">'.$row['program_code'].'</option>
+                                               ';
+
+                                    }
+
+                                    ?>
+                                </select>
+
                             </label>
                         </div>
-                        <div class="flex justify-evenly gap-2">
+                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">Account email</span>
+                                    <span class="label-text text-slate-700">Year & Section</span>
+                                </div>
+                                <select  name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select</option>
+                                    <?php
+                                    $sql = "SELECT * FROM  section";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                    $res = $stmt->get_result();
+                                    while ($row = $res->fetch_assoc()){
+                                        echo '<option value="'.$row['year_sec_Id'].'">'.$row['year'].''.$row['section'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">OJT center</span>
+                                </div>
+                                <input type="text" name="stud_OJT_center" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">OJT Location</span>
+                                </div>
+                                <input type="text" name="stud_ojtLocation" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                            </label>
+                        </div>
+                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                   <span class="label-text text-slate-700">Account email
+                                        <div class="tooltip tooltip-right ml-2 z-10 cursor-pointer" data-tip="System will notify the user about the account through email">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                        </div>
+                                   </span>
                                 </div>
                                 <input name="user_Email" required type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
@@ -347,7 +355,7 @@ include '../DatabaseConn/databaseConn.php';
                                     $stmt->execute();
                                     $res = $stmt->get_result();
                                     while ($row = $res->fetch_assoc()){
-                                        echo '<option value="'.$row['section_id'].'">'.$row['year'].''.$row['section'].'</option>';
+                                        echo '<option value="'.$row['year_sec_Id'].'">'.$row['year'].''.$row['section'].'</option>';
                                     }
                                     ?>
                                 </select>

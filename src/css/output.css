@@ -3916,6 +3916,14 @@ details.collapse summary::-webkit-details-marker {
   bottom: auto;
 }
 
+.tooltip-right:before {
+  transform: translateY(-50%);
+  top: 50%;
+  left: var(--tooltip-offset);
+  right: auto;
+  bottom: auto;
+}
+
 .avatar.online:before {
   content: "";
   position: absolute;
@@ -4064,6 +4072,18 @@ details.collapse summary::-webkit-details-marker {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.table-xs :not(thead):not(tfoot) tr {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.table-xs :where(th, td) {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
 .tooltip {
   position: relative;
   display: inline-block;
@@ -4156,6 +4176,15 @@ details.collapse summary::-webkit-details-marker {
   border-color: transparent transparent var(--tooltip-color) transparent;
   top: var(--tooltip-tail-offset);
   left: 50%;
+  right: auto;
+  bottom: auto;
+}
+
+.tooltip-right:after {
+  transform: translateY(-50%);
+  border-color: transparent var(--tooltip-color) transparent transparent;
+  top: 50%;
+  left: calc(var(--tooltip-tail-offset) + 0.0625rem);
   right: auto;
   bottom: auto;
 }
@@ -4317,6 +4346,10 @@ details.collapse summary::-webkit-details-marker {
 
 .mb-7 {
   margin-bottom: 1.75rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
 }
 
 .ml-28 {
@@ -4593,6 +4626,10 @@ details.collapse summary::-webkit-details-marker {
 
 .w-20 {
   width: 5rem;
+}
+
+.w-32 {
+  width: 8rem;
 }
 
 .w-4 {
@@ -5377,9 +5414,9 @@ details.collapse summary::-webkit-details-marker {
   color: rgb(241 245 249 / var(--tw-text-opacity));
 }
 
-.text-slate-200 {
+.text-slate-300 {
   --tw-text-opacity: 1;
-  color: rgb(226 232 240 / var(--tw-text-opacity));
+  color: rgb(203 213 225 / var(--tw-text-opacity));
 }
 
 .text-slate-400 {
@@ -5415,11 +5452,6 @@ details.collapse summary::-webkit-details-marker {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-slate-300 {
-  --tw-text-opacity: 1;
-  color: rgb(203 213 225 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -5754,10 +5786,6 @@ body{
 
   .sm\:w-auto {
     width: auto;
-  }
-
-  .sm\:w-\[43rem\] {
-    width: 43rem;
   }
 
   .sm\:grid-cols-2 {

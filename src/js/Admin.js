@@ -19,33 +19,9 @@ function getActivitiesAndSched (){
         }
     });
 }
-function getYrSec(){
-    $.ajax({
-        url: '../ajax.php?action=getDasboardYrSec',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
 
-            $('#yrSec').html(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
-function getPrograms(){
-    $.ajax({
-        url: '../ajax.php?action=getDasboardPrograms',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            $('#programs').html(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}function getAdvNotes(){
+
+function getAdvNotes(){
     $.ajax({
         url: '../ajax.php?action=getAdvNotes',
         method: 'GET',
@@ -118,30 +94,113 @@ function renderAddProgramInputs() {
                         <input type="text" required name="ProgramName" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
                     </label>
                 </div>
+                <div class="flex justify-start gap-2">
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text text-slate-700 font-bold">Total OJT Hours</span>
+                        </div>
+                        <input type="number" min="1" required name="ojt_hours" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
+                    </label>
+                </div>
             </div>
         </div>
     `);
 }
-function EditProgram(Id){
-    $.ajax({
-        url: '../ajax.php?action=getProgJSON&data_id=' + Id,
+
+async function getYrSec(){
+    let { response, data: yr_secs } = await $.ajax({
+        url: '../ajax.php?action=getYrSecJson',
         method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            if (data) {
-                renderAddProgramInputs();
+        dataType: 'json'
+    });
+
+    let yr_sectbl = '';
+    if (response === 1 && yr_secs.length > 0) {
+        for (let i = 0; i < yr_secs.length; i++) {
+            yr_sectbl += `<tr class="hover">
+                    <td>${yr_secs[i]['year']}${yr_secs[i]['section']}</td>
+                    <td class="text-center cursor-pointer">   
+                     <a onclick="openModalForm('ProgSecFormModal'); EditYrSec( ${yr_secs[i]['year_sec_Id']})">
+                     <i class="fa-solid fa-pen-to-square"></i>
+                    </a></td>
+                </tr>`;
+        }
+        $('#yrSec').html(yr_sectbl);
+    }
+
+}
+async function EditYrSec(Id){
+    let { response, data: yr_secs } = await $.ajax({
+        url: '../ajax.php?action=getYrSecJson',
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    if (response === 1 && yr_secs.length > 0) {
+        renderAddYearSec();
+        for (let i = 0; i < yr_secs.length; i++) {
+            if (yr_secs[i]['year_sec_Id'] === Id){
+
                 $('#progYrSecSubmit').html("Submit")
                 $('#sectionProgramForm input[name="action_type"]').val('edit');
-                $('#sectionProgramForm input[name="ID"]').val(data.program_id);
-                $('#sectionProgramForm input[name="ProgramCode"]').val(data.program_code);
-                $('#sectionProgramForm input[name="ProgramName"]').val(data.program_name);
-
+                $('#sectionProgramForm input[name="ID"]').val(yr_secs[i]['year_sec_Id'] );
+                $('#sectionProgramForm input[name="year"]').val(yr_secs[i]['year']);
+                $('#sectionProgramForm input[name="section"]').val(yr_secs[i]['section']);
+                return;
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
         }
+    }
+}
+
+
+async function getPrograms(){
+    let { response, data: programs } = await $.ajax({
+        url: '../ajax.php?action=getProgJSON',
+        method: 'GET',
+        dataType: 'json'
     });
+
+
+    let programs_tbl = '';
+    if (response === 1 && programs.length > 0) {
+        for (let i = 0; i < programs.length; i++) {
+            programs_tbl += `<tr class="hover">
+                <td>${programs[i]['program_code']}</td>
+                <td>${programs[i]['program_name']}</td>
+                <td>${programs[i]['ojt_hours']}</td>
+                <td class="text-center cursor-pointer">
+                    <a onclick="openModalForm('ProgSecFormModal'); EditProgram(${programs[i]['program_id']})">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                </td>
+            </tr>`;
+        }
+        $('#programs').html(programs_tbl);
+    }
+
+}
+async function EditProgram(Id){
+    let { response, data: programs } = await $.ajax({
+        url: '../ajax.php?action=getProgJSON',
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    if (response === 1 && programs.length > 0) {
+        renderAddProgramInputs();
+        for (let i = 0; i < programs.length; i++) {
+            if (programs[i]['program_id'] === Id){
+
+                $('#progYrSecSubmit').html("Submit")
+                $('#sectionProgramForm input[name="action_type"]').val('edit');
+                $('#sectionProgramForm input[name="ID"]').val(programs[i]['program_id']);
+                $('#sectionProgramForm input[name="ProgramCode"]').val(programs[i]['program_code']);
+                $('#sectionProgramForm input[name="ProgramName"]').val(programs[i]['program_name']);
+                $('#sectionProgramForm input[name="ojt_hours"]').val(programs[i]['ojt_hours']);
+                return;
+            }
+        }
+    }
 }
 
 function renderAddYearSec(){
@@ -169,28 +228,7 @@ function renderAddYearSec(){
     `
     );
 }
-function EditYrSec(Id){
-    $.ajax({
-        url: '../ajax.php?action=getYrSecJSON&data_id=' + Id,
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            if (data) {
-                renderAddYearSec();
-                $('#progYrSecSubmit').html("Submit")
-                $('#sectionProgramForm input[name="action_type"]').val('edit');
-                $('#sectionProgramForm input[name="ID"]').val(data.section_id );
-                $('#sectionProgramForm input[name="year"]').val(data.year);
-                $('#sectionProgramForm input[name="section"]').val(data.section);
 
-
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
 
 function renderSelectformOption(){
     $('#option').html(`

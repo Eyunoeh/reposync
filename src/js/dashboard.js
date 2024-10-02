@@ -28,6 +28,7 @@ for (let i = 0; i< domScript.length; i++){
 }
 
 
+let lastSortedColumn = -1; // Track the last sorted column index
 
 
 function navigate(page) {
@@ -43,7 +44,7 @@ function navigate(page) {
 
 
             getProfileInfo();
-
+            lastSortedColumn = -1; //reset last sorted col
 
 
 
@@ -274,6 +275,54 @@ function act_tab(id){
 }
 
 
+function sortTable(columnIndex, table_id) {
+    let table = document.getElementById(table_id);
+    let rows = Array.from(table.rows).slice(1); // Skip header
+    let ascending = true; // Default sort order is ascending
+
+    if (columnIndex === lastSortedColumn) {
+        // If same column, toggle the sort order
+        ascending = table.getAttribute("data-order") === "asc";
+    } else {
+        // Reset sort order to ascending if a new column is clicked
+        ascending = true;
+        lastSortedColumn = columnIndex; // Update the last sorted column
+    }
+
+
+    const headers = table.querySelectorAll('th');
+    headers.forEach((th, idx) => {
+        const icon = th.querySelector('.sort-icon');
+        if (icon) {
+            icon.textContent = ''; // Clear all icons
+        }
+    });
+
+    // Sort the rows
+    rows.sort(function(rowA, rowB) {
+        let cellA = rowA.cells[columnIndex].innerText;
+        let cellB = rowB.cells[columnIndex].innerText;
+
+        if (!isNaN(cellA) && !isNaN(cellB)) {  // Numeric comparison
+            return ascending ? cellA - cellB : cellB - cellA;
+        }
+
+        return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+    });
+
+    // Re-append sorted rows
+    rows.forEach(row => table.tBodies[0].appendChild(row));
+
+    // Set the sort direction in the table's data attribute
+    table.setAttribute("data-order", ascending ? "desc" : "asc");
+
+    // Set the appropriate icon for the current column
+    let icon = headers[columnIndex].querySelector('.sort-icon');
+    icon.textContent = ascending ? ' ▲' : ' ▼';  // Show ascending/descending icon
+}
+
+
+
 
 function dashboard_student_NarrativeReports() {
     $.ajax({
@@ -410,6 +459,9 @@ function editNarrativeReq(narrative_id){
 
 
 
+
+
+
                 let startSchYear = "", endSchYear = "";
                 if (data.sySubmitted !== 'N/A') {
                     let years = data.sySubmitted.split(',');
@@ -514,25 +566,38 @@ async function get_studentUserList() {
             if (showRow) {
                 let adv_info = adviserInfoMap[student['adv_id']];
                 table_data += `
-                    <tr class="border-b border-dashed last:border-b-0 p-3">
+                    <tr class="border-b border-dashed last:border-b-0 p-3 hover">
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${student['enrolled_stud_id']}</span>
+                            <span class=" text-light-inverse text-md/normal">${student['enrolled_stud_id']}</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${student['first_name']} ${student['last_name']}</span>
+                            <span class=" text-light-inverse text-md/normal">${student['first_name']} ${student['last_name']}</span>
                         </td>
+                        
+                        <td class="p-3 text-start">
+                            <span class=" text-light-inverse text-md/normal">${student['program_code']}</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class=" text-light-inverse text-md/normal">${student['year']}${student['section']}</span>
+                        </td> 
+                        
+                        
+                        
                         ${isAdviser ? '' : `
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${adv_info['first_name']} ${adv_info['last_name']}</span>
-                        </td>`}
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">${student['program_code']}</span>
+                            <span class=" text-light-inverse text-md/normal">${student['ojt_center']}</span>
                         </td>
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">${student['year']}${student['section']}</span>
+                        <td class="p-3 text-start">
+                            <span class=" text-light-inverse text-md/normal"> ${student['ojt_location']}</span>
                         </td>
+                        <td class="p-3 text-start">
+                            <span class=" text-light-inverse text-md/normal">${adv_info['first_name']} ${adv_info['last_name']}</span>
+                        </td>`
+                    
+                    
+                }
                         <td class="p-3 text-end">
-                            <a href="#" onclick="openModalForm('editStuInfo')" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                            <a href="#" onclick="openModalForm('manageStudModalForm')" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                                 <i class="fa-solid fa-circle-info"></i>
                             </a>
                         </td>
@@ -542,6 +607,7 @@ async function get_studentUserList() {
     } else {
         table_data = `<tr><td colspan="9">No Result</td></tr>`;
     }
+    $('#tableadvLoader').empty();
 
     $('#studentsList').html(table_data);
 }
@@ -593,41 +659,44 @@ function user_info(user_id = null) {
     });
 }
 
-async function getProfileInfo() {
-    try {
+function getProfileInfo() {
+    (async () => {
+        try {
 
-        let response = await user_info();
+            let response = await user_info();
 
-        if (response.response === 1) {
-            let data = response.data;
-            let profPath;
+            if (response.response === 1) {
+                let data = response.data;
+                let profPath;
 
-            if (data.profile_img_file === 'N/A') {
-                profPath = 'assets/profile.jpg';
+                if (data.profile_img_file === 'N/A') {
+                    profPath = 'assets/profile.jpg';
+                } else {
+                    profPath = 'userProfile/' + data.profile_img_file;
+                }
+
+                $('#side_tabName').html(data.first_name + ' ' + data.last_name  + ' - ' + data.user_type.toUpperCase());
+                $("#selectedProfile").attr("src", profPath);
+                $('#profileForm input[name="user_Fname"]').val(data.first_name);
+                $('#profileForm input[name="user_Mname"]').val(data.middle_name);
+                $('#profileForm input[name="user_Lname"]').val(data.last_name);
+                $('#profileForm input[name="user_address"]').val(data.address);
+                $('#profileForm input[name="contactNumber"]').val(data.contact_number);
+
+                // Handle sex radio buttons
+                if (data.sex === "male") {
+                    $('#profileForm input[name="user_Sex"][value="male"]').prop('checked', true);
+                } else if (data.sex === "female") {
+                    $('#profileForm input[name="user_Sex"][value="female"]').prop('checked', true);
+                }
             } else {
-                profPath = 'userProfile/' + data.profile_img_file;
+                console.error('Error: Unexpected response format or no data');
             }
-
-            $('#side_tabName').html(data.first_name + ' ' + data.last_name  + ' - ' + data.user_type.toUpperCase());
-            $("#selectedProfile").attr("src", profPath);
-            $('#profileForm input[name="user_Fname"]').val(data.first_name);
-            $('#profileForm input[name="user_Mname"]').val(data.middle_name);
-            $('#profileForm input[name="user_Lname"]').val(data.last_name);
-            $('#profileForm input[name="user_address"]').val(data.address);
-            $('#profileForm input[name="contactNumber"]').val(data.contact_number);
-
-            // Handle sex radio buttons
-            if (data.sex === "Male") {
-                $('#profileForm input[name="user_Sex"][value="Male"]').prop('checked', true);
-            } else if (data.sex === "Female") {
-                $('#profileForm input[name="user_Sex"][value="Female"]').prop('checked', true);
-            }
-        } else {
-            console.error('Error: Unexpected response format or no data');
+        } catch (error) {
+            console.error('Error:', error);
         }
-    } catch (error) {
-        console.error('Error:', error);
-    }
+    })();
+
 }
 
 

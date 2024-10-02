@@ -14,8 +14,8 @@ error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 include 'vendor/autoload.php';
 
 include_once 'DatabaseConn/databaseConn.php';
-include 'functions.php';
-include 'ajaxreq_processFunc.php';
+include 'functions.php';//first
+include 'ajaxreq_processFunc.php';//second
 include_once 'FlipbookFunctions.php';
 include_once 'PhpMailer_producer.php';
 
@@ -790,152 +790,126 @@ tbl_user_info.last_name as 'OJT_adviser_Lname' FROM narrativereports
 }
 
 
+
+
+
 if ($action == 'newUser') {
     header('Content-Type: application/json');
-    $resMes_adv = 'New adviser account has been created!';
-    $resMes_adm = 'New admin account has been created!';
-    $resMes_stud = 'New student account has been created!';
+    $responseMessages = [
+        'adviser' => 'New adviser account has been created!',
+        'admin' => 'New admin account has been created!',
+        'student' => 'New student account has been created!'
+    ];
     $responseMessage = '';
     $response = 1;
 
+    // Fetch user data
+    $user_first_name = getPostData('user_Fname');
+    $user_last_name = getPostData('user_Lname');
+    $user_middle_name = getPostData('user_Mname', 'N/A');
+    $user_sex = getPostData('user_Sex');
+    $user_contact_number = (int) getPostData('contactNumber', 0);
+    $user_address = getPostData('user_address');
+    $user_email = getPostData('user_Email');
+    $user_type = getPostData('user_type');
 
-    $user_first_name = isset($_POST['user_Fname']) ? sanitizeInput($_POST['user_Fname']) : '';
-    $user_last_name = isset($_POST['user_Lname']) ? sanitizeInput($_POST['user_Lname']) : '';
-    $user_middle_name = isset($_POST['user_Mname']) ? sanitizeInput($_POST['user_Mname']) : 'N/A';
-    $user_shc_id = isset($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
-    $user_sex = isset($_POST['user_Sex']) ? sanitizeInput($_POST['user_Sex']) : '';
-    $user_contact_number = isset($_POST['contactNumber']) ? (int) sanitizeInput($_POST['contactNumber']) : 0;
-    $user_address = isset($_POST['user_address']) ? sanitizeInput($_POST['user_address']) : '';
-    $user_program = isset($_POST['stud_Program']) ? sanitizeInput($_POST['stud_Program']) : '';
-    $user_section = isset($_POST['stud_Section']) ? sanitizeInput($_POST['stud_Section']) : '';
-    $stud_adviser = isset($_POST['stud_adviser']) ? sanitizeInput($_POST['stud_adviser']) : '';
-    $stud_compName = isset($_POST['stud_compName']) ? sanitizeInput($_POST['stud_compName']) : 'N/A';
-    $stud_trainingHours = isset($_POST['stud_TrainingHours']) ? sanitizeInput($_POST['stud_TrainingHours']) : 'N/A';
-    $user_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
-    $user_type = isset($_POST['user_type']) ?sanitizeInput($_POST['user_type']) : '';
+    // Student specific fields
+    $user_shc_id = getPostData('school_id');
+    $user_program = getPostData('stud_Program');
+    $user_yr_section = getPostData('stud_Section');
+    $stud_adviser = getPostData('stud_adviser');
+    $studs_ojtCenter = getPostData('stud_OJT_center', 'N/A');
+    $stud_Ojtlocation = getPostData('stud_ojtLocation', 'N/A');
 
+    // Validate required fields
+    $requiredFields = [
+        'First Name' => $user_first_name,
+        'Last Name' => $user_last_name,
+        'Sex' => $user_sex,
+        'Contact Number' => $user_contact_number,
+        'Address' => $user_address,
+        'Email' => $user_email,
+        'User Type' => $user_type
+    ];
 
-
-    if ($user_first_name !== '' &&
-        $user_last_name !== '' &&
-       /* $user_shc_id !== '' &&*/
-        $user_sex !== '' &&
-        $user_contact_number !== '' &&
-        $user_address !== '' &&
-        $user_type !== '' &&
-        $user_email !== '') {
-
-        if (!is_int($user_contact_number)){
-            handleError('Invalid contact number!');
-        }
-        if (strlen($user_contact_number) > 11 || strlen($user_contact_number) < 10){
-            handleError('Invalid contact number length format!');
-        }
-
-        if ($user_type == 'student'){
-            $user_password = generatePassword($user_shc_id);
-        }else if($user_type == 'admin' || $user_type == 'adviser'){
-            $user_password = 'CVSUOJT_'.strtoupper($user_type).'_'.uniqid();
-        }else{
-            handleError('Invalid registration: user type not valid!');
-        }
-
-
-        $conn->begin_transaction();
-
-        try {
-            // Insert into tbl_user_info
-            $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
-            $insert_sql = "INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number,  sex, user_type) 
-                   VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $valueTypes = "sssssss";
-            $params = [$user_first_name, $user_middle_name, $user_last_name, $user_address, $user_contact_number, $user_sex, $user_type];
-
-            $insert_stmt = $conn->prepare($insert_sql);
-            $insert_stmt->bind_param($valueTypes, ...$params);
-            $insert_stmt->execute();
-
-            $user_id = $insert_stmt->insert_id;
-
-            // Insert into tbl_accounts
-            $account_sql = "INSERT INTO tbl_accounts (user_id, email, password, status) 
-                    VALUES (?, ?, ?, 'active')";
-            $account_stmt = $conn->prepare($account_sql);
-            $account_stmt->bind_param("iss", $user_id, $user_email, $hashed_password);
-            $account_stmt->execute();
-
-            // Commit transaction
-            $conn->commit();
-
-            // Set response message based on user_type
-            $responseMessage = $user_type === 'admin' ? $resMes_adm : $resMes_adv;
-
-        } catch (mysqli_sql_exception $e) {
-            // Rollback transaction on error
-            $conn->rollback();
-
-            if ($e->getCode() == 1062) {
-                $errorMessage = $e->getMessage();
-                preg_match("/Duplicate entry '.*' for key '([^']+)'/", $errorMessage, $matches);
-                $keyName = $matches[1] ?? 'unknown key';
-
-                if ($keyName == 'contact_number') {
-                    $responseMessage = "Contact number already exists.";
-                } elseif ($keyName == 'school_id') {
-                    $responseMessage = "School ID already exists.";
-                } elseif ($keyName == 'email') {
-                    $responseMessage = "Email already exists.";
-                } else {
-                    $responseMessage = "Duplicate entry for key '$keyName'.";
-                }
-            } else {
-                $responseMessage = $e->getMessage();
-            }
-
-            handleError($responseMessage);
+    foreach ($requiredFields as $field => $value) {
+        if (empty($value)) {
+            handleError("Field $field is required.");
             exit();
         }
-        if ($user_type == 'adviser'){
-            updAdvisory();
-        }
-
-
-
-        if ( $user_program !== '' && $user_section !== '' && $user_type == 'student' && $stud_adviser !== '')
-        {
-            $student_sql = "INSERT INTO tbl_students (user_id, program_id, section_id, company_name, training_hours) 
-                VALUES (?, ?, ?, ?, ?)";
-
-            mysqlQuery($student_sql, 'iiiss', [$user_id, $user_program, $user_section,$stud_compName, $stud_trainingHours]);
-
-            $advisory_sql = "INSERT INTO advisory_list (adv_sch_user_id, stud_sch_user_id) VALUES (?,?)";
-            mysqlQuery($advisory_sql , 'ii', [$stud_adviser, $user_id]);
-
-            $responseMessage = $resMes_stud;
-        }
-
-        $subjectType = "Reposync Account";
-        $recipient = getRecipient($user_id);
-        $bodyMessage = "<h1><b>Notification</b></h1> <br><br>";
-        $bodyMessage .= "Your email has been successfully registered! <br>";
-        $bodyMessage .= "Use these account credentials to log in to the system.<br>";
-        $bodyMessage .= "<h3>Account credential</h3> <br>";
-        $bodyMessage .= "<b>     Email: </b> ".$user_email."<br>";
-        $bodyMessage .= "<b>     Password: </b> ".$user_password."<br><br>";
-        $bodyMessage .= "Click to login : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
-                    Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
-        email_queuing($subjectType,$bodyMessage,$recipient);
-
-
-    } else {
-
-        $response = 2;
-        $responseMessage =  'Some required fields are empty.';
     }
 
-    echo json_encode(['response' => $response,
-        'message' => $responseMessage]);
+
+    if (!is_int($user_contact_number) || strlen((string)$user_contact_number) < 10 || strlen((string)$user_contact_number) > 11) {
+        handleError('Invalid contact number format.');
+    }
+
+    // Generate password based on user type
+    $user_password = ($user_type === 'student')
+        ? generatePassword($user_shc_id)
+        : 'CVSUOJT_' . strtoupper($user_type) . '_' . uniqid();
+
+    try {
+        $conn->begin_transaction();
+
+
+        $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
+
+
+        $insert_sql = "INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number, sex, user_type) 
+                       VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($insert_sql);
+        $stmt->bind_param("sssssss", $user_first_name, $user_middle_name, $user_last_name, $user_address, $user_contact_number, $user_sex, $user_type);
+        $stmt->execute();
+        $user_id = $stmt->insert_id;
+
+
+        $account_sql = "INSERT INTO tbl_accounts (user_id, email, password, status) VALUES (?, ?, ?, 'active')";
+        $account_stmt = $conn->prepare($account_sql);
+        $account_stmt->bind_param("iss", $user_id, $user_email, $hashed_password);
+        $account_stmt->execute();
+
+        // Insert student-specific details if the user is a student
+        if ($user_type === 'student') {
+            $student_sql = "INSERT INTO tbl_students (enrolled_stud_id, user_id, adv_id, program_id, year_sec_Id, ojt_center, ojt_location) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stud_stmt = $conn->prepare($student_sql);
+            $stud_stmt->bind_param("iiiiiss", $user_shc_id, $user_id, $stud_adviser, $user_program,
+                $user_yr_section, $studs_ojtCenter, $stud_Ojtlocation);
+            $stud_stmt->execute();
+        }
+
+        $responseMessage = $responseMessages[$user_type] ?? 'User account has been created.';
+        $conn->commit();
+
+
+        if ($user_type === 'adviser') {
+            updAdvisory($user_id);
+        }
+
+        // Send email notification
+        $subjectType = "Reposync Account";
+        $recipient = getRecipient($user_id);
+        $bodyMessage = "
+            <h1><b>Notification</b></h1><br><br>
+            Your email has been successfully registered!<br>
+            Use these credentials to log in:<br>
+            <h3>Account credentials</h3><br>
+            <b>Email:</b> $user_email<br>
+            <b>Password:</b> $user_password<br><br>
+            <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
+            Reposync: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
+        email_queuing($subjectType, $bodyMessage, $recipient);
+
+    } catch (mysqli_sql_exception $e) {
+        $conn->rollback();
+        handleError($e->getCode() == 1062 ? 'Duplicate entry: ' . $e->getMessage() : $e->getMessage());
+        exit();
+    }
+
+    echo json_encode(['response' => $response, 'message' => $responseMessage]);
 }
+
 
 
 
@@ -1107,6 +1081,7 @@ if ($action == 'updateUserInfo'){
 
 
     $responseMessage = updateBasicInfo($editUser_user_id, $edituser_type);
+    updateAccEmail($editUser_user_id);
 
     if ($edituser_type == 'adviser'){
         updAdvisory($editUser_user_id);
@@ -1273,7 +1248,7 @@ if ($action == 'getAdvisers') {
 
     $getAdvListsql = "SELECT ui.*, prog.*, sec.* 
     FROM tbl_advisoryhandle hndl_class 
-    INNER JOIN tbl_user_info ui ON hndl_class.adv_id = ui.user_id 
+    LEFT JOIN tbl_user_info ui ON hndl_class.adv_id = ui.user_id 
     INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id 
     INNER JOIN program prog ON hndl_class.program_id = prog.program_id 
     INNER JOIN section sec ON hndl_class.year_sec_Id = sec.year_sec_Id 
@@ -1712,57 +1687,44 @@ if ($action == 'ProgYrSec') {
 
     $program_code = isset($_POST['ProgramCode']) ? sanitizeInput($_POST['ProgramCode']) : '';
     $program_name = isset($_POST['ProgramName']) ? sanitizeInput($_POST['ProgramName']) : '';
+    $ojtHours = isset($_POST['ojt_hours']) ? sanitizeInput($_POST['ojt_hours']) : '';
     $year = isset($_POST['year']) ? sanitizeInput($_POST['year']) : '';
     $section = isset($_POST['section']) ? sanitizeInput($_POST['section']) : '';
     $actionType = isset($_POST['action_type']) ? sanitizeInput($_POST['action_type']) : '';
     $id = isset($_POST['ID']) ? sanitizeInput($_POST['ID']) : '';
 
-    $update_proram = "UPDATE program SET program_code = ?, program_name = ? WHERE program_id = ?";
-    $insert_program = "INSERT INTO program (program_code, program_name) VALUES (?, ?)";
-    $update_yrSec = "UPDATE section SET year = ?, section = ? WHERE section_id = ?";
+    $update_proram = "UPDATE program SET program_code = ?, program_name = ? , ojt_hours = ? WHERE program_id = ?";
+    $insert_program = "INSERT INTO program (program_code, program_name, ojt_hours) VALUES (?, ?, ?)";
+    $update_yrSec = "UPDATE section SET year = ?, section = ? WHERE year_sec_Id = ?";
     $insert_yrSec = "INSERT INTO section (year,section) VALUES (?,?)";
     $sql = '';
     $params = [];
     $types = '';
 
     try {
-        if ($program_code !== '' && $program_name !== '') {
+        if ($program_code !== '' && $program_name !== '' && $ojtHours !== '') {
             if (isset($actionType) && $actionType == 'edit') {
                 $sql = $update_proram;
-                $params = [$program_code, $program_name, $id];
-                $types = 'ssi';
+                $params = [$program_code, $program_name,$ojtHours, $id];
+                $types = 'ssii';
                 $responseMessage = 'Program information has been updated.';
-                $old_programCode = mysqlQuery("SELECT program_code
-from program where program_id = ?", 'i', [$id])[0]['program_code'];
-
-
-                mysqlQuery("UPDATE narrativereports 
-SET program = ? where program = ?", 'ss', [$program_code, $old_programCode]);
 
             } else {
                 $sql = $insert_program;
-                $params = [$program_code, $program_name];
-                $types = 'ss';
+                $params = [$program_code, $program_name, $ojtHours];
+                $types = 'ssi';
                 $responseMessage = 'New program has been added.';
             }
             mysqlQuery($sql, $types, $params);
 
         } elseif ($year !== '' && $section !== '') {
             if (isset($actionType) && $actionType == 'edit') {
+                $yrSec = "SELECT * FROM  section";
+                $yrSecs = mysqlQuery($yrSec, '', []);
                 $sql = $update_yrSec;
                 $params = [$year, $section, $id];
                 $types = 'isi';
-
-                $old_yrSec = mysqlQuery("SELECT CONCAT(year, section)
-AS yearSec FROM `section` where section_id = ?;", 'i', [$id])[0]['yearSec'];
-
-                $new_yrSec = $year .  $section;
-
-
-                mysqlQuery("UPDATE narrativereports SET section = ?
-                        where section = ?", 'ss', [$new_yrSec, $old_yrSec]);
-                $responseMessage = 'Year and section information has been updated';
-
+                $responseMessage = 'Year and section has been updated.';
             } else {
                 $sql = $insert_yrSec;
                 $params = [$year, $section];
@@ -1782,66 +1744,27 @@ AS yearSec FROM `section` where section_id = ?;", 'i', [$id])[0]['yearSec'];
 }
 
 
-if ($action == 'getDasboardYrSec'){
+if ($action == 'getYrSecJson'){
+    header('Content-Type: application/json');
 
-    $sql = "SELECT * FROM  section";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    while ($row = $res->fetch_assoc()){
-        echo '<tr class="hover">
-                    <td>'.$row['year'].''.$row['section'].'</td>
-                    <td class="text-center cursor-pointer">   
-                     <a onclick="openModalForm(\'ProgSecFormModal\'); EditYrSec('.$row['year_sec_Id'].')">
-                     <i class="fa-solid fa-pen-to-square"></i>
-                    </a></td>
-                </tr>';
-    }
+    $yrSec = "SELECT * FROM  section order by year asc";
+    $yrSecs = mysqlQuery($yrSec, '', []);
+
+    echo json_encode(['response' => 1,
+        'data' => $yrSecs]);
 }
-if ($action == 'getDasboardPrograms'){
-    $sql = "SELECT * FROM  program";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    while ($row = $res->fetch_assoc()){
-        echo '<tr class="hover">
-                    <td>'.$row['program_code'].'</td>
-                    <td>'.$row['program_name'].'</td>
-                    <td class="text-center cursor-pointer"
-                    <a onclick="openModalForm(\'ProgSecFormModal\');  EditProgram('.$row['program_id'].')">
-                     <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
-                    </td>
 
-                </tr>';
 
-    }
-}
+
+
 if ($action == 'getProgJSON'){
-    $program_id = $_GET['data_id'];
-    $getProg = "SELECT * FROM program where program_id = ?";
-    $getProgSTMT = $conn->prepare($getProg);
-    $getProgSTMT->bind_param('i',$program_id);
-    $getProgSTMT->execute();
-    $result = $getProgSTMT->get_result();
-    if($result ->num_rows === 1){
-        $row = $result->fetch_assoc();
-        header('Content-Type: application/json');
-        echo json_encode($row);
-    }
-}
-if ($action == 'getYrSecJSON'){
-    $section_id = $_GET['data_id'];
-    $getYearSec = "SELECT * FROM section where section_id = ?";
-    $getYearSecSTMT = $conn->prepare($getYearSec);
-    $getYearSecSTMT->bind_param('i',$section_id);
-    $getYearSecSTMT->execute();
-    $result = $getYearSecSTMT->get_result();
-    if($result ->num_rows === 1){
-        $row = $result->fetch_assoc();
-        header('Content-Type: application/json');
-        echo json_encode($row);
-    }
+   header('Content-Type: application/json');
+    $getProg = "SELECT * FROM program order by ojt_hours asc";
+    $programs = mysqlQuery($getProg, '', []);
+
+    echo json_encode(['response' => 1,
+        'data' => $programs]);
+
 }
 
 if ($action === 'getHomeActSched') {
@@ -2313,139 +2236,85 @@ if ($action == "get_User_info"){
 }
 
 
-if ($action == 'profileUpdate'){
-    header('Content-Type: application/json');
-    $response = 1;
-    $responseMessage = 'Profile has been updated';
-    $profile_fname = sanitizeInput($_POST['user_Fname']) ?? '';
-    $profile_mname = sanitizeInput($_POST['user_Mname']) ?? '';
-    $profile_lname =  sanitizeInput($_POST['user_Lname']) ?? '';
-    $profile_adrs =  sanitizeInput($_POST['user_address'])?? '';
-    $profile_cnum =  sanitizeInput($_POST['contactNumber']) ?? '';
-    $profile_sex = sanitizeInput($_POST['user_Sex']) ?? '';
-    $profile_profileImg =  $_FILES['profileImg'] ?? '';
+if ($action == 'profileUpdate') {
 
-    $profile_trainingHours = isset($_POST['stud_trainingHours']) ? sanitizeInput($_POST['stud_trainingHours']) : ''; //for user student
-    $profile_compName =  isset($_POST['stud_compName']) ? sanitizeInput($_POST['stud_compName']) : '';
+
+
     $user_id = $_SESSION['log_user_id'];
 
-
     try {
-        $updUser = "UPDATE tbl_user_info 
-            SET first_name = ?, 
-                last_name = ?, 
-                middle_name = ?, 
-                address = ?, 
-                contact_number = ?, 
-                sex = ?
-            WHERE user_id = ?";
-        $updUserSTMT = $conn->prepare($updUser);
-        $updUserSTMT->bind_param('ssssssi', $profile_fname,
-            $profile_lname, $profile_mname, $profile_adrs, $profile_cnum, $profile_sex, $user_id);
-        $updUserSTMT->execute();
+        updateBasicInfo($user_id, $_SESSION['log_user_type']);
 
-        if ($_SESSION['log_user_type'] === 'student'){
-            $updStud = "UPDATE tbl_students 
-SET company_name = ?, training_hours = ? 
-where user_id = ?";
-            $updStudSTMT = $conn->prepare($updStud);
-            $updStudSTMT->bind_param('sii',$profile_compName, $profile_trainingHours , $user_id);
-            $updStudSTMT->execute();
-
-        }
-
+        // Handle profile image upload
         if (isset($_FILES['profileImg']) && $_FILES['profileImg']['error'] === UPLOAD_ERR_OK) {
             $fileTmpPath = $_FILES['profileImg']['tmp_name'];
             $fileName = $_FILES['profileImg']['name'];
-            $fileSize = $_FILES['profileImg']['size'];
-            $fileType = $_FILES['profileImg']['type'];
             $fileNameCmps = explode(".", $fileName);
             $fileExtension = strtolower(end($fileNameCmps));
-
-            //  unique name for the file
-            $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-
-            // pwedeng file extensions
             $allowedfileExtensions = array('jpg', 'png', 'jpeg');
 
-            // check file allowed extensions
+            // Validate file extension
             if (in_array($fileExtension, $allowedfileExtensions)) {
+                $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
                 $targetDir = "src/userProfile/";
                 $dest_path = $targetDir . $newFileName;
 
-                //replaceImgProfFrom directory
-                $getUserProfile = "SELECT profile_img_file from tbl_user_info where user_id =?";
+                // Delete old profile image
+                $getUserProfile = "SELECT profile_img_file FROM tbl_user_info WHERE user_id = ?";
                 $getUserProfileSTMT = $conn->prepare($getUserProfile);
-                $getUserProfileSTMT->bind_param('i',$user_id);
+                $getUserProfileSTMT->bind_param('i', $user_id);
                 $getUserProfileSTMT->execute();
                 $result = $getUserProfileSTMT->get_result();
-                if ($result->num_rows == 1){
+                if ($result->num_rows == 1) {
                     $row = $result->fetch_assoc();
-                    if ($row['profile_img_file'] !== 'N/A'){
-                        $filePath = "src/userProfile/".$row['profile_img_file'];
-                        if (file_exists($filePath)) {
-                            unlink($filePath);
-                        }
+                    $oldFilePath = "src/userProfile/" . $row['profile_img_file'];
+                    if ($row['profile_img_file'] !== 'N/A' && file_exists($oldFilePath)) {
+                        unlink($oldFilePath);  // Delete the old file
                     }
                 }
 
-                // save file to the target directory
+                // Save new profile image
                 if (move_uploaded_file($fileTmpPath, $dest_path)) {
                     $updProfImg = "UPDATE tbl_user_info 
-            SET profile_img_file = ? WHERE user_id = ?";
+                                   SET profile_img_file = ? 
+                                   WHERE user_id = ?";
                     $updProfImgSTMT = $conn->prepare($updProfImg);
-                    $updProfImgSTMT->bind_param('si', $newFileName,$user_id);
+                    $updProfImgSTMT->bind_param('si', $newFileName, $user_id);
                     $updProfImgSTMT->execute();
                     $_SESSION['log_user_profileImg'] = $newFileName;
-
                 }
-            }else{
-                handleError("File type must be ('jpg', 'png', 'jpeg')");
-
+            } else {
+                handleError("Invalid file type. Only 'jpg', 'png', 'jpeg' allowed.");
+                return;
             }
         }
-        echo json_encode(['response' => $response,
-            'message' => $responseMessage]);
 
-    }catch (mysqli_sql_exception $e){
-        if ($e->getCode() == 1062) {
-            handleError("Contact number already exist");
+        header('Content-Type: application/json');
+        $response = 1;
+        $responseMessage = 'Profile has been updated';
 
-        } else {
-           handleError('Error: ' . $e->getMessage());
-        }
+        echo json_encode(['response' => $response, 'message' => $responseMessage]);
         exit;
+
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) {
+            handleError("Contact number already exists");
+        } else {
+            handleError('Error: ' . $e->getMessage());
+        }
     }
 }
+
+
+
 if ($action == 'updateAcc'){
     header('Content-Type: application/json');
     $response = 1;
     $responseMessage = 'Acccount Information has been updated';
     $user_id = $_SESSION['log_user_id'];
-    $acc_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
-    $acc_newPass = isset($_POST['user_password'])? sanitizeInput($_POST['user_password']) : '';
-    $acc_confPass = isset($_POST['user_confPass']) ? sanitizeInput($_POST['user_confPass']) : '';
-    if ($acc_confPass === $acc_newPass){
-        try {
-            $acc_confPass = password_hash($acc_confPass, PASSWORD_DEFAULT);
-
-            $updAcc= "UPDATE tbl_accounts SET email= ?, password = ? where user_id = ?";
-            $updAccStmt = $conn->prepare($updAcc);
-            $updAccStmt -> bind_param('ssi', $acc_email,$acc_confPass, $user_id);
-            $updAccStmt->execute();
-            echo json_encode(['response' => $response,'message' => $responseMessage]);
-
-        }catch (mysqli_sql_exception $e){
-            if ($e->getCode() == 1062){
-                handleError( 'Email already exist');
-            }else{
-                handleError($e->getMessage());
-            }
-        }
-
-    }else{
-        handleError("Password doesn't match");
-    }
+    updateAccEmail($user_id);
+    update_password($user_id);
+    echo json_encode(['response' => $response,'message' => $responseMessage]);
 
 }
 

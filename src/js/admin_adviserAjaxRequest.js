@@ -118,10 +118,11 @@ document.addEventListener('submit', function(e) {
     }//adminto end
 
     if (e.target.id === 'profileForm'){
+        notifType = 'info'
         endpoint = 'profileUpdate'
         loader_id = 'profileLoader';
         btn = 'profilSbmt';
-        notification = 'prfupdateNotif'
+
         getNewData.push(getProfileInfo);
     }if (e.target.id === 'Accountform'){
         endpoint = 'updateAcc'
@@ -150,7 +151,7 @@ document.addEventListener('submit', function(e) {
             if (response.response === 1) {
                 enable_button(btn)
                 remove_loader(loader_id);
-
+                console.log(response.message)
                 Alert(alertContainer, response.message,notifType)
                 //openModalForm(notification);
                 if (getNewData.length > 0){
@@ -167,7 +168,9 @@ document.addEventListener('submit', function(e) {
                 console.log(response.message)
             }
             console.log(response)
-        },
+        },error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
     });
 });
 

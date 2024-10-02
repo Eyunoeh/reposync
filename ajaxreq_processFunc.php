@@ -1,51 +1,61 @@
 <?php
-function updateBasicInfo($editUser_user_id, $edituser_type)
-{
-    $resMes_adv = 'Adviser Information has been updated!';
-    $resMes_stud = 'Student Information has been updated!';
-
-    $editUser_first_name = isset($_POST['user_Fname']) ? sanitizeInput($_POST['user_Fname']) : '';
-    $editUser_middle_name = isset($_POST['user_Mname']) ? sanitizeInput($_POST['user_Mname']) : 'N/A';
-    $editUser_last_name = isset($_POST['user_Lname']) ? sanitizeInput($_POST['user_Lname']) : '';
-    $editUser_sex = isset($_POST['user_Sex']) ? sanitizeInput($_POST['user_Sex']) : '';
-    $editUser_contact_number = isset($_POST['contactNumber']) ? sanitizeInput($_POST['contactNumber']) : '';
-    $editUser_address = isset($_POST['user_address']) ? sanitizeInput($_POST['user_address']) : '';
-    $editUser_email = isset($_POST['user_Email']) ? sanitizeInput($_POST['user_Email']) : '';
 
 
+function updateBasicInfo($editUser_user_id, $edituser_type) {
+    $responseMessages = [
+        'adviser' => 'Adviser Information has been updated!',
+        'student' => 'Student Information has been updated!'
+    ];
 
-    if ($editUser_first_name == '' &&
-        $editUser_last_name == '' &&
-        $editUser_sex == '' &&
-        $editUser_contact_number == '' &&
-        $editUser_address == '' &&
-        $editUser_user_id == '' &&
-        $editUser_email == ''&&
-        $edituser_type == '') {
+    // Fetch user data using the helper function
+    $editUser_first_name = getPostData('user_Fname');
+    $editUser_middle_name = getPostData('user_Mname', 'N/A');
+    $editUser_last_name = getPostData('user_Lname');
+    $editUser_sex = getPostData('user_Sex');
+    $editUser_contact_number = getPostData('contactNumber');
+    $editUser_address = getPostData('user_address');
 
-        $responseMessage = 'Error: Some required fields are empty.';
-        handleError($responseMessage);
+    // Validate required fields
+    $requiredFields = [
+        'First Name' => $editUser_first_name,
+        'Last Name' => $editUser_last_name,
+        'Sex' => $editUser_sex,
+        'Contact Number' => $editUser_contact_number,
+        'Address' => $editUser_address,
+        'User ID' => $editUser_user_id,
+        'User Type' => $edituser_type
+    ];
 
+    foreach ($requiredFields as $field => $value) {
+        if (empty($value)) {
+            handleError("Field $field is required.");
+            exit();
+        }
     }
 
-    $responseMessage = $edituser_type == 'student' ? $resMes_stud : $resMes_adv;
+    // Set response message based on user type
+    $responseMessage = $responseMessages[$edituser_type] ?? 'Information has been updated!';
+
     try {
-        $sql = "UPDATE tbl_user_info ui
-        JOIN tbl_accounts ta ON ui.user_id = ta.user_id
-        SET 
-            ui.first_name = ?, 
-            ui.last_name = ?, 
-            ui.middle_name = ?, 
-            ui.address = ?, 
-            ui.contact_number = ?, 
-            ui.sex = ?, 
-            ui.user_type = ?, 
-            ta.email = ?
-        WHERE 
-            ui.user_id = ?";
+        // SQL Query to update user info and accounts in a single query
+        $sql = "UPDATE tbl_user_info
+            
+                SET 
+                    first_name = ?, 
+                    last_name = ?, 
+                    middle_name = ?, 
+                    address = ?, 
+                    contact_number = ?, 
+                    sex = ?, 
+                    user_type = ?
+                   
+                WHERE 
+                    user_id = ?";
 
-        $types = "ssssssssi";
+        // Bind parameter types
+        $types = "sssssssi";
 
+        // Parameters to bind
         $params = [
             $editUser_first_name,
             $editUser_last_name,
@@ -54,34 +64,107 @@ function updateBasicInfo($editUser_user_id, $edituser_type)
             $editUser_contact_number,
             $editUser_sex,
             $edituser_type,
-            $editUser_email,
             $editUser_user_id
         ];
 
-
+        // Execute the query with the bound parameters
         mysqlQuery($sql, $types, $params);
 
-
     } catch (mysqli_sql_exception $e) {
+        // Handle duplicate entry errors specifically
         if ($e->getCode() == 1062) {
             $errorMessage = $e->getMessage();
             preg_match("/Duplicate entry '.*' for key '([^']+)'/", $errorMessage, $matches);
             $keyName = $matches[1] ?? 'unknown key';
 
-            if ($keyName == 'contact_number') {
-                $responseMessage ="Duplicate contact number.";
-            } elseif ($keyName == 'tbl_accounts') {
-                $responseMessage = "Email already exist";
-            } else {
-                $responseMessage = "Duplicate entry for key '$keyName'.";
+            switch ($keyName) {
+                case 'contact_number':
+                    $responseMessage = "Duplicate contact number.";
+                    break;
+
+                default:
+                    $responseMessage = "Duplicate entry for key '$keyName'.";
+                    break;
             }
         } else {
             $responseMessage = $e->getMessage();
         }
         handleError($responseMessage);
     }
+
     return $responseMessage;
 }
+
+function updateAccEmail($user_id)
+{
+    $editUser_email = getPostData('user_Email');
+    $requiredFields = [
+        'User Email' => $editUser_email
+    ];
+
+    foreach ($requiredFields as $field => $value) {
+        if (empty($value)) {
+            handleError("Field $field is required.");
+            exit();
+        }
+    }
+    try {
+        $sql = "UPDATE tbl_accounts
+                SET 
+                    email = ?
+                WHERE 
+                    user_id = ?";
+
+        mysqlQuery($sql,'si', [$editUser_email,$user_id]);
+
+    }catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) {
+            $errorMessage = $e->getMessage();
+            preg_match("/Duplicate entry '.*' for key '([^']+)'/", $errorMessage, $matches);
+            $keyName = $matches[1] ?? 'unknown key';
+
+            switch ($keyName) {
+                case 'email':
+                    $responseMessage = "Email already exists.";
+                    break;
+                default:
+                    $responseMessage = "Duplicate entry for key '$keyName'.";
+                    break;
+            }
+        } else {
+            $responseMessage = $e->getMessage();
+        }
+        handleError($responseMessage);
+    }
+    return 'Email has been updated';
+}
+function update_password($user_id)
+{
+    $editUser_newPass = getPostData('user_password');
+    $editUser_conf = getPostData('user_confPass');
+
+    if ($editUser_conf != $editUser_newPass){
+        handleError('Password do not match');
+    }
+
+    $hashed_password = password_hash($editUser_newPass, PASSWORD_DEFAULT);
+    try {
+        $sql = "UPDATE tbl_accounts
+                SET 
+                    password = ?
+                WHERE 
+                    user_id = ?";
+
+        mysqlQuery($sql,'si', [$hashed_password,$user_id]);
+
+    }catch (Exception $e) {
+
+        $responseMessage = $e->getMessage();
+        handleError($responseMessage);
+    }
+    return 'Password has been updated';
+}
+
 
 
 function updAdvisory($user_id = null)

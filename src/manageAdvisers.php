@@ -26,14 +26,14 @@ include '../DatabaseConn/databaseConn.php';
                 <table id="AdvListTbl" class="w-full my-0 border-neutral-200 table" >
                     <thead class="align-bottom z-20">
                     <tr class="font-bold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
-                        <th class="p-3 text-start ">Name</th>
-                        <th class="p-3 text-center ">Program</th>
-                        <th class="p-3 text-center ">Year and Section</th>
-                        <th class="p-3 text-center ">Total advisory</th>
-                        <th class="p-3 text-end ">Action</th>
+                        <th onclick="sortTable(0, 'AdvListTbl')" class="p-3 text-start w-32 cursor-pointer">Name<span class="sort-icon text-xs"></th>
+                        <th onclick="sortTable(1, 'AdvListTbl')" class="p-3 text-center w-32 cursor-pointer">Program<span class="sort-icon text-xs"></th>
+                        <th onclick="sortTable(2, 'AdvListTbl')" class="p-3 text-center w-32 cursor-pointer">Year and Section<span class="sort-icon text-xs"></th>
+                        <th onclick="sortTable(3, 'AdvListTbl')" class="p-3 text-center w-32 cursor-pointer">Total advisory<span class="sort-icon text-xs"></th>
+                        <th class="p-3 text-end w-32 ">Action</th>
                     </tr>
                     </thead>
-                    <tbody id="advList" class="text-center text-slate-600">
+                    <tbody id="advList" class="text-center text-slate-600 w-32 ">
 
 
                     </tbody>
@@ -97,11 +97,11 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="flex justify-start gap-2">
                                     <div class="flex justify-center items-center flex-col">
                                         <label class="text-sm">Male</label>
-                                        <input required type="radio" name="user_Sex" value="Male" class="radio bg-gray-300"  />
+                                        <input required type="radio" name="user_Sex" value="male" class="radio bg-gray-300"  />
                                     </div>
                                     <div class="flex justify-center items-center flex-col">
                                         <label class="text-sm">Female</label>
-                                        <input required type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
+                                        <input required type="radio" name="user_Sex" value="female" class="radio bg-gray-300" />
                                     </div>
                                 </div>
                             </label>
@@ -110,7 +110,12 @@ include '../DatabaseConn/databaseConn.php';
                             <div class="flex justify-evenly gap-2">
                                 <label class="form-control w-full max-w-xs">
                                     <div class="label">
-                                        <span class="label-text text-slate-700">Account email</span>
+                                        <span class="label-text text-slate-700">Account email
+                                        <div class="tooltip tooltip-right ml-2 z-10 cursor-pointer" data-tip="System will notify the user about the account through email">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                        </div>
+                                        </span>
+
                                     </div>
                                     <input name="user_Email" type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                                 </label>

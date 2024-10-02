@@ -57,11 +57,11 @@
                 <div class="flex justify-start gap-2">
                     <div class="flex justify-center items-center flex-col">
                         <label class="text-sm">Male</label>
-                        <input type="radio" name="user_Sex" value="Male" class="radio bg-gray-300" />
+                        <input type="radio" name="user_Sex" value="male" class="radio bg-gray-300" />
                     </div>
                     <div class="flex justify-center items-center flex-col">
                         <label class="text-sm">Female</label>
-                        <input type="radio" name="user_Sex" value="Female" class="radio bg-gray-300" />
+                        <input type="radio" name="user_Sex" value="female" class="radio bg-gray-300" />
                     </div>
                 </div>
             </label>
@@ -75,11 +75,4 @@
         <button id="admin_adv_Submit" class="btn btn-success btn-outline w-1/4" >Submit</button>
     </div>
 </form>
-<dialog id="prfupdateNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('prfupdateNotif')">
-    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
-        <div role="alert" class="alert alert-success absolute top-50" >
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span>Profile has been updated</span>
-        </div>
-    </div>
-</dialog>
+
