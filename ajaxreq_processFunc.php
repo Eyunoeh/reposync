@@ -190,3 +190,40 @@ function updAdvisory($user_id = null)
         handleError($e->getMessage());
     }
 }
+function upd_stud_tbl($user_id)
+{
+    $editstud_shc_id = getPostData('school_id');
+    $editStud_adviser = getPostData('stud_adviser');
+
+    $editStud_ojtCenter =getPostData('stud_OJT_center', 'N/A');
+    $edit_otjLoc = getPostData('stud_ojtLocation', 'N/A') ;
+
+    $editStud_program = getPostData('stud_Program') ;
+    $editStud_yr_sec = getPostData('stud_Section');
+    $params = [];
+    $requiredFields = [
+        'Student ID' => $editstud_shc_id,
+        'Student adviser' => $editStud_adviser,
+        'Student program' => $editStud_program,
+        'Student year and section' => $editStud_yr_sec,
+        'OJT center' => $editStud_ojtCenter,
+        'OJT Location' => $edit_otjLoc,
+        'User ID' => $user_id,
+    ];
+    foreach ($requiredFields as $field => $value) {
+        if (empty($value)) {
+            handleError("Field $field is required.");
+            exit();
+        }else{
+            $params []= $value;
+        }
+
+    }
+
+    $upd_stud_info = 'UPDATE tbl_students set enrolled_stud_id = ?, 
+                        adv_id = ?, program_id= ?, year_sec_Id = ?,
+                        ojt_center = ?, ojt_location = ? 
+                    where user_id = ?';
+    mysqlQuery($upd_stud_info,'iiiissi', $params);
+
+}
