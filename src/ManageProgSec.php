@@ -8,13 +8,13 @@
     <div class="flex sm:w-[90%]  transition  shadow rounded
               justify-center  ">
         <div class="w-full  overflow-hidden hover:overflow-auto">
-            <table class="table bordered">
+            <table class="table bordered" id="progam_tbl">
                 <!-- head -->
                 <thead class="w-full sticky top-0 shadow bg-slate-100 rounded text-slate-700">
                 <tr>
-                    <th>Program Code</th>
-                    <th>Program Name</th>
-                    <th>OJT Hours</th>
+                    <th onclick="sortTable(0,'progam_tbl')" class="cursor-pointer">Program Code<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(1,'progam_tbl')" class="cursor-pointer">Program Name<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(2,'progam_tbl')" class="cursor-pointer"> OJT Hours<span class="sort-icon text-xs"></span></th>
                     <th class="text-center">Action</th>
 
                 </tr>
@@ -48,12 +48,12 @@
               justify-center  ">
         <div class="w-full overflow-hidden hover:overflow-auto">
             <h1></h1>
-            <table class="table  ">
+            <table class="table  " id="yr_sectbl">
                 <!-- head -->
                 <thead class="sticky top-0 shadow bg-slate-100 rounded text-slate-700">
                     <tr>
-                        <th class="text-center">Year & Section</th>
-                        <th class="text-center">Action</th>
+                        <th onclick="sortTable(0,'yr_sectbl')" class="text-center cursor-pointer">Year & Section<span class="sort-icon text-xs"></th>
+                        <th class="text-center">Action </th>
 
                     </tr>
                 </thead>
@@ -122,7 +122,16 @@
                             </div>
                         </div>
                     </div>
+                    <div id="deaccSectionModal">
+
+
+
+                    </div>
+                    <div id="deactSectionLink" class="text-end">
+
+                    </div>
                 </div>
+
                 <hr class=" m-3">
                 <p id="progyrsecLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
                 <div id="progyrsecLoaderbtn" class="flex justify-center ">
