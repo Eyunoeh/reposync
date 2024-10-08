@@ -16,6 +16,14 @@
 
 let oldScripts = [];
 
+let total_records = 0;
+
+
+
+
+
+
+
 navigate('dashboardContent.php')
 act_tab('dashboard');
 let domScript = ['dashboardContent.js']
@@ -28,9 +36,6 @@ for (let i = 0; i< domScript.length; i++){
 }
 
 
-let lastSortedColumn = -1; // Track the last sorted column index
-
-
 function navigate(page) {
     fetch(page, {
         headers: {
@@ -40,11 +45,13 @@ function navigate(page) {
         .then(response => response.text())
         .then(html => {
             document.getElementById('dashboard_main_content').innerHTML = html;
-            get_studentUserList();
 
+
+
+            resetDataTable()
 
             getProfileInfo();
-            lastSortedColumn = -1; //reset last sorted col
+
 
 
 
@@ -104,6 +111,7 @@ function dashboard_tab(id , newScripts){
         navigate('manageWeeklyReport.php')
     }else if (tab.id === 'stud_list'){
         navigate('manageStudent.php');
+        get_studentUserList();
         document.getElementById('UserSubmenu').classList.remove('hidden');
     }else if (tab.id === 'adv_list'){
         navigate('manageAdvisers.php')
@@ -144,21 +152,16 @@ function dashboard_tab(id , newScripts){
 
 
     if (oldScripts.length > 0){
-
         const existingScript = document.getElementsByTagName('script');
         for (let i = 0; i < existingScript.length; i++) {
             let scriptSrc = existingScript[i].getAttribute('src');
-
-
             if (oldScripts.includes(scriptSrc.replace('js/', ''))) {
                 existingScript[i].remove();
             }
-
         }
-
     }
 
-    oldScripts = [];
+    //oldScripts = [];
 
     for (let i = 0; i < newScripts.length; i++) {
         const scriptTag = document.createElement('script');
@@ -168,8 +171,10 @@ function dashboard_tab(id , newScripts){
 
     }
 
-
 }
+
+
+
 async function renderChart(ctx) {
     let activeNarrative = 0;
     let total_activeStudent ;
@@ -275,52 +280,135 @@ function act_tab(id){
 }
 
 
-function sortTable(columnIndex, table_id) {
-    let table = document.getElementById(table_id);
-    let rows = Array.from(table.rows).slice(1); // Skip header
-    let ascending = true; // Default sort order is ascending
-
-    if (columnIndex === lastSortedColumn) {
-        // If same column, toggle the sort order
-        ascending = table.getAttribute("data-order") === "asc";
-    } else {
-        // Reset sort order to ascending if a new column is clicked
-        ascending = true;
-        lastSortedColumn = columnIndex; // Update the last sorted column
-    }
-
-
-    const headers = table.querySelectorAll('th');
-    headers.forEach((th, idx) => {
-        const icon = th.querySelector('.sort-icon');
-        if (icon) {
-            icon.textContent = ''; // Clear all icons
-        }
+function totalUser(accountType, userType){
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '../ajax.php?action=total_Users&userType=' + userType + '&accType=' + accountType,
+            method: 'GET',
+            success: function(response) {
+                resolve(response);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
     });
-
-    // Sort the rows
-    rows.sort(function(rowA, rowB) {
-        let cellA = rowA.cells[columnIndex].innerText;
-        let cellB = rowB.cells[columnIndex].innerText;
-
-        if (!isNaN(cellA) && !isNaN(cellB)) {  // Numeric comparison
-            return ascending ? cellA - cellB : cellB - cellA;
-        }
-
-        return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
-    });
-
-    // Re-append sorted rows
-    rows.forEach(row => table.tBodies[0].appendChild(row));
-
-    // Set the sort direction in the table's data attribute
-    table.setAttribute("data-order", ascending ? "desc" : "asc");
-
-    // Set the appropriate icon for the current column
-    let icon = headers[columnIndex].querySelector('.sort-icon');
-    icon.textContent = ascending ? ' ▲' : ' ▼';  // Show ascending/descending icon
 }
 
+function getProfileInfo() {
+    (async () => {
+        try {
+
+            let response = await user_info();
+
+            if (response.response === 1) {
+                let data = response.data;
+                let profPath;
+
+                if (data.profile_img_file === 'N/A') {
+                    profPath = 'assets/profile.jpg';
+                } else {
+                    profPath = 'userProfile/' + data.profile_img_file;
+                }
+
+                $('#side_tabName').html(data.first_name + ' ' + data.last_name  + ' - ' + data.user_type.toUpperCase());
+                $("#selectedProfile").attr("src", profPath);
+                $('#profileForm input[name="user_Fname"]').val(data.first_name);
+                $('#profileForm input[name="user_Mname"]').val(data.middle_name);
+                $('#profileForm input[name="user_Lname"]').val(data.last_name);
+                $('#profileForm input[name="user_address"]').val(data.address);
+                $('#profileForm input[name="contactNumber"]').val(data.contact_number);
+
+                // Handle sex radio buttons
+                if (data.sex === "male") {
+                    $('#profileForm input[name="user_Sex"][value="male"]').prop('checked', true);
+                } else if (data.sex === "female") {
+                    $('#profileForm input[name="user_Sex"][value="female"]').prop('checked', true);
+                }
+            } else {
+                console.error('Error: Unexpected response format or no data');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    })();
+
+}
+function user_info(user_id = null) {
+    return new Promise((resolve, reject) => {
+        let url = '../ajax.php?action=get_User_info';
+        if (user_id !== null) {
+            url += '&data_id=' + encodeURIComponent(user_id);
+        }
+
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function(response) {
+                resolve(response);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
+    });
+}
+
+
+function deactivate_account(id, modal_id, newData){
+    $.ajax({
+        url: '../ajax.php?action=deactivate_account&data_id=' + id,
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (response.response === 1){ // Only need to check this line
+                closeModalForm(modal_id);
+                Alert('notifBox', 'User account has been archived', 'warning');
+                window[newData]()
+
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+
+function renderDeacAccLink(modal, refresh_tbl_data){
+    $('#deaccSectionModal').html(`
+        <dialog id="deactivate_accModal" class="modal bg-black bg-opacity-40">
+            <div class="card bg-slate-50 w-[80vw] absolute top-10 sm:w-[30rem] max-h-[35rem] flex flex-col text-slate-700">
+                <div class="card-title sticky">
+                    <h3 class="font-bold text-center text-lg p-5">Are you sure you want to deactivate this OJT Adviser account?</h3>
+                </div>
+                <div class="p-4 w-full flex justify-evenly">
+                    <a id="deactivate_acc" class="btn btn-error w-1/4" 
+                       onclick="closeModalForm('deactivate_accModal');
+                                deactivate_account(this.getAttribute('data-user_id'), '${modal}', '${refresh_tbl_data}')">
+                        Deactivate
+                    </a>
+                    <a class="btn btn-info w-1/4" onclick="closeModalForm('deactivate_accModal')">Close</a>
+                </div>
+            </div>
+        </dialog>
+    `);
+
+    $('#deactSectionLink').html(`
+        <a class="transition-all text-error font-bold font-sans cursor-pointer text-end pr-6 m-3 hover:opacity-50 active:text-slate-500" 
+           onclick="openModalForm('deactivate_accModal')">
+           Deactivate account? 
+        </a>
+    `);
+}
+
+
+function removeTrashButton() {
+    $('#trashAnnouncementBtn').remove();
+}
+function removeStatusBoxContent(){
+    $('#status_Box').empty();
+}
 
 
 
@@ -337,6 +425,11 @@ function dashboard_student_NarrativeReports() {
         }
     });
 }
+
+
+
+
+
 
 
 function getTotalPendingUploadNarrative(){
@@ -410,20 +503,6 @@ function getTotalPendingNotes(){
     });
 }
 
-function totalUser(accountType, userType){
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: '../ajax.php?action=total_Users&userType=' + userType + '&accType=' + accountType,
-            method: 'GET',
-            success: function(response) {
-                resolve(response);
-            },
-            error: function(xhr, status, error) {
-                reject(error);
-            }
-        });
-    });
-}
 
 
 
@@ -502,218 +581,5 @@ function editNarrativeReq(narrative_id){
         }
     });
 }
-
-
-
-function editUserStud_Info(user_id) {
-    $.ajax({
-        url: '../ajax.php?action=getStudInfoJson&data_id=' + user_id,
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            if (data) {
-                $('#EditStudentForm input[name="user_Fname"]').val(data.first_name);
-                $('#EditStudentForm input[name="user_Mname"]').val(data.middle_name);
-                $('#EditStudentForm input[name="user_Lname"]').val(data.last_name);
-                $('#EditStudentForm input[name="user_address"]').val(data.address);
-                $('#EditStudentForm input[name="contactNumber"]').val(data.contact_number);
-                $('#EditStudentForm input[name="school_id"]').val(data.school_id);
-                $('#EditStudentForm input[name="user_Email"]').val(data.email);
-                $('#EditStudentForm input[name="stud_compName"]').val(data.company_name);
-                $('#EditStudentForm input[name="stud_TrainingHours"]').val(data.training_hours);
-                $('#EditStudentForm input[name="user_id"]').val(data.user_id);
-                $('#deactivate_stud_acc').attr('data-user_id', data.user_id);
-                $('#EditStudentForm select[name="stud_Program"]').val(data.program_id);
-                $('#EditStudentForm select[name="stud_Section"]').val(data.section_id);
-                $('#EditStudentForm select[name="stud_adviser"]').val(data.adviser_id);
-                if (data.sex === "Male") {
-                    $('#EditStudentForm input[name="user_Sex"][value="Male"]').prop('checked', true);
-                } else if (data.sex === "Female") {
-                    $('#EditStudentForm input[name="user_Sex"][value="Female"]').prop('checked', true);
-                }
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
-
-async function get_studentUserList() {
-    let table_data = '';
-    let log_userInfo = (await user_info()).data;
-
-    // Fetch the student list
-    const { response, data: student_list } = await $.ajax({
-        url: '../ajax.php?action=getStudentsList',
-        method: 'GET',
-        dataType: 'json'
-    });
-
-    if (response === 1 && student_list.length > 0) {
-        // Collect unique adviser info in one call
-        let adviserInfoMap = {};
-        await Promise.all([...new Set(student_list.map(s => s['adv_id']))].map(async adv_id => {
-            adviserInfoMap[adv_id] = (await user_info(adv_id)).data;
-        }));
-
-        // Create rows
-        student_list.forEach(student => {
-            let isAdviser = log_userInfo['user_type'] === 'adviser';
-            let adviserMatches = student['adv_id'] === log_userInfo['user_id'];
-            let showRow = isAdviser ? adviserMatches : true;
-
-            if (showRow) {
-                let adv_info = adviserInfoMap[student['adv_id']];
-                table_data += `
-                    <tr class="border-b border-dashed last:border-b-0 p-3 hover">
-                        <td class="p-3 text-start">
-                            <span class=" text-light-inverse text-md/normal">${student['enrolled_stud_id']}</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class=" text-light-inverse text-md/normal">${student['first_name']} ${student['last_name']}</span>
-                        </td>
-                        
-                        <td class="p-3 text-start">
-                            <span class=" text-light-inverse text-md/normal">${student['program_code']}</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class=" text-light-inverse text-md/normal">${student['year']}${student['section']}</span>
-                        </td> 
-                        
-                        
-                        
-                        ${isAdviser ? '' : `
-                        <td class="p-3 text-start">
-                            <span class=" text-light-inverse text-md/normal">${student['ojt_center']}</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class=" text-light-inverse text-md/normal"> ${student['ojt_location']}</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class=" text-light-inverse text-md/normal">${adv_info['first_name']} ${adv_info['last_name']}</span>
-                        </td>`
-                    
-                    
-                }
-                        <td class="p-3 text-end">
-                            <a href="#" onclick="openModalForm('manageStudModalForm')" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
-                                <i class="fa-solid fa-circle-info"></i>
-                            </a>
-                        </td>
-                    </tr>`;
-            }
-        });
-    } else {
-        table_data = `<tr><td colspan="9">No Result</td></tr>`;
-    }
-    $('#tableadvLoader').empty();
-
-    $('#studentsList').html(table_data);
-}
-
-
-
-
-function deactivate_account(id, modal_id){
-
-    $.ajax({
-        url: '../ajax.php?action=deactivate_account&data_id=' + id,
-        method: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            if (response){
-               if (parseInt(response) === 1){
-                   closeModalForm(modal_id);
-                   Alert('notifBox', 'User account has been archived', 'warning');
-                   get_studentUserList();
-               }
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
-
-
-
-
-function user_info(user_id = null) {
-    return new Promise((resolve, reject) => {
-        let url = '../ajax.php?action=get_User_info';
-        if (user_id !== null) {
-            url += '&data_id=' + encodeURIComponent(user_id);
-        }
-
-        $.ajax({
-            url: url,
-            method: 'GET',
-            success: function(response) {
-                resolve(response);
-            },
-            error: function(xhr, status, error) {
-                reject(error);
-            }
-        });
-    });
-}
-
-function getProfileInfo() {
-    (async () => {
-        try {
-
-            let response = await user_info();
-
-            if (response.response === 1) {
-                let data = response.data;
-                let profPath;
-
-                if (data.profile_img_file === 'N/A') {
-                    profPath = 'assets/profile.jpg';
-                } else {
-                    profPath = 'userProfile/' + data.profile_img_file;
-                }
-
-                $('#side_tabName').html(data.first_name + ' ' + data.last_name  + ' - ' + data.user_type.toUpperCase());
-                $("#selectedProfile").attr("src", profPath);
-                $('#profileForm input[name="user_Fname"]').val(data.first_name);
-                $('#profileForm input[name="user_Mname"]').val(data.middle_name);
-                $('#profileForm input[name="user_Lname"]').val(data.last_name);
-                $('#profileForm input[name="user_address"]').val(data.address);
-                $('#profileForm input[name="contactNumber"]').val(data.contact_number);
-
-                // Handle sex radio buttons
-                if (data.sex === "male") {
-                    $('#profileForm input[name="user_Sex"][value="male"]').prop('checked', true);
-                } else if (data.sex === "female") {
-                    $('#profileForm input[name="user_Sex"][value="female"]').prop('checked', true);
-                }
-            } else {
-                console.error('Error: Unexpected response format or no data');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    })();
-
-}
-
-
-
-function removeTrashButton() {
-    $('#trashAnnouncementBtn').remove();
-}
-function removeStatusBoxContent(){
-    $('#status_Box').empty();
-}
-
-
-
-
-
-
-
-
 
 

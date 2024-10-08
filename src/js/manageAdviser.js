@@ -120,20 +120,7 @@ async function editAdvInfo(user_id){
 
 
 
-
-            $('#deaccSectionModal').html(`<dialog id="deactivate_adv_acc" class="modal bg-black  bg-opacity-40 ">
-                            <div class="card bg-slate-50 w-[80vw] absolute top-10 sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
-                                <div  class=" card-title sticky ">
-                                    <h3 class="font-bold text-center text-lg  p-5">Are you sure you want to deactivate this OJT Adviser account?</h3>
-                                </div>
-                                <div class="p-4 w-full flex justify-evenly">
-                                    <a id="deactivate_adv" class="btn  btn-error w-1/4 " onclick="closeModalForm('deactivate_adv_acc');deactivate_account(this.getAttribute('data-user_id'), 'editAdv_admin')" data-user_id="">Deactivate</a>
-                                    <a class="btn  btn-info  w-1/4 " onclick="closeModalForm('deactivate_adv_acc')">Close</a>
-                                </div>
-                            </div>
-                        </dialog>`);
-            $('#deactSectionLink').html(`
-<a class="transition-all text-error font-bold font-sans cursor-pointer text-end pr-6 m-3 hover:opacity-50 active:text-slate-500" onclick="openModalForm('deactivate_adv_acc')">Deactivate account? </a>`)
+            renderDeacAccLink('newAdvierDialog', 'render_AdvUsertList')
 
             $('#admin_adv_Form input[name="user_Fname"]').val(user_data.first_name);
             $('#admin_adv_Form input[name="user_Mname"]').val(user_data.middle_name);
@@ -144,7 +131,7 @@ async function editAdvInfo(user_id){
             $('#admin_adv_Form input[name="user_Email"]').val(user_data.email);
             $('#admin_adv_Form input[name="user_id"]').val(user_data.user_id);
             $('#admin_adv_Form select[name="user_type"]').val(user_data.user_type);
-            $('#deactivate_adv').attr('data-user_id', user_data.user_id);
+            $('#deactivate_acc').attr('data-user_id', user_data.user_id);
             $('#admin_adv_Submit').html('Save');
 
             if (user_data.sex === "male") {

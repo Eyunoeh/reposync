@@ -4,32 +4,25 @@ document.addEventListener('submit', function(e) {
     let modal,formData,endpoint,loader_id,btn, notification, notifType, notifMessaage;
     let  alertContainer = 'notifBox';
     let getNewData = [];
+    let submitterName;
 
     if (e.target.id === 'studentForm'){
-         if (e.submitter.id === 'stud_Submit') {
+        submitterName = $('#stud_Submit').text()
+         if (submitterName === 'Submit') {
              endpoint = "newUser";
+         }else if (submitterName === 'Save') {
+             endpoint = "updateUserInfo";
          }
         notifType = 'success'
-        modal = 'newStudentdialog';
+        modal = 'manageStudModalForm';
         btn = 'newStudBtn';
         loader_id = 'newStudentLoader';
         getNewData.push(get_studentUserList);
 
-    }if (e.target.id === 'EditStudentForm'){
-         if (e.submitter.id === 'update_stud_btn'){
-             endpoint = 'updateUserInfo';
-         }
-        notifType = 'info'
-        modal = 'editStuInfo';
-         btn = 'editStudBtn';
-         loader_id = 'editStudentLoader'
-        getNewData.push(get_studentUserList);
-
-
     }
      if (e.target.id === 'admin_adv_Form'){
 
-        let submitterName = $('#admin_adv_Submit').text();
+         submitterName = $('#admin_adv_Submit').text();
         if ( submitterName === 'Submit'){
             endpoint = 'newUser'
         }else if (submitterName === 'Save'){
