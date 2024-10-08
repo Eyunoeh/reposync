@@ -941,67 +941,6 @@ if ($action == 'getStudentsList'){
     echo json_encode(['response' => 1, 'data' => $data]);
     exit();
 
-
-
-    if ($result->num_rows > 0){
-        while ($row = $result->fetch_assoc()){
-            if ($_SESSION['log_user_type'] == 'admin'){
-                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['school_id'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$row['last_name'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['adviser_name'].'</span>
-                        </td>
-                          <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['training_hours'].'</span>
-                        </td>
-
-
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['program_code'].'</span>
-                        </td>
-                        <td class="p-3 text-end w-[300px] break-words">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['company_name'].'</span>
-                        </td>
-                        
-                        <td class="p-3 text-end">
-                            <a href="#" onclick="openModalForm(\'editStuInfo\');editUserStud_Info(this.getAttribute(\'data-id\'))" data-id="' . urlencode(encrypt_data($row['user_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
-                        </td>
-                    </tr>';
-
-            }elseif ($_SESSION['log_user_type'] == 'adviser'){
-                if ($_SESSION['log_user_id'] == $row['adviserUserId']){
-                    echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['school_id'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$row['last_name'].'</span>
-                        </td>
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['training_hours'].'</span>
-                        </td>
-
-                        <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['program_code'].'</span>
-                        </td>
-                        <td class="p-3 text-end w-[300px] break-words">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['company_name'].'</span>
-                        </td>
-                        
-                        <td class="p-3 text-end">
-                            <a href="#" onclick="openModalForm(\'editStuInfo\');editUserStud_Info(this.getAttribute(\'data-id\'))" data-id="' . urlencode(encrypt_data($row['user_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
-                        </td>
-                    </tr>';
-                }
-            }
-
-        }
-    }
 }
 
 
@@ -1076,8 +1015,8 @@ if ($action == 'updateUserInfo'){
     header('Content-Type: application/json');
     $response = 1;
 
-    $editUser_user_id = isset($_POST['user_id']) ? sanitizeInput($_POST['user_id']) : '';
-    $edituser_type = isset($_POST['user_type']) ? sanitizeInput($_POST['user_type']) : '';
+    $editUser_user_id = getPostData('user_id');
+    $edituser_type = getPostData('user_type');
 
 
     $responseMessage = updateBasicInfo($editUser_user_id, $edituser_type);
@@ -1087,89 +1026,33 @@ if ($action == 'updateUserInfo'){
         updAdvisory($editUser_user_id);
     }
 
-
-
-
-/*    $editStud_compName = isset($_POST['stud_compName']) ? sanitizeInput($_POST['stud_compName']) : 'N/A';
-    $edit_trainingHours = isset($_POST['stud_TrainingHours']) ? sanitizeInput($_POST['stud_TrainingHours']) : 'N/A';
-    $editUser_shc_id = isset($_POST['school_id']) ? sanitizeInput($_POST['school_id']) : '';
-    $editStud_program = isset($_POST['stud_Program']) ? sanitizeInput($_POST['stud_Program']) : '';
-    $editStud_section = isset($_POST['stud_Section']) ? sanitizeInput($_POST['stud_Section']) : '';
-    $editStud_adviser = isset($_POST['stud_adviser']) ? sanitizeInput($_POST['stud_adviser']) : '';
-
-
-    if ($editStud_program !== '' && //execute only if the admin editing student type user
-        $editStud_section !== '' && $edituser_type == 'student'){
-        $update_stud_info = "UPDATE tbl_students 
-                            SET program_id = ?, 
-                                section_id = ? ,
-                                company_name= ?, 
-                                training_hours = ?
-                            WHERE user_id = ?";
-        $stmt_update_info = $conn->prepare($update_stud_info);
-        $stmt_update_info->bind_param("iissi", $editStud_program, $editStud_section, $editStud_compName, $edit_trainingHours , $editUser_user_id);
-        $stmt_update_info->execute();
-        if ($editStud_adviser !== ''){
-            $check_query = "SELECT * FROM advisory_list WHERE stud_sch_user_id = ?";
-            $check_stmt = $conn->prepare($check_query);
-            $check_stmt->bind_param('i', $editUser_user_id);
-            $check_stmt->execute();
-            $result = $check_stmt->get_result();
-            if ($result->num_rows === 0) { // hindi proceed update
-                //  ang logic kasi may mga student na wala pang adviser pag inarchive
-                $insert_query = "INSERT INTO advisory_list (stud_sch_user_id, adv_sch_user_id) VALUES (?, ?)";
-                $insert_stmt = $conn->prepare($insert_query);
-                $insert_stmt->bind_param('ii', $editUser_user_id, $editStud_adviser);
-                $insert_stmt->execute();
-            } else {
-                $update_query = "UPDATE advisory_list SET adv_sch_user_id = ? WHERE stud_sch_user_id = ?";
-                $update_stmt = $conn->prepare($update_query);
-                $update_stmt->bind_param('ii', $editStud_adviser, $editUser_user_id);
-                $update_stmt->execute();
-            }
-        }
-
-    }*/
-
+    if($edituser_type == 'student'){
+        upd_stud_tbl($editUser_user_id);
+    }
     echo json_encode(['response' => $response,
         'message' => $responseMessage]);
     exit();
 
-
-
-
-
-
-
-
 }
 
 if ($action == 'deactivate_account'){
-    $user_id = isset($_GET['data_id']) && sanitizeInput($_GET['data_id']) ? $_GET['data_id'] : '';
-    if (isset($user_id)){
-        $sql = "UPDATE tbl_accounts SET status = 'inactive'  where user_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('i',$user_id);
-        if ($stmt->execute()){//checck if the deactivated account is a student
-            $checkDeativatedUserType = "SELECT user_type from tbl_user_info where user_id = ?";
-            $checkDeativatedUserTypeSTMT =  $conn->prepare($checkDeativatedUserType);
-            $checkDeativatedUserTypeSTMT->bind_param('i', $user_id);
-            $checkDeativatedUserTypeSTMT->execute();
-            $result = $checkDeativatedUserTypeSTMT->get_result();
 
-            if($result->fetch_assoc()['user_type'] === 'student'){
-                //remove student from adivisory of  the OJT adviser
-                $deleteAdvisory = "DELETE FROM advisory_list where stud_sch_user_id = ?";
-                $deleteAdvisorySTMT = $conn->prepare($deleteAdvisory);
-                $deleteAdvisorySTMT->bind_param('i', $user_id);
-                $deleteAdvisorySTMT->execute();
-            }
-
-
-            echo 1;
-        }
+    header('Content-Type: application/json');
+    $user_id = isset($_GET['data_id']) ? sanitizeInput($_GET['data_id']) : '';
+    if ($user_id !== ''){
+        $sql = "UPDATE tbl_accounts SET status = 2  where user_id = ?";
+        mysqlQuery($sql,'i',[$user_id]);
+        $removeAdv = "UPDATE tbl_students SET adv_id = null  where user_id = ?";//forstud
+        mysqlQuery($removeAdv,'i', [$user_id]);
     }
+    echo json_encode([
+        'response' => 1,
+        'message' => 'Message user account has been deactivated']);
 }
+
+
+
+
 if ($action == 'recoverUser') {
     $user_id = isset($_GET['archived_id']) && sanitizeInput($_GET['archived_id']) ? $_GET['archived_id'] : '';
 
