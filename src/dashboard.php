@@ -62,9 +62,9 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 
         <?php if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'adviser'):?>
 
-            <div id="dashBoardWeeklyReport" onclick="dashboard_tab(this.id, ['Adviser.js'])" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
-                <i class="fa-brands fa-font-awesome"></i>
-                <span class="text-[15px] ml-4  font-bold">Students Weekly Report</span>
+            <div id="dashBoardWeeklyReport" onclick="dashboard_tab(this.id,); renderWeeklyJournaltbl()" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+                <i class="fa-solid fa-book-journal-whills"></i>
+                <span class="text-[15px] ml-4  font-bold">Students Weekly Journal</span>
             </div>
         <?php endif;?>
 

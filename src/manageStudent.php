@@ -26,12 +26,11 @@ include '../DatabaseConn/databaseConn.php';
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
-                  <!--      <option>50</option>
-                        <option>100</option>
-                        <option>500</option>-->
+
                     </select>
                     <span class="text-xs">Entries per page</span>
-                </div><div class="w-[40%]">
+                </div>
+                <div class="w-[40%]">
                     <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                         focus:outline-none focus:shadow-outline" id="searcbox" type="text" placeholder="Search" onkeyup="handleSearch('searcbox', 'studListTbl')">
                 </div>

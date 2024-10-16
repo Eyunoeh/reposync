@@ -28,7 +28,7 @@ session_start()
             <div class="overflow-auto h-full">
                 <table id="narrativeReportsTable" class="w-full my-0 border-neutral-200 text-sm table">
                     <thead class="align-bottom z-20">
-                    <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral">
+                    <tr class="font-bold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral">
                         <th class="p-3 text-start">Code</th>
                         <th class="p-3 text-start">Program</th>
                         <th class="p-3 text-end">Total narratives</th>
@@ -44,13 +44,13 @@ session_start()
                     while ($row = $res->fetch_assoc()){
                         echo '<tr class="border-b border-dashed last:border-b-0 hover">
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">'.$row['program_code'].'</span>
+                            <span class=" text-light-inverse text-md/normal break-words">'.$row['program_code'].'</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">'.$row['program_name'].'</span>
+                            <span class=" text-light-inverse text-md/normal break-words">'.$row['program_name'].'</span>
                         </td>
                         <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.getTotalNarrativeReports($row['program_code'], 3, '').'</span>
+                            <span class="text-light-inverse text-md/normal">'.getTotalNarrativeReports($row['program_code'], 3, '').'</span>
                         </td>
                         <td class="p-3 text-center">
                             <a href="dashboardViewnarrativeReports.php?program='.$row['program_code'].'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>

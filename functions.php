@@ -184,6 +184,32 @@ function saveFlipbookPages($response, $file_name) {
     return $results;
 }
 
+function getLatestActivity($user_id){
+    $sql = "SELECT * FROM activity_logs
+JOIN weeklyReport on weeklyReport.file_id = activity_logs.file_id
+WHERE weeklyReport.stud_user_id = ?
+ORDER BY activity_logs.activity_date DESC LIMIT 1;";
+    $result = mysqlQuery($sql, 'i', [$user_id]);
+    if (count($result) > 0){
+        return $result[0]['activity_date'];
+    }else{
+        return '';
+    }
 
+}
+
+
+
+function checkNewWeeklyReports($stud_sch_user_id)
+{
+    $getUnreadWeeklyReports = "SELECT * FROM weeklyreport 
+         where stud_user_id = ? and readStatus = 2";
+    $res = mysqlQuery($getUnreadWeeklyReports, 'i' , [$stud_sch_user_id]);
+    if (count($res) > 0){
+        return true;
+    }else{
+        return false;
+    }
+}
 
 

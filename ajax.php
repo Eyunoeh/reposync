@@ -1,10 +1,10 @@
 <?php
 
-if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
+/*if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
     header("Location: 404.php");
     exit();
 }
-
+*/
 
 
 session_start();
@@ -1652,6 +1652,8 @@ if ($action == 'getYrSecJson'){
 
 
 
+
+
 if ($action == 'getProgJSON'){
    header('Content-Type: application/json');
     $getProg = "SELECT * FROM program order by ojt_hours asc";
@@ -2031,17 +2033,15 @@ WHERE tbl_user_info.user_type = ? AND tbl_accounts.status = ?";
         $params[] = $accStatType;
 
     }else{ // total adviser advisory
-        $totalUserquery = "SELECT COUNT(advisory_list.adv_list_id) 
-    as totaluserCount FROM advisory_list JOIN tbl_accounts 
-        ON advisory_list.stud_sch_user_id = tbl_accounts.user_id 
-                     WHERE tbl_accounts.status = 1 
-                       AND advisory_list.adv_sch_user_id = ?;";
+        $totalUserquery = "SELECT COUNT(tbl_students.adv_id) as totaluserCount
+                            FROM tbl_students JOIN tbl_accounts 
+                            ON tbl_students.user_id = tbl_accounts.user_id 
+                            WHERE tbl_accounts.status = 1 
+                            AND tbl_students.adv_id = ?;";
         $types = 'i';
-        $params [] =$_SESSION['log_user_id'];
+        $params [] = $_SESSION['log_user_id'];
 
     }
-
-
 
 
 
@@ -2076,8 +2076,8 @@ if ($action == 'dshbDeclinedFinalReports') {
 if ($action == 'dshbPendStudWeeklyReport'){
     $getTotalStudPedingWeeklyReport = "SELECT COUNT(*) AS totalStudentUnreadReport 
 FROM `weeklyreport` 
-    JOIN advisory_list on advisory_list.stud_sch_user_id = weeklyreport.stud_user_id 
-WHERE advisory_list.adv_sch_user_id = ? AND weeklyreport.readStatus = 'Unread';
+    JOIN tbl_students on tbl_students.user_id = weeklyreport.stud_user_id 
+WHERE tbl_students.adv_id = ? AND weeklyreport.readStatus = 'Unread';
 ";
     $getTotalStudPedingWeeklyReportSTMT  = $conn->prepare($getTotalStudPedingWeeklyReport);
     $getTotalStudPedingWeeklyReportSTMT->bind_param('i',$_SESSION['log_user_id']);
@@ -2214,7 +2214,47 @@ if ($action == 'updateAcc'){
 }
 
 
-if ($action == 'totalApproveFFinalReport'){
-    $getTotalQuery = "SEL";
+if ($action == 'weeklyJournalList'){
+    header('Content-Type: application/json');
+    $weeklyJournalListlQuery = "SELECT s.* ,u.* FROM tbl_students s 
+        JOIN tbl_user_info u ON s.user_id = u.user_id 
+         WHERE s.adv_id = ? ORDER BY (SELECT activity_date 
+        FROM activity_logs 
+        WHERE file_id IN ( SELECT file_id FROM weeklyReport WHERE stud_user_id = u.user_id ) 
+        ORDER BY activity_date DESC LIMIT 1) DESC;";
+
+    $weeklyJournalList = mysqlQuery($weeklyJournalListlQuery, 'i', [$_SESSION['log_user_id']]);
+
+    if (count($weeklyJournalList) > 0){
+
+        for ($i = 0; $i < count($weeklyJournalList); $i++){
+
+            $latest_activity = getLatestActivity($weeklyJournalList[$i]['user_id']) ?? null;
+            $formatted_date_time = $latest_activity ? date("M d, Y g:i A", strtotime($latest_activity)) : 'No Activity';
+
+            $weeklyJournalList[$i]['lastActivity'] = $formatted_date_time;
+
+
+            if (checkNewWeeklyReports($weeklyJournalList[$i]['user_id'])){
+                $weeklyJournalList[$i]['unreadJournal'] = true;
+            }else{
+                $weeklyJournalList[$i]['unreadJournal'] = false;
+            }
+
+
+            $weeklyJournalList[$i]['user_id'] = urlencode(encrypt_data($weeklyJournalList[$i]['user_id'], $secret_key));
+
+
+        }
+
+        echo json_encode(['response' => 1,
+            'data' => $weeklyJournalList,
+            'message' => 'Success']);
+    }else{
+        echo json_encode(['response' => 2,
+            'data' => [],
+            'message' => 'No Active / Assigned students found for this adviser.']);
+    }
+
 }
 
