@@ -9,10 +9,10 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     <article class="w-1/2">
         <h2 class="max-w-md ">
             <span class="text-4xl text-center sm:text-5xl
-         sm:text-left text-slate-900">REPOSYNC</span>
+         sm:text-left text-slate-900">Insight</span>
             <span class="text-3xl text-center
-        text-slate-900"><br>An Online Narrative Report Management
-            System for Cavite State University</span>
+        text-slate-900"><br>An online on-the-job training narrative report
+            management  system for Cavite  State University - Carmona Campus </span>
         </h2>
     </article>
     <img class=" w-[40%] object-fit" src="assets/open-book-clipart-07.png" alt="Rockets dab">

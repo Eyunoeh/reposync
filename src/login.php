@@ -23,7 +23,7 @@ if (isset($_SESSION['log_user_type'])){
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 
-    <title>Document</title>
+    <title>Login</title>
 </head>
 <body  class="bg-slate-100 grid place-items-center">
 <main class="h-screen mx-auto flex  justify-center items-center sm:flex-row overflow-y-auto ">

@@ -888,7 +888,7 @@ if ($action == 'newUser') {
         }
 
         // Send email notification
-        $subjectType = "Reposync Account";
+        $subjectType = "Insight Account";
         $recipient = getRecipient($user_id);
         $bodyMessage = "
             <h1><b>Notification</b></h1><br><br>
@@ -898,7 +898,7 @@ if ($action == 'newUser') {
             <b>Email:</b> $user_email<br>
             <b>Password:</b> $user_password<br><br>
             <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
-            Reposync: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
+            Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a>";
         email_queuing($subjectType, $bodyMessage, $recipient);
 
     } catch (mysqli_sql_exception $e) {
@@ -911,7 +911,81 @@ if ($action == 'newUser') {
 }
 
 
+if ($action === 'ExcelImport'){
+    header('Content-Type: application/json');
+    $user_type = getPostData('user_type', 'student');
 
+    $excel_data = json_decode($_POST['excelStudData'], true);
+
+    try {
+        $conn->begin_transaction();
+
+        if (json_last_error() === JSON_ERROR_NONE) {
+            foreach ($excel_data as $row) {
+                $firstName = $row['First name'];
+                $middleName = $row['Middle name'];
+                $lastName = $row['Last name'];
+                $contactNo = $row['Contact No'];
+                $address = $row['Address'];
+                $sex = strtolower($row['Sex']);
+
+                $tbl_user_infoQ = 'INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number, user_type) VALUES (?, ?, ?, ?, ?, ?)';
+                $tbl_user_infoSTMT = $conn->prepare($tbl_user_infoQ);
+                $tbl_user_infoSTMT->bind_param('ssssss', $firstName, $middleName, $lastName, $address, $contactNo, $user_type);
+                $tbl_user_infoSTMT->execute();
+
+                $stud_user_ref_id = $tbl_user_infoSTMT->insert_id;
+
+                $studNo = $row['Student No'];
+                $OJT_Center = $row['OJT Center'];
+                $OJT_loc = $row['OJT Location'];
+                $adviser_id = getPostData('stud_adviser', '');
+                $yrSec_ID = getPostData('stud_Section', '');
+                $prog_id = getPostData('stud_Program', '');
+
+
+                $tbl_studntsQ = 'INSERT INTO tbl_students (enrolled_stud_id, user_id, adv_id, 
+                          program_id, year_sec_Id, ojt_center, ojt_location) VALUES (?, ?, ?, ?, ?, ?, ?)';
+
+                $tbl_studntsSTMT = $conn->prepare($tbl_studntsQ);
+                $tbl_studntsSTMT->bind_param('iiiiiss', $studNo,
+                    $stud_user_ref_id, $adviser_id, $prog_id,
+                    $yrSec_ID, $OJT_Center, $OJT_loc);
+                $tbl_studntsSTMT->execute();
+
+                $Acc_Email = strtolower($row['Acc Email']);
+                $studuser_def_password = generatePassword($studNo);
+                $hashed_password = password_hash($studuser_def_password, PASSWORD_DEFAULT);
+
+                $stud_account_q = 'INSERT INTO tbl_accounts (user_id, email, password, status) VALUES (?, ?, ?, 1)';
+                $account_stmt = $conn->prepare($stud_account_q);
+                $account_stmt->bind_param('iss', $stud_user_ref_id, $Acc_Email, $hashed_password);
+                $account_stmt->execute();
+
+                // Send email notification
+                $subjectType = 'Insight Account';
+                $bodyMessage = "
+                <h1><b>Notification</b></h1><br><br>
+                Your email has been successfully registered!<br>
+                Use these credentials to log in:<br>
+                <h3>Account credentials</h3><br>
+                <b>Email:</b> $Acc_Email<br>
+                <b>Password:</b> $studuser_def_password<br><br>
+                <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
+                Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a>";
+                email_queuing($subjectType, $bodyMessage, $Acc_Email);
+            }
+        }
+        // Commit the transaction if everything succeeds
+        $conn->commit();
+        echo json_encode(['response' => 1,
+            'message' => 'All student records imported and accounts created successfully.']);
+
+    } catch (Exception $e) {
+        $conn->rollback();
+        handleError($e->getMessage());
+    }
+}
 
 if ($action == 'getStudentsList'){
     header('Contten-Type: application/json');
@@ -944,68 +1018,6 @@ if ($action == 'getStudentsList'){
 }
 
 
-if ($action == 'getStudInfoJson') {
-    $user_id = decrypt_data($_GET['data_id'], $secret_key);
-
-    $fetch_enrolled_stud = "SELECT 
-                                u.user_id,
-                                u.first_name,
-                                u.middle_name,
-                                u.last_name,
-                                u.address,
-                                u.contact_number,
-                                u.sex,
-                                u.school_id,
-                                s.program_id,
-                                p.program_code,
-                                p.program_name,
-                                a.acc_id,
-                                a.email,
-                                a.password,
-                                a.date_created,
-                                a.status,
-                                se.section_id,
-                                se.section,
-                                s.company_name, 
-                                s.training_hours,
-                                IFNULL(ad.adv_sch_user_id, '') AS adviser_id,
-                                IFNULL(CONCAT(adv.first_name, ' ', adv.last_name), 'No adviser') AS adviser_name
-                            FROM 
-                                tbl_students s
-                            JOIN 
-                                tbl_user_info u ON s.user_id = u.user_id
-                            JOIN 
-                                program p ON s.program_id = p.program_id
-                            JOIN 
-                                tbl_accounts a ON s.user_id = a.user_id
-                            JOIN 
-                                section se ON s.section_id = se.section_id
-                            LEFT JOIN 
-                                advisory_list ad ON s.user_id = ad.stud_sch_user_id
-                            LEFT JOIN 
-                                tbl_user_info adv ON ad.adv_sch_user_id = adv.user_id
-                            WHERE u.user_id = ?
-                            ORDER BY 
-                                a.date_created ASC
-                            LIMIT 1";
-
-    $stmt = $conn->prepare($fetch_enrolled_stud);
-    $stmt->bind_param("i", $user_id);
-
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result === false) {
-        $error = "Error: " . $stmt->error;
-        header('Content-Type: application/json');
-        echo json_encode(array("error" => $error));
-    } else {
-        $student = $result->fetch_assoc();
-        header('Content-Type: application/json');
-        echo json_encode($student);
-    }
-    $stmt->close();
-}
 
 
 
@@ -1129,7 +1141,7 @@ if ($action == 'getAdvisers') {
     header('Content-Type: application/json');
 
 
-    $getAdvListsql = "SELECT ui.*, prog.*, sec.* 
+    $getAdvListsql = "SELECT ui.*, prog.*, sec.* , acc.*
     FROM tbl_advisoryhandle hndl_class 
     LEFT JOIN tbl_user_info ui ON hndl_class.adv_id = ui.user_id 
     INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id 

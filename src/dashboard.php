@@ -19,6 +19,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 
 
@@ -37,7 +38,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
                         <img src="assets/cvsulogo-removebg-preview.png" />
                     </div>
                 </div>
-                <h1 class="font-bold text-gray-200 text-[15px] ml-3">Reposync</h1>
+                <h1 class="font-bold text-gray-200 text-[15px] ml-3">Insight</h1>
                 <i class="bi bi-x cursor-pointer ml-28 lg:hidden" onclick="//openSidebar()"></i>
             </div>
             <div class="text-start">
@@ -54,10 +55,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             </div>
         </a>
         <div id="dashboard"
-             onclick="dashboard_tab(
-                     this.id, [<?= $_SESSION['log_user_type'] == 'admin' ? "'Admin.js'"  : "'Adviser.js'" ?>, 'dashboardContent.js']
-
-                     )" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+             onclick="dashboard_tab(this.id); loadDashboardJS()" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-gauge"></i>
             <span class="text-[15px] ml-4  font-bold">Dashboard</span>
         </div>
@@ -86,28 +84,34 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <?php
             if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
             ?>
-                <h1 onclick="dashboard_tab(this.id, ['Admin.js'])" id="notesReq" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <h1 onclick="dashboard_tab(this.id) ;getAdvNotes();" id="notesReq" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                     <i class="fa-regular fa-note-sticky"></i>
                     Advisers Notes
                 </h1>
 
-                <h1 onclick="dashboard_tab(this.id, ['Admin.js'])" id="schedule&Act" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <h1 onclick="dashboard_tab(this.id); getActivitiesAndSched();" id="schedule&Act" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 <i class="fa-regular fa-calendar-days"></i>
                  Activities & Schedule
             </h1>
 
             <?php elseif ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'adviser'):?>
-                <h1 onclick="dashboard_tab(this.id, ['Adviser.js'])" id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <h1 onclick="dashboard_tab(this.id); get_dashBoardnotes()" id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                     <i class="fa-regular fa-note-sticky"></i>
                     Notes
                 </h1>
             <?php endif;?>
         </div>
-        <div id="dashboard_ReviewUploadNarrative" onclick="dashboard_tab(this.id, ['<?=$_SESSION['log_user_type'] == 'admin' ? 'Admin.js': 'Adviser.js'?>'])" class="dashboard_tab p-2.5 mt-3 flex items-start rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <?php
+
+        if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'adviser'):
+
+        ?>
+        <div id="dashboard_ReviewUploadNarrative" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-start rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-upload"></i>
             <span class="text-[15px] ml-4  font-bold">Upload Narrative Report</span>
         </div>
-        <div id="dashboard_narrative" onclick="dashboard_tab(this.id, [])" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <?php endif;?>
+        <div id="dashboard_narrative" onclick="dashboard_tab(this.id)" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-book"></i>
             <span class="text-[15px] ml-4  font-bold">Narrative Reports</span>
         </div>
@@ -119,7 +123,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
         if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'admin'):
 
         ?>
-        <div id="dashBoardProg_n_Section" onclick="dashboard_tab(this.id,  ['Admin.js'])" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <div id="dashBoardProg_n_Section" onclick="dashboard_tab(this.id);getPrograms(); getYrSec() " class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-graduation-cap"></i>
             <span class="text-[15px] ml-4  font-bold">Prog-Yr-Sec</span>
         </div>
@@ -137,29 +141,29 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
             <i class="fa-solid fa-chevron-down"></i>
         </div>
         <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="UserSubmenu">
-            <h1 onclick="dashboard_tab(this.id,[]);" id="stud_list" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+            <h1 onclick="dashboard_tab(this.id); get_studentUserList()" id="stud_list" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Student
             </h1>
             <?php
             if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
             ?>
-                <h1 onclick="dashboard_tab(this.id, ['Admin.js', 'manageAdviser.js']);" id="adv_list" class="dashboard_tab w-full cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <h1 onclick="dashboard_tab(this.id); render_AdvUsertList();" id="adv_list" class="dashboard_tab w-full cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                     Advisers
                 </h1>
 
 
             <?php endif?>
-            <h1 onclick="dashboard_tab(this.id,[]);" id="profile" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+            <h1 onclick="dashboard_tab(this.id);" id="profile" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Profile
             </h1>
-            <h1 onclick="dashboard_tab(this.id,[]);" id="accountInfo" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+            <h1 onclick="dashboard_tab(this.id);" id="accountInfo" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 Account
             </h1>
         </div>
         <?php
         if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
         ?>
-        <div onclick="dashboard_tab(this.id, ['Admin.js']);" id="account_archived" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
+        <div onclick="dashboard_tab(this.id);" id="account_archived" class="dashboard_tab p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-slate-200 hover:text-slate-700 text-white">
             <i class="fa-solid fa-recycle"></i>
             <span class="text-[15px] ml-4  font-bold">Archive</span>
         </div>
@@ -183,12 +187,15 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 
 
 <script src="js/Datatables.js"></script>
-
+<script src="js/buttons_modal.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/manageStudent.js"></script>
-<script src="js/buttons_modal.js"></script>
-
+<script src="js/manageAdviser.js"></script>
+<script src="js/Admin.js"></script>
+<script src="js/Adviser.js"></script>
+<script src="js/dashboardContent.js"></script>
 <script src="js/admin_adviserAjaxRequest.js"></script>
+
 
 
 

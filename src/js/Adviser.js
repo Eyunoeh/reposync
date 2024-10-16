@@ -12,4 +12,3 @@ function get_dashBoardnotes (){
         }
     });
 }
-get_dashBoardnotes();

@@ -101,6 +101,7 @@ async function editUserStud_Info(user_id) {
     let stud_info = await user_info(user_id)
     if (stud_info.response  === 1){
         let data = stud_info.data;
+        loadStudentprogSecDropdown(data.adv_id)
         $('#studentForm input[name="user_Fname"]').val(data.first_name);
         $('#studentForm input[name="user_Mname"]').val(data.middle_name);
         $('#studentForm input[name="user_Lname"]').val(data.last_name);
@@ -136,14 +137,137 @@ async function editUserStud_Info(user_id) {
 
 }
 
+async function jsonExcelSheet(excel_file) {
+    const fileReader = new FileReader();
+
+    // Fetch student and adviser data
+    const { data: student_list } = await $.ajax({
+        url: '../ajax.php?action=getStudentsList',
+        method: 'GET',
+        dataType: 'json'
+    });
+    const adv_list = await getAdv_list();
+    const adv_listData = adv_list.data;
+
+    // Extract unique lists of IDs, contact numbers, and emails
+    const existingStudID = student_list.map(student => student.enrolled_stud_id);
+
+    const existingCnum = [...new Set([
+        ...student_list.map(student => student.contact_number),
+        ...adv_listData.map(advisor => advisor.contact_number)
+    ])];
+    console.log(existingCnum);
+    const existingEmail = [...new Set([
+        ...student_list.map(student => student.email),
+        ...adv_listData.map(advisor => advisor.email)
+    ])];
+    console.log(existingEmail);
+
+    // Process file on load
+    fileReader.onload = (event) => {
+        const data = event.target.result;
+        const workbook = XLSX.read(data, { type: "binary" });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+        let excelErrorNote = '';
+
+        const unqStud_id = new Set();
+        const unqCnum = new Set();
+        const unqAccEmail = new Set();
+
+        // Validate rows
+        jsonData.forEach(row => {
+            const requiredKeys = [
+                'Student No', 'First name', 'Middle name', 'Last name',
+                'Contact No', 'Address', 'Sex', 'OJT Center',
+                'OJT Location', 'Acc Email'
+            ];
+
+            // Check for required keys
+            for (const key of requiredKeys) {
+                if (!row.hasOwnProperty(key)) {
+                    excelErrorNote = `No '${key}' column found.`;
+                    return;
+                }
+            }
+
+            const studNo = row['Student No'];
+            const studCnum = row['Contact No'];
+            const studEmail = row['Acc Email'];
+
+
+            // Check for duplicates within the Excel file
+            if (unqStud_id.has(studNo)) {
+                excelErrorNote = `Student No: ${studNo} is duplicate.`;
+                return;
+            }
+            if (unqCnum.has(studCnum)) {
+                excelErrorNote = `Contact No: ${studCnum} is duplicate.`;
+                return;
+            }
+            if (unqAccEmail.has(studEmail)) {
+                excelErrorNote = `Acc Email: ${studEmail} is duplicate.`;
+                return;
+            }
+
+            // Check for duplicates with existing data
+            if (existingStudID.includes(studNo)) {
+                excelErrorNote = `StudNo ${studNo} already exists in the system.`;
+                return;
+            }
+            if (existingCnum.map(String).includes(String(studCnum))) {
+                excelErrorNote = `Contact No: ${studCnum} already exists in the system.`;
+                return;
+            }
+
+            if (existingEmail.includes(studEmail)) {
+                excelErrorNote = `Acc Email: ${studEmail} already exists in the system.`;
+                return;
+            }
+
+            // Add unique values to sets
+            unqStud_id.add(studNo);
+            unqCnum.add(studCnum);
+            unqAccEmail.add(studEmail);
+        });
+
+        // Output the results based on validation
+        if (!excelErrorNote) {
+            $('#excelStudData').val(JSON.stringify(jsonData));
+            $('#excelErrorNote').empty();
+            enable_button('stud_Submitxls')
+        } else {
+            $('#excelStudData').val('');
+            $('#excelErrorNote').html(excelErrorNote);
+            disable_button('stud_Submitxls');
+        }
+    };
+    if (excel_file){
+        fileReader.readAsArrayBuffer(excel_file);
+    }else {
+        $('#excelErrorNote').empty()
+    }
+
+}
+
+
 
 function resetStudentEditForm(){
     $('#studentForm').trigger("reset");
+    $('#studentFormxls').trigger("reset");
+    $('#excelErrorNote').empty();
+    enable_button('stud_Submitxls')
+    $('#excelStudData').val('');
     $('#studFormTitle').html('Add new student');
     $('#studentForm input[name="user_id"]').val('');
     $('#stud_Submit').html('Submit');
     $('#deaccSectionModal').empty()
     $('#deactSectionLink').empty();
+
+    $('#stud_xlsSection').html(`<option value="" selected disabled>Select OJT adviser</option>`);
+    $('#stud_xlsProgram').html(`<option value="" selected disabled>Select OJT adviser</option>`);
+    $('#stud_Program').html(`<option value="" selected disabled>Select OJT adviser</option>`);
+    $('#stud_Section').html(`<option value="" selected disabled>Select OJT adviser</option>`);
     $('#acc_section_indicator').html(`<div class="tooltip tooltip-right ml-2 z-10 cursor-pointer" data-tip="System will notify the user about the account through email">
                                                 <i class="fa-solid fa-circle-info"></i>
                                             </div>

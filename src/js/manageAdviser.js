@@ -1,4 +1,4 @@
-render_AdvUsertList();
+
 
 function addAssignment() {
     let assignAdvInput = document.getElementById("assignedAdvList");
@@ -148,7 +148,7 @@ async function editAdvInfo(user_id){
         console.error('Error:', error);
     }
 }
-function getAdv_list (user_id = null) {
+function getAdv_list () {
     return new Promise((resolve, reject) => {
 
         $.ajax({
@@ -170,7 +170,10 @@ async function render_AdvUsertList() {
         if (response.response === 1 && response.data.length > 0) {
             let advisers = response.data.reduce((acc, adviser) => {
                 let { user_id, first_name, last_name, program_code, year, section, totalStud } = adviser;
-                if (!acc[user_id]) acc[user_id] = { name: `${first_name} ${last_name}`,user_id : user_id, programs: [] };
+                if (!acc[user_id]) acc[user_id] =
+                    { name: `${first_name} ${last_name}`,
+                    user_id : user_id,
+                    programs: [] };
                 acc[user_id].programs.push({ program_code, year, section, totalStud });
                 return acc;
             }, {});
@@ -215,6 +218,7 @@ function clearAdviserForm(){
     $('#assignedAdvList').val('');
     $('#hndl_adv_list').html(`<li>Empty advisory</li>`)
 }
+
 
 
 

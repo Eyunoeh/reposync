@@ -1,24 +1,20 @@
 
-getActivitiesAndSched();
-getPrograms();
-getYrSec();
-getAdvNotes();
-getPendingFinalReports();
 
-function getActivitiesAndSched (){
-    $.ajax({
-        url: '../ajax.php?action=getDashboardActSched',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
 
-            $('#actAndschedList').html(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
+async function getActivitiesAndSched() {
+    try {
+        const response = await $.ajax({
+            url: '../ajax.php?action=getDashboardActSched',
+            method: 'GET',
+            dataType: 'html'
+        });
+        $('#actAndschedList').html(response);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 }
+
+
 
 
 function getAdvNotes(){

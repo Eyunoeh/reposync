@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="text-center font-bold  text-3xl">
-                <h1><a href="#" id="homeLink">REPOSYNC</a></h1>
+                <h1><a href="#" id="homeLink">Insight</a></h1>
             </div>
         </div>
 
@@ -34,7 +34,7 @@
                     <?php if ($_SESSION['log_user_type'] == 'student') {?>
                         <a href="#" id="reportLink" class="transition-all hover:cursor-pointer
                 hover:text-black hover:bg-gray-300 hover:rounded p-2
-                ">Weekly Reports</a>
+                ">Weekly Journal</a>
                    <?php
                     }?>
 

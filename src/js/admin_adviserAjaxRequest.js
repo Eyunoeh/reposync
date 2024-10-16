@@ -19,7 +19,16 @@ document.addEventListener('submit', function(e) {
         loader_id = 'newStudentLoader';
         getNewData.push(get_studentUserList);
 
+    }if (e.target.id === 'studentFormxls'){
+        endpoint = "ExcelImport";
+        notifType = 'success'
+        modal = 'manageStudModalFormxls';
+        btn = 'newStudBtnxls';
+        loader_id = 'newStudentXLXSLoader';
+        getNewData.push(get_studentUserList);
     }
+
+
      if (e.target.id === 'admin_adv_Form'){
 
          submitterName = $('#admin_adv_Submit').text();

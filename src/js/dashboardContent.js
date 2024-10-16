@@ -1,4 +1,6 @@
-(async () => {
+
+
+async function loadDashboardJS(){
     try {
         let pendingNoteCount = await getTotalPendingNotes();
         let unreadWeeklyreports = await getTotalUnreadStudentWeeklyReport();
@@ -14,4 +16,7 @@
     } catch (error) {
         console.error('Error:', error);
     }
-})();
+}
+document.addEventListener("DOMContentLoaded", function (){
+    loadDashboardJS();
+})

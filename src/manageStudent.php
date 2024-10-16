@@ -7,9 +7,9 @@ session_start();
 include '../DatabaseConn/databaseConn.php';
 ?>
 <div class="px-9 pt-2 flex justify-end items-stretch flex-wrap gap-5 pb-0 bg-transparent">
-    <!--    <button class="btn btn-neutral btn-sm bg-slate-500 border-none text-slate-100 " >Export accounts</button>
-    -->    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalForm'); resetStudentEditForm()">New Student form</button>
-    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100">Import excel <i class="fa-solid fa-download"></i></button>
+    <!--    <button class="btn btn-neutral btn-sm bg-slate-500 border-none text-slate-100 " >Export accounts</button>-->
+    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalForm'); resetStudentEditForm()">New Student form</button>
+    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalFormxls');resetStudentEditForm()">Import excel <i class="fa-solid fa-download"></i></button>
 </div>
 
 
@@ -167,13 +167,16 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Adviser</span>
                                 </div>
-                                <select name="stud_adviser" class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select adviser</option>
+                                <select id="stud_adviser" onchange="loadStudentprogSecDropdown(this.value)" name="stud_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select</option>
                                     <?php
                                     $adv_option_query = "SELECT ui.*, acc.*
                                  FROM tbl_user_info ui
                                  INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
                                  WHERE ui.user_type  = 'adviser' AND acc.status = 'active'";
+                                    if ($_SESSION['log_user_type'] === 'adviser'){
+                                        $adv_option_query.= ' AND ui.user_id = '.$_SESSION['log_user_id'];
+                                    }
                                     $result = $conn->query($adv_option_query);
 
                                     if ($result->num_rows > 0) {
@@ -193,20 +196,9 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
-                                <select name="stud_Program" required class="select select-bordered w-full bg-slate-100 " required>
+                                <select name="stud_Program" id="stud_Program"  class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select</option>
-                                    <?php
-                                    $sql = "SELECT * FROM  program";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $res = $stmt->get_result();
-                                    while ($row = $res->fetch_assoc()){
-                                        echo '<option value="'.$row['program_id'].'">'.$row['program_code'].'</option>
-                                               ';
 
-                                    }
-
-                                    ?>
                                 </select>
 
                             </label>
@@ -216,17 +208,9 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">Year & Section</span>
                                 </div>
-                                <select  name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
+                                <select id="stud_Section"   name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select</option>
-                                    <?php
-                                    $sql = "SELECT * FROM  section";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $res = $stmt->get_result();
-                                    while ($row = $res->fetch_assoc()){
-                                        echo '<option value="'.$row['year_sec_Id'].'">'.$row['year'].''.$row['section'].'</option>';
-                                    }
-                                    ?>
+
                                 </select>
                             </label>
                             <label class="form-control w-full max-w-xs">
@@ -283,6 +267,94 @@ include '../DatabaseConn/databaseConn.php';
 
                 <div id="newStudBtn" class="flex justify-center m-3">
                     <button id="stud_Submit" class="btn btn-success btn-outline w-1/4" >Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</dialog>
+<dialog id="manageStudModalFormxls" class="modal bg-black  bg-opacity-40">
+    <div class="card bg-slate-50 w-[100vw] sm:w-[50rem]   flex flex-col text-slate-700">
+        <div  class=" card-title sticky ">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('manageStudModalFormxls');resetStudentEditForm()">✕</button>
+            <h3 class="font-bold text-center text-lg p-5" id="studFormTitle">Add new student</h3>
+            <div class="tooltip tooltip-bottom" data-tip="Download excel format">
+                <a href="assets/Student_basic_info_list_format.xlsx" class="btn btn-circle btn-info btn-outline border-none"  id="exlFormat"><i class="fa-solid fa-download"></i></a>
+            </div>
+        </div>
+        <div class="p-4">
+            <form id="studentFormxls"  enctype="multipart/form-data">
+                <div class="flex flex-col gap-8 mb-2 overflow-auto">
+                    <div class="flex flex-col gap-5">
+                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">OJT Adviser</span>
+                                </div>
+                                <select id="stud_adviser" onchange="loadStudentprogSecDropdown(this.value)" name="stud_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select</option>
+                                    <?php
+                                    $adv_option_query = "SELECT ui.*, acc.*
+                                 FROM tbl_user_info ui
+                                 INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
+                                 WHERE ui.user_type  = 'adviser' AND acc.status = 'active'";
+
+                                    if ($_SESSION['log_user_type'] === 'adviser'){
+                                        $adv_option_query.= ' AND ui.user_id = '.$_SESSION['log_user_id'];
+                                    }
+                                    $result = $conn->query($adv_option_query);
+
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<option value='" . $row['user_id'] . "'>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+                                        }
+                                    } else {
+                                        echo "<option value=''>No users found</option>";
+                                    }
+                                    ?>
+
+
+                                </select>
+                            </label>
+
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Program</span>
+                                </div>
+                                <select name="stud_Program" id="stud_xlsProgram"  class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select</option>
+
+                                </select>
+
+                            </label>
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Year & Section</span>
+                                </div>
+                                <select id="stud_xlsSection"   name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select</option>
+
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
+
+                            <input required oninput="jsonExcelSheet(this.files[0])" class="file-input file-input-bordered file-input-success w-full max-w-xs"
+                                   type="file" name="excelFile" accept=".xls,.xlsx">
+
+                        </div>
+
+                        <input type="hidden" name="user_type" value="student">
+                        <input required type="hidden" id="excelStudData" name="excelStudData" value="">
+
+                    </div>
+                </div>
+                <p id="newStudentXLXSLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
+                   <div id="excelErrorNote" class="text-center text-error font-semibold text-xs">
+
+                </div>
+                <div id="newStudBtnxls" class="flex justify-center m-3">
+                    <button id="stud_Submitxls" class="btn btn-success btn-outline w-1/4" >Submit</button>
                 </div>
             </form>
         </div>

@@ -14,6 +14,7 @@
  */
 
 
+
 let oldScripts = [];
 
 let total_records = 0;
@@ -93,7 +94,7 @@ function navigate(page) {
 }
 
 
-function dashboard_tab(id , newScripts){
+function dashboard_tab(id){
     let tab = document.getElementById(id);
     if(tab.id === 'dashboard_narrative'){
         navigate('manageNarrativeReports.php');
@@ -111,7 +112,6 @@ function dashboard_tab(id , newScripts){
         navigate('manageWeeklyReport.php')
     }else if (tab.id === 'stud_list'){
         navigate('manageStudent.php');
-        get_studentUserList();
         document.getElementById('UserSubmenu').classList.remove('hidden');
     }else if (tab.id === 'adv_list'){
         navigate('manageAdvisers.php')
@@ -148,28 +148,28 @@ function dashboard_tab(id , newScripts){
         navigate('manageUploadNarratives.php');
         act_tab('dashboard_ReviewUploadNarrative');
     }
+    /*
 
-
-
-    if (oldScripts.length > 0){
-        const existingScript = document.getElementsByTagName('script');
-        for (let i = 0; i < existingScript.length; i++) {
-            let scriptSrc = existingScript[i].getAttribute('src');
-            if (oldScripts.includes(scriptSrc.replace('js/', ''))) {
-                existingScript[i].remove();
+        if (oldScripts.length > 0){
+            const existingScript = document.getElementsByTagName('script');
+            for (let i = 0; i < existingScript.length; i++) {
+                let scriptSrc = existingScript[i].getAttribute('src');
+                if (oldScripts.includes(scriptSrc.replace('js/', ''))) {
+                    existingScript[i].remove();
+                }
             }
         }
-    }
 
-    //oldScripts = [];
+        //oldScripts = [];
 
-    for (let i = 0; i < newScripts.length; i++) {
-        const scriptTag = document.createElement('script');
-        scriptTag.src = 'js/' + newScripts[i];
-        document.body.appendChild(scriptTag);
-        oldScripts.push(newScripts[i]);
+        for (let i = 0; i < newScripts.length; i++) {
+            const scriptTag = document.createElement('script');
+            scriptTag.src = 'js/' + newScripts[i];
+            document.body.appendChild(scriptTag);
+            oldScripts.push(newScripts[i]);
 
-    }
+        }*/
+
 
 }
 
@@ -245,11 +245,14 @@ async function renderChart(ctx) {
                     if (label === 'Active student') {
                         const elementId = "stud_list";
                         dashboard_tab(elementId);
+                        get_studentUserList()
+
                         document.getElementById('UserSubmenu').classList.remove('hidden');
 
                     } else if (label === 'Active adviser') {
                         const elementId = "adv_list";
                         document.getElementById('UserSubmenu').classList.remove('hidden');
+                        render_AdvUsertList()
 
                         dashboard_tab(elementId);
                     } else if (label === 'Published Narrative Reports') {
@@ -410,7 +413,37 @@ function removeStatusBoxContent(){
     $('#status_Box').empty();
 }
 
+async function loadStudentprogSecDropdown(adv_id) {
+    let adv_list = await getAdv_list();
 
+    let prog_yearSec = adv_list.data.reduce((acc, adviser) => {
+        let { user_id, program_code, program_id, year, section, year_sec_Id } = adviser;
+        if (!acc[user_id]) {
+            acc[user_id] = {
+                adviser_id: user_id,
+                program: program_code,
+                program_id: program_id,
+                yr_sec: []
+            };
+        }
+        acc[user_id].yr_sec.push({ year, section, year_sec_Id });
+        return acc;
+    }, {});
+
+    let program_option = ``;
+    let yr_sec_option = ``;
+
+    if (prog_yearSec[adv_id]) {
+        program_option += `<option value="${prog_yearSec[adv_id].program_id}" selected>${prog_yearSec[adv_id].program}</option>`;
+        yr_sec_option = prog_yearSec[adv_id].yr_sec.map(yearsec =>
+            `<option value="${yearsec.year_sec_Id}">${yearsec.year} ${yearsec.section}</option>`
+        ).join('');
+    }
+    $('#stud_Program').html(program_option);
+    $('#stud_xlsProgram').html(program_option);
+    $('#stud_Section').html(yr_sec_option);
+    $('#stud_xlsSection').html(yr_sec_option);
+}
 
 function dashboard_student_NarrativeReports() {
     $.ajax({
