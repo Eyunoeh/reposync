@@ -180,25 +180,27 @@ function getHomeNotes(){
 
 }
 
-document.getElementById('homeLink').addEventListener('click', function(event) {
+document.getElementById('homeLink').addEventListener('click', async function(event) {
     event.preventDefault();
     navigate('home');
 });
 
 const narrativesLink = document.getElementById('narrativesLink')
-narrativesLink?.addEventListener('click', function(event) {
+narrativesLink?.addEventListener('click',  async function(event) {
     event.preventDefault();
     navigate('narratives');
 });
 let reportLink = document.getElementById('reportLink')
-reportLink?.addEventListener('click', function(event) {
+reportLink?.addEventListener('click', async function(event) {
     event.preventDefault();
-    navigate('weeklyReports');
-    getUploadLogs();
-    get_WeeklyReports();
+    navigate('weeklyReports').then(()=>{
+        getUploadLogs();
+        get_WeeklyReports();
+    });
+
 });
 
-document.getElementById('announcement').addEventListener('click', function(event) {
+document.getElementById('announcement').addEventListener('click', async function(event) {
     event.preventDefault();
     navigate('announcement');
 });
@@ -206,8 +208,10 @@ document.getElementById('announcement').addEventListener('click', function(event
 const accountSettings = document.getElementById('accountSettings');
 accountSettings?.addEventListener('click', (e) => {
     e.preventDefault();
-    navigate('studentSettings');
-    getProfileInfo();
+    navigate('studentSettings').then(()=> {
+        getProfileInfo();
+    });
+
 
 });
 
@@ -223,7 +227,9 @@ document.getElementById('side-announcement').addEventListener('click', function(
 });
 document.getElementById('side-weeklyjournal')?.addEventListener('click', function(event) {
     event.preventDefault();
-    navigate('weeklyReports');
-    getUploadLogs();
-    get_WeeklyReports();
+    navigate('weeklyReports').then(()=> {
+        getUploadLogs();
+        get_WeeklyReports();
+    });
+
 });
