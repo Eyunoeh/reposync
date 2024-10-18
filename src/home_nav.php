@@ -70,22 +70,34 @@
      </div>
      <section class="lg:hidden mt-10">
          <div class="flex flex-col text-center">
-             <div id="side-narrativesLink" class="h-16 hover:bg-gray-200  transition-all rounded hover:text-black">
-                 <h1 class="mt-6 text-xl  hover:opacity-90 "><a href="#"  >Narrative Report</a></h1>
-                 <hr class="mx-auto  bg-black  w-[80%]">
-             </div>
              <div id="side-announcement" class="h-16 hover:bg-gray-200 transition-all rounded hover:text-black">
                  <h1 class="text-xl  mt-6 hover:opacity-90 "><a href="#" >Announcement</a></h1>
                  <hr class="mx-auto bg-black  w-[80%]">
              </div>
-             <div id="side-weeklyReport" class="h-16 hover:bg-gray-200 transition-all rounded hover:text-black">
-                 <h1 class="text-xl  mt-6 hover:opacity-90 "><a href="#" >Weekly Reports</a></h1>
-                 <hr class="mx-auto bg-black  w-[80%]">
-             </div>
-             <div class="h-16 hover:bg-gray-200 transition-all rounded">
-                 <h1 class="text-xl  mt-6 hover:opacity-90 "><a href="index.php?page=login">Login</a></h1>
-                 <hr class="mx-auto bg-black  w-[80%]">
-             </div>
+             <?php if (!isset($_SESSION['log_user_type'])):?>
+
+                 <div class="h-16 hover:bg-gray-200 transition-all rounded">
+                     <h1 class="text-xl  mt-6 hover:opacity-90 "><a href="index.php?page=login">Login</a></h1>
+                     <hr class="mx-auto bg-black  w-[80%]">
+                 </div>
+             <?php else:?>
+                 <div id="side-narrativesLink" class="h-16 hover:bg-gray-200  transition-all rounded hover:text-black">
+                     <h1 class="mt-6 text-xl  hover:opacity-90 "><a href="#"  >Narrative Report</a></h1>
+                     <hr class="mx-auto  bg-black  w-[80%]">
+                 </div>
+                <?php if ($_SESSION['log_user_type'] === 'student') :?>
+
+
+                 <div id="side-weeklyjournal" class="h-16 hover:bg-gray-200 transition-all rounded hover:text-black">
+                     <h1 class="text-xl  mt-6 hover:opacity-90 "><a href="#" >Weekly Journal</a></h1>
+                     <hr class="mx-auto bg-black  w-[80%]">
+                 </div>
+                 <?php endif;?>
+                 <div class="h-16 hover:bg-gray-200 transition-all rounded">
+                     <h1 class="text-xl  mt-6 hover:opacity-90 "><a href="logout.php">Logout</a></h1>
+                     <hr class="mx-auto bg-black  w-[80%]">
+                 </div>
+             <?php endif;?>
          </div>
      </section>
  </div>

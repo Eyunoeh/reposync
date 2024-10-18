@@ -24,13 +24,13 @@ session_start();
     <div class=" card-body  flex sm:flex-row flex-col flex-wrap justify-start
     p-3 sm:p-5 overflow-hidden sm:overflow-x-auto  scroll-smooth gap-10" id="AdviserNotes">
 
-        <div class="transform w-full md:w-[18rem] transition duration-500 shadow rounded hover:scale-110 hover:bg-slate-300 justify-center items-center cursor-pointer p-3 h-[10rem]">
+        <!--<div class="transform w-full md:w-[18rem] transition duration-500 shadow rounded hover:scale-110 hover:bg-slate-300 justify-center items-center cursor-pointer p-3 h-[10rem]">
             <div class="h-[8rem] overflow-hidden hover:overflow-y-auto">
                 <h1 class="font-semibold"></h1>
                 <p class="text-start text-sm break-words"> </p>
                 <p class="text-[12px] text-slate-400 text-start"></p>
             </div>
-        </div>
+        </div>-->
 
     </div>
 </section>

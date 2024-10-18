@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
+    header("Location: 404.php");
+    exit();
+}
 ?>
 <section class=" overflow-auto bg-white flex sm:flex-row flex-col bg-clip-border gap-2 rounded-[.95rem] mt-2 mx-5  text-slate-600">
     <section class="w-full h-full border-r-2 <?php echo isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'student' ? 'sm:w-[60%]' : '' ?> p-5">

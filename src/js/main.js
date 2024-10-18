@@ -1,41 +1,37 @@
 let urlParams = new URLSearchParams(window.location.search);
-
+//onload call
+linkPages();
 function navigate(page) {
-    fetch(page +'.php', {
+    return fetch(page + '.php', {
         headers: {
             'X-Requested-With': 'XMLHttpRequest' // Add a custom header
         }
     })
         .then(response => response.text())
         .then(html => {
-            document.getElementById('mainContent').innerHTML = html ;
+            document.getElementById('mainContent').innerHTML = html;
 
             updateActiveLink(page);
-
             getHomeActSched();
             getHomeNotes();
+
             let profileImgInput = document.getElementById('profileImg');
             profileImgInput?.addEventListener('change', function(event) {
-
                 const file = event.target.files[0];
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         document.getElementById('selectedProfile').src = e.target.result;
-                    }
+                    };
                     reader.readAsDataURL(file);
                 }
             });
 
-
             let chatBoxElement = document.getElementById('chatBox');
-
-            if (document.getElementById('chatBox')) {
-                chatBoxElement.addEventListener('submit', function (e){
+            if (chatBoxElement) {
+                chatBoxElement.addEventListener('submit', function(e) {
                     e.preventDefault();
-
                     let formData = new FormData(e.target);
-
                     $.ajax({
                         url: '../ajax.php?action=giveComment',
                         type: 'POST',
@@ -54,12 +50,9 @@ function navigate(page) {
                     });
                 });
             }
-
         })
         .catch(error => console.error('Error fetching content:', error));
 }
-
-
 
 
 
@@ -90,23 +83,50 @@ function updateActiveLink(page) {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    var urlParams = new URLSearchParams(window.location.search);
-    if (!urlParams.get('page')) {
-        navigate('home');
-    } else {
-        // Decode the page parameter to handle special characters
-        var page = decodeURIComponent(urlParams.get('page'));
-        if (page === 'narratives') {
-            navigate('narratives');
-        } else if (page === 'announcement') {
-            navigate('announcement');
-        }
-        else {
-            navigate('home');
-        }
+
+async function linkPages() {
+    const user = await user_info(); // await used in an async function
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = decodeURIComponent(urlParams.get('page')) || 'home';
+
+    // Redirect to 'home' if no page parameter and user data is empty
+    if (!urlParams.get('page') && user.data.length === 0) {
+        return navigate('home');
     }
-});
+
+    // Handle navigation based on page
+    switch (page) {
+        case 'narratives':
+            await navigate('narratives');
+            return;
+        case 'announcement':
+            await navigate('announcement');
+            return;
+        default:
+            break;
+    }
+
+    // If user is a student, handle student-specific navigation
+    if (user.data['user_type'] === 'student') {
+        switch (page) {
+            case 'weeklyJournal':
+                await navigate('weeklyReports'); // Ensure navigate completes before other actions
+                getUploadLogs();
+                get_WeeklyReports();
+                break;
+            case 'settings':
+                await navigate('studentSettings'); // Ensure navigate completes before other actions
+                getProfileInfo();
+                break;
+            default:
+                return navigate('home'); // Fallback to 'home' for other cases
+        }
+    } else {
+        navigate('home'); // Fallback for non-students
+    }
+}
+
+
 
 
 
@@ -200,4 +220,10 @@ side_narrativesLink?.addEventListener('click', function(event) {
 document.getElementById('side-announcement').addEventListener('click', function(event) {
     event.preventDefault();
     navigate('announcement');
+});
+document.getElementById('side-weeklyjournal')?.addEventListener('click', function(event) {
+    event.preventDefault();
+    navigate('weeklyReports');
+    getUploadLogs();
+    get_WeeklyReports();
 });

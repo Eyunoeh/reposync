@@ -39,7 +39,7 @@ function countFileComments($file_id){
 
             <div class="flex justify-evenly ">
                 <button class="h font-semibold btn btn-ghost" id="stud-weekly-rpt-btn" onclick="change_stud_table()">View logs</button>
-                <button class="btn btn-neutral btn-outline" onclick="openModalForm('newReport')">New Report</button>
+                <button class="btn btn-neutral btn-outline" onclick="openModalForm('newReport')">New Journal</button>
             </div>
         </div>
         <div class="px-9 flex justify-end w-full">

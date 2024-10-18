@@ -37,8 +37,8 @@ for (let i = 0; i< domScript.length; i++){
 }
 
 
-function navigate(page) {
-    fetch(page, {
+async function navigate(page) {
+    return fetch(page, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
@@ -85,92 +85,136 @@ function navigate(page) {
                 ctx.getContext('2d');
                 renderChart(ctx);
             }
-
-
-
-
         })
         .catch(error => console.error('Error fetching content:', error));
 }
 
 
-function dashboard_tab(id){
-    let tab = document.getElementById(id);
-    if(tab.id === 'dashboard_narrative'){
-        navigate('manageNarrativeReports.php');
-    } else if (tab.id === 'dashboard_ReviewUploadNarrative'){
-        navigate('manageUploadNarratives.php');
-    }  else if (tab.id === 'dashboard'){
-        navigate('dashboardContent.php');
-    } else if (tab.id === 'adviserNotes'){
-        navigate('manageAdviserNote.php')
-    }else if (tab.id === 'notesReq'){
-        navigate('notesReqmanage.php')
-    } else if (tab.id === 'schedule&Act'){
-        navigate('manamgeAct&Sched.php')
-    } else if (tab.id === 'dashBoardWeeklyReport'){
-        navigate('manageWeeklyReport.php')
-    }else if (tab.id === 'stud_list'){
-        navigate('manageStudent.php');
-        document.getElementById('UserSubmenu').classList.remove('hidden');
-    }else if (tab.id === 'adv_list'){
-        navigate('manageAdvisers.php')
-    }else if (tab.id === 'dashBoardProg_n_Section'){
-        navigate('ManageProgSec.php');
-    }else if (tab.id === 'pendingNarrativeReqCount'){
-        navigate('manageUploadNarratives.php');
-    }else if (tab.id === 'declinedNarrativeReqCount'){
-        navigate('manageUploadNarratives.php');
-    }else if (tab.id === 'account_archived'){
-        navigate('manageArchive.php');
-    }else if (tab.id === 'profile'){
-        navigate('manage_dhshboardProfile.php');
-    }else if (tab.id === 'accountInfo'){
-        navigate('manage_accountInformation.php');
-    }
-    act_tab(tab.id);
-   if(tab.id === 'adviserNotesReq'){
-        act_tab('notesReq');
-        navigate('notesReqmanage.php')
-       document.getElementById('AnnouncementSubmenu').classList.remove('hidden');
-    }
-   if(tab.id === 'adviserNotesCard'){
-        act_tab('adviserNotes');
-        navigate('manageAdviserNote.php')
-       console.log(1123)
-       document.getElementById('AnnouncementSubmenu').classList.remove('hidden');
-    }
-    else if (tab.id === 'dshbweeklyReport'){
-        navigate('manageWeeklyReport.php');
-        act_tab('dashBoardWeeklyReport');
-    }
-    else if (tab.id === 'dshbuploadNarrativeReq'){
-        navigate('manageUploadNarratives.php');
-        act_tab('dashboard_ReviewUploadNarrative');
-    }
-    /*
+async function dashboard_tab(id) {
+    const tab = document.getElementById(id);
 
-        if (oldScripts.length > 0){
-            const existingScript = document.getElementsByTagName('script');
-            for (let i = 0; i < existingScript.length; i++) {
-                let scriptSrc = existingScript[i].getAttribute('src');
-                if (oldScripts.includes(scriptSrc.replace('js/', ''))) {
-                    existingScript[i].remove();
-                }
+    // Mapping tab IDs to their corresponding navigation and additional actions
+    const tabActions = {
+        'dashboard_narrative': {
+            page: 'manageNarrativeReports.php',
+            afterNavigate: () => act_tab(tab.id)
+        },
+        'dashboard_ReviewUploadNarrative': {
+            page: 'manageUploadNarratives.php',
+            afterNavigate: () => act_tab(tab.id)
+        },
+        'dashboard': {
+            page: 'dashboardContent.php',
+            afterNavigate: () => {
+                act_tab(tab.id);
+                loadDashboardJS();
             }
+        },
+        'adviserNotes': {
+            page: 'manageAdviserNote.php',
+            afterNavigate: () => {
+                act_tab(tab.id)
+                get_dashBoardnotes();
+            }
+        },
+        'notesReq': {
+            page: 'notesReqmanage.php',
+            afterNavigate: () => {
+                act_tab(tab.id);
+                getAdvNotes();
+            }
+        },
+        'schedule&Act': {
+            page: 'manamgeAct&Sched.php',
+            afterNavigate: () => getActivitiesAndSched()
+        },
+        'dashBoardWeeklyReport': {
+            page: 'manageWeeklyReport.php',
+            afterNavigate: () => {
+                act_tab(tab.id);
+                renderWeeklyJournaltbl();
+            }
+        },
+        'stud_list': {
+            page: 'manageStudent.php',
+            afterNavigate: () => {
+                act_tab(tab.id);
+                get_studentUserList();
+                document.getElementById('UserSubmenu').classList.remove('hidden');
+            }
+        },
+        'adv_list': {
+            page: 'manageAdvisers.php',
+            afterNavigate: () => {
+                render_AdvUsertList();
+                act_tab(tab.id);
+                document.getElementById('UserSubmenu').classList.remove('hidden');
+            }
+        },
+        'dashBoardProg_n_Section': {
+            page: 'ManageProgSec.php',
+            afterNavigate: () => {
+                getPrograms();
+                getYrSec();
+                act_tab(tab.id);
+            }
+        },
+        'pendingNarrativeReqCount': {
+            page: 'manageUploadNarratives.php',
+            afterNavigate: () => act_tab(tab.id)
+        },
+        'declinedNarrativeReqCount': {
+            page: 'manageUploadNarratives.php',
+            afterNavigate: () => act_tab(tab.id)
+        },
+        'account_archived': {
+            page: 'manageArchive.php',
+            afterNavigate: () => act_tab(tab.id)
+        },
+        'profile': {
+            page: 'manage_dhshboardProfile.php',
+            afterNavigate: () => act_tab(tab.id)
+        },
+        'accountInfo': {
+            page: 'manage_accountInformation.php',
+            afterNavigate: () => act_tab(tab.id)
+        },
+        'adviserNotesReq': {
+            page: 'notesReqmanage.php',
+            afterNavigate: () => {
+                act_tab('notesReq');
+                get_dashBoardnotes();
+                document.getElementById('AnnouncementSubmenu').classList.remove('hidden');
+            }
+        },
+        'adviserNotesCard': {
+            page: 'manageAdviserNote.php',
+            afterNavigate: () => {
+                act_tab('adviserNotes');
+                document.getElementById('AnnouncementSubmenu').classList.remove('hidden');
+                get_dashBoardnotes();
+            }
+        },
+        'dshbweeklyReport': {
+            page: 'manageWeeklyReport.php',
+            afterNavigate: () => {
+                act_tab('dashBoardWeeklyReport')
+                renderWeeklyJournaltbl()
+            }
+
+        },
+        'dshbuploadNarrativeReq': {
+            page: 'manageUploadNarratives.php',
+            afterNavigate: () => act_tab('dashBoardWeeklyReport')
         }
+    };
 
-        //oldScripts = [];
-
-        for (let i = 0; i < newScripts.length; i++) {
-            const scriptTag = document.createElement('script');
-            scriptTag.src = 'js/' + newScripts[i];
-            document.body.appendChild(scriptTag);
-            oldScripts.push(newScripts[i]);
-
-        }*/
-
-
+    // Execute the navigation if the tab ID matches an action
+    if (tabActions[tab.id]) {
+        const { page, afterNavigate } = tabActions[tab.id];
+        await navigate(page);
+        afterNavigate();
+    }
 }
 
 
@@ -245,15 +289,8 @@ async function renderChart(ctx) {
                     if (label === 'Active student') {
                         const elementId = "stud_list";
                         dashboard_tab(elementId);
-                        get_studentUserList()
-
-                        document.getElementById('UserSubmenu').classList.remove('hidden');
-
                     } else if (label === 'Active adviser') {
                         const elementId = "adv_list";
-                        document.getElementById('UserSubmenu').classList.remove('hidden');
-                        render_AdvUsertList()
-
                         dashboard_tab(elementId);
                     } else if (label === 'Published Narrative Reports') {
                         const elementId = "dashboard_narrative";
@@ -337,25 +374,7 @@ function getProfileInfo() {
     })();
 
 }
-function user_info(user_id = null) {
-    return new Promise((resolve, reject) => {
-        let url = '../ajax.php?action=get_User_info';
-        if (user_id !== null) {
-            url += '&data_id=' + encodeURIComponent(user_id);
-        }
 
-        $.ajax({
-            url: url,
-            method: 'GET',
-            success: function(response) {
-                resolve(response);
-            },
-            error: function(xhr, status, error) {
-                reject(error);
-            }
-        });
-    });
-}
 
 
 function deactivate_account(id, modal_id, newData){

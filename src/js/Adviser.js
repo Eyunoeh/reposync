@@ -65,5 +65,9 @@ async function renderWeeklyJournaltbl(){
         weeklyJournalTbl = `<tr><td colspan="9">No Active / Assigned students found for this adviser.</td></tr>`
     }
 
-    $('#AdvisoryWeeklyReportList').html(weeklyJournalTbl)
+
+    $('#AdvisoryWeeklyReportList').html(weeklyJournalTbl);
+
+
+    $('#tableadvLoader').empty();
 }

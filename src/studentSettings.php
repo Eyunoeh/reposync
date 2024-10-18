@@ -10,7 +10,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
 }
 ?>
 
-<section class="w-full min-h-screen flex justify-center  mt-2">
+<section  class="w-full min-h-screen flex justify-center  mt-2">
 
     <div class="w-full max-w-7xl mx-auto p-5 rounded-lg shadow-lg bg-white min-h-[70vh]">
         <div class="flex justify-start">
@@ -78,25 +78,25 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                         </div>
                         <select name="user_Sex" class="select select-bordered bg-slate-100 w-full">
                             <option disabled selected>Select</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
                         </select>
                     </label>
                 </div>
                 <div>
                     <label class="form-control w-full">
                         <div class="label">
-                            <span class="label-text text-slate-700">Company Name</span>
+                            <span class="label-text text-slate-700">OJT Center</span>
                         </div>
-                        <input type="text" name="stud_compName" placeholder="Type here"   class=" bg-slate-100 input input-bordered w-full " />
+                        <input type="text" name="stud_OJT_center" placeholder="Type here"   class=" bg-slate-100 input input-bordered w-full " />
                     </label>
                 </div>
                 <div>
                     <label class="form-control w-full">
                         <div class="label">
-                            <span class="label-text text-slate-700">Training hours</span>
+                            <span class="label-text text-slate-700">OJT Location</span>
                         </div>
-                        <input type="number" name="stud_trainingHours" placeholder="Type here"    class=" bg-slate-100 input input-bordered w-full " />
+                        <input type="text" name="stud_ojtLocation" placeholder="Type here"    class=" bg-slate-100 input input-bordered w-full " />
                     </label>
                 </div>
             </div>

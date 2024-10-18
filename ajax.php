@@ -85,63 +85,68 @@ if ($action == 'login') {
 
 
 if ($action == 'addWeeklyReport') {
-    $response =  1;
+    $response = 1;
     $responseMessage = 'Weekly report has been submitted';
     header('Content-Type: application/json');
-    $user_id = isset($_POST['stud_user_id']) ? sanitizeInput($_POST['stud_user_id']) : '';
-    if ($user_id !== '') {
-        if (isset($_FILES['weeklyReport'])) {
-            if (isPDF($_FILES['weeklyReport']['name'])) {
-                if ($_FILES['weeklyReport']['error'] === UPLOAD_ERR_OK) {
-                    $get_weeklyReportCount = "SELECT COUNT(*) AS weeklyReportCount FROM weeklyReport WHERE stud_user_id = ?";
 
-                    $res = mysqlQuery($get_weeklyReportCount, 'i', [$user_id]);
-                    $weeklyReport_count = $res[0];
 
-                    $get_User_info = "SELECT * FROM tbl_user_info WHERE user_id = ?";
 
-                    $result = mysqlQuery($get_User_info, 'i', [$user_id]);
-                    $row = $result[0];
+    $user_id =  $_SESSION['log_user_id']; // student
 
-                    $file_name = '';
-
-                    if ($weeklyReport_count['weeklyReportCount'] > 0) {
-                        $weeklyReport = $weeklyReport_count['weeklyReportCount'] + 1;
-                        $file_name = $row['school_id'] . "_WeeklyReport_week_" . $weeklyReport . ".pdf";
-
-                    } else {
-                        $file_name = $row['school_id'] . "_WeeklyReport_week_1.pdf";
-                    }
-
-                    $insert_weekly_report = "INSERT INTO weeklyReport (stud_user_id, weeklyFileReport, upload_date, upload_status) 
-                         VALUES (?, ?, CURRENT_TIMESTAMP, 1)";
-
-                    $file_id = mysqlQuery($insert_weekly_report, 'is', [$user_id, $file_name])[1];
-                    insertActivityLog('upload',$file_id);
-                    $temp_file = $_FILES['weeklyReport']['tmp_name'];
-                    $final_destination = 'src/StudentWeeklyReports/' . $file_name;
-                    if (move_uploaded_file($temp_file, $final_destination)) {
-
-                        echo json_encode(['response' => $response,
-                            'message' => $responseMessage]);
-                        exit();
-
-                    } else {
-                        handleError('move_error');
-                    }
-
-                } else {
-                    handleError('upload_error');
-                }
-            } else {
-                handleError('format_error');
-            }
-        } else {
-            handleError('file_missing');
-        }
-    } else {
+    if (empty($user_id)) {
         handleError('missing_user_id');
+        return;
     }
+
+    if (!isset($_FILES['weeklyReport'])) {
+        handleError('file_missing');
+        return;
+    }
+
+    if (!isPDF($_FILES['weeklyReport']['name'])) {
+        handleError('format_error');
+        return;
+    }
+
+    if ($_FILES['weeklyReport']['error'] !== UPLOAD_ERR_OK) {
+        handleError('upload_error');
+        return;
+    }
+
+// Fetch weekly report count and user info
+    $get_weeklyReportCount = "SELECT COUNT(*) AS weeklyReportCount FROM weeklyReport WHERE stud_user_id = ?";
+    $res = mysqlQuery($get_weeklyReportCount, 'i', [$user_id]);
+    $weeklyReport_count = $res[0];
+
+    $get_User_info = "SELECT * FROM tbl_students WHERE user_id = ?";
+    $result = mysqlQuery($get_User_info, 'i', [$user_id]);
+    $row = $result[0];
+
+// Determine file name
+    $reportWeek = ($weeklyReport_count['weeklyReportCount'] > 0)
+        ? $weeklyReport_count['weeklyReportCount'] + 1
+        : 1;
+
+    $file_name = "{$row['enrolled_stud_id']}_WeeklyJournal_week_{$reportWeek}.pdf";
+
+// Insert the weekly report
+    $insert_weekly_report = "INSERT INTO weeklyReport (stud_user_id, weeklyFileReport, upload_date, upload_status) 
+                         VALUES (?, ?, CURRENT_TIMESTAMP, 1)";
+    $file_id = mysqlQuery($insert_weekly_report, 'is', [$user_id, $file_name])[1];
+
+    insertActivityLog('upload', $file_id);
+
+// Move the uploaded file
+    $temp_file = $_FILES['weeklyReport']['tmp_name'];
+    $final_destination = 'src/StudentWeeklyReports/' . $file_name;
+
+    if (!move_uploaded_file($temp_file, $final_destination)) {
+        handleError('move_error');
+        return;
+    }
+    echo json_encode(['response' => $response, 'message' => $responseMessage]);
+    exit();
+
 
 }
 if ($action == 'getWeeklyReports'){
@@ -1750,15 +1755,14 @@ if ($action === 'getHomeActSched') {
 if ($action == 'getHomeNotes'){
     $user_id = $_SESSION['log_user_id'];
 
-    $getAdv = "SELECT * FROM advisory_list WHERE stud_sch_user_id = ?";
-    $getAdvStmt = $conn->prepare($getAdv);
-    $getAdvStmt->bind_param('i', $user_id);
-    $getAdvStmt->execute();
-    $res = $getAdvStmt->get_result();
-    $get_adv_id = $res->fetch_assoc();
-    $adv_id = $get_adv_id['adv_sch_user_id'];
+    $getstud = "SELECT * FROM tbl_students WHERE user_id = ?";
 
-    $getAdv_announcement = "SELECT * FROM announcement WHERE user_id = ? AND type = 'Notes' AND status = 'Active' order by announcementPosted";
+    $get_data = mysqlQuery($getstud, 'i', [$user_id])[0];
+    $adv_id = $get_data['adv_id'];
+
+    $getAdv_announcement = "SELECT * FROM announcement
+
+         WHERE user_id = ? AND type = 'Notes' AND status = 'Active' order by announcementPosted";
     $getannouncementStmt = $conn->prepare($getAdv_announcement);
     $getannouncementStmt->bind_param('i', $adv_id);
     $getannouncementStmt->execute();
@@ -2110,7 +2114,12 @@ if ($action == 'pendingADVnoteReq') {
 }
 
 if ($action == "get_User_info"){
+    header('Content-Type: application/json');
+
+
     if (!isset($_SESSION['log_user_id'])){
+        echo json_encode(['response' => 2, //no user login
+            'data'=>[]]);
         exit();
     }
 
@@ -2124,7 +2133,7 @@ if ($action == "get_User_info"){
             WHERE ui.user_id = ?";
 
     $profile_Info = mysqlQuery($get_User_info, 'i', [$user_id])[0];
-    header('Content-Type: application/json');
+
 
     echo json_encode(['response' => 1,
         'data'=>$profile_Info]);
@@ -2139,6 +2148,15 @@ if ($action == 'profileUpdate') {
 
     try {
         updateBasicInfo($user_id, $_SESSION['log_user_type']);
+
+        if ($_SESSION['log_user_type'] === 'student'){
+            $ojt_loc = getPostData('stud_ojtLocation');
+            $ojt_center = getPostData('stud_OJT_center');
+            $updStudInfo = "UPDATE tbl_students SET ojt_center= ?, ojt_location = ? where user_id = ?";
+
+            mysqlQuery($updStudInfo, 'ssi',[$ojt_center,$ojt_loc, $user_id] );
+
+        }
 
         // Handle profile image upload
         if (isset($_FILES['profileImg']) && $_FILES['profileImg']['error'] === UPLOAD_ERR_OK) {

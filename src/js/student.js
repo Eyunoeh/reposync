@@ -5,17 +5,18 @@ document.addEventListener('submit', function(e) {
    let loadData = [];
 
    if (e.target.id === 'addWeeklyReportForm'){
+
       endpoint = 'addWeeklyReport'
-      modal= 'newReport';
+      modal = 'newReport';
       alertType = 'success';
-      alertMessage = 'Weekly report has been submitted';
+      alertMessage = 'Weekly journal has been submitted';
       loadData.push(get_WeeklyReports)
       loadData.push(getUploadLogs)
    }else if (e.target.id === 'resubmitReportForm'){
       endpoint = 'resubmitReport'
       modal = 'resubmitReport';
       alertType = 'success';
-      alertMessage = 'Weekly report has been resubmitted';
+      alertMessage = 'Weekly journal has been resubmitted';
       loadData.push(get_WeeklyReports)
       loadData.push(getUploadLogs)
    }
@@ -54,6 +55,7 @@ document.addEventListener('submit', function(e) {
          } else {
             Alert(alertContainer,response.message, 'warning')
          }
+         console.log(response)
          e.target.reset();
       },
    });
@@ -69,11 +71,14 @@ function change_stud_table () {
       report_view_btn.innerHTML = 'View report';
       weekly_report_tbl.classList.add('hidden') ;
       logs_tbl.classList.remove('hidden')
+      getUploadLogs();
+
 
    } else {
       weekly_report_tbl.classList.remove('hidden');
       logs_tbl.classList.add('hidden')
       report_view_btn.innerHTML = 'View logs';
+      get_WeeklyReports();
    }
 }
 function getVisibleTableId() {
@@ -103,81 +108,86 @@ function changeProfileSettingForm(){
       accountSettingbtN.innerHTML ='Profile Information'
    }
 }
-function getProfileInfo(){
-   $.ajax({
-      url: '../ajax.php?action=get_Profile_info',
-      method: 'GET',
-      dataType: 'json',
-      success: function(data) {
-         if (data){
-            let profPath
-            if (data.profile_img_file === 'N/A'){
+async function getProfileInfo() {
 
-               profPath = 'assets/profile.jpg'
-            }else {
-               profPath = 'userProfile/'+data.profile_img_file
+      try {
+
+         let response = await user_info();
+
+         if (response.response === 1) {
+            let data = response.data;
+            let profPath;
+
+            if (data.profile_img_file === 'N/A') {
+               profPath = 'assets/profile.jpg';
+            } else {
+               profPath = 'userProfile/' + data.profile_img_file;
             }
-            $("#profile_nav").attr("src", profPath);
+            console.log()
 
-
+            $('#side_tabName').html(data.first_name + ' ' + data.last_name  + ' - ' + data.user_type.toUpperCase());
             $("#selectedProfile").attr("src", profPath);
-
             $('#StudprofileForm input[name="user_Fname"]').val(data.first_name);
             $('#StudprofileForm input[name="user_Mname"]').val(data.middle_name);
             $('#StudprofileForm input[name="user_Lname"]').val(data.last_name);
             $('#StudprofileForm input[name="user_address"]').val(data.address);
             $('#StudprofileForm input[name="contactNumber"]').val(data.contact_number);
-            $('#StudprofileForm input[name="stud_compName"]').val(data.company_name);
-            $('#StudprofileForm input[name="stud_trainingHours"]').val(data.training_hours);
-            if (data.sex === "Male") {
-               $('#StudprofileForm select[name="user_Sex"]').val("Male");
-            } else if (data.sex === "Female") {
-               $('#StudprofileForm select[name="user_Sex"]').val("Female");
+            $('#StudprofileForm input[name="stud_OJT_center"]').val(data.ojt_center);
+            $('#StudprofileForm input[name="stud_ojtLocation"]').val(data.ojt_location);
+
+            // Handle sex radio buttons
+            if (data.sex === "male") {
+               $('#StudprofileForm select[name="user_Sex"]').val('male');
+            } else if (data.sex === "female") {
+               $('#StudprofileForm select[name="user_Sex"]').val('female');
             }
 
+         } else {
+            console.error('Error: Unexpected response format or no data');
          }
-         //console.log(data)
-      },
-      error: function(xhr, status, error) {
-         console.error('Error fetching data:', error);
+      } catch (error) {
+         console.error('Error:', error);
       }
-   });
+
+
 }
 
 function resubmitWeeklyReport(weeklyReport_id){
    document.querySelector('#resubmitReport input[name="file_id"]').value = weeklyReport_id;
 }
 
-function getUploadLogs(){
-   $.ajax({
-      url: '../ajax.php?action=getUploadLogs',
-      method: 'GET',
-      dataType: 'html',
-      success: function(response) {
-         $('#logsTable_body').html(response);
-      },
-      error: function(xhr, status, error) {
-         console.error('Error fetching data:', error);
-      }
-   });
+async function getUploadLogs() {
+   try {
+      const response = await $.ajax({
+         url: '../ajax.php?action=getUploadLogs',
+         method: 'GET',
+         dataType: 'html'
+      });
+
+      $('#logsTable_body').html(response);
+   } catch (error) {
+      console.error('Error fetching data:', error);
+   }
 }
-function getComments(file_id){
-   $.ajax({
-      url: '../ajax.php?action=getCommentst&file_id=' + file_id,
-      method: 'GET',
-      dataType: 'html',
-      success: function(response) {
-         if (response){
-            $('#comment_body').html(response);
-            $('#chatBox input[name="file_id"]').val(file_id);
-            scrollToBottom();
-         }
-      },
-      error: function(xhr, status, error) {
-         console.error('Error fetching data:', error);
+
+async function getComments(file_id) {
+   try {
+      const response = await $.ajax({
+         url: '../ajax.php?action=getCommentst&file_id=' + file_id,
+         method: 'GET',
+         dataType: 'html'
+      });
+
+      if (response) {
+         $('#comment_body').html(response);
+         $('#chatBox input[name="file_id"]').val(file_id);
+         scrollToBottom();
       }
-   });
+   } catch (error) {
+      console.error('Error fetching data:', error);
+   }
 }
+
 function viewImage(srcPath){
    let path = 'comments_img/'+ srcPath;
    $('#viewImage').attr('src', path);
@@ -202,18 +212,19 @@ function home_student_NarrativeReports() {
    });
 }
 
-function get_WeeklyReports (){
-   $.ajax({
-      url: '../ajax.php?action=getWeeklyReports',
-      method: 'GET',
-      dataType: 'html',
-      success: function(response) {
-         $('#Weeklyreports').html(response);
-      },
-      error: function(xhr, status, error) {
-         console.error('Error fetching data:', error);
-      }
-   });
+async function get_WeeklyReports() {
+   try {
+      const response = await $.ajax({
+         url: '../ajax.php?action=getWeeklyReports',
+         method: 'GET',
+         dataType: 'html'
+      });
+
+
+      $('#Weeklyreports').html(response);
+   } catch (error) {
+      console.error('Error fetching data:', error);
+   }
 }
 
 

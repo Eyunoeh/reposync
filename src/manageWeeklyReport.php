@@ -53,11 +53,16 @@ session_start();
             <tbody id="AdvisoryWeeklyReportList" class="text-center text-slate-600">
 
 
-            <tr><td colspan="9">No Active / Assigned students found for this adviser.</td></tr>
+            <!--<tr><td colspan="9">No Active / Assigned students found for this adviser.</td></tr>-->
             </tbody>
         </table>
+        <div id="tableadvLoader" class="flex justify-center items-center">
+            <span class="loading loading-spinner loading-lg"></span>
+        </div>
 
     </div>
+
+
     <div class="flex justify-center gap-5">
         <button id="prevBtn" onclick="renderWeeklyJournaltbl(); prevPage(this.id, 'nextBtn')" class="btn-neutral btn-sm btn font-semibold">Prev</button>
         <div class="text-center">
