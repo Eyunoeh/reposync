@@ -84,6 +84,7 @@ if (isset($_SESSION['log_user_type'])){
 
 </body>
 <script src="js/buttons_modal.js"></script>
+<script src="js/Users.js"></script>
 <script src="js/login.js">
 </script>
 

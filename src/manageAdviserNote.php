@@ -18,8 +18,10 @@ session_start();
             <button class="btn btn-circle btn-success bg-opacity-70 " id="NewNote" onclick="openModalForm('Notes'); removeTrashButton();removeStatusBoxContent()"><i class="fa-solid fa-plus"></i></button>
         </div>
     </div>
-    <div class="w-full flex justify-center">
-
+    <div class="w-full flex justify-center" id="advNotePageLoader">
+        <div class="mt-5">
+            <span class="loading loading-spinner loading-lg"></span>
+        </div>
     </div>
     <div class=" card-body  flex sm:flex-row flex-col flex-wrap justify-start
     p-3 sm:p-5 overflow-hidden sm:overflow-x-auto  scroll-smooth gap-10" id="AdviserNotes">

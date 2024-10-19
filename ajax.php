@@ -40,45 +40,50 @@ function countFileComments($file_id){
     return $comment_count;
 }
 if ($action == 'login') {
+    header('Content-Type: application/json');
+    $response = 1;
+    $redirectPage = '';
 
     $log_email = isset($_POST['log_email']) ? sanitizeInput($_POST['log_email']) : '';
     $log_password = $_POST['log_password'] ?? '';
-    if ($log_email !== '' && $log_password !== '') {
-
-        $fetch_acc = "SELECT user_id, password FROM tbl_accounts WHERE email = ? and status = 'active'";
-
-        $result = mysqlQuery($fetch_acc, 's', [$log_email]);
-
-        if (count($result) === 1) {
-            $row = $result[0];
-            $user_id = $row['user_id'];
-            $hashed_password = $row['password'];
-            if (password_verify($log_password, $hashed_password)) {
-                $fetch_user_info = "SELECT * FROM tbl_user_info WHERE user_id = ?";
-
-                $result_user_info = mysqlQuery($fetch_user_info, 'i', [$user_id]);
-                if (count($result_user_info) == 1) {
-                    $row_user_info = $result_user_info[0];
-                    $_SESSION['log_user_id'] = $user_id;
-                    $_SESSION['log_user_email'] = $log_email;
-                    $_SESSION['log_user_type'] = $row_user_info['user_type'];
-                    $_SESSION['log_user_firstName'] = $row_user_info['first_name'];
-                    $_SESSION['log_user_middleName'] = $row_user_info['middle_name'] !== 'N/A' ? $row_user_info['middle_name'] : '';
-                    $_SESSION['log_user_lastName'] = $row_user_info['last_name'];
-                    $_SESSION['log_user_profileImg'] = $row_user_info['profile_img_file'];
-                    echo 1; // Login successful
-                } else {
-                    echo 2; // Error: User type not found
-                }
-            } else {
-                echo 2; // Error: Incorrect password
-            }
-        } else {
-            echo 2; // Error: User not found
-        }
-    } else {
-        echo 2; // Error: Email or password empty
+    if ($log_email == '' && $log_password == '') {
+        handleError('Email or password empty');
     }
+    $fetch_acc = "SELECT user_id, password FROM tbl_accounts WHERE email = ? and status = 'active'";
+
+    $result = mysqlQuery($fetch_acc, 's', [$log_email]);
+
+    if (count($result) !== 1) {
+        handleError('User not found');
+    }
+    $row = $result[0];
+    $user_id = $row['user_id'];
+    $hashed_password = $row['password'];
+    if (!password_verify($log_password, $hashed_password)) {
+        handleError('Incorrect password');
+    }
+    $fetch_user_info = "SELECT * FROM tbl_user_info WHERE user_id = ?";
+    $result_user_info = mysqlQuery($fetch_user_info, 'i', [$user_id]);
+    if (count($result_user_info) !== 1) {
+        handleError('User type not found');
+    }
+    $row_user_info = $result_user_info[0];
+    $_SESSION['log_user_id'] = $user_id;
+    $_SESSION['log_user_email'] = $log_email;
+    $_SESSION['log_user_type'] = $row_user_info['user_type'];
+    $_SESSION['log_user_firstName'] = $row_user_info['first_name'];
+    $_SESSION['log_user_middleName'] = $row_user_info['middle_name'] !== 'N/A' ? $row_user_info['middle_name'] : '';
+    $_SESSION['log_user_lastName'] = $row_user_info['last_name'];
+    $_SESSION['log_user_profileImg'] = $row_user_info['profile_img_file'];
+
+    $redirectPage = in_array($row_user_info['user_type'], ['adviser', 'admin']) ? 'dashboard.php' : 'index.php?page=weeklyJournal';
+   echo json_encode(['response' => $response,
+       'redirect' => $redirectPage]);
+   exit();
+
+
+
+
 }
 
 
@@ -1396,34 +1401,28 @@ if ($action === 'Notes') {
     }
 }
 
-if ($action == 'getDashboardNotes'){
+if ($action == 'getDashboardNotes') {
     $user_id = $_SESSION['log_user_id'];
-    $getNotes = "SELECT * from announcement where user_id= ?  and status IN ('Active', 'Pending', 'Declined') and type = 'Notes' ORDER BY  announcementUpdated desc";
-    $stmt = $conn->prepare($getNotes);
-    $stmt->bind_param('i', $user_id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    if ($res->num_rows > 0) {
-        while ($row = $res->fetch_assoc()){
-            $announcementPosted = date('h:i A', strtotime($row['announcementPosted']));
-            $formattedDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
-            $message = $row['description'];
+    header('Content-Type: application/json');
 
-            echo '
-              
-            
-        <div onclick="removeTrashButton(); getNotes('.$row['announcement_id'].');openModalForm(\'Notes\');" class="transform w-full md:w-[18rem] transition duration-500 shadow rounded hover:scale-110 hover:bg-slate-300 justify-center items-center cursor-pointer p-3 h-[10rem]">
-            <div class="h-[8rem] overflow-hidden hover:overflow-auto">
-                <h1 class="font-semibold">'.$row['title'].'</h1>
-                <p class="text-start text-sm break-words"> '.$row['description'].' </p>
-                <p class="text-[12px] text-slate-400 text-end">'.$formattedDateTime.'</p>
-            </div>
-        </div>
-            
-           ';
+    $getNotes = "SELECT * FROM announcement WHERE user_id = ? AND status IN ('Active', 'Pending', 'Declined') AND type = 'Notes' ORDER BY announcementUpdated DESC";
+    $res = mysqlQuery($getNotes, 'i', [$user_id]);
+
+    if ($res && count($res) > 0) {
+        for ($i = 0; $i < count($res); $i++) {
+
+            $formattedDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $res[$i]['announcementPosted'])->format('m/d/Y h:i A');
+            $res[$i]['announcementPosted'] = $formattedDateTime;
         }
+        echo json_encode([
+            'response' => 1,
+            'data' => $res
+        ]);
+    } else {
+        handleError('No notes posted');
     }
 }
+
 
 if ($action == 'announcementJson' ){
     $announcemnt_id = $_GET['data_id'];
@@ -1540,7 +1539,8 @@ WHERE tbl_accounts.status = 'active' and  program.program_code = ?;";
 
 
 if ($action == 'getDashboardActSched'){
-    $user_id = $_SESSION['log_user_id'];
+    header('Content-Type: application/json');
+
     $actSched = "SELECT *    
     FROM announcement 
         WHERE 1 = 1
@@ -1548,37 +1548,21 @@ if ($action == 'getDashboardActSched'){
             AND type = 'schedule and activities'
         ORDER BY starting_date;
         ";
-    $stmt = $conn->prepare($actSched);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    if ($res->num_rows > 0) {
-        while ($row = $res->fetch_assoc()){
-            $announcementPosted = date('h:i A', strtotime($row['announcementPosted']));
-            $formattedDatePosted = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
-            $formattedStartingDate = date("F j, Y", strtotime($row['starting_date']));
-            $formattedEndingDate = date("F j, Y", strtotime($row['end_date']));
-            echo '<div onclick="removeTrashButton();openModalForm(\'Act&shedModal\');getActSched('.$row['announcement_id'].')" class="flex transform w-[50rem]  transition duration-500 shadow rounded
-            hover:scale-110 hover:bg-slate-300  justify-start items-center cursor-pointer">
-            <div class=" min-w-[12rem]  p-2 sm:p-5 b text-center flex flex-col justify-center text-sm">';
 
-           if ($formattedStartingDate === $formattedEndingDate){
-              echo '<h4 class="text-start">'.$formattedStartingDate.'</h4>';
-           }else {
-               echo '<h4 class="text-start">' . $formattedStartingDate . '</h4>';
-               echo '<h4 class="text-start">' . $formattedEndingDate . '</h4>';
-           }
-            echo '
-            </div>
-            <div class="flex flex-col justify-center max-h-[10rem] overflow-auto p-3">
-                <h1 class="font-semibold w-[150px] break-words">'.$row['title'].'</h1>
-                <div class=" max-h-[10rem] overflow-auto">
-                    <p class="text-justify text-sm pr-5 break-words">'.$row['description'].'
-                    </p>
-                </div>
-            </div>
-        </div>';
+    $res = mysqlQuery($actSched,'',[]);
+    if (count($res) > 0) {
+        for ($i = 0; $i < count($res); $i++) {
+            $res[$i]['starting_date'] = date("F j, Y", strtotime($res[$i]['starting_date']));
+            $res[$i]['end_date'] = date("F j, Y", strtotime($res[$i]['end_date']));
         }
+
+        echo json_encode(['response' => 1,
+            'data' => $res]);
+    }else{
+        handleError('No Activity and Schedule posted');
     }
+
+
 }
 if ($action == 'ProgYrSec') {
     header('Content-Type: application/json');
@@ -1790,46 +1774,27 @@ if ($action == 'getHomeNotes'){
 }
 
 if ($action == 'getAdvNotes'){
-    $getAdvNotes= "SELECT announcement.*, tbl_user_info.*
+    header('Content-Type: application/json');
+    $getpendingAdvNotes= "SELECT announcement.*, tbl_user_info.*
     FROM announcement 
     JOIN tbl_user_info ON announcement.user_id = tbl_user_info.user_id
         WHERE announcement.status = 'Pending'
             AND type = 'Notes'
         ORDER BY announcement.announcementUpdated desc;";
-    $getAdvNotesStmt = $conn->prepare($getAdvNotes);
-    $getAdvNotesStmt->execute();
-    $res = $getAdvNotesStmt->get_result();
 
-    if ($res->num_rows > 0){
-        while ($row = $res->fetch_assoc()){
-            $middle_initial = !in_array($row['middle_name'], ['N/A', '']) ? ' ' . substr($row['middle_name'], 0, 1) . '.' : '';
+    $res = mysqlQuery($getpendingAdvNotes,'', []);
 
-            echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$middle_initial.' '.$row['last_name'].'</span>
-                        </td>
-
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['title'].'</span>
-                        </td>
-                        
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['status'].'</span>
-                        </td>
-                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.date('M j Y g:i A', strtotime($row['announcementPosted'])).'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.date('M j Y g:i A', strtotime($row['announcementUpdated'])).'</span>
-                        </td>
-                        <td class="p-3 text-end">
-                            <a href="#" class="hover:cursor-pointer mb-1
-                            font-semibold transition-colors duration-200
-                            ease-in-out text-lg/normal text-secondary-inverse
-                            hover:text-accent"><i class="fa-solid fa-circle-info" onclick="openModalForm(\'AdviserNoteReq\');getAdvReqNotesInfo('.$row['announcement_id'].')"></i></a>
-                        </td>
-                    </tr>';
+    if (count($res) > 0){
+        for ($i = 0; $i < count($res); $i++) {
+            $res[$i]['starting_date'] = date("F j, Y", strtotime($res[$i]['starting_date']));
+            $res[$i]['end_date'] = date("F j, Y", strtotime($res[$i]['end_date']));
         }
+
+        echo json_encode(['response' => 1,
+            'data' => $res]);
+
+    }else{
+        handleError('No pending adviser notes');
     }
 }
 if ($action == 'UpdateNotePostReq'){

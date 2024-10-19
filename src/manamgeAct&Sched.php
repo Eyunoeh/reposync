@@ -15,37 +15,8 @@ include '../DatabaseConn/databaseConn.php'
         </div>
     </div>
     <div class=" card-body grid place-items-center gap-5 p-3 sm:p-5 overflow-hidden sm:overflow-auto  scroll-smooth" id="actAndschedList">
-        <div class="flex transform w-[50rem]  transition duration-500 shadow rounded
-            hover:scale-110 hover:bg-slate-300  justify-start items-center cursor-pointer">
-            <div class=" min-w-[12rem]  p-2 sm:p-5 b text-center flex flex-col justify-center text-sm">
-                <h4>June 22, 2024</h4>
-
-            </div>
-            <div class="flex flex-col justify-center max-h-[10rem] overflow-auto p-3">
-                <h1 class="font-semibold">Beginning of OJT</h1>
-                <div class=" max-h-[10rem] overflow-auto">
-                    <p class="text-justify text-sm pr-5">asdasdasdasdasd
-                        assuLorem rsum dm dolor sit nse
-                        cteturelit. Accusantium assumendlor sit nsecteturelit. Accusantium
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex transform w-[50rem]  transition duration-500 shadow rounded
-            hover:scale-110 hover:bg-slate-300  justify-start items-center cursor-pointer">
-            <div class=" min-w-[12rem]  p-2 sm:p-5 b text-center flex flex-col justify-center text-sm">
-                <h4>June 22, 2024</h4>
-                <h4>July 23, 2024</h4>
-            </div>
-            <div class="flex flex-col justify-center max-h-[10rem] overflow-auto p-3">
-                <h1 class="font-semibold">Beginning of OJT</h1>
-                <div class=" max-h-[10rem] overflow-auto">
-                    <p class="text-justify text-sm pr-5">
-
-                    </p>
-                </div>
-            </div>
+        <div class="mt-5">
+            <span class="loading loading-spinner loading-lg"></span>
         </div>
 
     </div>

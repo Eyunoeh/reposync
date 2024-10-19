@@ -1,16 +1,44 @@
-function get_dashBoardnotes (){
-    $.ajax({
-        url: '../ajax.php?action=getDashboardNotes',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
 
-            $('#AdviserNotes').html(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
+async function get_dashBoardnotes() {
+    try {
+        const response = await $.ajax({
+            url: '../ajax.php?action=getDashboardNotes',
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        let AdviserNotes = '';
+
+        // Assuming the 'response' field is where the status is stored, adjust if necessary
+        if (response.response !== 1) {
+            $('#advNotePageLoader').html(`
+                <h1 class="font-semibold text-xl text-black font-sans">No notes posted</h1>
+            `);
+        }else {
+
+            let notes = response.data;
+
+
+            notes.forEach(note => {
+                AdviserNotes += `
+                <div onclick="removeTrashButton(); getNotes(${note['announcement_id']});openModalForm('Notes');" 
+                     class="transform w-full md:w-[18rem] transition duration-500 shadow rounded hover:scale-110 hover:bg-slate-300 
+                            justify-center items-center cursor-pointer p-3 h-[10rem]">
+                    <div class="h-[8rem] overflow-hidden hover:overflow-auto">
+                        <h1 class="font-semibold">${note['title']}</h1>
+                        <p class="text-start text-sm break-words">${note['description']}</p>
+                        <p class="text-[12px] text-slate-400 text-end">${note['announcementPosted']}</p>
+                    </div>
+                </div>`;
+            });
+            $('#advNotePageLoader').empty();
+
+            $('#AdviserNotes').html(AdviserNotes);
         }
-    });
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 }
 
 async function renderWeeklyJournaltbl(){

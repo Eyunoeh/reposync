@@ -1,7 +1,7 @@
 document.getElementById('login_img').addEventListener('click', function() {
     window.location.href = 'index.php';
 });
-document.addEventListener('submit', function (e){
+document.addEventListener('submit', async function (e){
     e.preventDefault();
     let formData = new FormData(e.target);
     let isValid = true;
@@ -38,19 +38,18 @@ document.addEventListener('submit', function (e){
         contentType: false,
         success: function(response) {
             document.getElementById('loader').classList.remove('hidden');
-            if (parseInt(response) === 1) {
+            if (response.response === 1) {
                 setTimeout(function() {
 
                     document.getElementById('loader').classList.add('hidden');
                 }, 2500);
-
-                window.location.href = 'dashboard.php';
-            } else if (parseInt(response) === 2) {
+                window.location.href = response.redirect;
+            } else{
                 document.getElementById('loginNotiftext').innerHTML= 'Incorrect email or password';
                 openModalForm('loginWarning');
                 document.getElementById('loader').classList.add('hidden');
             }
-            console.log(response);
+            console.log(response.message);
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
