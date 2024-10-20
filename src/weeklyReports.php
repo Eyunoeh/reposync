@@ -37,9 +37,11 @@ function countFileComments($file_id){
                        onkeyup="handleSearch('weeklyReportSearch',getVisibleTableId())">
             </div>
 
-            <div class="flex justify-evenly ">
-                <button class="h font-semibold btn btn-ghost" id="stud-weekly-rpt-btn" onclick="change_stud_table()">View logs</button>
-                <button class="btn btn-neutral btn-outline" onclick="openModalForm('newReport')">New Journal</button>
+            <div class="flex justify-evenly gap-5">
+                <button class=" font-semibold btn btn-neutral  " id="stud-weekly-rpt-btn" onclick="change_stud_table()">View logs</button>
+                <div class="tooltip  tooltip-bottom" data-tip="Upload weekly journal">
+                    <a class="btn btn-neutral btn-circle " onclick="openModalForm('newReport')"><i class="fa-solid fa-plus"></i></a>
+                </div>
             </div>
         </div>
         <div class="px-9 flex justify-end w-full">
@@ -47,8 +49,8 @@ function countFileComments($file_id){
         <div class="block py-8 pt-6 px-9">
             <div id="table_card" class="overflow-y-auto overflow-x-hidden h-[90vh] scroll-smooth">
                 <table class="w-full my-0  border-neutral-200 " id="weeklyReportTable" >
-                    <thead class="align-bottom  ">
-                    <tr class="font-semibold text-[0.95rem] z-10 sticky top-0  text-secondary-dark bg-slate-200 rounded">
+                    <thead class="align-bottom  z-10">
+                    <tr class="font-semibold text-[0.95rem] 0 sticky top-0  text-secondary-dark bg-slate-200 rounded">
                         <th class="p-3  ">Week</th>
                         <th class="p-3 ">Status</th>
                         <th class="p-3 ">View Comments</th>

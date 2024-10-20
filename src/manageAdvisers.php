@@ -107,7 +107,7 @@ include '../DatabaseConn/databaseConn.php';
                             </label>
                         </div>
                         <div id="adv_formSecPage" class="flex flex-col gap-2 justify-center h-full " >
-                            <div class="flex justify-evenly gap-2">
+                            <div class="flex justify-start gap-2">
                                 <label class="form-control w-full max-w-xs">
                                     <div class="label">
                                         <span class="label-text text-slate-700">Account email
@@ -118,16 +118,6 @@ include '../DatabaseConn/databaseConn.php';
 
                                     </div>
                                     <input name="user_Email" type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
-                                </label>
-                                <label class="form-control w-full max-w-xs">
-                                    <div class="label">
-                                        <span class="label-text text-slate-700">Access Type</span>
-                                    </div>
-                                    <select name="user_type" class=" select select-bordered w-full bg-slate-100 " required>
-                                        <option value="" selected disabled>Select role</option>
-                                        <option value="adviser">OJT adviser</option>
-                                        <option value="admin">Admin</option>
-                                    </select>
                                 </label>
                             </div>
                         </div>
@@ -203,6 +193,7 @@ include '../DatabaseConn/databaseConn.php';
                 <hr class="mb-5">
                 <div id="hidden_inputs">
                     <input name="user_id" type="hidden" value="">
+                    <input name="user_type" type="hidden" value="adviser">
                 </div>
                 <input type="hidden" id="assignedAdvList" name="assignedAdvList">
 

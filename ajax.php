@@ -857,7 +857,7 @@ if ($action == 'newUser') {
     // Generate password based on user type
     $user_password = ($user_type === 'student')
         ? generatePassword($user_shc_id)
-        : 'CVSUOJT_' . strtoupper($user_type) . '_' . uniqid();
+        : 'CVSUOJT_' . strtoupper($user_type);
 
     try {
         $conn->begin_transaction();

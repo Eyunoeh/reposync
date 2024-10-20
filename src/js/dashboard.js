@@ -122,11 +122,16 @@ async function dashboard_tab(id) {
             afterNavigate: () => {
                 act_tab(tab.id);
                 getAdvNotes();
+                advNoteReqEventListener();
             }
         },
         'schedule&Act': {
             page: 'manamgeAct&Sched.php',
-            afterNavigate: () => getActivitiesAndSched()
+            afterNavigate: () => {
+                getActivitiesAndSched()
+                act_n_schedForm_inp_lstner();
+
+            }
         },
         'dashBoardWeeklyReport': {
             page: 'manageWeeklyReport.php',

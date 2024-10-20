@@ -37,6 +37,7 @@ session_start();
                         <th class="p-3 text-end ">Action</th>
 
                     </tr>
+                    </tr>
                     </thead>
                     <tbody id="NotesReq" class="text-center text-slate-600">
  <!--

@@ -4788,6 +4788,10 @@ details.collapse summary::-webkit-details-marker {
   width: 12rem;
 }
 
+.w-\[150px\] {
+  width: 150px;
+}
+
 .w-\[200px\] {
   width: 200px;
 }
@@ -4826,10 +4830,6 @@ details.collapse summary::-webkit-details-marker {
 
 .w-full {
   width: 100%;
-}
-
-.w-\[150px\] {
-  width: 150px;
 }
 
 .min-w-0 {
