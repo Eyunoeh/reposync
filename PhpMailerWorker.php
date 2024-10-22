@@ -20,13 +20,13 @@ function mailer($subjectType,$bodyMessage, $emailAddress){
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth = true;                                   //Enable SMTP authentication
-        $mail->Username = '';                     //SMTP username
-        $mail->Password = '';                               //SMTP password
+        $mail->Username = 'cc.riocarl.delacruz@cvsu.edu.ph';                     //SMTP username
+        $mail->Password = 'lmsuohilwsildxex';                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            // ENCRYPTION_SMTPS 465 Enable implicit TLS encryption
         $mail->Port = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
 
-        $mail->setFrom('', 'Reposync: An Online Narrative Report Managemment System
+        $mail->setFrom('cc.riocarl.delacruz@cvsu.edu.ph', 'Reposync: An Online Narrative Report Managemment System
     for Cavite State University - Carmona Campus');
         $mail->addAddress($emailAddress, 'Reposync: An Online Narrative Report Managemment System
     for Cavite State University - Carmona Campus');     //Add a recipient
@@ -42,7 +42,7 @@ function mailer($subjectType,$bodyMessage, $emailAddress){
     } catch (Exception $e) {
 
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        exit();
+        //exit();
     }
 }
 
