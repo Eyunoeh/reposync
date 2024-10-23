@@ -128,6 +128,7 @@ async function dashboard_tab(id) {
         'schedule&Act': {
             page: 'manamgeAct&Sched.php',
             afterNavigate: () => {
+                act_tab(tab.id);
                 getActivitiesAndSched()
                 act_n_schedForm_inp_lstner();
 
