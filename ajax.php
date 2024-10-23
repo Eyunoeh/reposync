@@ -361,102 +361,107 @@ if ($action == 'newFinalReport'){
     header('Content-Type: application/json');
 
     $response = 1;
-    $responseMessage = $_SESSION['log_user_type'] == 'admin' ? 'New narrative report has been uploaded!': 'New narrative report has been uploaded! Please wait for admin approval';
+    $responseMessage ='New narrative report has been submitted! Please wait for adviser approval';
 
-
-    $first_name = isset($_POST['first_name']) ? sanitizeInput($_POST['first_name']) : '';
-    $middle_name = isset($_POST['middle_name']) ? sanitizeInput($_POST['middle_name']) : 'N/A';
-    $last_name = isset($_POST['last_name']) ? sanitizeInput($_POST['last_name']) : '';
-    $program = isset($_POST['program']) ? sanitizeInput($_POST['program']) : '';
-    $section = isset($_POST['section']) ? sanitizeInput($_POST['section']) : '';
-    $stud_sex = isset($_POST['stud_Sex']) ? sanitizeInput($_POST['stud_Sex']) : '';
-    $ojt_adviser = isset($_POST['ojt_adviser']) ? sanitizeInput($_POST['ojt_adviser']) : '';
-    $compName = isset($_POST['companyName']) ? sanitizeInput($_POST['companyName']) : 'N/A';
-    $trainingHours = isset($_POST['trainingHours']) ? sanitizeInput($_POST['trainingHours']) : 0;
-    $sySubmitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
-
-    $school_id = isset($_POST['school_id']) && is_numeric($_POST['school_id'])  ? sanitizeInput($_POST['school_id']) : '';
-
-    if ($first_name !== '' && $stud_sex !== '' && $last_name !== '' && $program !== ''
-        && $section !== '' && $ojt_adviser !== ''
-        && $school_id !== '' && $sySubmitted !== '') {
-        if (isset($_FILES['final_report_file'])) {
-            $file_name = $_FILES['final_report_file']['name'];
-            $file_temp = $_FILES['final_report_file']['tmp_name'];
-            $file_type = $_FILES['final_report_file']['type'];
-            $file_error = $_FILES['final_report_file']['error'];
-            $file_size = $_FILES['final_report_file']['size'];
-            if (!isPDF($file_name)){
-                handleError('Invalid file format: Not pdf');
-            }
-            if ($file_error === UPLOAD_ERR_OK) {
-                $file_first_name = str_replace(' ', '', $first_name);
-                $file_last_name = str_replace(' ', '', $last_name);
-                $new_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $section . "_" . $school_id . ".pdf";
-                $current_date_time = date('Y-m-d H:i:s');
-                $narrative_status = isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'admin' ? 'OK' : 'Pending';
-
-                try {
-                    $new_final_report = "INSERT INTO narrativereports
-    (stud_school_id, OJT_adviser_ID, sex, first_name, middle_name, last_name, program, section, narrative_file_name, upload_date, file_status, training_hours, company_name, sySubmitted)
-    values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-                    $valueTypes = "sisssssssssiss";
-                    $params = [$school_id, $ojt_adviser, $stud_sex, $first_name, $middle_name, $last_name,
-                        $program, $section, $new_file_name, $current_date_time, $narrative_status,
-                        $trainingHours, $compName, $sySubmitted];
-
-                    $narrative_id = mysqlQuery($new_final_report,$valueTypes, $params)[1];
-
-                }catch (mysqli_sql_exception $e) {
-                    if ($e->getCode() == 1062) {
-
-                        $responseMessage = "School id already exists.";
-                    } else {
-                        $responseMessage = $e->getMessage();
-                    }
-                    handleError($responseMessage);
-
-                }
-
-                if ($_SESSION['log_user_type'] == 'adviser'){       // admin email notification
-                    $getAdminUser = "SELECT tbl_accounts.status, tbl_accounts.email, tbl_user_info.user_id, tbl_user_info.user_type  FROM tbl_user_info
-                                                   JOIN tbl_accounts on tbl_accounts.user_id = tbl_user_info.user_id where tbl_accounts.status = 'active' and tbl_user_info.user_type = 'admin'";
-
-                    $result =  mysqlQuery($getAdminUser, '', []);
-                    foreach ($result as $row){
-                        $subjectType = "Upload Narrative Report";
-                        $bodyMessage = "<h1><b>Notification</b></h1><br>";
-                        $bodyMessage .= "<b>OJT adviser: </b>".$_SESSION['log_user_firstName'].' '.$_SESSION['log_user_middleName'].' '.$_SESSION['log_user_lastName'] .'<br>';
-                        $bodyMessage .= "Uploaded a new  student narrative report  <br>";
-                        $bodyMessage .= "Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
-                Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
-                        $recipient =  $row['email'];
-                        email_queuing($subjectType, $bodyMessage,$recipient );
-                    }
-                }
-                handleNarrativeUpload('', $new_file_name, $narrative_id);
-
-                echo json_encode(['response' => $response,
-                    'message' => $responseMessage]);
-                exit();
-
-
-
-            } else {
-                $responseMessage = 'file error';
-            }
-
-        } else {
-            $responseMessage = 'empty file';
-        }
-    } else {
-
-        $responseMessage =  'form data are empty';
+    if (!isset($_FILES['narrativeReportPDF'])) {
+        handleError('Empty file');
     }
-    handleError($responseMessage);
+
+    $file_name = $_FILES['narrativeReportPDF']['name'];
+    $file_temp = $_FILES['narrativeReportPDF']['tmp_name'];
+    $file_type = $_FILES['narrativeReportPDF']['type'];
+    $file_error = $_FILES['narrativeReportPDF']['error'];
+    $file_size = $_FILES['narrativeReportPDF']['size'];
+
+
+    if (!isPDF($file_name)){
+        handleError('Invalid file format: Not pdf');
+    }
+
+    if (!$file_error === UPLOAD_ERR_OK) {
+        handleError('file error');
+    }
+
+
+    $ac_Submitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
+    $sem_Submitted = getPostData('semester');
+
+
+    $stud_info = mysqlQuery('SELECT s.*, ui.* ,p.*,ys.* 
+from tbl_students s 
+    JOIN tbl_user_info ui on ui.user_id = s.user_id
+    JOIN program p on p.program_id = s.program_id
+    JOIN section ys on ys.year_sec_Id = s.year_sec_Id
+
+where s.user_id = ?',
+        'i', [$_SESSION['log_user_id']])[0];
+
+
+    $file_first_name = str_replace(' ', '', $stud_info['first_name']);
+    $file_last_name = str_replace(' ', '', $stud_info['last_name']);
+    $program = $stud_info['program_code'];
+    $ojt_adviser_UID = $stud_info['adv_id'];
+    $yr_section = $stud_info['year'].$stud_info['section'];
+    $school_id = $stud_info['enrolled_stud_id'];
+    $new_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $yr_section . "_" . $school_id . ".pdf";
+    $current_date_time = date('Y-m-d H:i:s');
+
+    try {
+        $new_final_report = "INSERT INTO narrativereports
+    (enrolled_stud_id , OJT_adv_id, ac_submitted, sem_submitted,  narrative_file_name)
+    values (?,?,?,?,?)";
+
+        $valueTypes = "iisss";
+        $params = [$school_id, $ojt_adviser_UID,$ac_Submitted,$sem_Submitted, $new_file_name ];
+
+        $narrative_id = mysqlQuery($new_final_report,$valueTypes, $params)[1];
+
+    }catch (mysqli_sql_exception $e) {
+        $responseMessage = $e->getMessage();
+        handleError($responseMessage);
+    }
+    $subjectType = "Narrative Report Upload";
+    $bodyMessage = "<h1><b>Notification</b></h1><br>";
+    $bodyMessage .= "<b>Student </b>".$_SESSION['log_user_firstName'].' '.$_SESSION['log_user_middleName'].' '.$_SESSION['log_user_lastName'] .'<br>';
+    $bodyMessage .= "Uploaded a new  narrative report <br>";
+    $bodyMessage .= "Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
+                Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a>";
+    $recipient =  getRecipient($ojt_adviser_UID);
+    email_queuing($subjectType, $bodyMessage,$recipient );
+
+    //handleNarrativeUpload('', $new_file_name, $narrative_id);
+
+    echo json_encode(['response' => $response,
+        'message' => $responseMessage]);
+    exit();
 
 }
+
+if($action == 'StudsubmittedNarratives'){
+    header('Content-Type: application/json');
+
+    $submtdNarratives = mysqlQuery('SELECT * from narrativereports JOIN tbl_students
+         on tbl_students.enrolled_stud_id = narrativereports.enrolled_stud_id  
+         where  tbl_students.user_id = ? ', 'i', [$_SESSION['log_user_id']]);
+
+
+
+    if (count($submtdNarratives) > 0){
+        for ($i = 0 ; $i < count($submtdNarratives) ; $i++){
+            $submtdNarratives[$i]['narrative_id'] = urlencode (encrypt_data($submtdNarratives[$i]['narrative_id'], $secret_key));
+        }
+        echo json_encode(['response' => 1,
+            'data' => $submtdNarratives]);
+    }else {
+        echo json_encode(['response' => 1,
+            'data' => []]);
+    }
+
+}
+
+
+
+
 if ($action == 'get_narrativeReports') {
     if (!isset($_SESSION['log_user_id'])){
         exit();
@@ -606,7 +611,7 @@ if ($action === 'UpdateNarrativeReport') {
             if ($fields['UploadStat'] === 'Declined') {
                 $bodyMessage .= "<b>Reason: </b>{$fields['remark']}<br>";
             }
-            $bodyMessage .= "Click to review: <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a>";
+            $bodyMessage .= "Click to review: <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a>";
             email_queuing($subjectType, $bodyMessage, $recipient);
             echo json_encode(['response' => $response, 'message' => $responseMessage]);
 
@@ -1385,7 +1390,7 @@ if ($action === 'Notes') {
         $bodyMessage = "<H1><b>Notification</b></H1><br>";
         $bodyMessage .= "OJT Adviser: <b>". $advFname." ".$advLname."</b> ".$actionMessageType." <br>
                     Click to review : <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
-                    Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a> ";
+                    Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a> ";
 
         $getAdminID = "SELECT * FROM tbl_user_info where user_type = 'admin'";
 
@@ -1838,7 +1843,7 @@ if ($action == 'UpdateNotePostReq'){
                 $bodyMessage .= "<b>Description: </b>".$noteDetails['description']." <br>";
                 $bodyMessage .= "<br><b>Reason: </b>".$declineReason." <br>";
                 $bodyMessage .= "Click to review:
- <a href='http://localhost/ReposyncNarrativeManagementSystem/src/dashboard.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a><br>";
+ <a href='http://localhost/ReposyncNarrativeManagementSystem/src/dashboard.php'>Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a><br>";
                 $targetRecipient = getRecipient($noteDetails['user_id']);
                 email_queuing($subjectType, $bodyMessage, $targetRecipient /*recipient OJT adviser*/);
             }elseif ($noteStat === 'Active'){
@@ -1847,7 +1852,7 @@ if ($action == 'UpdateNotePostReq'){
                 $bodyMessage .= "<b>Description: </b>".$noteDetails['description'].". <br>";
                 $bodyMessage .= "<br>Your students will also get notified about this post<br>";
                 $bodyMessage .= "Click to review:
- <a href='http://localhost/ReposyncNarrativeManagementSystem/src/dashboard.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a><br>";
+ <a href='http://localhost/ReposyncNarrativeManagementSystem/src/dashboard.php'>Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a><br>";
                 $targetRecipient = getRecipient($noteDetails['user_id']);
                 email_queuing($subjectType, $bodyMessage, $targetRecipient /*recipient OJT adviser*/);
 
@@ -1865,7 +1870,7 @@ where adv_sch_user_id = ? and tbl_accounts.status = 'active';";
                 $bodyMessageToStudents .= "<h3><b>Title: </b>".$noteDetails['title']." <h3><br>";
                 $bodyMessageToStudents .= "<b>Description: </b> ".$noteDetails['description']." <br>";
                 $bodyMessageToStudents .= "<br>Click to review:
- <a href='http://localhost/ReposyncNarrativeManagementSystem/src/index.php'>Reposyc: An Online Narrative Report Management System for Cavite State University - Carmona Campus</a><br>";
+ <a href='http://localhost/ReposyncNarrativeManagementSystem/src/index.php'>Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a><br>";
                 while ($row = $result->fetch_assoc()){
                     email_queuing($subjectType, $bodyMessageToStudents, getRecipient($row['stud_sch_user_id']));
                 }

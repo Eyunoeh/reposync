@@ -9,7 +9,7 @@ async function get_dashBoardnotes() {
 
         let AdviserNotes = '';
 
-        // Assuming the 'response' field is where the status is stored, adjust if necessary
+
         if (response.response !== 1) {
             $('#advNotePageLoader').html(`
                 <h1 class="font-semibold text-xl text-black font-sans">No notes posted</h1>

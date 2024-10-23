@@ -20,7 +20,13 @@ document.addEventListener('submit', function(e) {
       loadData.push(get_WeeklyReports)
       loadData.push(getUploadLogs)
    }
-   else if (e.target.id === 'StudprofileForm'){
+   else if (e.target.id === 'NarrativeReportForm'){
+      endpoint = 'newFinalReport'
+      alertType = 'success';
+      alertMessage = 'New narrative report has been submitted! Please wait for adviser approval';
+      modal = 'NarrativeReportmodalForm'
+
+   }else if (e.target.id === 'StudprofileForm'){
       endpoint = 'profileUpdate'
       alertType = 'success';
       alertMessage = 'Profile Information has been updated';
@@ -127,6 +133,7 @@ async function getProfileInfo() {
 
             $('#side_tabName').html(data.first_name + ' ' + data.last_name  + ' - ' + data.user_type.toUpperCase());
             $("#selectedProfile").attr("src", profPath);
+            $("#profile_nav").attr("src", profPath);
             $('#StudprofileForm input[name="user_Fname"]').val(data.first_name);
             $('#StudprofileForm input[name="user_Mname"]').val(data.middle_name);
             $('#StudprofileForm input[name="user_Lname"]').val(data.last_name);
@@ -227,4 +234,70 @@ async function get_WeeklyReports() {
    }
 }
 
+async function getSubmittedNarratives(){
+   const response = await $.ajax({
+      url: '../ajax.php?action=StudsubmittedNarratives',
+      method: 'GET',
+      dataType: 'json'
+   });
+   let narratives = response.data
+   let data_length = narratives.length;
+   let number = 1
+   let table_data = ''
+
+   if (data_length === 0) {
+      $('#studuploadedNarrativesTableBody').html(`<tr><td colspan="9">No Active / Assigned students found for this adviser.</td></tr>`);
+   }
+   else {
+      narratives.forEach(narrative => {
+         let years = narrative.ac_submitted.split(',');
+         let startingAC = years[0].trim();
+         let endingAC =  years[1].trim();
+
+
+         table_data += `<tr class="border-b border-dashed last:border-b-0">
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">${number}</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">First</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">${startingAC} - ${endingAC}</span>
+                        </td>
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">${narrative.file_status}
+                            `
+                        if (narrative.file_status === 'Declined'){
+                           table_data += `<br>Reason: <span class="text-warning text-sm">
+                                                   ${narrative.remarks}</span>`
+                        }
+                         table_data += `
+                                        </span>
+                                    </td>
+            
+                                    <td class="p-3 text-end">
+                                    
+                                        `
+                                       if (['Converted', 'Archived'].includes(narrative.file_status)){
+
+                                          table_data +=  `<a href="flipbook.php?view=${narrative.narrative_id}" class="font-semibold cursor-pointer text-light-inverse text-md/normal break-words">
+                                                            <i class="fa-regular fa-eye"></i></a>`
+                                       }else {
+                                          table_data += ` <a class="font-semibold cursor-pointer text-light-inverse text-md/normal break-words">
+                                                            <i class="fa-solid fa-circle-info"></i></a>`
+                                       }
+                                      table_data += `
+                                       
+                                           
+                                    </td>
+                                </tr>`;
+         number++
+
+      })
+      $('#studuploadedNarrativesTableBody').html(table_data);
+   }
+
+
+}
 
