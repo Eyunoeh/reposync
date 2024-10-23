@@ -50,7 +50,7 @@ session_start()
                             <span class=" text-light-inverse text-md/normal break-words">'.$row['program_name'].'</span>
                         </td>
                         <td class="p-3 text-end">
-                            <span class="text-light-inverse text-md/normal">'.getTotalNarrativeReports($row['program_code'], 3, '').'</span>
+                            <span class="text-light-inverse text-md/normal">'.getTotalNarrativeReports($row['program_id'], 3, '').'</span>
                         </td>
                         <td class="p-3 text-center">
                             <a href="dashboardViewnarrativeReports.php?program='.$row['program_code'].'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>

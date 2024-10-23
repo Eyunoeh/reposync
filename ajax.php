@@ -2032,7 +2032,7 @@ if ($action == 'dshbDeclinedFinalReports') {
 
     if ($_SESSION['log_user_type'] == 'adviser') {
         $getPendingFinalUpdload = "SELECT COUNT(*) as totalDeclined FROM narrativereports
-                                   WHERE OJT_adviser_ID = ? AND file_status = 'Declined';";
+                                   WHERE OJT_adv_id = ? AND file_status = 'Declined';";
         $getPendingFinalUpdloadSTMT = $conn->prepare($getPendingFinalUpdload);
         $getPendingFinalUpdloadSTMT->bind_param('i', $_SESSION['log_user_id']);
         $getPendingFinalUpdloadSTMT->execute();

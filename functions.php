@@ -66,20 +66,22 @@ function generatePassword($school_id) {
 
 function getTotalNarrativeReports($program, $file_status, $ojtAdviser) {
 
-    $sql = "SELECT COUNT(*) AS total FROM narrativereports WHERE 1 = 1";
+    $sql = "SELECT COUNT(*) AS total FROM narrativereports JOIN tbl_students on
+    tbl_students.enrolled_stud_id = narrativereports.enrolled_stud_id
+                         WHERE 1 = 1";
     $types = '';
     $params = [];
     if ($program !== '') {
-        $sql .= ' AND program = ?';
-        $types .= 's';
+        $sql .= ' AND tbl_students.program_id = ?';
+        $types .= 'i';
         $params[] = $program;
     }
     if ($file_status !== ''){
-        $sql .= ' AND file_status = ?';
+        $sql .= ' AND narrativereports.file_status = ?';
         $types .= 'i';
         $params[] = $file_status;
     }if ($ojtAdviser !== ''){
-        $sql .= ' AND OJT_adviser_ID = ?';
+        $sql .= ' AND narrativereports.OJT_adv_id = ?';
         $types .= 'i';
         $params[] = $ojtAdviser;
     }
