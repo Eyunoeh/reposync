@@ -4196,6 +4196,18 @@ details.collapse summary::-webkit-details-marker {
   padding-bottom: 0.25rem;
 }
 
+.table-sm :not(thead):not(tfoot) tr {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.table-sm :where(th, td) {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 .tooltip {
   position: relative;
   display: inline-block;
@@ -4356,6 +4368,10 @@ details.collapse summary::-webkit-details-marker {
 
 .left-1\/2 {
   left: 50%;
+}
+
+.left-2 {
+  left: 0.5rem;
 }
 
 .right-0 {
@@ -4786,10 +4802,6 @@ details.collapse summary::-webkit-details-marker {
 
 .w-\[12rem\] {
   width: 12rem;
-}
-
-.w-\[150px\] {
-  width: 150px;
 }
 
 .w-\[200px\] {

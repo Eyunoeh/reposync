@@ -101,7 +101,9 @@ async function dashboard_tab(id) {
         },
         'dashboard_ReviewUploadNarrative': {
             page: 'manageUploadNarratives.php',
-            afterNavigate: () => act_tab(tab.id)
+            afterNavigate: () => {
+                act_tab(tab.id)
+                convertToFlibookLister()}
         },
         'dashboard': {
             page: 'dashboardContent.php',

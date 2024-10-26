@@ -92,7 +92,7 @@ include '../DatabaseConn/databaseConn.php';
                     </tr>
                     </thead>
                     <tbody id="studuploadedNarrativesTableBody" class="text-slate-600">
-                    <tr class="border-b border-dashed last:border-b-0">
+<!--                    <tr class="border-b border-dashed last:border-b-0">
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-md/normal break-words">1</span>
                         </td>
@@ -149,12 +149,32 @@ include '../DatabaseConn/databaseConn.php';
                         <td class="p-3 text-end">
                             <span class="font-semibold cursor-pointer text-light-inverse text-md/normal break-words"><i class="fa-solid fa-circle-info"></i></span>
                         </td>
-                    </tr>
+                    </tr>-->
                     </tbody>
                 </table>
-                <div class="mt-10">
-                    <button class="btn btn-neutral btn-outline" onclick="closeModalForm('NarrativeReportmodal');openModalForm('NarrativeReportmodalForm')">Submit new</button>
+
+                <div id="tableNoRes">
+                    <span class="loading loading-spinner loading-lg"></span>
+
                 </div>
+
+                <?php $total_narrativequery = "SELECT COUNT(*) as totalSubNarrative FROM narrativereports n
+                JOIN tbl_students s on s.enrolled_stud_id = n.enrolled_stud_id where user_id = ?";
+
+
+                $total_result = mysqlQuery($total_narrativequery ,'i', [$_SESSION['log_user_id']])[0];
+
+                $checkStudProgramQuery = "SELECT * FROM program p 
+    JOIN  tbl_students s on s.program_id = p.program_id where s.user_id = ?";
+
+                $StudProgramLimitNarratives = mysqlQuery($checkStudProgramQuery, 'i', [$_SESSION['log_user_id']])[0];
+
+                if ($total_result['totalSubNarrative'] < $StudProgramLimitNarratives['totalNarratives']):
+                ?>
+                    <div class="mt-10">
+                        <button class="btn btn-neutral btn-outline" onclick="resetNarratveFormModal();closeModalForm('NarrativeReportmodal');openModalForm('NarrativeReportmodalForm')">Submit new</button>
+                    </div>
+                <?php endif;?>
             </div>
         </div>
     </dialog>
@@ -203,7 +223,8 @@ include '../DatabaseConn/databaseConn.php';
                                    file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold
                             file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
                         </div>
-                        <input type="hidden" name="stud_user_id" value="<?php echo $_SESSION['log_user_id']?>">
+                        <input type="hidden" name="NarraActType" id="NarraActType">
+                        <input type="hidden" name="narrative_id" id="narrative_id">
 
                         <button class="btn btn-neutral btn-outline ">Submit</button>
 

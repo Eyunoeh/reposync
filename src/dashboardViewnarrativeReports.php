@@ -58,11 +58,11 @@ while ($row = $res->fetch_assoc()) {
 <div class="overflow-y-hidden h-[100vh] relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white">
     <div class="relative flex flex-col min-w-0 break-words rounded-2xl border-stone-200 bg-light/30">
         <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap pb-0 bg-transparent ">
-            <?php if ($_SESSION['log_user_type'] !== 'student'):?>
-            <a href="dashboard.php" class="btn btn-outline font-bold text-slate-700"><i class="fa-solid fa-circle-left"></i> Dashboard</a>
-            <?php else:?>
-            <a href="index.php" class="btn btn-outline font-bold text-slate-700"><i class="fa-solid fa-house"></i> Home</a>
-            <?php endif;?>
+            <a href="<?=$_SESSION['log_user_type'] == 'student'? 'index.php?page=narratives':'dashboard.php'?>" class="btn btn-outline font-bold text-slate-700">
+                <?=$_SESSION['log_user_type'] == 'student'? '<i class="fa-solid fa-house"></i> Home':'<i class="fa-solid fa-circle-left"></i> Dashboard'?>
+                </a>
+
+
             <form class="flex justify-start w-[40%]">
 
                     <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
@@ -81,7 +81,8 @@ while ($row = $res->fetch_assoc()) {
                         <?php endif;?>
                         <th class="p-3 text-start min-w-10">Name</th>
                         <th class="p-3 text-start min-w-10">OJT adviser</th>
-                        <th class="p-3 text-start min-w-10">Batch</th>
+                        <th class="p-3 text-start min-w-10">Academic year</th>
+                        <th class="p-3 text-start min-w-10">Semester</th>
 
 
                         <th class="p-3 text-end ">Action</th>

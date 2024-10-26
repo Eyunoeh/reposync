@@ -1,7 +1,7 @@
 <?php
 include_once '../DatabaseConn/databaseConn.php';
 include '../functions.php';
-
+session_start();
 $encrypt_key = 'TheSecretKey#02';
 if (isset($_GET['view'])){
 $decrypted_narrative_id = decrypt_data($_GET['view'], $encrypt_key);
@@ -38,8 +38,7 @@ if (count($result) === 1) {
     }
 
 
-    $path = 'NarrativeReports_Images/' . str_replace(' ','', $row['first_name']. "_" ). str_replace(' ','',$row['last_name']). "_" . $row['program'] . "_" . $row['section']. "_" .$row['stud_school_id'];
-
+    $path = 'NarrativeReports_Images/' . str_replace('.pdf','', $row['narrative_file_name']);
 }else{
     header("Location: index.php");
 }
@@ -64,6 +63,7 @@ if (count($result) === 1) {
     <title>Narrative Report</title>
 </head>
 <body class="bg-slate-700 ">
+<a href="<?=$_SESSION['log_user_type'] == 'student'? 'index.php?page=narratives':'dashboard.php'?>" class="btn btn-neutral absolute left-2 top-2"><i class="fa-solid fa-circle-left"></i> Back</a>
 
 <div class="flipbook-viewport overflow-auto ">
     <div class="flex h-[100vh] justify-center items-center gap-5">
@@ -150,6 +150,7 @@ if (count($result) === 1) {
 
 
 <script type="text/javascript">
+
 
     function loadApp() {
         $('.flipbook').turn({

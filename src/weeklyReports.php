@@ -77,6 +77,11 @@ function countFileComments($file_id){
 
                     </tbody>
                 </table>
+
+                <div id="tableNoRes" class="text-center">
+                    <span class="loading loadi ng-spinner loading-lg"></span>
+
+                </div>
             </div>
         </div>
     </div>

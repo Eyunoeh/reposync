@@ -22,10 +22,12 @@ async function getActivitiesAndSched() {
                 }
                 actAndschedList += `</div>
             <div class="flex flex-col justify-center max-h-[10rem] overflow-auto p-3">
-                <h1 class="font-semibold w-[150px] break-words">${actSched['title']}</h1>
+                <h1 class="font-semibold  break-words">${actSched['title']}</h1>
                 <div class=" max-h-[10rem] overflow-auto">
-                    <p class="text-justify text-sm pr-5 break-words">${actSched['description']}
-                    </p>
+                 <p class="text-justify text-sm pr-5 break-words">
+    ${actSched['description'].replace(/\r\n|\r|\n/g, '<br>')}
+            </p>
+
                 </div>
             </div>
         </div>`
@@ -164,6 +166,14 @@ function renderAddProgramInputs() {
                         <input type="number" min="1" required name="ojt_hours" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
                     </label>
                 </div>
+                <div class="flex justify-start gap-2">
+              <label class="form-control w-full">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700 font-bold">Total Narrative Reports</span>
+                                    </div>
+                                    <input type="number" min="1" required name="totalNarratives" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
+                                </label>
+                </div>
             </div>
         </div>
     `);
@@ -188,6 +198,8 @@ async function getYrSec(){
                 </tr>`;
         }
         $('#yrSec').html(yr_sectbl);
+    }else {
+        $('#tableNoResYrSec').html('<p class="text-sm text-slate-700 font-sans">No result</p>')
     }
 
 }
@@ -230,6 +242,7 @@ async function getPrograms(){
                 <td>${programs[i]['program_code']}</td>
                 <td>${programs[i]['program_name']}</td>
                 <td>${programs[i]['ojt_hours']}</td>
+                <td class="text-center">${programs[i]['totalNarratives']}</td>
                 <td class="text-center cursor-pointer">
                     <a onclick="openModalForm('ProgSecFormModal'); EditProgram(${programs[i]['program_id']})">
                         <i class="fa-solid fa-pen-to-square"></i>
@@ -238,6 +251,9 @@ async function getPrograms(){
             </tr>`;
         }
         $('#programs').html(programs_tbl);
+    }else {
+            $('#tableNoResProg').html(`
+                    <p class="text-sm text-slate-700 font-sans">No result</p>`);
     }
 
 }
@@ -259,6 +275,7 @@ async function EditProgram(Id){
                 $('#sectionProgramForm input[name="ProgramCode"]').val(programs[i]['program_code']);
                 $('#sectionProgramForm input[name="ProgramName"]').val(programs[i]['program_name']);
                 $('#sectionProgramForm input[name="ojt_hours"]').val(programs[i]['ojt_hours']);
+                $('#sectionProgramForm input[name="totalNarratives"]').val(programs[i]['totalNarratives']);
                 return;
             }
         }
@@ -465,24 +482,8 @@ function advNoteReqEventListener(){
     })
 }
 
-/*if (document.getElementById('EditNarrativeReportsReqForm')){
-    let uploadstat = document.getElementById('UploadStat');
-    if (uploadstat){
-        uploadstat.addEventListener("change", function (){
-            if (uploadstat.value === 'Declined'){
-                $('#declineUploadReason').append('<label class="form-control w-full ">\n' +
-                    '                            <div class="label">\n' +
-                    '                                <span class="label-text text-slate-700 font-bold">Remarks</span>\n' +
-                    '                            </div>\n' +
-                    '                            <input type="text" required  name="remark" class="input input-error w-full" placeholder="Type here">' +
-                    '                        </label>')
-            }
-            else{
-                $('#declineUploadReason').empty();
-            }
-        })
-    }
-}*/
+
+
 
 
 

@@ -137,7 +137,7 @@ async function renderWeeklyJournaltbl(){
         })
 
     }else {
-        weeklyJournalTbl = `<tr><td colspan="9">No Active / Assigned students found for this adviser.</td></tr>`
+        weeklyJournalTbl = `<tr><td colspan="9">No Result</td></tr>`
     }
 
 
@@ -145,4 +145,28 @@ async function renderWeeklyJournaltbl(){
 
 
     $('#tableadvLoader').empty();
+}
+function convertToFlibookLister(){
+    let uploadstat = document.getElementById('UploadStat');
+    uploadstat.addEventListener("change", function (){
+        if (uploadstat.value === 'Declined'){
+            $('#declineUploadReason').append('<label class="form-control w-full ">\n' +
+                '                            <div class="label">\n' +
+                '                                <span class="label-text text-slate-700 font-bold">Remarks</span>\n' +
+                '                            </div>\n' +
+                '                            <input type="text" required  name="remark" class="input input-error w-full" placeholder="Type here">' +
+                '                        </label>')
+        }
+        else{
+            $('#declineUploadReason').empty();
+        }
+
+        if (uploadstat.value === 'Convert'){
+            $('#update_btn').text('Convert')
+        }else {
+            $('#update_btn').text('Save')
+        }
+    })
+
+
 }

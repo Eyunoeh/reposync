@@ -21,9 +21,19 @@ document.addEventListener('submit', function(e) {
       loadData.push(getUploadLogs)
    }
    else if (e.target.id === 'NarrativeReportForm'){
-      endpoint = 'newFinalReport'
-      alertType = 'success';
-      alertMessage = 'New narrative report has been submitted! Please wait for adviser approval';
+
+      if (e.target.querySelector('input[name="NarraActType"]').value === 'Edit') {
+         endpoint = 'editFinalReport';
+         alertMessage = 'Narrative report has been updated!';
+         alertType = 'info';
+      }else{
+         endpoint = 'newFinalReport'
+         alertMessage = 'New narrative report has been submitted! Please wait for adviser approval';
+         alertType = 'success';
+      }
+
+
+
       modal = 'NarrativeReportmodalForm'
 
    }else if (e.target.id === 'StudprofileForm'){
@@ -224,11 +234,59 @@ async function get_WeeklyReports() {
       const response = await $.ajax({
          url: '../ajax.php?action=getWeeklyReports',
          method: 'GET',
-         dataType: 'html'
+         dataType: 'json'
       });
+      let weeklyJournalTable = '';
+      if (response.response === 1){
 
 
-      $('#Weeklyreports').html(response);
+        let  weeklyJournal = response.data;
+        weeklyJournal.forEach(journal => {
+
+
+           let journalStatuses = {pending: ['text-warning', 'Pending'],
+              revision: ['text-info','With Revision'],
+              approved: ['text-success', 'Approved']}
+
+           let counter = 1
+           weeklyJournalTable += `<tr class="border-b border-dashed last:border-b-0">
+
+                                <td class="p-3 pr-0 ">
+                                    <span class=" text-light-inverse text-md/normal">Week ${counter}</span>
+                                </td>
+
+                                <td class="p-3 pr-0 ">
+                                    <span class="${journalStatuses[journal.upload_status][0]} text-light-inverse text-md/normal">${journalStatuses[journal.upload_status][1]}</span>
+                                </td>
+                                <td class="p-3 pr-0 " >
+                                    <div class="indicator hover:cursor-pointer" data-report-comment-id="'${journal.file_id}" onclick="openModalForm('comments'); getComments(this.getAttribute('data-report-comment-id'))">
+                                        <span class="indicator-item badge badge-neutral"  data-journal-comment-id="3" id="journal_comment_2">${journal.totalJournalComment}</span>
+                                        <a class=" text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
+                                    </div>
+                                </td>
+                                <td class="p-3 pr-0  text-end">`;
+           if (['pending', 'revision'].includes(journal.upload_status)){
+              weeklyJournalTable += `<div class="tooltip tooltip-bottom" data-tip="Resubmit">
+                                        <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer 
+                                transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  data-report_id="${journal.file_id}" onclick="openModalForm('resubmitReport');resubmitWeeklyReport(this.getAttribute('data-report_id'))"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    </div>`
+
+           }
+           weeklyJournalTable += `<div  class="tooltip tooltip-bottom"  data-tip="View">
+                                        <a href="StudentWeeklyReports/${journal.weeklyFileReport}" target="_blank" class=" text-light-inverse text-md/normal mb-1 hover:cursor-pointer 
+                                    transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"  ><i class="fa-regular fa-eye"></i></a>
+                                    </div>
+                                </td>
+                            </tr>`
+
+           counter ++
+        })
+      }else{
+         $('#tableNoRes').html(`  <p class="text-sm text-slate-700 font-sans">${response.message}</p>`)
+      }
+
+      $('#tableNoRes').empty();
+      $('#Weeklyreports').html(weeklyJournalTable);
    } catch (error) {
       console.error('Error fetching data:', error);
    }
@@ -246,8 +304,8 @@ async function getSubmittedNarratives(){
    let table_data = ''
 
    if (data_length === 0) {
-      $('#studuploadedNarrativesTableBody').html(`<tr><td colspan="9">No Active / Assigned students found for this adviser.</td></tr>`);
-   }
+      $('#tableNoRes').html(`
+                    <p class="text-sm text-slate-700 font-sans">No submitted narrative report</p>`);   }
    else {
       narratives.forEach(narrative => {
          let years = narrative.ac_submitted.split(',');
@@ -257,16 +315,16 @@ async function getSubmittedNarratives(){
 
          table_data += `<tr class="border-b border-dashed last:border-b-0">
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">${number}</span>
+                            <span class=" text-light-inverse text-md/normal break-words">${number}</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">First</span>
+                            <span class=" text-light-inverse text-md/normal break-words">${narrative.sem_submitted}</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">${startingAC} - ${endingAC}</span>
+                            <span class=" text-light-inverse text-md/normal break-words">${startingAC} - ${endingAC}</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">${narrative.file_status}
+                            <span class=" text-light-inverse text-md/normal break-words">${narrative.file_status}
                             `
                         if (narrative.file_status === 'Declined'){
                            table_data += `<br>Reason: <span class="text-warning text-sm">
@@ -281,10 +339,10 @@ async function getSubmittedNarratives(){
                                         `
                                        if (['Converted', 'Archived'].includes(narrative.file_status)){
 
-                                          table_data +=  `<a href="flipbook.php?view=${narrative.narrative_id}" class="font-semibold cursor-pointer text-light-inverse text-md/normal break-words">
+                                          table_data +=  `<a href="flipbook.php?view=${narrative.narrative_id}" class=" cursor-pointer text-light-inverse text-md/normal break-words">
                                                             <i class="fa-regular fa-eye"></i></a>`
                                        }else {
-                                          table_data += ` <a class="font-semibold cursor-pointer text-light-inverse text-md/normal break-words">
+                                          table_data += ` <a onclick="editSubmittedNarrative('${narrative.narrative_id}')" class="font-semibold cursor-pointer text-light-inverse text-md/normal break-words">
                                                             <i class="fa-solid fa-circle-info"></i></a>`
                                        }
                                       table_data += `
@@ -296,8 +354,41 @@ async function getSubmittedNarratives(){
 
       })
       $('#studuploadedNarrativesTableBody').html(table_data);
+      $('#tableNoRes').empty();
    }
 
 
 }
 
+async function editSubmittedNarrative(narrative_id){
+   closeModalForm('NarrativeReportmodal');
+   openModalForm('NarrativeReportmodalForm');
+
+   const response = await $.ajax({
+      url: '../ajax.php?action=narrativeReportsJson&narrative_id=' + narrative_id,
+      method: 'GET',
+      dataType: 'json'
+   });
+
+   console.log(response)
+   if (response.response === 1){
+      let SubmittedNarratives = response.data;
+
+      let acadYear = SubmittedNarratives['ac_submitted'].split(',');
+
+      $('#NarrativeReportForm select[name="semester"]').val(SubmittedNarratives['sem_submitted']);
+      $('#NarrativeReportForm input[name="startYear"]').val(acadYear[0]);
+      $('#NarrativeReportForm input[name="endYear"]').val(acadYear[1]);
+      $('#NarrativeReportForm input[name="NarraActType"]').val('Edit');
+      $('#NarrativeReportForm input[name="narrative_id"]').val(narrative_id);
+   }
+}
+function resetNarratveFormModal(){
+
+
+   $('#NarraActType').val('');
+   $('#narrative_id').val('');
+
+
+   $('#NarrativeReportForm')[0].reset();
+}

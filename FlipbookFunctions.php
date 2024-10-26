@@ -136,18 +136,11 @@ function delete_pdf($pdf){
 
 
 
-function handleNarrativeUpload($old_filename, $new_file_name, $narrative_id) {
-    $factory = new AmqpConnectionFactory([
-        'host' => 'localhost',
-        'port' => 5672,
-        'login' => 'guest',
-        'password' => 'guest',
-        'vhost' => '/',
-    ]);
+function handleNarrativeUpload($old_filename, $new_file_name, $file_temp, $narrative_id) {
 
 
 
-    $file_temp = $_FILES['final_report_file']['tmp_name'];
+
     if ($old_filename !== ''){
         $pdf = 'src/NarrativeReportsPDF/' . $old_filename;
         $flipbook_page_dir = 'src/NarrativeReports_Images/' . str_replace('.pdf', '', $old_filename);
@@ -158,11 +151,19 @@ function handleNarrativeUpload($old_filename, $new_file_name, $narrative_id) {
     $pdf_file_path = "src/NarrativeReportsPDF/" . $new_file_name;
     move_uploaded_file($file_temp, $pdf_file_path);
 
-
-
-
     pageWatermark($pdf_file_path, $watermarkIMG);
 
+
+
+
+
+     $factory = new AmqpConnectionFactory([
+        'host' => 'localhost',
+        'port' => 5672,
+        'login' => 'guest',
+        'password' => 'guest',
+        'vhost' => '/',
+    ]);
 
     $updtNarrativeJobID = "UPDATE narrativereports SET narrativeConvertJobID  = ? where narrative_id = ? ";
     try {

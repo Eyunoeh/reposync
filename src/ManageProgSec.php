@@ -8,47 +8,31 @@
     <div class="flex sm:w-[90%]  transition  shadow rounded
               justify-center  ">
         <div class="w-full  overflow-hidden hover:overflow-auto">
-            <table class="table bordered" id="progam_tbl">
+            <table class="table table-sm bordered" id="progam_tbl">
                 <!-- head -->
                 <thead class="w-full sticky top-0 shadow bg-slate-100 rounded text-slate-700">
                 <tr>
-                    <th onclick="sortTable(0,'progam_tbl')" class="cursor-pointer">Program Code<span class="sort-icon text-xs"></span></th>
-                    <th onclick="sortTable(1,'progam_tbl')" class="cursor-pointer">Program Name<span class="sort-icon text-xs"></span></th>
-                    <th onclick="sortTable(2,'progam_tbl')" class="cursor-pointer"> OJT Hours<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(0,'progam_tbl')" class="cursor-pointer">Program code<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(1,'progam_tbl')" class="cursor-pointer">Program name<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(2,'progam_tbl')" class="cursor-pointer"> OJT hours<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(3,'progam_tbl')" class="cursor-pointer"> Total submission of <br>Narrative Reports<span class="sort-icon text-xs"></span></th>
                     <th class="text-center">Action</th>
 
                 </tr>
                 </thead>
                 <tbody id="programs">
-                <!-- row 1 -->
-                <tr>
-                    <td>BSIT</td>
-                    <td>Quality Control Specialist</td>
-                    <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                </tr>
-                <!-- row 2 -->
-                <tr class="hover">
 
-                    <td>BSCS</td>
-                    <td>Desktop Support Technician</td>
-                    <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-
-                </tr>
-                <!-- row 3 -->
-                <tr>
-                    <td>BSBM</td>
-                    <td>Tax Accountant</td>
-                    <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                </tr>
                 </tbody>
             </table>
+            <div id="tableNoResProg" class="flex justify-center items-center">
+            </div>
         </div>
     </div>
     <div class="flex w-1/2  transition  shadow rounded
               justify-center  ">
         <div class="w-full overflow-hidden hover:overflow-auto">
             <h1></h1>
-            <table class="table  " id="yr_sectbl">
+            <table class="table  table-sm" id="yr_sectbl">
                 <!-- head -->
                 <thead class="sticky top-0 shadow bg-slate-100 rounded text-slate-700">
                     <tr>
@@ -59,23 +43,12 @@
                 </thead>
                 <tbody id="yrSec">
                 <!-- row 1 -->
-                <tr>
-                    <td>4A</td>
-                    <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                </tr>
-                <!-- row 2 -->
-                <tr class="hover">
-                    <td>4B</td>
-                    <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                </tr>
-                <!-- row 3 -->
-                <tr>
-                    <td>4C</td>
-                    <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                </tr>
+
                 
                 </tbody>
             </table>
+            <div id="tableNoResYrSec" class="flex justify-center items-center">
+            </div>
         </div>
     </div>
 
@@ -120,15 +93,15 @@
                                     <input type="number" min="1" required name="ojt_hours" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
                                 </label>
                             </div>
+                            <div class="flex justify-start gap-2">
+                                <label class="form-control w-full">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700 font-bold">Total Narrative Reports</span>
+                                    </div>
+                                    <input type="number" min="1" required name="totalNarratives" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div id="deaccSectionModal">
-
-
-
-                    </div>
-                    <div id="deactSectionLink" class="text-end">
-
                     </div>
                 </div>
 

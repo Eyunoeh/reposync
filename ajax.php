@@ -155,77 +155,31 @@ if ($action == 'addWeeklyReport') {
 
 }
 if ($action == 'getWeeklyReports'){
+    header('Content-Type: application/json');
     $user_id = $_SESSION['log_user_id'];
     $week = 1;
     $sql = "SELECT file_id, upload_status, weeklyFileReport
         FROM weeklyReport
         WHERE stud_user_id = ?
         ORDER BY upload_date";
+
+
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $result = mysqlQuery($sql, 'i',[$user_id] );
+    if(count($result) > 0){
 
-    while ($row = $result->fetch_assoc()) {
-        $filename = $row['weeklyFileReport'];
-
-        preg_match('/week_([0-9]+)\.pdf/', $filename, $matches);
-        $week_number = isset($matches[1]) ? (int)$matches[1] : '';
-
-        $formatted_week = ($week_number !== '') ? "Week " . $week_number : '';
-        $status = $row['upload_status'];
-
-        switch ($status) {
-            case 'pending':
-                $formattedStatus = 'Pending';
-                $status_color = 'text-warning';
-                break;
-            case 'revision':
-                $formattedStatus = 'With Revision';
-                $status_color = 'text-info';
-
-                break;
-            case 'approved':
-                $formattedStatus = 'Approved';
-                $status_color = 'text-success';
-                break;
-            default:
-                $formattedStatus = 'Unknown';
-                break;
+        for ($i = 0; $i < count($result); $i++){
+            $result[$i]['totalJournalComment'] = countFileComments($result[$i]['file_id']);
         }
-        echo ' <tr class="border-b border-dashed last:border-b-0">
-
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">' . $formatted_week . '</span>
-                                </td>
-
-                                <td class="p-3 pr-0 ">
-                                    <span class="'.$status_color.' font-semibold text-light-inverse text-md/normal">' . $formattedStatus . '</span>
-                                </td>
-                                <td class="p-3 pr-0 " >
-                                    <div class="indicator hover:cursor-pointer" data-report-comment-id="'.$row['file_id'].'" onclick="openModalForm(\'comments\');getComments(this.getAttribute(\'data-report-comment-id\'))">
-                                        <span class="indicator-item badge badge-neutral"  data-journal-comment-id="3" id="journal_comment_2">'.countFileComments($row['file_id']).'</span>
-                                        <a class="font-semibold text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
-                                    </div>
-                                </td>
-                                <td class="p-3 pr-0  text-end">
-                                    ';
-        if ($formattedStatus === 'Pending' || $formattedStatus === 'With Revision'){
-            echo '
-                                   
-                                    <div class="tooltip tooltip-bottom" data-tip="Resubmit">
-                                        <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
-                                transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  data-report_id="' . $row['file_id'] . '" onclick="openModalForm(\'resubmitReport\');resubmitWeeklyReport(this.getAttribute(\'data-report_id\'))"><i class="fa-solid fa-pen-to-square"></i></a>
-                                    </div>';
-        }
-
-        echo '                    <div  class="tooltip tooltip-bottom"  data-tip="View">
-                                        <a href="StudentWeeklyReports/' . $row['weeklyFileReport'] . '" target="_blank" class=" text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
-                                    transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"  ><i class="fa-regular fa-eye"></i></a>
-                                    </div>
-                                </td>
-                            </tr>';
+        echo json_encode(['response' => 1,
+        'data' => $result]);
+    }else{
+        handleError('No weekly journal reports found');
     }
+    exit();
+
 }
 
 if ($action == 'updateWeeklyreportStat'){
@@ -415,6 +369,7 @@ where s.user_id = ?',
         $params = [$school_id, $ojt_adviser_UID,$ac_Submitted,$sem_Submitted, $new_file_name ];
 
         $narrative_id = mysqlQuery($new_final_report,$valueTypes, $params)[1];
+        handleNarrativeUpload('', $new_file_name,$temp_file, $narrative_id);
 
     }catch (mysqli_sql_exception $e) {
         $responseMessage = $e->getMessage();
@@ -429,7 +384,7 @@ where s.user_id = ?',
     $recipient =  getRecipient($ojt_adviser_UID);
     email_queuing($subjectType, $bodyMessage,$recipient );
 
-    //handleNarrativeUpload('', $new_file_name, $narrative_id);
+
 
     echo json_encode(['response' => $response,
         'message' => $responseMessage]);
@@ -437,127 +392,41 @@ where s.user_id = ?',
 
 }
 
-if($action == 'StudsubmittedNarratives'){
+
+if ($action === 'editFinalReport') {
+    header('Content-Type: application/json');
     header('Content-Type: application/json');
 
-    $submtdNarratives = mysqlQuery('SELECT * from narrativereports JOIN tbl_students
-         on tbl_students.enrolled_stud_id = narrativereports.enrolled_stud_id  
-         where  tbl_students.user_id = ? ', 'i', [$_SESSION['log_user_id']]);
-
-
-
-    if (count($submtdNarratives) > 0){
-        for ($i = 0 ; $i < count($submtdNarratives) ; $i++){
-            $submtdNarratives[$i]['narrative_id'] = urlencode (encrypt_data($submtdNarratives[$i]['narrative_id'], $secret_key));
-        }
-        echo json_encode(['response' => 1,
-            'data' => $submtdNarratives]);
-    }else {
-        echo json_encode(['response' => 1,
-            'data' => []]);
-    }
-
-}
-
-
-
-
-if ($action == 'get_narrativeReports') {
-    if (!isset($_SESSION['log_user_id'])){
-        exit();
-    }
-    $selectProgram = $_GET['program'];
-
-    $sql = "SELECT narrativereports.*, tbl_user_info.user_id,
-       tbl_user_info.first_name AS adv_first_name, 
-       tbl_user_info.last_name AS adv_last_name
-FROM narrativereports
-JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id
-WHERE narrativereports.file_status = 'OK' AND narrativereports.program = ?
-ORDER BY narrativereports.upload_date DESC;
-
-";
-    $getNarrtivesStmt = $conn->prepare($sql);
-    $getNarrtivesStmt->bind_param('s', $selectProgram);
-    $getNarrtivesStmt->execute();
-    $result = $getNarrtivesStmt->get_result();
-    $number = 1;
-    if ($result === false) {
-        echo "Error: " . $conn->error;
-    } else {
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $middle_initial = $row['middle_name']!== 'N/A' ? ' ' . $row['middle_name']  : '';
-                echo '<tr class="border-b border-dashed last:border-b-0 p-3">';
-                if ($_SESSION['log_user_type'] !== 'student'){
-                    echo '<td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-sm">' . $row['stud_school_id'] . '</span>
-                        </td>';
-                }
-                echo '
-                        
-                        <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . $row['first_name'] . ' ' . $middle_initial . ' ' . $row['last_name'] . '</span>
-                        </td>
-                         <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal  break-words">' . $row['adv_first_name'] . ' ' . $row['adv_last_name'] . '</span>
-                        </td>
-                        <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . str_replace(',', ' - ', $row['sySubmitted']) . ' </span>
-                        </td>
-                  
-                    <td class="p-3 text-end ">
-                  ';
-
-                if ($_SESSION['log_user_id'] === $row['OJT_adviser_ID']){
-                    echo '
-                            <a onclick="openModalForm(\'EditNarrative\');editNarrative(this.getAttribute(\'data-narrative\'))" id="archive_narrative" data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
-                        ';
-                }else{
-                    echo ' <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>';
-                }
-
-                echo'</td>
-                      </tr>';
-            }
-        }else{
-            echo '<tr><td colspan="9">No Result</td></tr>';
-        }
-    }
-    $conn->close();
-}
-if ($action == 'narrativeReportsJson'){
-
-    $narrative_id = decrypt_data($_GET['narrative_id'], $secret_key);
-
-    $sql = "SELECT * FROM narrativereports WHERE narrative_id = ? ORDER BY upload_date DESC LIMIT 1";
-    $stmt = $conn->prepare($sql);
-
-    if ($stmt) {
-        $stmt->bind_param("s", $narrative_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $row['narrative_id'] = encrypt_data($row['narrative_id'], $secret_key);
-
-            header('Content-Type: application/json');
-            echo json_encode($row);
-        } else {
-            echo "Error: No data found for the given narrative ID.";
-        }
-        $stmt->close();
-    } else {
-        echo "Error: " . $conn->error;
-    }
-}
-
-if ($action === 'UpdateNarrativeReport') {
-    header('Content-Type: application/json');
     $response = 1;
-    $responseMessage = 'Narrative report has been updated!';
+    $responseMessage ='New narrative report has been submitted! Please wait for adviser approval';
+
+    if (isset($_FILES['narrativeReportPDF'])) {
+        if (!isPDF($file_name)){
+            handleError('Invalid file format: Not pdf');
+        }
+    }
+
+    $file_name = $_FILES['narrativeReportPDF']['name'];
+    $file_temp = $_FILES['narrativeReportPDF']['tmp_name'];
+    $file_type = $_FILES['narrativeReportPDF']['type'];
+    $file_error = $_FILES['narrativeReportPDF']['error'];
+    $file_size = $_FILES['narrativeReportPDF']['size'];
+
+
+
+
+    if (!$file_error === UPLOAD_ERR_OK) {
+        handleError('file error');
+    }
+
+
+    $ac_Submitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
+    $sem_Submitted = getPostData('semester');
+
+
+
+
+
 
     $fields = [
         'first_name' => '',
@@ -691,6 +560,125 @@ if ($action === 'UpdateNarrativeReport') {
 
     echo json_encode(['response' => $response, 'message' => $responseMessage]);
 }
+
+
+
+
+if($action == 'StudsubmittedNarratives'){
+    header('Content-Type: application/json');
+
+    $submtdNarratives = mysqlQuery('SELECT * from narrativereports JOIN tbl_students
+         on tbl_students.enrolled_stud_id = narrativereports.enrolled_stud_id  
+         where  tbl_students.user_id = ? ', 'i', [$_SESSION['log_user_id']]);
+
+
+
+    if (count($submtdNarratives) > 0){
+        for ($i = 0 ; $i < count($submtdNarratives) ; $i++){
+            $submtdNarratives[$i]['narrative_id'] = urlencode (encrypt_data($submtdNarratives[$i]['narrative_id'], $secret_key));
+        }
+        echo json_encode(['response' => 1,
+            'data' => $submtdNarratives]);
+    }else {
+        echo json_encode(['response' => 1,
+            'data' => []]);
+    }
+
+}
+
+if ($action == 'narrativeReportsJson'){
+
+    $narrative_id = decrypt_data($_GET['narrative_id'], $secret_key);
+
+    $sql = "SELECT * FROM narrativereports WHERE narrative_id = ? ORDER BY upload_date DESC LIMIT 1";
+
+
+    header('Content-Type: application/json');
+
+    $result = mysqlQuery($sql, 'i', [$narrative_id]);
+    if (count($result) > 0) {
+        echo json_encode(['response' => 1,
+            'data' => $result[0]]);
+    }else{
+        handleError('Invalid ID');
+    }
+    exit();
+
+}
+
+
+
+
+if ($action == 'get_narrativeReports') {
+    if (!isset($_SESSION['log_user_id'])){
+        exit();
+    }
+    $selectProgram = $_GET['program'];
+
+    $sql = "SELECT narrativereports.*, tbl_user_info.user_id,
+       tbl_user_info.first_name AS adv_first_name, 
+       tbl_user_info.last_name AS adv_last_name
+FROM narrativereports
+JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id
+WHERE narrativereports.file_status = 'OK' AND narrativereports.program = ?
+ORDER BY narrativereports.upload_date DESC;
+
+";
+    $getNarrtivesStmt = $conn->prepare($sql);
+    $getNarrtivesStmt->bind_param('s', $selectProgram);
+    $getNarrtivesStmt->execute();
+    $result = $getNarrtivesStmt->get_result();
+    $number = 1;
+    if ($result === false) {
+        echo "Error: " . $conn->error;
+    } else {
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $middle_initial = $row['middle_name']!== 'N/A' ? ' ' . $row['middle_name']  : '';
+                echo '<tr class="border-b border-dashed last:border-b-0 p-3">';
+                if ($_SESSION['log_user_type'] !== 'student'){
+                    echo '<td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-sm">' . $row['stud_school_id'] . '</span>
+                        </td>';
+                }
+                echo '
+                        
+                        <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . $row['first_name'] . ' ' . $middle_initial . ' ' . $row['last_name'] . '</span>
+                        </td>
+                         <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal  break-words">' . $row['adv_first_name'] . ' ' . $row['adv_last_name'] . '</span>
+                        </td>
+                        <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . str_replace(',', ' - ', $row['sySubmitted']) . ' </span>
+                        </td>
+                  
+                    <td class="p-3 text-end ">
+                  ';
+
+                if ($_SESSION['log_user_id'] === $row['OJT_adviser_ID']){
+                    echo '
+                            <a onclick="openModalForm(\'EditNarrative\');editNarrative(this.getAttribute(\'data-narrative\'))" id="archive_narrative" data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
+                        ';
+                }else{
+                    echo ' <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>';
+                }
+
+                echo'</td>
+                      </tr>';
+            }
+        }else{
+            echo '<tr><td colspan="9">No Result</td></tr>';
+        }
+    }
+    $conn->close();
+}
+
+
+
+
+
 
 
 
@@ -1577,13 +1565,14 @@ if ($action == 'ProgYrSec') {
     $program_code = isset($_POST['ProgramCode']) ? sanitizeInput($_POST['ProgramCode']) : '';
     $program_name = isset($_POST['ProgramName']) ? sanitizeInput($_POST['ProgramName']) : '';
     $ojtHours = isset($_POST['ojt_hours']) ? sanitizeInput($_POST['ojt_hours']) : '';
+    $totalNarratives = isset($_POST['totalNarratives']) ? sanitizeInput($_POST['totalNarratives']) : '';
     $year = isset($_POST['year']) ? sanitizeInput($_POST['year']) : '';
     $section = isset($_POST['section']) ? sanitizeInput($_POST['section']) : '';
     $actionType = isset($_POST['action_type']) ? sanitizeInput($_POST['action_type']) : '';
     $id = isset($_POST['ID']) ? sanitizeInput($_POST['ID']) : '';
 
-    $update_proram = "UPDATE program SET program_code = ?, program_name = ? , ojt_hours = ? WHERE program_id = ?";
-    $insert_program = "INSERT INTO program (program_code, program_name, ojt_hours) VALUES (?, ?, ?)";
+    $update_proram = "UPDATE program SET program_code = ?, program_name = ? , ojt_hours = ?, totalNarratives = ? WHERE program_id = ?";
+    $insert_program = "INSERT INTO program (program_code, program_name, ojt_hours, totalNarratives) VALUES (? , ?, ?, ?)";
     $update_yrSec = "UPDATE section SET year = ?, section = ? WHERE year_sec_Id = ?";
     $insert_yrSec = "INSERT INTO section (year,section) VALUES (?,?)";
     $sql = '';
@@ -1594,14 +1583,14 @@ if ($action == 'ProgYrSec') {
         if ($program_code !== '' && $program_name !== '' && $ojtHours !== '') {
             if (isset($actionType) && $actionType == 'edit') {
                 $sql = $update_proram;
-                $params = [$program_code, $program_name,$ojtHours, $id];
-                $types = 'ssii';
+                $params = [$program_code, $program_name,$ojtHours,$totalNarratives, $id];
+                $types = 'ssiii';
                 $responseMessage = 'Program information has been updated.';
 
             } else {
                 $sql = $insert_program;
-                $params = [$program_code, $program_name, $ojtHours];
-                $types = 'ssi';
+                $params = [$program_code, $program_name, $ojtHours, $totalNarratives];
+                $types = 'ssii';
                 $responseMessage = 'New program has been added.';
             }
             mysqlQuery($sql, $types, $params);
