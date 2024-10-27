@@ -23,6 +23,7 @@ document.addEventListener('submit', function(e) {
    else if (e.target.id === 'NarrativeReportForm'){
 
       if (e.target.querySelector('input[name="NarraActType"]').value === 'Edit') {
+
          endpoint = 'editFinalReport';
          alertMessage = 'Narrative report has been updated!';
          alertType = 'info';
@@ -32,7 +33,16 @@ document.addEventListener('submit', function(e) {
          alertType = 'success';
       }
 
+      loader_id = 'narrativeSubmitLoader';
+      submit_btn = 'NarrativeSubmit';
 
+
+      add_loader(loader_id);
+
+      disable_button(submit_btn)
+
+
+      console.log(endpoint)
 
       modal = 'NarrativeReportmodalForm'
 
@@ -60,13 +70,14 @@ document.addEventListener('submit', function(e) {
       success: function(response) {
          if (response.response === 1) {
             Alert(alertContainer, alertMessage, alertType);
-            if (modal){
-               closeModalForm(modal)
-            }
 
-            if (loadData.length > 0){
-               loadData.forEach(func => func());
-            }
+            submit_btn && enable_button(submit_btn);
+            loader_id && remove_loader(loader_id);
+            modal && closeModalForm(modal)
+
+            loadData.length && loadData.forEach(func => func());
+
+
 
          } else {
             Alert(alertContainer,response.message, 'warning')
@@ -241,6 +252,7 @@ async function get_WeeklyReports() {
 
 
         let  weeklyJournal = response.data;
+         let counter = 1
         weeklyJournal.forEach(journal => {
 
 
@@ -248,7 +260,7 @@ async function get_WeeklyReports() {
               revision: ['text-info','With Revision'],
               approved: ['text-success', 'Approved']}
 
-           let counter = 1
+
            weeklyJournalTable += `<tr class="border-b border-dashed last:border-b-0">
 
                                 <td class="p-3 pr-0 ">
@@ -308,7 +320,7 @@ async function getSubmittedNarratives(){
                     <p class="text-sm text-slate-700 font-sans">No submitted narrative report</p>`);   }
    else {
       narratives.forEach(narrative => {
-         let years = narrative.ac_submitted.split(',');
+         let years = narrative.ay_submitted.split(',');
          let startingAC = years[0].trim();
          let endingAC =  years[1].trim();
 
@@ -370,11 +382,11 @@ async function editSubmittedNarrative(narrative_id){
       dataType: 'json'
    });
 
-   console.log(response)
+
    if (response.response === 1){
       let SubmittedNarratives = response.data;
 
-      let acadYear = SubmittedNarratives['ac_submitted'].split(',');
+      let acadYear = SubmittedNarratives['ay_submitted'].split(',');
 
       $('#NarrativeReportForm select[name="semester"]').val(SubmittedNarratives['sem_submitted']);
       $('#NarrativeReportForm input[name="startYear"]').val(acadYear[0]);

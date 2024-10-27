@@ -337,39 +337,33 @@ if ($action == 'newFinalReport'){
     }
 
 
-    $ac_Submitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
+    $ay_Submitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
     $sem_Submitted = getPostData('semester');
 
 
-    $stud_info = mysqlQuery('SELECT s.*, ui.* ,p.*,ys.* 
+    $stud_info = mysqlQuery('SELECT s.*, ui.* 
 from tbl_students s 
     JOIN tbl_user_info ui on ui.user_id = s.user_id
-    JOIN program p on p.program_id = s.program_id
-    JOIN section ys on ys.year_sec_Id = s.year_sec_Id
-
-where s.user_id = ?',
-        'i', [$_SESSION['log_user_id']])[0];
+   
+where s.user_id = ?', 'i', [$_SESSION['log_user_id']])[0];
 
 
-    $file_first_name = str_replace(' ', '', $stud_info['first_name']);
-    $file_last_name = str_replace(' ', '', $stud_info['last_name']);
-    $program = $stud_info['program_code'];
+
     $ojt_adviser_UID = $stud_info['adv_id'];
-    $yr_section = $stud_info['year'].$stud_info['section'];
     $school_id = $stud_info['enrolled_stud_id'];
-    $new_file_name = $file_first_name . "_" . $file_last_name . "_" . $program . "_" . $yr_section . "_" . $school_id . ".pdf";
+    $new_file_name =  $school_id.'_'. uniqid('', true) . ".pdf";
     $current_date_time = date('Y-m-d H:i:s');
 
     try {
         $new_final_report = "INSERT INTO narrativereports
-    (enrolled_stud_id , OJT_adv_id, ac_submitted, sem_submitted,  narrative_file_name)
-    values (?,?,?,?,?)";
+    (enrolled_stud_id ,  ay_submitted, sem_submitted,  narrative_file_name)
+    values (?,?,?,?)";
 
-        $valueTypes = "iisss";
-        $params = [$school_id, $ojt_adviser_UID,$ac_Submitted,$sem_Submitted, $new_file_name ];
+        $valueTypes = "isss";
+        $params = [$school_id, $ay_Submitted,$sem_Submitted, $new_file_name ];
 
         $narrative_id = mysqlQuery($new_final_report,$valueTypes, $params)[1];
-        handleNarrativeUpload('', $new_file_name,$temp_file, $narrative_id);
+        handleNarrativeUpload('', $new_file_name, $file_temp, $narrative_id);
 
     }catch (mysqli_sql_exception $e) {
         $responseMessage = $e->getMessage();
@@ -395,170 +389,63 @@ where s.user_id = ?',
 
 if ($action === 'editFinalReport') {
     header('Content-Type: application/json');
-    header('Content-Type: application/json');
 
     $response = 1;
-    $responseMessage ='New narrative report has been submitted! Please wait for adviser approval';
+    $responseMessage = 'Narrative report has been updated! Please wait for adviser approval';
+    $params = [];
+    $types = '';
 
-    if (isset($_FILES['narrativeReportPDF'])) {
-        if (!isPDF($file_name)){
-            handleError('Invalid file format: Not pdf');
-        }
-    }
+    $stud_info = mysqlQuery('SELECT s.*, ui.*, n.*
+        FROM tbl_students s 
+        JOIN tbl_user_info ui ON ui.user_id = s.user_id
+        JOIN narrativereports n ON n.enrolled_stud_id = s.enrolled_stud_id
+        WHERE s.user_id = ?', 'i', [$_SESSION['log_user_id']])[0];
 
-    $file_name = $_FILES['narrativeReportPDF']['name'];
-    $file_temp = $_FILES['narrativeReportPDF']['tmp_name'];
-    $file_type = $_FILES['narrativeReportPDF']['type'];
-    $file_error = $_FILES['narrativeReportPDF']['error'];
-    $file_size = $_FILES['narrativeReportPDF']['size'];
+    $ojt_adviser_UID = $stud_info['adv_id'];
+    $school_id = $stud_info['enrolled_stud_id'];
+    $narrative_id = $stud_info['narrative_id'];
 
-
-
-
-    if (!$file_error === UPLOAD_ERR_OK) {
-        handleError('file error');
-    }
-
-
-    $ac_Submitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
+    $ay_Submitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']) . ',' . sanitizeInput($_POST['endYear']) : '';
     $sem_Submitted = getPostData('semester');
 
+    $update_query = 'UPDATE narrativereports SET ay_submitted = ?, sem_submitted = ?, upload_date = NOW()';
+    $types = 'ss';
+    $params = [$ay_Submitted, $sem_Submitted];
 
-
-
-
-
-    $fields = [
-        'first_name' => '',
-        'middle_name' => 'N/A',
-        'last_name' => '',
-        'program' => '',
-        'section' => '',
-        'ojt_adviser' => '',
-        'stud_Sex' => '',
-        'school_id' => '',
-        'narrative_id' => '',
-        'companyName' => 'N/A',
-        'trainingHours' => 0,
-        'startYear' => '',
-        'endYear' => '',
-        'remark' => '',
-        'UploadStat' => null,
-    ];
-
-    foreach ($fields as $key => $default) {
-        $fields[$key] = isset($_POST[$key]) ? sanitizeInput($_POST[$key]) : $default;
-    }
-
-    $fields['school_id'] = (is_numeric($fields['school_id'])) ? $fields['school_id'] : '';
-    $fields['sySubmitted'] = ($fields['startYear'] && $fields['endYear']) ? $fields['startYear'] . ',' . $fields['endYear'] : '';
-    $fields['UploadStat'] = isset($_POST['UploadStat']) && in_array($_POST['UploadStat'], ['OK', 'Pending', 'Declined']) ? $fields['UploadStat'] : null;
-    $fields['narrative_id'] = decrypt_data($fields['narrative_id'], $secret_key);
-
-    if ($_SESSION['log_user_type'] === 'adviser') {
-        $fields['UploadStat'] = 'Pending'; // Set to pending when an adviser updates the report
-    }
-
-    if ($fields['UploadStat'] !== null) {
-        if ($fields['UploadStat'] === 'OK') {
-            $fields['remark'] = 'OK'; // Set remark to OK if status is OK
-        }
-
-        $updateStat = "UPDATE narrativereports SET file_status = ?, remarks = ? WHERE narrative_id = ?";
-        try {
-            mysqlQuery($updateStat, 'ssi', [$fields['UploadStat'], $fields['remark'], $fields['narrative_id']]);
-        } catch (mysqli_sql_exception $e) {
-            $responseMessage = $e->getMessage();
-        }
-
-        if ($_SESSION['log_user_type'] === 'admin' && $fields['UploadStat'] !== 'Pending') {
-            $recipient = getRecipient($fields['ojt_adviser']);
-            $subjectType = 'Upload Narrative Request';
-            $bodyMessage = "<h1><b>Notification</b></h1><br>
-                            <h3>Your upload narrative report request has been reviewed.</h3><br>
-                            The admin changed its status to: <b>{$fields['UploadStat']}</b><br>";
-            if ($fields['UploadStat'] === 'Declined') {
-                $bodyMessage .= "<b>Reason: </b>{$fields['remark']}<br>";
-            }
-            $bodyMessage .= "Click to review: <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a>";
-            email_queuing($subjectType, $bodyMessage, $recipient);
-            echo json_encode(['response' => $response, 'message' => $responseMessage]);
-
-            //for admin code block
-            exit();
-        }
-    }
-
-    // Check required fields
-    $required_fields = ['first_name', 'last_name', 'stud_Sex', 'program',
-        'section', 'ojt_adviser', 'school_id', 'narrative_id',
-        'sySubmitted'];
-    $all_fields_filled = array_reduce($required_fields, fn($carry, $item) => $carry && $fields[$item] !== '', true);
-
-
-    if ($all_fields_filled) {
-        $file_first_name = str_replace(' ', '', $fields['first_name']);
-        $file_last_name = str_replace(' ', '', $fields['last_name']);
-        $new_file_name = "{$file_first_name}_{$file_last_name}_{$fields['program']}_{$fields['section']}_{$fields['school_id']}.pdf";
-        $current_date_time = date('Y-m-d H:i:s');
-
-        $old_filename = mysqlQuery("SELECT narrative_file_name FROM narrativereports WHERE narrative_id = ?", 'i', [$fields['narrative_id']])[0]['narrative_file_name'];
-
-        $update_final_report = "UPDATE narrativereports SET 
-                                    stud_school_id = ?, 
-                                    OJT_adviser_ID = ?, 
-                                    sex = ?, 
-                                    first_name = ?, 
-                                    middle_name = ?, 
-                                    last_name = ?, 
-                                    program = ?, 
-                                    section = ?, 
-                                    narrative_file_name = ?, 
-                                    upload_date = ?, 
-                                    training_hours = ?, 
-                                    company_name = ?, 
-                                    sySubmitted = ? 
-                                WHERE narrative_id = ?";
-        try {
-            mysqlQuery($update_final_report, "sisssssssssssi", [
-                $fields['school_id'], $fields['ojt_adviser'], $fields['stud_Sex'],
-                $fields['first_name'], $fields['middle_name'], $fields['last_name'],
-                $fields['program'], $fields['section'], $new_file_name,
-                $current_date_time, $fields['trainingHours'], $fields['companyName'],
-                $fields['sySubmitted'], $fields['narrative_id']
-            ]);
-        } catch (mysqli_sql_exception $e) {
-            $responseMessage = $e->getCode() == 1062 ? "School id already exists." : $e->getMessage();
-            echo json_encode(['response' => 2, 'message' => $responseMessage]);
-            exit();
-        }
-
-        // Handle file upload and renaming logic
-        if (isset($_FILES['final_report_file']) && $_FILES['final_report_file']['error'] === UPLOAD_ERR_OK) {
-            // Handle file upload
-            $file_name = $_FILES['final_report_file']['name'];
-            if (isPDF($file_name)) {
-                if (handleNarrativeUpload($old_filename, $new_file_name, $fields['narrative_id'])){
-                    echo json_encode(['response' => 1, 'message' => 'Narrative report has been updated!']);
-                }
-
-            }else{
-                handleError('Invalid file format: Not pdf');
-            }
-
+    if (isset($_FILES['narrativeReportPDF'])) {
+        $file_name = $_FILES['narrativeReportPDF']['name'];
+        if (!isPDF($file_name)) {
+            handleError('Invalid file format: Not pdf');
         } else {
-            // Handle file renaming
-            handleNarrativeFileRename($old_filename, $new_file_name);
+            $file_temp = $_FILES['narrativeReportPDF']['tmp_name'];
+            $file_error = $_FILES['narrativeReportPDF']['error'];
+
+            if ($file_error !== UPLOAD_ERR_OK) {
+                handleError('File error');
+            }
+
+            $old_filename = $stud_info['narrative_file_name'];
+            $new_file_name = $school_id . '_' . uniqid('', true) . ".pdf";
+
+            handleNarrativeUpload($old_filename, $new_file_name, $file_temp, $narrative_id);
+
+            $update_query .= ', narrative_file_name = ?';
+            $params[] = $new_file_name;
+            $types .= 's';
         }
-
-    } else {
-        $responseMessage = "Required fields are missing.";
-
-        handleError($responseMessage);
-
     }
 
-    echo json_encode(['response' => $response, 'message' => $responseMessage]);
+    $update_query .= ' WHERE narrative_id = ?';
+    $types .= 'i';
+    $params[] = $narrative_id;
+
+    $upd_narrativeRepsTbl = mysqlQuery($update_query, $types, $params);
+
+    echo json_encode([
+        'response' => 1,
+        'message' => $responseMessage
+    ]);
+    exit();
 }
 
 
@@ -2020,19 +1907,11 @@ WHERE tbl_user_info.user_type = ? AND tbl_accounts.status = ?";
 if ($action == 'dshbDeclinedFinalReports') {
 
     if ($_SESSION['log_user_type'] == 'adviser') {
-        $getPendingFinalUpdload = "SELECT COUNT(*) as totalDeclined FROM narrativereports
-                                   WHERE OJT_adv_id = ? AND file_status = 'Declined';";
-        $getPendingFinalUpdloadSTMT = $conn->prepare($getPendingFinalUpdload);
-        $getPendingFinalUpdloadSTMT->bind_param('i', $_SESSION['log_user_id']);
-        $getPendingFinalUpdloadSTMT->execute();
-        $result = $getPendingFinalUpdloadSTMT->get_result();
-    }
 
-    if ($result->num_rows > 0) {
-        echo $result->fetch_assoc()['totalDeclined'];
-    } else {
-        echo 0;
+        $total_declined = getTotalNarrativeReports('',2, $_SESSION['log_user_id']);
     }
+    echo $total_declined;
+
     exit();
 
 }

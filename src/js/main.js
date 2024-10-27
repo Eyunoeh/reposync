@@ -146,6 +146,7 @@ function toggleNav() {
     }
 }
 
+/*
 
 function getHomeActSched(){
     $.ajax({
@@ -163,6 +164,57 @@ function getHomeActSched(){
     });
 
 }
+*/
+
+
+async function getHomeActSched() {
+    try {
+        const response = await $.ajax({
+            url: '../ajax.php?action=getDashboardActSched',
+            method: 'GET',
+            dataType: 'json'
+        });
+        let actAndschedList = '';
+        if (response.response === 1){
+            let actScheds = response.data;
+            actScheds.forEach(actSched =>{
+                actAndschedList += `<div 
+             class="text-sm text-slate-700 sm:text-base flex transform max-w-[50rem] w-full transition duration-500 shadow rounded
+            hover:scale-110 hover:bg-slate-300  justify-start items-center cursor-pointer">
+            <div class=" min-w-[12rem]  p-2 sm:p-5 b text-center flex flex-col justify-center text-sm">`
+                if (actSched['starting_date'] === actSched['end_date']){
+                    actAndschedList += `<h4 class="text-start">${actSched['starting_date']}</h4>`
+                }else {
+                    actAndschedList += `<h4 class="text-start">${actSched['starting_date']}</h4>`
+                    actAndschedList += `<h4 class="text-start">${actSched['end_date']}</h4>`
+                }
+                actAndschedList += `
+            </div>
+            <div class="flex flex-col justify-center  p-3">
+                <h1 class="font-semibold  break-words">${actSched['title']}</h1>
+                
+                     <p class="text-justify text-sm pr-5 break-words">
+        ${actSched['description'].replace(/\r\n|\r|\n/g, '<br>')}
+                </p>
+    
+                
+            </div>
+        </div>`
+            })
+            $('#actSched').html(actAndschedList);
+        }else {
+            $('#actSched').html(`<div class="flex transform w-[50rem]    justify-center items-center ">
+            <h1 class="font-semibold">No activity and schedule posted</h1>
+        </div>`);
+        }
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+
+
 function getHomeNotes(){
     $.ajax({
         url: '../ajax.php?action=getHomeNotes' ,

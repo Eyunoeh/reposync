@@ -4884,6 +4884,10 @@ details.collapse summary::-webkit-details-marker {
   max-width: 80rem;
 }
 
+.max-w-\[50rem\] {
+  max-width: 50rem;
+}
+
 .max-w-full {
   max-width: 100%;
 }
@@ -5963,6 +5967,10 @@ body{
     padding: 1.25rem;
   }
 
+  .sm\:p-2 {
+    padding: 0.5rem;
+  }
+
   .sm\:text-left {
     text-align: left;
   }
@@ -5970,6 +5978,11 @@ body{
   .sm\:text-5xl {
     font-size: 3rem;
     line-height: 1;
+  }
+
+  .sm\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
   }
 }
 

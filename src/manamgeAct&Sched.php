@@ -14,7 +14,7 @@ include '../DatabaseConn/databaseConn.php'
             <button class="btn btn-circle btn-success bg-opacity-70 " id="newAct" onclick="openModalForm('Act&shedModal') ;removeTrashButton()"><i class="fa-solid fa-plus"></i></button>
         </div>
     </div>
-    <div class=" card-body grid place-items-center gap-5 p-3 sm:p-5 overflow-hidden sm:overflow-auto  scroll-smooth" id="actAndschedList">
+    <div class=" card-body grid place-items-center gap-5  sm:p-5 overflow-hidden sm:overflow-auto  scroll-smooth" id="actAndschedList">
         <div class="mt-5">
             <span class="loading loading-spinner loading-lg"></span>
         </div>

@@ -226,9 +226,12 @@ include '../DatabaseConn/databaseConn.php';
                         <input type="hidden" name="NarraActType" id="NarraActType">
                         <input type="hidden" name="narrative_id" id="narrative_id">
 
-                        <button class="btn btn-neutral btn-outline ">Submit</button>
-
-
+<!--                        <button class="btn btn-neutral btn-outline ">Submit</button>
+-->
+                        <p id="narrativeSubmitLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
+                        <div id="NarrativeSubmit" class="flex justify-center w-full">
+                            <button id="submit_btn" class="btn btn-neutral btn-outline w-1/2" >Submit</button>
+                        </div>
 
                     </div>
                 </form>

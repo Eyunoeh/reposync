@@ -11,7 +11,7 @@ async function getActivitiesAndSched() {
             actScheds.forEach(actSched =>{
                 actAndschedList += `<div onclick="removeTrashButton();openModalForm('Act&shedModal');
             getActSched(${actSched['announcement_id']})"
-             class="flex transform w-[50rem]  transition duration-500 shadow rounded
+             class="text-sm text-slate-700 sm:text-base flex transform max-w-[50rem] w-full transition duration-500 shadow rounded
             hover:scale-110 hover:bg-slate-300  justify-start items-center cursor-pointer">
             <div class=" min-w-[12rem]  p-2 sm:p-5 b text-center flex flex-col justify-center text-sm">`
                 if (actSched['starting_date'] === actSched['end_date']){
@@ -21,14 +21,14 @@ async function getActivitiesAndSched() {
                     actAndschedList += `<h4 class="text-start">${actSched['end_date']}</h4>`
                 }
                 actAndschedList += `</div>
-            <div class="flex flex-col justify-center max-h-[10rem] overflow-auto p-3">
+          <div class="flex flex-col justify-center  p-3">
                 <h1 class="font-semibold  break-words">${actSched['title']}</h1>
-                <div class=" max-h-[10rem] overflow-auto">
-                 <p class="text-justify text-sm pr-5 break-words">
-    ${actSched['description'].replace(/\r\n|\r|\n/g, '<br>')}
-            </p>
-
-                </div>
+                
+                     <p class="text-justify text-sm pr-5 break-words">
+        ${actSched['description'].replace(/\r\n|\r|\n/g, '<br>')}
+                </p>
+    
+                
             </div>
         </div>`
             })
