@@ -11,14 +11,14 @@ document.addEventListener('submit', function(e) {
       alertType = 'success';
       alertMessage = 'Weekly journal has been submitted';
       loadData.push(get_WeeklyReports)
-      loadData.push(getUploadLogs)
+
    }else if (e.target.id === 'resubmitReportForm'){
       endpoint = 'resubmitReport'
       modal = 'resubmitReport';
       alertType = 'success';
       alertMessage = 'Weekly journal has been resubmitted';
       loadData.push(get_WeeklyReports)
-      loadData.push(getUploadLogs)
+
    }
    else if (e.target.id === 'NarrativeReportForm'){
 
@@ -185,14 +185,52 @@ function resubmitWeeklyReport(weeklyReport_id){
 }
 
 async function getUploadLogs() {
+
    try {
       const response = await $.ajax({
          url: '../ajax.php?action=getUploadLogs',
          method: 'GET',
-         dataType: 'html'
+         dataType: 'json'
       });
 
-      $('#logsTable_body').html(response);
+
+      let table_data_logs = '';
+      const logs = response.data;
+
+      if (logs.length > 0) {
+         logs.forEach(log => {
+            const filename = log.weeklyFileReport;
+
+            const match = filename.match(/week_([0-9]+)\.pdf/);
+            const weekNumber = match ? parseInt(match[1], 10) : '';
+
+
+            const formattedWeek = weekNumber ? `Week ${weekNumber}` : '';
+
+            const formattedDateTime = formatDateTime(log.activity_date);
+
+            table_data_logs += `
+               <tr class="border-b border-dashed last:border-b-0">
+                  <td class="p-3 pr-0 ">
+                     <span class=" text-light-inverse text-md/normal">${formattedWeek}</span>
+                  </td>
+                  <td class="p-3 pr-0 ">
+                     <span class=" text-light-inverse text-md/normal">${formattedDateTime}</span>
+                  </td>
+                  <td class="p-3 pr-0 ">
+                     <span class=" text-light-inverse text-md/normal">${log.activity_type.charAt(0).toUpperCase() + log.activity_type.slice(1)}</span>
+                  </td>
+               </tr>`;
+         });
+         $('#logsTable_body').html(table_data_logs);
+         $('#tableNoRes').empty();
+      }else {
+         $('#tableNoRes').html(`  <p class="text-sm text-slate-700 font-sans">No activity log</p>`)
+
+      }
+
+
+
    } catch (error) {
       console.error('Error fetching data:', error);
    }

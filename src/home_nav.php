@@ -77,7 +77,10 @@
              <?php if (!isset($_SESSION['log_user_type'])):?>
 
                  <div class="h-16 hover:bg-gray-200 transition-all rounded">
-                     <h1 class="text-xl  mt-6 hover:opacity-90 "><a href="login.php">Login</a></h1>
+
+                     <a  class="text-xl  mt-6 hover:opacity-90 " href="login.php">
+                         <h1 class="text-xl  mt-6 hover:opacity-90 ">Login</h1>
+                     </a>
                      <hr class="mx-auto bg-black  w-[80%]">
                  </div>
              <?php else:?>

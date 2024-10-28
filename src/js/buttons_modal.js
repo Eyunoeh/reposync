@@ -105,3 +105,14 @@ function Alert(container, message, type) {
     }, 5000);
 }
 
+function formatDateTime(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    });
+}

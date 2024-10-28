@@ -271,6 +271,7 @@ if ($action == 'updateReadStat'){
     }
 }
 if ($action == 'getUploadLogs'){
+    header('Content-Type: application/json');
     $user_id = $_SESSION['log_user_id'];
 
     $sql = "SELECT a.*, w.stud_user_id, w.weeklyFileReport
@@ -279,35 +280,18 @@ if ($action == 'getUploadLogs'){
             WHERE w.stud_user_id = ?
             ORDER BY a.activity_date DESC";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
 
-    while ($row = $result->fetch_assoc()) {
-        $filename = $row['weeklyFileReport'];
-
-        preg_match('/week_([0-9]+)\.pdf/', $filename, $matches);
-        $week_number = isset($matches[1]) ? (int)$matches[1] : '';
-
-        $formatted_week = ($week_number !== '') ? "Week " . $week_number : '';
-        $formatted_date_time = date("M d, Y g:i A", strtotime($row['activity_date']));
-
-
-        echo '  <tr class="border-b border-dashed last:border-b-0">
-
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">'.$formatted_week.'</span>
-                                </td>
-
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">'.$formatted_date_time .'</span>
-                                </td>
-                                <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">'. ucfirst($row['activity_type']).'</span>
-                                </td>
-                            </tr>';
+    $result = mysqlQuery($sql, 'i', [$user_id]);
+    if (count($result) > 0){
+        echo json_encode(['response' => 1,
+            'data' => $result]);
+    }else
+    {
+        echo json_encode(['response' => 1,
+            'data' => []]);
     }
+    exit();
+
 }
 
 
@@ -1283,10 +1267,26 @@ if ($action === 'Notes') {
 
 if ($action == 'getDashboardNotes') {
     $user_id = $_SESSION['log_user_id'];
-    header('Content-Type: application/json');
 
-    $getNotes = "SELECT * FROM announcement WHERE user_id = ? AND status IN ('Active', 'Pending', 'Declined') AND type = 'Notes' ORDER BY announcementUpdated DESC";
+
+    if ( $_SESSION['log_user_type'] === 'student'){
+        $stud_info = mysqlQuery('SELECT s.*
+        FROM tbl_students s 
+        WHERE s.user_id = ?', 'i', [$_SESSION['log_user_id']])[0];
+        $adv_id = $stud_info['adv_id'];
+        $user_id = $adv_id ;
+
+    }
+    $condition  =  $_SESSION['log_user_type'] === 'student' ? "AND status = 1 " : "AND status IN (1, 2, 3) ";
+
+
+    header('Content-Type: application/json');
+    $getNotes = "SELECT * FROM announcement WHERE user_id = ? $condition AND type = 'Notes' ORDER BY announcementUpdated DESC";
     $res = mysqlQuery($getNotes, 'i', [$user_id]);
+
+
+
+
 
     if ($res && count($res) > 0) {
         for ($i = 0; $i < count($res); $i++) {

@@ -5,8 +5,11 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     exit();
 }
 ?>
-<section class=" overflow-auto bg-white flex sm:flex-row flex-col bg-clip-border gap-2 rounded-[.95rem] mt-2 mx-5  text-slate-600">
-    <section class="w-full h-full border-r-2 <?php echo isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'student' ? 'sm:w-[60%]' : '' ?> p-5">
+<section class=" overflow-auto flex sm:flex-row flex-col  gap-2 mt-2 mx-5  ">
+    <section class="bg-white  bordered sm:border-none w-full
+    h-full rounded
+    <?php echo isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'student' ? 'sm:w-[60%]' : '' ?>
+     p-5">
         <div class="card-title flex items-center justify-between">
             <div class="">
                 <h1 class="font-bold text-2xl text-warning font-sans">Activity and Schedule</h1>
@@ -39,17 +42,33 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     <?php
     if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'student'):
     ?>
-    <section class="w-full sm:w-[40%] p-5 ">
+
+
+        <section class="bg-white  bordered sm:border-none w-full h-full rounded sm:w-[40%] p-5">
+            <div class="card-title flex items-center justify-between">
+                <div class="">
+                    <h1 class="font-bold text-2xl text-slate-700 font-sans">Adviser Notes</h1>
+                </div>
+            </div>
+            <div class="card-body flex flex-col items-center h-[70vh] sm:p-5 overflow-hidden hover:overflow-auto scroll-smooth gap-5" id="studNotes">
+
+
+            </div>
+
+
+
+        </section>
+<!--    <section class="bg-white bordered sm:border-none w-full h-full rounded sm:w-[40%] p-5">
         <div class="card ">
             <div class="card-title mb-7">
                 <h1>Adviser Notes</h1>
             </div>
-            <div class=" overflow-hidden hover:overflow-auto h-[70vh]  scroll-smooth" id="studNotes"
-
+            <div class="card-body flex flex-col items-center h-[70vh]
+            sm:p-5 overflow-hidden hover:overflow-auto scroll-smooth gap-5 " id="studNotes">
 
             </div>
         </div>
-    </section>
+    </section>-->
     <?php
     endif;
     ?>

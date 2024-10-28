@@ -111,7 +111,7 @@ async function linkPages() {
         switch (page) {
             case 'weeklyJournal':
                 await navigate('weeklyReports'); // Ensure navigate completes before other actions
-                getUploadLogs();
+
                 get_WeeklyReports();
                 break;
             case 'settings':
@@ -180,7 +180,7 @@ async function getHomeActSched() {
             actScheds.forEach(actSched =>{
                 actAndschedList += `<div 
              class="text-sm text-slate-700 sm:text-base flex transform max-w-[50rem] w-full transition duration-500 shadow rounded
-            hover:scale-110 hover:bg-slate-300  justify-start items-center cursor-pointer">
+            hover:scale-105 hover:bg-slate-300  justify-start items-center cursor-pointer">
             <div class=" min-w-[12rem]  p-2 sm:p-5 b text-center flex flex-col justify-center text-sm">`
                 if (actSched['starting_date'] === actSched['end_date']){
                     actAndschedList += `<h4 class="text-start">${actSched['starting_date']}</h4>`
@@ -196,8 +196,7 @@ async function getHomeActSched() {
                      <p class="text-justify text-sm pr-5 break-words">
         ${actSched['description'].replace(/\r\n|\r|\n/g, '<br>')}
                 </p>
-    
-                
+
             </div>
         </div>`
             })
@@ -215,20 +214,38 @@ async function getHomeActSched() {
 
 
 
-function getHomeNotes(){
-    $.ajax({
-        url: '../ajax.php?action=getHomeNotes' ,
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            if (response){
-                $('#studNotes').html(response);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
+async function getHomeNotes(){
+    try {
+        const response = await $.ajax({
+            url: '../ajax.php?action=getDashboardNotes',
+            method: 'GET',
+            dataType: 'json'
+        });
+        let advNoteCard = '';
+        if (response.response === 1){
+            let adv_Notes = response.data;
+            adv_Notes.forEach(note =>{
+
+
+                const notePosted = formatDateTime(note.announcementPosted)
+                advNoteCard += `<div class="shadow flex transition duration-500 transform scale-90 hover:scale-100 hover:bg-slate-300 cursor-pointer w-full">
+    <div class="flex flex-col justify-center p-2 w-full">
+        <h1 class="font-semibold">${note.title}</h1>
+        <div class="max-h-[10rem] transition overflow-hidden hover:overflow-auto w-full">
+            <p class="text-justify text-sm break-words w-full">${note.description}
+            </p>
+            <p class="text-[12px] text-slate-400 text-end">${notePosted}
+        </div>
+    </div>
+</div>
+`
+            })
+            $('#studNotes').html(advNoteCard);
         }
-    });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+
 
 }
 
@@ -246,7 +263,7 @@ let reportLink = document.getElementById('reportLink')
 reportLink?.addEventListener('click', async function(event) {
     event.preventDefault();
     navigate('weeklyReports').then(()=>{
-        getUploadLogs();
+
         get_WeeklyReports();
     });
 

@@ -72,10 +72,10 @@ async function getAdvNotes() {
                             <span class="font-semibold text-light-inverse text-md/normal">${noteReq['status']}</span>
                         </td>
                          <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${noteReq['starting_date']}</span>
+                            <span class="font-semibold text-light-inverse text-md/normal">${formatDateTime(noteReq['announcementPosted'])}</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${noteReq['end_date']}</span>
+                            <span class="font-semibold text-light-inverse text-md/normal">${formatDateTime(noteReq['announcementUpdated'])}</span>
                         </td>
                         <td class="p-3 text-end">
                             <a href="#" class="hover:cursor-pointer mb-1
