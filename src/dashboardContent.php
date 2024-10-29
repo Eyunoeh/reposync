@@ -13,7 +13,7 @@ session_start();
             <h1 class="font-bold font-sans text-[4rem]" id="pendingNoteCount">
                 <span class="loading loading-spinner loading-lg"></span>
             </h1>
-            <h1 class="font-sans ">Pending Adviser Notes</h1>
+            <h1 class="font-sans  text-sm">Pending Adviser Notes</h1>
         </div>
         <!--<div onclick="dashboard_tab(this.id)" id="dshbuploadNarrativeReq" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
             <h1 class="font-bold font-sans text-[4rem]" id="pendingUploadNarrativeReport">
@@ -34,33 +34,33 @@ session_start();
             <h1 class="font-bold font-sans text-[4rem]" id="pendingUploadNarrativeReport">
                 <span class="loading loading-spinner loading-lg"></span>
             </h1>
-            <h1 class="font-sans ">Pending Upload Narrative Report</h1>
+            <h1 class="font-sans  text-sm   ">Pending submitted narrative report</h1>
         </div>
         <div onclick="dashboard_tab(this.id)" id="declinedNarrativeReqCount" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
             <h1 class="font-bold font-sans text-[4rem]" id="declinedUploadNarrativeReport">
                 <span class="loading loading-spinner loading-lg"></span>
             </h1>
-            <h1 class="font-sans ">Declined Upload Narrative Report</h1>
+            <h1 class="font-sans text-sm">Declined submitted narrative report</h1>
         </div>
         <div onclick="dashboard_tab(this.id) ;" id="dshbweeklyReport" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
             <h1 class="font-bold font-sans text-[4rem]" id="UnreadStudWeeklyReport">
                 <span class="loading loading-spinner loading-lg"></span>
 
             </h1>
-            <h1 class="font-sans " >Unread Weekly Reports</h1>
+            <h1 class="font-sans  text-sm" >Unread Weekly Reports</h1>
         </div>
 
         <div onclick="dashboard_tab(this.id); " id="adviserNotesCard" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
             <h1 class="font-bold font-sans text-[4rem]" id="pendingNoteCount">
                 <span class="loading loading-spinner loading-lg"></span>
             </h1>
-            <h1 class="font-sans ">Pending Notes</h1>
+            <h1 class="font-sans  text-sm">Pending Notes</h1>
         </div>
         <div onclick="dashboard_tab(this.id);" id="stud_list" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
             <h1 class="font-bold font-sans text-[4rem]" id="totalAdvisory">
                 <span class="loading loading-spinner loading-lg"></span>
             </h1>
-            <h1 class="font-sans ">Total active student</h1>
+            <h1 class="font-sans  text-sm">Total active student</h1>
         </div>
     </div>
 

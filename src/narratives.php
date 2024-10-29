@@ -155,26 +155,9 @@ include '../DatabaseConn/databaseConn.php';
 
                 <div id="tableNoRes">
                     <span class="loading loading-spinner loading-lg"></span>
-
                 </div>
-
-                <?php $total_narrativequery = "SELECT COUNT(*) as totalSubNarrative FROM narrativereports n
-                JOIN tbl_students s on s.enrolled_stud_id = n.enrolled_stud_id where user_id = ?";
-
-
-                $total_result = mysqlQuery($total_narrativequery ,'i', [$_SESSION['log_user_id']])[0];
-
-                $checkStudProgramQuery = "SELECT * FROM program p 
-    JOIN  tbl_students s on s.program_id = p.program_id where s.user_id = ?";
-
-                $StudProgramLimitNarratives = mysqlQuery($checkStudProgramQuery, 'i', [$_SESSION['log_user_id']])[0];
-
-                if ($total_result['totalSubNarrative'] < $StudProgramLimitNarratives['totalNarratives']):
-                ?>
-                    <div class="mt-10">
-                        <button class="btn btn-neutral btn-outline" onclick="resetNarratveFormModal();closeModalForm('NarrativeReportmodal');openModalForm('NarrativeReportmodalForm')">Submit new</button>
-                    </div>
-                <?php endif;?>
+                <div class="mt-10" id="SubmitnewBtnContainer">
+                </div>
             </div>
         </div>
     </dialog>

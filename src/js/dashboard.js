@@ -103,7 +103,11 @@ async function dashboard_tab(id) {
             page: 'manageUploadNarratives.php',
             afterNavigate: () => {
                 act_tab(tab.id)
-                convertToFlibookLister()}
+                getStudSubmittedNarratives();
+                convertToFlibookLister()
+
+
+            }
         },
         'dashboard': {
             page: 'dashboardContent.php',
@@ -169,11 +173,19 @@ async function dashboard_tab(id) {
         },
         'pendingNarrativeReqCount': {
             page: 'manageUploadNarratives.php',
-            afterNavigate: () => act_tab(tab.id)
+            afterNavigate: () =>{
+                act_tab('dashboard_ReviewUploadNarrative')
+                getStudSubmittedNarratives();
+                convertToFlibookLister()
+            }
         },
         'declinedNarrativeReqCount': {
             page: 'manageUploadNarratives.php',
-            afterNavigate: () => act_tab(tab.id)
+            afterNavigate: () => {
+                act_tab('dashboard_ReviewUploadNarrative')
+                getStudSubmittedNarratives();
+                convertToFlibookLister()
+            }
         },
         'account_archived': {
             page: 'manageArchive.php',
@@ -191,7 +203,7 @@ async function dashboard_tab(id) {
             page: 'notesReqmanage.php',
             afterNavigate: () => {
                 act_tab('notesReq');
-                get_dashBoardnotes();
+                getAdvNotes();
                 document.getElementById('AnnouncementSubmenu').classList.remove('hidden');
             }
         },
@@ -565,81 +577,5 @@ function getTotalPendingNotes(){
 
 
 
-
-
-
-function editNarrativeReq(narrative_id){
-    $.ajax({
-        url: '../ajax.php?action=narrativeReportsJson&narrative_id=' + narrative_id,
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            if (data){
-                document.getElementById('dlLink').href='NarrativeReportsPDF/'+ data.narrative_file_name;
-
-                if (document.getElementById('SelectreqStatuses')){
-                    $('#declineUploadReason').empty();
-                    document.querySelector('#EditNarrativeReportsReqForm select[name="UploadStat"]').value = data.file_status;
-                    if (data.file_status  === 'Declined'){
-                        $('#declineUploadReason').append('<label class="form-control w-full " id="remarkInput">\n' +
-                            '                            <div class="label">\n' +
-                            '                                <span class="label-text text-slate-700 font-bold">Remarks</span>\n' +
-                            '                            </div>\n' +
-                            '                            <input type="text" required  name="remark" value="'+ data.remarks +'" class="input input-error w-full" placeholder="Type here">' +
-                            '                        </label>')
-
-                    }
-
-                }
-                if (document.getElementById('textStatuses')){
-                    $('#ReportUploadStatus').html(data.file_status)
-                    $('#ReportUploadRemarks').html(data.remarks);
-                }
-
-
-
-
-
-
-                let startSchYear = "", endSchYear = "";
-                if (data.sySubmitted !== 'N/A') {
-                    let years = data.sySubmitted.split(',');
-                    startSchYear = years[0].trim();
-                    endSchYear = years[1].trim();
-
-                }
-
-                document.querySelector('#EditNarrativeReportsReqForm input[name="startYear"]').value = startSchYear;
-                document.querySelector('#EditNarrativeReportsReqForm input[name="endYear"]').value = endSchYear;
-
-
-
-                document.querySelector('#EditNarrativeReportsReqForm input[name="narrative_id"]').value = data.narrative_id;
-
-                document.querySelector('#EditNarrativeReportsReqForm input[name="trainingHours"]').value = data.training_hours;
-                document.querySelector('#EditNarrativeReportsReqForm input[name="companyName"]').value = data.company_name;
-
-                document.querySelector('#EditNarrativeReportsReqForm input[name="first_name"]').value = data.first_name;
-                document.querySelector('#EditNarrativeReportsReqForm input[name="middle_name"]').value = data.middle_name;
-                document.querySelector('#EditNarrativeReportsReqForm input[name="last_name"]').value = data.last_name;
-                document.querySelector('#EditNarrativeReportsReqForm input[name="school_id"]').value = data.stud_school_id;
-                document.querySelector('#EditNarrativeReportsReqForm select[name="program"]').value = data.program;
-                document.querySelector('#EditNarrativeReportsReqForm select[name="section"]').value = data.section;
-                if (data.sex === "Male") {
-                    document.querySelector('#EditNarrativeReportsReqForm input[name="stud_Sex"][value="Male"]').checked = true;
-                } else if (data.sex === "Female") {
-                    document.querySelector('#EditNarrativeReportsReqForm input[name="stud_Sex"][value="Female"]').checked = true;
-                }
-                document.querySelector('#EditNarrativeReportsReqForm select[name="ojt_adviser"]').value = data.OJT_adviser_ID;
-                document.querySelector('#EditNarrativeReportsReqForm input[name="ojt_adviser"]').value = data.OJT_adviser_ID;
-                $('#EditNarrativeReportsReqForm input[type="file"][name="final_report_file"]').val('');
-
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
 
 

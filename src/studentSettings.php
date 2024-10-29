@@ -36,7 +36,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                         <div class="label">
                             <span class="label-text text-slate-700">First name</span>
                         </div>
-                        <input type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full " />
+                        <input oninput="validateInput(this)" type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full " />
                     </label>
                 </div>
                 <div>
@@ -44,7 +44,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                         <div class="label">
                             <span class="label-text text-slate-700">Middle name</span>
                         </div>
-                        <input type="text" name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full " />
+                        <input oninput="validateInput(this)" type="text" name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full " />
                     </label>
                 </div>
                 <div>
@@ -52,7 +52,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                         <div class="label">
                             <span class="label-text text-slate-700">Last name</span>
                         </div>
-                        <input type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full " />
+                        <input oninput="validateInput(this)" type="text" name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full " />
                     </label>
                 </div>
                 <div>

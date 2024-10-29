@@ -109,19 +109,19 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">First name</span>
                                 </div>
-                                <input required type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input oninput="validateInput(this)" required type="text" name="user_Fname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Middle name</span>
                                 </div>
-                                <input type="text"  name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input oninput="validateInput(this)" type="text"  name="user_Mname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Last name</span>
                                 </div>
-                                <input type="text" required name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input oninput="validateInput(this)" type="text" required name="user_Lname" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
 
                         </div>

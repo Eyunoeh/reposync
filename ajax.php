@@ -347,7 +347,7 @@ where s.user_id = ?', 'i', [$_SESSION['log_user_id']])[0];
         $params = [$school_id, $ay_Submitted,$sem_Submitted, $new_file_name ];
 
         $narrative_id = mysqlQuery($new_final_report,$valueTypes, $params)[1];
-        handleNarrativeUpload('', $new_file_name, $file_temp, $narrative_id);
+        handleNarrativeUpload('', $new_file_name, $file_temp);
 
     }catch (mysqli_sql_exception $e) {
         $responseMessage = $e->getMessage();
@@ -392,7 +392,7 @@ if ($action === 'editFinalReport') {
     $ay_Submitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']) . ',' . sanitizeInput($_POST['endYear']) : '';
     $sem_Submitted = getPostData('semester');
 
-    $update_query = 'UPDATE narrativereports SET ay_submitted = ?, sem_submitted = ?, upload_date = NOW()';
+    $update_query = 'UPDATE narrativereports SET ay_submitted = ?, sem_submitted = ?,file_status = 1, upload_date = NOW()';
     $types = 'ss';
     $params = [$ay_Submitted, $sem_Submitted];
 
@@ -411,7 +411,7 @@ if ($action === 'editFinalReport') {
             $old_filename = $stud_info['narrative_file_name'];
             $new_file_name = $school_id . '_' . uniqid('', true) . ".pdf";
 
-            handleNarrativeUpload($old_filename, $new_file_name, $file_temp, $narrative_id);
+            handleNarrativeUpload($old_filename, $new_file_name, $file_temp);
 
             $update_query .= ', narrative_file_name = ?';
             $params[] = $new_file_name;
@@ -443,17 +443,36 @@ if($action == 'StudsubmittedNarratives'){
          where  tbl_students.user_id = ? ', 'i', [$_SESSION['log_user_id']]);
 
 
-
     if (count($submtdNarratives) > 0){
         for ($i = 0 ; $i < count($submtdNarratives) ; $i++){
             $submtdNarratives[$i]['narrative_id'] = urlencode (encrypt_data($submtdNarratives[$i]['narrative_id'], $secret_key));
         }
-        echo json_encode(['response' => 1,
-            'data' => $submtdNarratives]);
     }else {
         echo json_encode(['response' => 1,
             'data' => []]);
+        exit();
     }
+
+
+    $total_narrativequery = "SELECT COUNT(*) as totalSubNarrative FROM narrativereports n
+                JOIN tbl_students s on s.enrolled_stud_id = n.enrolled_stud_id where user_id = ?";
+
+
+    $total_result = mysqlQuery($total_narrativequery ,'i', [$_SESSION['log_user_id']])[0];
+
+    $checkStudProgramQuery = "SELECT * FROM program p 
+    JOIN  tbl_students s on s.program_id = p.program_id where s.user_id = ?";
+
+    $StudProgramLimitNarratives = mysqlQuery($checkStudProgramQuery, 'i', [$_SESSION['log_user_id']])[0];
+
+    $isStudCanSubmitNewNarrative = $total_result['totalSubNarrative'] < $StudProgramLimitNarratives['totalNarratives'] ?
+        true : false;
+
+
+    echo json_encode(['response' => 1,
+        'data' => $submtdNarratives,
+        'isStudCanSubmitNewNarrative' => $isStudCanSubmitNewNarrative]);
+    exit();
 
 }
 
@@ -476,6 +495,11 @@ if ($action == 'narrativeReportsJson'){
     exit();
 
 }
+
+
+
+
+
 
 
 
@@ -1763,87 +1787,65 @@ where adv_sch_user_id = ? and tbl_accounts.status = 'active';";
     }
 
 }
-if ($action === 'getPendingFinalReports'){
-    if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'admin'){
-        $narrativeUploadReq = "SELECT tbl_user_info.first_name as AdvFname, tbl_user_info.middle_name as AdvMname,tbl_user_info.last_name as AdvLname, narrativereports.* FROM narrativereports
-    JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id 
-    WHERE file_status = 'Pending'";
-        $narrativeUploadReqSTMT = $conn->prepare($narrativeUploadReq);
-        $narrativeUploadReqSTMT->execute();
-        $result = $narrativeUploadReqSTMT->get_result();
-        if ($result->num_rows > 0){
-            while ($row = $result->fetch_assoc()){
-                $studMiddleName = '';
-                $advMiddleName = '';
-                if ($row['middle_name'] !== 'N/A'){
-                    $studMiddleName = $row['middle_name'];
-                }
-                if ($row['AdvMname'] !== 'N/A'){
-                    $advMiddleName = $row['AdvMname'];
-                }
-                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start w-[10rem]">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">'.$row['stud_school_id'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$studMiddleName.' '.$row['last_name'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['AdvFname'].' '.$advMiddleName.' '.$row['AdvLname'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['file_status'].'</span>
-                        </td>
-                        <td class="p-3 text-end">
-                           <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
+if ($action === 'getSubmittedNarrativeReport'){
+header('Content-Type: application/json');
+    $submittedUploadReq = "SELECT n.* , ui.*, s.* FROM narrativereports n
+    JOIN tbl_students s on n.enrolled_stud_id = s.enrolled_stud_id
+    JOIN tbl_user_info ui on ui.user_id = s.user_id
+    WHERE s.adv_id = ? and n.file_status IN (1, 2, 3);";
 
-                            <a onclick="openModalForm(\'EditNarrativeReq\');
-                            editNarrativeReq(this.getAttribute(\'data-narrative\'))"  data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
-                        </td>
-                    </tr>';
-            }
-        }
-    }elseif (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] === 'adviser'){
-        $narrativeUploadReq = "SELECT tbl_user_info.first_name as AdvFname, tbl_user_info.middle_name as AdvMname,tbl_user_info.last_name as AdvLname, narrativereports.* FROM narrativereports
-    JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id 
-    WHERE OJT_adviser_ID = ? and  file_status in ('Pending', 'Declined') ORDER  BY file_status  ";
-        $narrativeUploadReqSTMT = $conn->prepare($narrativeUploadReq);
-        $narrativeUploadReqSTMT->bind_param('i', $_SESSION['log_user_id']);
-        $narrativeUploadReqSTMT->execute();
-        $result = $narrativeUploadReqSTMT->get_result();
-        if ($result->num_rows > 0){
-            while ($row = $result->fetch_assoc()){
-                $studMiddleName = '';
-                $advMiddleName = '';
-                if ($row['middle_name'] !== 'N/A'){
-                    $studMiddleName = $row['middle_name'];
-                }
-                if ($row['AdvMname'] !== 'N/A'){
-                    $advMiddleName = $row['AdvMname'];
-                }
-                echo '<tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start w-[10rem]">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">'.$row['stud_school_id'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['first_name'].' '.$studMiddleName.' '.$row['last_name'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['AdvFname'].' '.$advMiddleName.' '.$row['AdvLname'].'</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">'.$row['file_status'].'</span>
-                        </td>
-                        <td class="p-3 text-end">
-                           <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
+    $result = mysqlQuery($submittedUploadReq, 'i', [$_SESSION['log_user_id']]);
 
-                            <a onclick="openModalForm(\'EditNarrativeReq\');
-                            editNarrativeReq(this.getAttribute(\'data-narrative\'))"  data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
-                        </td>
-                    </tr>';
-            }
+    if (count($result) > 0){
+        $dataByNarrativeId = [];
+        foreach ($result as $row) {
+            $key = $row['narrative_id'];
+            $row['narrative_id'] = urlencode(encrypt_data($row['narrative_id'], $secret_key));
+            $dataByNarrativeId[$key] = $row;
         }
+
+        echo json_encode(['response' => 1,
+            'data' => $dataByNarrativeId] );
+        exit();
+
+    }else{
+        echo json_encode(['response' => 1,
+            'data' => []] );
+        exit();
+
     }
+
+}
+if ($action == 'UpdStudSubNarrativeReport'){
+
+    header('Content-Type: application/json');
+
+    $narrative_id = getPostData('narrative_id');
+    $uploadStat = getPostData('UploadStat');
+    $reason = getPostData('reason', 'N/A');
+    $status = [ "Approved" => 3, "Declined" => 2];
+
+    if (!array_key_exists($uploadStat, $status)){
+        handleError('Status not exist');
+    }
+
+
+    $selectedStat = $status[$uploadStat];
+    try {
+        $upd_narrative_stat_query = mysqlQuery(
+            'UPDATE narrativereports SET file_status = ? , remarks = ?
+                where narrative_id = ?', 'isi', [$selectedStat, $reason, $narrative_id]);
+
+        if ($selectedStat === 3){
+            QueueNarrativeReportFlipbookConversion($narrative_id);
+        }
+        echo json_encode(['response' => 1,
+            'message' => 'Student narrative report status has been updated']);
+    }catch (Exception $e){
+        handleError($e->getMessage());
+    }
+
+
 }
 
 

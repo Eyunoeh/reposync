@@ -138,7 +138,7 @@ if (count($result) === 1) {
                     <h3 class="font-bold text-center text-lg  p-5" id="loginNotiftext"><?=$message?></h3>
                 </div>
                 <div class="p-4 w-full flex justify-center">
-                    <a href="dashboard.php" class="btn  btn-neutral  w-1/4 " onclick="closeModalForm('notifModal')">Back to dashboard</a>
+                    <a href="<?=$_SESSION['log_user_type'] == 'student'? 'index.php?page=narratives':'dashboard.php'?>" class="btn  btn-neutral  w-1/4 " onclick="closeModalForm('notifModal')">Back to dashboard</a>
                 </div>
             </div>
         </dialog>

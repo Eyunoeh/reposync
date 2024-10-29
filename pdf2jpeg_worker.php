@@ -61,7 +61,7 @@ while (true) {
  * @throws Exception
  */
 function convertPDFtoJPEG($pdfPath, $file_name){
-    $pdf = new \Spatie\PdfToImage\Pdf($pdfPath);
+    $pdf = new \Spatie\PdfToImage\Pdf($pdfPath);//location of pdf in the server
     $pdf->format(\Spatie\PdfToImage\Enums\OutputFormat::Jpeg);
     $pdf->resolution(300);
 
@@ -70,7 +70,7 @@ function convertPDFtoJPEG($pdfPath, $file_name){
     $basePath = "src/NarrativeReports_Images/";
     $subdirectoryName = str_replace(".pdf","",$file_name);
     if (!is_dir($basePath . $subdirectoryName)) {
-        mkdir($basePath . $subdirectoryName, 0755);
+        mkdir($basePath . $subdirectoryName, 0755);//location of flipbook pages in the server
 
     }
 

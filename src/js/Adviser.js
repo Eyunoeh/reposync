@@ -150,23 +150,103 @@ function convertToFlibookLister(){
     let uploadstat = document.getElementById('UploadStat');
     uploadstat.addEventListener("change", function (){
         if (uploadstat.value === 'Declined'){
-            $('#declineUploadReason').append('<label class="form-control w-full ">\n' +
-                '                            <div class="label">\n' +
-                '                                <span class="label-text text-slate-700 font-bold">Remarks</span>\n' +
-                '                            </div>\n' +
-                '                            <input type="text" required  name="remark" class="input input-error w-full" placeholder="Type here">' +
+            $('#declineUploadReason').append('<label class="form-control w-full ">' +
+                '                            <div class="label">' +
+                '                                <span class="label-text text-slate-700 font-semibold">Reason</span>' +
+                '                            </div>' +
+                '                            <textarea  required  name="reason" class="textarea textarea-warning" placeholder="Type here"></textarea>' +
                 '                        </label>')
         }
         else{
             $('#declineUploadReason').empty();
         }
 
-        if (uploadstat.value === 'Convert'){
+        if (uploadstat.value === 'Approved'){
             $('#update_btn').text('Convert')
+
+            $('#upd_SubNarrativ_note').html('<p class="text-slate-700 text-sm" ><i class="fa-solid fa-circle-info"></i> This will notify the admin</p>')
         }else {
             $('#update_btn').text('Save')
+            $('#upd_SubNarrativ_note').empty();
         }
     })
+}
+
+
+async function getStudSubmittedNarratives(){
+    const { response, data: submittedNarrativesList } = await $.ajax({
+        url: '../ajax.php?action=getSubmittedNarrativeReport',
+        method: 'GET',
+        dataType: 'json'
+    });
+    let subNarrativesTbl = ''
+    if (submittedNarrativesList && Object.keys(submittedNarrativesList).length > 0) {
+        Object.entries(submittedNarrativesList).forEach(([key, narratives]) => {
+
+            let years = narratives.ay_submitted.split(',');
+            let startingAC = years[0].trim();
+            let endingAC =  years[1].trim();
+            let formattedSem = {
+                First: '1st',
+                Second: '2nd',
+                Summer: 'Summer'
+            };
+
+
+
+            subNarrativesTbl += `
+            <tr class="border-b border-dashed last:border-b-0 p-3">
+                <td class="p-3 text-start w-[10rem]">
+                    <span class=" text-light-inverse text-md/normal break-words">${narratives.enrolled_stud_id}</span>
+                </td>
+                <td class="p-3 text-start">
+                    <span class=" text-light-inverse text-md/normal">${narratives.first_name} ${narratives.last_name}</span>
+                </td>
+                <td class="p-3 text-start">
+                    <span class=" text-light-inverse text-md/normal">${narratives.file_status}</span>
+                </td>
+                 <td class="p-3 text-start">
+                    <span class=" text-light-inverse text-md/normal">${formattedSem[narratives.sem_submitted]}, ${startingAC + ' - '+ endingAC}</span>
+                </td>
+                
+                <td class="p-3 text-start">
+                    <span class=" text-light-inverse text-md/normal">${formatDateTime(narratives.upload_date)}</span>
+                </td> 
+                <td class="p-3 text-start">
+                    <span class=" text-light-inverse text-md/normal">${capitalizeFirstLetter(narratives.convertStatus)}</span>
+                </td>
+                <td class="p-3 text-end">
+                    <a href="flipbook.php?view=${narratives.narrative_id}" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2">
+                        <i class="fa-regular fa-eye"></i>
+                    </a>
+                    <a onclick="openModalForm('EditNarrativeReq'); upd_SubmittedNarrative(this.getAttribute('data-narrative'))" data-narrative="${key}" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </a>
+                </td>
+            </tr>`;
+        });
+    }
+
+    $('#narrativeReportsReqTableBody').html(subNarrativesTbl);
+
+}
+
+
+async function upd_SubmittedNarrative(key){
+    const { response, data: submittedNarrativesList } = await $.ajax({
+        url: '../ajax.php?action=getSubmittedNarrativeReport',
+        method: 'GET',
+        dataType: 'json'
+    });
+    let narrative = submittedNarrativesList[key];
+
+    console.log(narrative)
+    $('#dlLink').attr('href', 'NarrativeReportsPDF/' + narrative.narrative_file_name);
+
+
+    $('#UpdSubNarrativeReport select[name="UploadStat"]').val(narrative.file_status);
+    $('#UpdSubNarrativeReport input[name="narrative_id"]').val(key);
+
 
 
 }

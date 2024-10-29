@@ -136,9 +136,7 @@ function delete_pdf($pdf){
 
 
 
-function handleNarrativeUpload($old_filename, $new_file_name, $file_temp, $narrative_id) {
-
-
+function handleNarrativeUpload($old_filename, $new_file_name, $file_temp) {
 
 
     if ($old_filename !== ''){
@@ -153,11 +151,11 @@ function handleNarrativeUpload($old_filename, $new_file_name, $file_temp, $narra
 
     pageWatermark($pdf_file_path, $watermarkIMG);
 
+}
 
 
-
-
-     $factory = new AmqpConnectionFactory([
+function QueueNarrativeReportFlipbookConversion($narrative_id) {
+    $factory = new AmqpConnectionFactory([
         'host' => 'localhost',
         'port' => 5672,
         'login' => 'guest',
@@ -165,10 +163,18 @@ function handleNarrativeUpload($old_filename, $new_file_name, $file_temp, $narra
         'vhost' => '/',
     ]);
 
-    $updtNarrativeJobID = "UPDATE narrativereports SET narrativeConvertJobID  = ? where narrative_id = ? ";
+    $narrativeInfo = mysqlQuery('SELECT * FROM narrativereports where narrative_id = ?', 'i', [$narrative_id])[0];
+    $file_name = $narrativeInfo['narrative_file_name'];
+    $narrativeJobID = $narrativeInfo['narrativeConvertJobID'];
+    if ($narrativeInfo['convertStatus'] === 'success' or $narrativeJobID !== NULL){
+        return;
+    }
+
+
+    $updtNarrativeJobID = "UPDATE narrativereports SET narrativeConvertJobID  = ?, convertStatus = 1 where narrative_id = ? ";
     try {
-       // $apiSecret = '';
-       // $job_id = initiateAsyncPDFtoJPGConversion($pdf_file_path,$apiSecret, $new_file_name)['JobId'];
+        // $apiSecret = '';
+        // $job_id = initiateAsyncPDFtoJPGConversion($pdf_file_path,$apiSecret, $new_file_name)['JobId'];
         $job_id = uniqid();
 
         mysqlQuery($updtNarrativeJobID, 'si',[$job_id,$narrative_id]);
@@ -184,8 +190,8 @@ function handleNarrativeUpload($old_filename, $new_file_name, $file_temp, $narra
 
         $jobData = json_encode([
             'job_id' => $job_id,
-            'pdf_path' => $pdf_file_path,
-            'file_name' => $new_file_name,
+            'pdf_path' => "src/NarrativeReportsPDF/" . $file_name, //location of pdf in the server
+            'file_name' => $file_name,
             'narrative_id' => $narrative_id,
         ]);
 
@@ -196,36 +202,6 @@ function handleNarrativeUpload($old_filename, $new_file_name, $file_temp, $narra
 
     }catch (Exception $exception){
         handleError( $exception->getMessage());
-    }
-
-
-}
-
-
-function handleNarrativeFileRename($old_filename, $new_file_name) {
-    $pdf_dir = 'src/NarrativeReportsPDF/';
-    $img_dir = 'src/NarrativeReports_Images/';
-    if (is_dir($pdf_dir)) {
-        if ($handle = opendir($pdf_dir)) {
-            while (false !== ($file = readdir($handle))) {
-                if ($file == $old_filename) {
-                    $oldFilePath = $pdf_dir . $old_filename;
-                    $newFilePath = $pdf_dir . $new_file_name;
-                    if (rename($oldFilePath, $newFilePath)) {
-                        $old_flipbook_page_dir = str_replace('.pdf', '', $old_filename);
-                        $new_flipbook_page_dir = str_replace('.pdf', '', $new_file_name);
-                        renameFlipbookDirectory($img_dir, $old_flipbook_page_dir, $new_flipbook_page_dir);
-                    } else {
-                        handleError("Error renaming PDF file.");
-                    }
-                }
-            }
-            closedir($handle);
-        } else {
-            handleError("Error opening PDF directory.");
-        }
-    } else {
-        handleError("PDF directory does not exist.");
     }
 }
 

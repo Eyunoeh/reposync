@@ -108,11 +108,20 @@ function Alert(container, message, type) {
 function formatDateTime(dateString) {
     const date = new Date(dateString);
     return date.toLocaleString('en-US', {
-        month: '2-digit',
-        day: '2-digit',
+        month: 'short',
+        day: 'numeric',
         year: 'numeric',
         hour: 'numeric',
         minute: '2-digit',
         hour12: true
     });
+}
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+
+function validateInput(input) {
+    // Allow only alphabetic characters and spaces
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
 }

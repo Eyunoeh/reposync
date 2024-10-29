@@ -106,22 +106,22 @@ document.addEventListener('submit', function(e) {
     }
 
     //admin to
-    if (e.target.id === 'EditNarrativeReportsReqForm'){
-        endpoint = 'UpdateNarrativeReport';
+    if (e.target.id === 'UpdSubNarrativeReport'){
+        endpoint = 'UpdStudSubNarrativeReport';
         loader_id = 'loader_narrative_update';
         modal = 'EditNarrativeReq';
         btn = 'editNarrativeBtn';
         notification = 'SuccessNarrativeEdit';
-        getNewData.push(getPendingFinalReports);
+        getNewData.push(getStudSubmittedNarratives);
     }
-    if (e.target.id === 'narrativeReportsForm'){
+/*    if (e.target.id === 'narrativeReportsForm'){
         endpoint = 'newFinalReport'
         modal =  'newNarrative';
         loader_id = 'loader_narrative';
         btn = 'newNarrativeSubmitbtn';
         notification = 'SuccessLUploadNotif'
         getNewData.push(getPendingFinalReports);
-    }//adminto end
+    }//adminto end*/
 
     if (e.target.id === 'profileForm'){
         notifType = 'info'

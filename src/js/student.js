@@ -33,6 +33,7 @@ document.addEventListener('submit', function(e) {
          alertType = 'success';
       }
 
+
       loader_id = 'narrativeSubmitLoader';
       submit_btn = 'NarrativeSubmit';
 
@@ -42,7 +43,6 @@ document.addEventListener('submit', function(e) {
       disable_button(submit_btn)
 
 
-      console.log(endpoint)
 
       modal = 'NarrativeReportmodalForm'
 
@@ -355,7 +355,12 @@ async function getSubmittedNarratives(){
 
    if (data_length === 0) {
       $('#tableNoRes').html(`
-                    <p class="text-sm text-slate-700 font-sans">No submitted narrative report</p>`);   }
+                    <p class="text-sm text-slate-700 font-sans">No submitted narrative report</p>`);
+      $('#SubmitnewBtnContainer').html(`<button class="btn btn-neutral btn-outline" onclick="resetNarratveFormModal();
+    closeModalForm('NarrativeReportmodal');openModalForm('NarrativeReportmodalForm')">Submit new</button>
+`)
+
+   }
    else {
       narratives.forEach(narrative => {
          let years = narrative.ay_submitted.split(',');
@@ -387,7 +392,7 @@ async function getSubmittedNarratives(){
                                     <td class="p-3 text-end">
                                     
                                         `
-                                       if (['Converted', 'Archived'].includes(narrative.file_status)){
+                                       if (['Approved', 'Archived'].includes(narrative.file_status)){
 
                                           table_data +=  `<a href="flipbook.php?view=${narrative.narrative_id}" class=" cursor-pointer text-light-inverse text-md/normal break-words">
                                                             <i class="fa-regular fa-eye"></i></a>`
@@ -403,6 +408,17 @@ async function getSubmittedNarratives(){
          number++
 
       })
+
+
+      if (response.isStudCanSubmitNewNarrative){
+         $('#SubmitnewBtnContainer').html(`<button class="btn btn-neutral btn-outline" onclick="resetNarratveFormModal();
+    closeModalForm('NarrativeReportmodal');openModalForm('NarrativeReportmodalForm')">Submit new</button>
+`)
+      }else {
+         $('#SubmitnewBtnContainer').empty();
+      }
+
+
       $('#studuploadedNarrativesTableBody').html(table_data);
       $('#tableNoRes').empty();
    }
