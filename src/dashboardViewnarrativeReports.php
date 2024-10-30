@@ -61,28 +61,42 @@ while ($row = $res->fetch_assoc()) {
             <a href="<?=$_SESSION['log_user_type'] == 'student'? 'index.php?page=narratives':'dashboard.php'?>" class="btn btn-outline font-bold text-slate-700">
                 <?=$_SESSION['log_user_type'] == 'student'? '<i class="fa-solid fa-house"></i> Home':'<i class="fa-solid fa-circle-left"></i> Dashboard'?>
                 </a>
-
-
-            <form class="flex justify-start w-[40%]">
-
-                    <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                        focus:outline-none focus:shadow-outline" id="searchNarrativeInput" type="text" placeholder="Search" onkeyup="handleSearch('searchNarrativeInput', 'narrativeReportsTable')">
-
-            </form>
         </div>
-        <div class="block py-8 pt-6 px-9">
-            <div class="overflow-auto h-[80vh]">
+        <div class="px-9 pt-5 mb-5 flex justify-between items-stretch flex-wrap pb-0 bg-transparent ">
+            <div class="w-50">
+                <select id="totalRecDis" onchange="dashboard_student_NarrativeReports();
+                    renderPage_lim(this.value,'nextBtn', 'prevBtn' )" class=" select-sm select select-bordered bg-slate-100 ">
+
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+
+                </select>
+                <span class="text-xs">Entries per page</span>
+            </div>
+            <div class=" w-[40%]">
+
+                <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-none focus:shadow-outline" id="searchNarrativeInput" type="text" placeholder="Search" onkeyup="handleSearch('searchNarrativeInput', 'narrativeReportsTable')">
+            </div>
+
+        </div>
+
+
+        <div class="block  px-9 overflow-auto h-[70vh] xl:h-[70vh]">
+
                 <table id="narrativeReportsTable" class="w-full my-0 border-neutral-200 text-sm" >
                     <thead class="align-bottom z-20">
                     <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
-                        <?php if ($_SESSION['log_user_type'] !== 'student'):?>
 
-                        <th class="p-3 text-start ">School ID</th>
-                        <?php endif;?>
-                        <th class="p-3 text-start min-w-10">Name</th>
-                        <th class="p-3 text-start min-w-10">OJT adviser</th>
-                        <th class="p-3 text-start min-w-10">Semester</th>
-                        <th class="p-3 text-start min-w-10">Academic year</th>
+
+                        <th onclick="sortTable(0, 'narrativeReportsTable')"  class="p-3 text-start ">School ID<span class="sort-icon text-xs"></th>
+
+                        <th onclick="sortTable(1, 'narrativeReportsTable')" class="p-3 text-start min-w-10">Name<span class="sort-icon text-xs"></th>
+                        <th onclick="sortTable(2, 'narrativeReportsTable')"  class="p-3 text-start min-w-10">OJT adviser<span class="sort-icon text-xs"></th>
+                        <th onclick="sortTable(3, 'narrativeReportsTable')"  class="p-3 text-start min-w-10">Semester<span class="sort-icon text-xs"></th>
+                        <th onclick="sortTable(4, 'narrativeReportsTable')"  class="p-3 text-start min-w-10">Academic year<span class="sort-icon text-xs"></th>
 
 
 
@@ -110,10 +124,15 @@ while ($row = $res->fetch_assoc()) {
                     </tr>
                     </tbody>
                 </table>
+        </div>
+        <div class="flex justify-center gap-5">
+            <button id="prevBtn" onclick="dashboard_student_NarrativeReports(); prevPage(this.id, 'nextBtn')" class="btn-neutral btn-sm btn font-semibold">Prev</button>
+            <div class="text-center">
+                <span id="pageInfo">Page 1</span>
             </div>
+            <button id="nextBtn" onclick="dashboard_student_NarrativeReports(); nextPage(this.id, 'prevBtn')" class="btn-neutral btn-sm btn font-semibold">Next</button>
         </div>
     </div>
-    <hr class="w-full p-2">
 </div>
 
 
@@ -300,6 +319,8 @@ while ($row = $res->fetch_assoc()) {
 
 
 <?php endif;?>
+<script src="js/Datatables.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function (){
         dashboard_student_NarrativeReports();
@@ -316,7 +337,7 @@ while ($row = $res->fetch_assoc()) {
         let narrative_listData = narratives.data
         let narratives_length = narrative_listData && Object.keys(narrative_listData).length
         let narrativeTblData = '';
-        if (narratives_length < 0){
+        if (narratives_length === 0){
 
         }else {
             const  adviserList  = await $.ajax({
@@ -334,9 +355,25 @@ while ($row = $res->fetch_assoc()) {
             }, {});
 
 
-            console.log(advisers[45].name);
+
+
+            let array_narrativeList = []
+
+
 
             Object.entries(narrative_listData).forEach(([key, narrative]) => {
+                array_narrativeList.push(narrative)
+
+
+            });
+
+            let offset = (page_no - 1) * totalRecPerpage;
+            total_page = Math.ceil( array_narrativeList.length/ totalRecPerpage);
+
+
+            let paginatedList = array_narrativeList.slice(offset, offset + totalRecPerpage);
+
+            paginatedList.forEach(narrative =>{
                 let years = narrative.ay_submitted.split(',');
                 let startingAC = years[0].trim();
                 let endingAC =  years[1].trim();
@@ -368,8 +405,8 @@ while ($row = $res->fetch_assoc()) {
                         </td>
                       </tr>`;
 
+            })
 
-            });
             $('#narrativeReportsTableBody').html(narrativeTblData);
 
         }
@@ -377,6 +414,5 @@ while ($row = $res->fetch_assoc()) {
     }
 </script>
 <script src="js/buttons_modal.js"></script>
-<script src="js/Datatables.js"></script>
 
 </body>
