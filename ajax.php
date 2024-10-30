@@ -887,7 +887,7 @@ if ($action === 'ExcelImport'){
 }
 
 if ($action == 'getStudentsList'){
-    isset($_SESSION['name']) || exit();
+    isset($_SESSION['log_user_type']) || exit();
 
     header('Content-Type: application/json');
     $fetch_enrolled_stud = "SELECT 
