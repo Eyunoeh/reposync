@@ -81,8 +81,9 @@ while ($row = $res->fetch_assoc()) {
                         <?php endif;?>
                         <th class="p-3 text-start min-w-10">Name</th>
                         <th class="p-3 text-start min-w-10">OJT adviser</th>
-                        <th class="p-3 text-start min-w-10">Academic year</th>
                         <th class="p-3 text-start min-w-10">Semester</th>
+                        <th class="p-3 text-start min-w-10">Academic year</th>
+
 
 
                         <th class="p-3 text-end ">Action</th>
@@ -295,121 +296,7 @@ while ($row = $res->fetch_assoc()) {
         </div>
     </div>
 </dialog>
-<dialog id="SuccessNarrativeEdit"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('SuccessNarrativeEdit')">
-    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
-        <div role="alert" class="alert alert-info absolute top-50" >
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span><?php echo  $_SESSION['log_user_type'] == 'admin' ? 'Narrative report has been updated!': 'Narrative report has been updated! Please wait for admin approval' ?></span>
-        </div>
-    </div>
-</dialog>
-<dialog id="archiveNarrativeNotif"  class="modal  bg-black bg-opacity-10 " onclick="closeModalForm('archiveNarrativeNotif')">
-    <div class="card bg-slate-50 w-[80vw]  sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
-        <div role="alert" class="alert alert-warning absolute top-50" >
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span>Narrative report has been archived!</span>
-        </div>
-    </div>
-</dialog>
-<script>
 
-    function editNarrative(narrative_id){
-        $.ajax({
-            url: '../ajax.php?action=narrativeReportsJson&narrative_id=' + narrative_id,
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                if (data){
-
-                        let startSchYear = "", endSchYear = "";
-                        if (data.sySubmitted !== 'N/A') {
-                            let years = data.sySubmitted.split(',');
-                            startSchYear = years[0].trim();
-                            endSchYear = years[1].trim();
-                        }
-
-                        document.getElementById('dlLink').href='NarrativeReportsPDF/'+ data.narrative_file_name;
-
-
-                        document.querySelector('#EditNarrativeReportsForm input[name="startYear"]').value = startSchYear;
-                        document.querySelector('#EditNarrativeReportsForm input[name="endYear"]').value = endSchYear;
-
-
-
-                        document.querySelector('#EditNarrativeReportsForm input[name="narrative_id"]').value = data.narrative_id;
-                        document.querySelector('#EditNarrativeReportsForm input[name="trainingHours"]').value = data.training_hours;
-                        document.querySelector('#EditNarrativeReportsForm input[name="companyName"]').value = data.company_name;
-
-                        document.querySelector('#EditNarrativeReportsForm input[name="first_name"]').value = data.first_name;
-                        document.querySelector('#EditNarrativeReportsForm input[name="middle_name"]').value = data.middle_name;
-                        document.querySelector('#EditNarrativeReportsForm input[name="last_name"]').value = data.last_name;
-                        document.querySelector('#EditNarrativeReportsForm input[name="school_id"]').value = data.stud_school_id;
-                        document.querySelector('#EditNarrativeReportsForm select[name="program"]').value = data.program;
-                        document.querySelector('#EditNarrativeReportsForm select[name="section"]').value = data.section;
-                        if (data.sex === "Male") {
-                            document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Male"]').checked = true;
-                        } else if (data.sex === "Female") {
-                            document.querySelector('#EditNarrativeReportsForm input[name="stud_Sex"][value="Female"]').checked = true;
-                        }
-
-                        document.querySelector('#EditNarrativeReportsForm select[name="ojt_adviser"]').value = data.OJT_adviser_ID;
-                        $('#EditNarrativeReportsReqForm input[type="file"][name="final_report_file"]').val('');
-
-
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching data:', error);
-            }
-        });
-    }
-    document.addEventListener('submit', function(e) {
-        e.preventDefault();
-        let modal,formData,endpoint,loader_id,btn, notification;
-
-        let getNewData = [];
-        if (e.target.id === 'EditNarrativeReportsForm'){
-            if (e.submitter.id === 'update_btn'){
-                endpoint = 'UpdateNarrativeReport';
-                notification = 'SuccessNarrativeEdit'
-            }
-            else if (e.submitter.id === 'archive_btn'){
-                endpoint = 'ArchiveNarrativeReport';
-                notification = 'archiveNarrativeNotif'
-            }
-            getNewData.push(dashboard_student_NarrativeReports);
-
-            loader_id = 'loader_narrative_update';
-            btn = 'editNarrativeBtn';
-            modal = 'EditNarrative';
-        }formData = new FormData(e.target);
-        add_loader(loader_id);
-        disable_button(btn)
-
-        $.ajax({
-            url: '../ajax.php?action='+ endpoint,
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if (response.response === 1) {
-                    enable_button(btn)
-                    remove_loader(loader_id);
-                    closeModalForm(modal);
-                    openModalForm(notification);
-                    getNewData.forEach(func => func());
-                } else {
-                    alert(response.message);
-                    remove_loader(loader_id);
-                    enable_button(btn);
-                }
-            },
-        });
-    });
-
-
-</script>
 
 
 <?php endif;?>
@@ -417,21 +304,76 @@ while ($row = $res->fetch_assoc()) {
     document.addEventListener('DOMContentLoaded', function (){
         dashboard_student_NarrativeReports();
     })
-    function dashboard_student_NarrativeReports() {
+    async function dashboard_student_NarrativeReports() {
+        let program =  new URLSearchParams(window.location.search).get('program');
 
-        let program = '<?php echo urlencode($_GET['program']); ?>';
 
-        $.ajax({
-            url: '../ajax.php?action=get_narrativeReports&program=' + program,
+        const  narratives  = await $.ajax({
+            url: '../ajax.php?action=getPublishedNarrativeReport&program=' + program ,
             method: 'GET',
-            dataType: 'html',
-            success: function(response) {
-                $('#narrativeReportsTableBody').html(response);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching data:', error);
-            }
+            dataType: 'json'
         });
+        let narrative_listData = narratives.data
+        let narratives_length = narrative_listData && Object.keys(narrative_listData).length
+        let narrativeTblData = '';
+        if (narratives_length < 0){
+
+        }else {
+            const  adviserList  = await $.ajax({
+                url: '../ajax.php?action=getAdvisers' ,
+                method: 'GET',
+                dataType: 'json'
+            });
+
+            let advisers = adviserList.data.reduce((acc, adviser) => {
+                let { user_id, first_name, last_name } = adviser;
+                if (!acc[user_id]) {
+                    acc[user_id] = { name: `${first_name} ${last_name}`, user_id: user_id };
+                }
+                return acc;
+            }, {});
+
+
+            console.log(advisers[45].name);
+
+            Object.entries(narrative_listData).forEach(([key, narrative]) => {
+                let years = narrative.ay_submitted.split(',');
+                let startingAC = years[0].trim();
+                let endingAC =  years[1].trim();
+                let formattedSem = {
+                    First: '1st',
+                    Second: '2nd',
+                    Summer: 'Summer'
+                };
+                narrativeTblData += `<tr class="border-b border-dashed last:border-b-0 p-3">
+                        <td class="p-3 text-start">
+                            <span class="font-semibold text-light-inverse text-sm">${narrative.enrolled_stud_id}</span>
+                        </td>
+                        <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">${narrative.first_name} ${narrative.last_name}</span>
+                        </td>
+                         <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal  break-words">${advisers[narrative.adv_id].name}</span>
+                        </td>
+                        <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">${formattedSem[narrative.sem_submitted]}</span>
+                        </td>
+                         <td class="p-3 text-start min-w-32">
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">${startingAC} - ${endingAC}</span>
+                        </td>
+
+                        <td class="p-3 text-end ">
+                           <a onclick="openModalForm(\'EditNarrative\');editNarrative(this.getAttribute(\'data-narrative\'))" id="archive_narrative" data-narrative="${narrative.narrative_id}" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="flipbook.php?view=${narrative.narrative_id}" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
+                        </td>
+                      </tr>`;
+
+
+            });
+            $('#narrativeReportsTableBody').html(narrativeTblData);
+
+        }
+
     }
 </script>
 <script src="js/buttons_modal.js"></script>

@@ -168,7 +168,7 @@ include '../DatabaseConn/databaseConn.php';
                             </label>
                             <div class="flex justify-center items-end flex-grow">
                                 <div>
-                                    <a class="btn  btn-md btn-neutral" onclick="addAssignment()">Add</a>
+                                    <a class="btn  btn-md btn-neutral" onclick="addAdvisoryAssignment()">Add</a>
                                 </div>
                             </div>
                         </div>

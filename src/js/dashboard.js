@@ -453,7 +453,12 @@ function removeStatusBoxContent(){
 }
 
 async function loadStudentprogSecDropdown(adv_id) {
-    let adv_list = await getAdv_list();
+    const  adv_list = await $.ajax({
+        url: '../ajax.php?action=getAdvisers',
+        method: 'GET',
+        dataType: 'json'
+    });
+
 
     let prog_yearSec = adv_list.data.reduce((acc, adviser) => {
         let { user_id, program_code, program_id, year, section, year_sec_Id } = adviser;
@@ -484,19 +489,6 @@ async function loadStudentprogSecDropdown(adv_id) {
     $('#stud_xlsSection').html(yr_sec_option);
 }
 
-function dashboard_student_NarrativeReports() {
-    $.ajax({
-        url: '../ajax.php?action=get_narrativeReports&dashboardTable=request',
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            $('#narrativeReportsTableBody').html(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
 
 
 

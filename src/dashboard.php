@@ -185,22 +185,24 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 </div>
 
 
-
 <script src="js/Datatables.js"></script>
 <script src="js/buttons_modal.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/Users.js"></script>
 <script src="js/manageStudent.js"></script>
+<?php if ($_SESSION['log_user_type'] === 'admin'):?>
 <script src="js/manageAdviser.js"></script>
 <script src="js/Admin.js"></script>
+<?php elseif  ($_SESSION['log_user_type'] === 'adviser'):?>
+
 <script src="js/Adviser.js"></script>
+
+
+<?php endif;?>
+
+<script src="js/Announcement.js"></script>
 <script src="js/dashboardContent.js"></script>
 <script src="js/admin_adviserAjaxRequest.js"></script>
-
-
-
-
-
 
 
 </body>

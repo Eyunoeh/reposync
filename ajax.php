@@ -524,6 +524,7 @@ ORDER BY narrativereports.upload_date DESC;
     $getNarrtivesStmt->execute();
     $result = $getNarrtivesStmt->get_result();
     $number = 1;
+
     if ($result === false) {
         echo "Error: " . $conn->error;
     } else {
@@ -886,7 +887,9 @@ if ($action === 'ExcelImport'){
 }
 
 if ($action == 'getStudentsList'){
-    header('Contten-Type: application/json');
+    isset($_SESSION['name']) || exit();
+
+    header('Content-Type: application/json');
     $fetch_enrolled_stud = "SELECT 
                                 u.*,
                                 s.*,
@@ -1814,6 +1817,42 @@ header('Content-Type: application/json');
         exit();
 
     }
+
+}
+
+
+if ($action == 'getPublishedNarrativeReport'){
+    header('Content-Type: application/json');
+    $program_code = $_GET['program'] ?? '';
+    $approveConvertedNarratives = "SELECT n.* , ui.*, s.*, p.* FROM narrativereports n
+    JOIN tbl_students s on n.enrolled_stud_id = s.enrolled_stud_id
+    JOIN program p on p.program_id = s.program_id
+    JOIN tbl_user_info ui on ui.user_id = s.user_id
+    WHERE p.program_code = ? and n.file_status = 3;";
+
+    $approveConvertedNarrativesRes = mysqlQuery($approveConvertedNarratives, 's' ,[$program_code]);
+
+
+    if (count($approveConvertedNarrativesRes) > 0){
+        $dataByNarrativeId = [];
+        foreach ($approveConvertedNarrativesRes as $row) {
+            $key = $row['narrative_id'];
+            $row['narrative_id'] = urlencode(encrypt_data($row['narrative_id'], $secret_key));
+            $dataByNarrativeId[$key] = $row;
+        }
+
+        echo json_encode(['response' => 1,
+            'data' => $dataByNarrativeId] );
+        exit();
+
+    }else{
+        echo json_encode(['response' => 1,
+            'data' => []] );
+        exit();
+
+    }
+
+
 
 }
 if ($action == 'UpdStudSubNarrativeReport'){

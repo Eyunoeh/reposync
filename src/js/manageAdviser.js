@@ -1,6 +1,6 @@
 
 
-function addAssignment() {
+function addAdvisoryAssignment() {
     let assignAdvInput = document.getElementById("assignedAdvList");
     let assignments = assignAdvInput.value ? JSON.parse(assignAdvInput.value) : [];
 
@@ -177,6 +177,9 @@ async function render_AdvUsertList() {
                 acc[user_id].programs.push({ program_code, year, section, totalStud });
                 return acc;
             }, {});
+
+
+            console.log(advisers);
 
 
 

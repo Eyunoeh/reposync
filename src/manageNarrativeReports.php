@@ -53,7 +53,7 @@ session_start()
                             <span class="text-light-inverse text-md/normal">'.getTotalNarrativeReports($row['program_id'], 3, '').'</span>
                         </td>
                         <td class="p-3 text-center">
-                            <a href="dashboardViewnarrativeReports.php?program='.$row['program_code'].'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>
+                            <a href="dashboardViewnarrativeReports.php?program='.$row['program_code'].'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>
                         </td>
                     </tr>
                                                ';

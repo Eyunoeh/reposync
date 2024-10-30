@@ -263,20 +263,7 @@ function scrollToBottom() {
    commentBody.scrollTop = commentBody.scrollHeight;
 }
 
-function home_student_NarrativeReports() {
-   $.ajax({
-      url: '../ajax.php?action=get_narrativeReports&homeTable=request',
-      method: 'GET',
-      dataType: 'html',
-      success: function(response) {
-         $('#narrativeReportsTableBody').html(response);
-      },
-      error: function(xhr, status, error) {
 
-         console.error('Error fetching data:', error);
-      }
-   });
-}
 
 async function get_WeeklyReports() {
    try {
