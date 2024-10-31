@@ -104,28 +104,17 @@ while ($row = $res->fetch_assoc()) {
                     </tr>
                     </thead>
                     <tbody id="narrativeReportsTableBody" class="text-center text-slate-600">
-                    <tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start w-[10rem]">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">first_name lairst_</span>
-                        </td>
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
-                        </td>
-                        <td class="p-3 text-center">
-                            <span class="font-semibold text-light-inverse text-md/normal">4A</span>
-                        </td>
-                        <td class="p-3 text-center">
-                            <span class="font-semibold text-light-inverse text-md/normal">BSIT</span>
-                        </td>
-                        <td class="p-3 text-center">
-                            <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-regular fa-eye"></i></a>
-                            <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-error"><i class="fa-solid fa-trash"></i></a>
-                        </td>
-                    </tr>
+
                     </tbody>
                 </table>
+            <div id="tableLoader" class="flex justify-center items-center">
+                <span class="loading loading-spinner loading-lg"></span>
+            </div>
         </div>
-        <div class="flex justify-center gap-5">
+
+        <div class="flex justify-center gap-5" id="tablePager">
+
+
             <button id="prevBtn" onclick="dashboard_student_NarrativeReports(); prevPage(this.id, 'nextBtn')" class="btn-neutral btn-sm btn font-semibold">Prev</button>
             <div class="text-center">
                 <span id="pageInfo">Page 1</span>
@@ -338,7 +327,7 @@ while ($row = $res->fetch_assoc()) {
         let narratives_length = narrative_listData && Object.keys(narrative_listData).length
         let narrativeTblData = '';
         if (narratives_length === 0){
-
+            $('#tableLoader').html(`<p class="text-slate-700 font-sans">No result</p>`)
         }else {
             const  adviserList  = await $.ajax({
                 url: '../ajax.php?action=getAdvisers' ,
@@ -406,6 +395,7 @@ while ($row = $res->fetch_assoc()) {
                       </tr>`;
 
             })
+            $('#tableLoader').empty()
 
             $('#narrativeReportsTableBody').html(narrativeTblData);
 

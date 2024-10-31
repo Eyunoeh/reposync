@@ -1043,11 +1043,11 @@ if ($action == 'getAdvisers') {
 
 
     $getAdvListsql = "SELECT ui.*, prog.*, sec.* , acc.*
-    FROM tbl_advisoryhandle hndl_class 
-    LEFT JOIN tbl_user_info ui ON hndl_class.adv_id = ui.user_id 
-    INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id 
-    INNER JOIN program prog ON hndl_class.program_id = prog.program_id 
-    INNER JOIN section sec ON hndl_class.year_sec_Id = sec.year_sec_Id 
+    FROM tbl_user_info ui 
+    LEFT JOIN  tbl_advisoryhandle hndl_class ON ui.user_id = hndl_class.adv_id 
+    LEFT JOIN tbl_accounts acc ON ui.user_id = acc.user_id 
+    LEFT JOIN program prog ON hndl_class.program_id = prog.program_id 
+    LEFT JOIN section sec ON hndl_class.year_sec_Id = sec.year_sec_Id 
     WHERE acc.status = 1 AND ui.user_type = 2;";
 
 
@@ -1828,7 +1828,7 @@ if ($action == 'getPublishedNarrativeReport'){
     JOIN tbl_students s on n.enrolled_stud_id = s.enrolled_stud_id
     JOIN program p on p.program_id = s.program_id
     JOIN tbl_user_info ui on ui.user_id = s.user_id
-    WHERE p.program_code = ? and n.file_status = 3;";
+    WHERE p.program_code = ? and n.file_status = 3 and n.convertStatus = 3;";
 
     $approveConvertedNarrativesRes = mysqlQuery($approveConvertedNarratives, 's' ,[$program_code]);
 

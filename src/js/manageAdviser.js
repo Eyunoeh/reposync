@@ -97,12 +97,15 @@ async function editAdvInfo(user_id){
             if (adv_handle_stud_data.length > 0) {
                 for (let i = 0; i < adv_handle_stud_data.length; i++) {
                     if (user_id === adv_handle_stud_data[i].user_id) {
-                        hndle_advList += `<li>${adv_handle_stud_data[i].program_code} ${adv_handle_stud_data[i].year} ${adv_handle_stud_data[i].section}</li>`;
+                        if (adv_handle_stud_data[i].program_id && adv_handle_stud_data[i].year_sec_Id !== null){
+                            hndle_advList += `<li>${adv_handle_stud_data[i].program_code} ${adv_handle_stud_data[i].year} ${adv_handle_stud_data[i].section}</li>`;
 
-                        assignments.push({
-                            program: `${adv_handle_stud_data[i].program_id}`,
-                            section: `${adv_handle_stud_data[i].year_sec_Id}`
-                        });
+                            assignments.push({
+                                program: `${adv_handle_stud_data[i].program_id}`,
+                                section: `${adv_handle_stud_data[i].year_sec_Id}`
+                            });
+                        }
+
 
                     }
 
@@ -169,12 +172,12 @@ async function render_AdvUsertList() {
         let response = await getAdv_list();
         if (response.response === 1 && response.data.length > 0) {
             let advisers = response.data.reduce((acc, adviser) => {
-                let { user_id, first_name, last_name, program_code, year, section, totalStud } = adviser;
+                let { user_id, first_name, last_name, program_code,year_sec_Id, year, section, totalStud } = adviser;
                 if (!acc[user_id]) acc[user_id] =
                     { name: `${first_name} ${last_name}`,
                     user_id : user_id,
                     programs: [] };
-                acc[user_id].programs.push({ program_code, year, section, totalStud });
+                acc[user_id].programs.push({ program_code,year_sec_Id, year, section, totalStud });
                 return acc;
             }, {});
 
@@ -190,8 +193,8 @@ async function render_AdvUsertList() {
                         <td class="p-3 text-start">
                             <span class="text-light-inverse text-md/normal">${name}</span>
                         </td>
-                        <td class="p-3 text-center">${programs.map(p => `${p.program_code}`).join('<hr>')}</td>
-                        <td class="p-3 text-center">${programs.map(p => `${p.year} ${p.section}`).join('<hr>')}</td>
+                        <td class="p-3 text-center">${programs.map(p => `${p.program_code !== null ? p.program_code  : 'N/A'}`).join('<hr>')}</td>
+                        <td class="p-3 text-center">${programs.map(p => `${p.year_sec_Id !== null ? p.year + p.section: 'N/A'}`).join('<hr>')}</td>
                         <td class="p-3 text-center">${programs.map(p => `${p.totalStud}`).join('<hr>')}</td>
                         <td class="p-3 text-end">
                             <a onclick="openModalForm('newAdvierDialog');editAdvInfo(${user_id})" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">

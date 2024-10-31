@@ -170,7 +170,7 @@ document.addEventListener('submit', function(e) {
 
                 remove_loader(loader_id);
                 enable_button(btn);
-                Alert(alertContainer, response.message,'warning')
+                Alert(alertContainer, response.message,'error')
                 console.log(response.message)
             }
             console.log(response)

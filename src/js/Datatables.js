@@ -8,23 +8,22 @@ let lastSortedColumn = -1; // Track the last sorted column index
 
 
 function handleSearch(inputId, tableId) {
-    let input, filter, programFilter, table, tbody, tr, td, i, txtValue;
+    let input, filter,  table, tbody, tr, td, i, txtValue;
+
     input = document.getElementById(inputId);
     filter = input.value.toUpperCase();
-    programFilter = document.getElementById("programFilter");
 
-    if (programFilter) {
-        programFilter = programFilter.value;
-    } else {
-        programFilter = "";
-    }
     table = document.getElementById(tableId);
     tbody = table.getElementsByTagName("tbody")[0];
     tr = tbody.getElementsByTagName("tr");
+
+    let anyVisible = false; // Flag to track if any rows are shown
+
     for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td");
         let found = false;
         let programMatch = false;
+
         for (let j = 0; j < td.length; j++) {
             let cell = td[j];
             if (cell) {
@@ -35,16 +34,36 @@ function handleSearch(inputId, tableId) {
                 }
             }
         }
-        if (programFilter === "" || programFilter === "Select Program" || programFilter === td[2].textContent.trim()) {
-            programMatch = true;
-        }
-        if (found && programMatch) {
+
+
+
+        if (found) {
             tr[i].style.display = "";
+            anyVisible = true; // At least one row is visible
         } else {
             tr[i].style.display = "none";
         }
     }
+
+    let noResultDiv = document.getElementById("noResultRow");
+
+    // If no rows are visible and no "No Result" div exists, create it
+    if (!anyVisible) {
+        if (!noResultDiv) {
+            noResultDiv = document.createElement("div");
+            noResultDiv.id = "noResultRow";
+            noResultDiv.className = "flex justify-center items-center";
+            noResultDiv.innerHTML = `<p class="text-slate-700 font-sans">No result</p>`;
+            table.parentNode.insertBefore(noResultDiv, table.nextSibling);
+        }
+        noResultDiv.style.display = "flex";
+    } else if (noResultDiv) {
+        // If rows are visible and "No Result" div exists, hide it
+        $('#noResultRow').css('display', 'none');
+    }
+
 }
+
 
 function sortTable(columnIndex, table_id) {
     let table = document.getElementById(table_id);

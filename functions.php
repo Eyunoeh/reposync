@@ -77,7 +77,7 @@ function getTotalNarrativeReports($program, $file_status, $ojtAdviser) {
         $params[] = $program;
     }
     if ($file_status !== ''){
-        $sql .= ' AND narrativereports.file_status = ?';
+        $sql .= ' AND narrativereports.file_status = ? AND narrativereports.convertStatus = 3';
         $types .= 'i';
         $params[] = $file_status;
     }if ($ojtAdviser !== ''){

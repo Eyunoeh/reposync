@@ -150,7 +150,7 @@ function convertToFlibookLister(){
     let uploadstat = document.getElementById('UploadStat');
     uploadstat.addEventListener("change", function (){
         if (uploadstat.value === 'Declined'){
-            $('#declineUploadReason').append('<label class="form-control w-full ">' +
+            $('#declineUploadReason').html('<label class="form-control w-full ">' +
                 '                            <div class="label">' +
                 '                                <span class="label-text text-slate-700 font-semibold">Reason</span>' +
                 '                            </div>' +
@@ -239,13 +239,25 @@ async function upd_SubmittedNarrative(key){
         dataType: 'json'
     });
     let narrative = submittedNarrativesList[key];
-
-    console.log(narrative)
     $('#dlLink').attr('href', 'NarrativeReportsPDF/' + narrative.narrative_file_name);
-
-
     $('#UpdSubNarrativeReport select[name="UploadStat"]').val(narrative.file_status);
     $('#UpdSubNarrativeReport input[name="narrative_id"]').val(key);
+    if (narrative.file_status === 'Declined'){
+        $('#declineUploadReason').html(`
+    <label class="form-control w-full">
+        <div class="label">
+            <span class="label-text text-slate-700 font-semibold">Reason</span>
+        </div>
+        <textarea required name="reason" class="textarea textarea-warning" placeholder="Type here">${narrative.remarks}</textarea>
+    </label>
+`);
+
+    }else {
+        $('#declineUploadReason').empty();
+
+    }
+
+
 
 
 

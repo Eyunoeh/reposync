@@ -452,42 +452,6 @@ function removeStatusBoxContent(){
     $('#status_Box').empty();
 }
 
-async function loadStudentprogSecDropdown(adv_id) {
-    const  adv_list = await $.ajax({
-        url: '../ajax.php?action=getAdvisers',
-        method: 'GET',
-        dataType: 'json'
-    });
-
-
-    let prog_yearSec = adv_list.data.reduce((acc, adviser) => {
-        let { user_id, program_code, program_id, year, section, year_sec_Id } = adviser;
-        if (!acc[user_id]) {
-            acc[user_id] = {
-                adviser_id: user_id,
-                program: program_code,
-                program_id: program_id,
-                yr_sec: []
-            };
-        }
-        acc[user_id].yr_sec.push({ year, section, year_sec_Id });
-        return acc;
-    }, {});
-
-    let program_option = ``;
-    let yr_sec_option = ``;
-
-    if (prog_yearSec[adv_id]) {
-        program_option += `<option value="${prog_yearSec[adv_id].program_id}" selected>${prog_yearSec[adv_id].program}</option>`;
-        yr_sec_option = prog_yearSec[adv_id].yr_sec.map(yearsec =>
-            `<option value="${yearsec.year_sec_Id}">${yearsec.year} ${yearsec.section}</option>`
-        ).join('');
-    }
-    $('#stud_Program').html(program_option);
-    $('#stud_xlsProgram').html(program_option);
-    $('#stud_Section').html(yr_sec_option);
-    $('#stud_xlsSection').html(yr_sec_option);
-}
 
 
 

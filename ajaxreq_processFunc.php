@@ -211,7 +211,7 @@ function upd_stud_tbl($user_id)
         'User ID' => $user_id,
     ];
     foreach ($requiredFields as $field => $value) {
-        if (empty($value)) {
+        if (empty($value) || $value === 'N/A') {
             handleError("Field $field is required.");
             exit();
         }else{

@@ -10,22 +10,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
 }
 include '../DatabaseConn/databaseConn.php';
 $user_id = $_SESSION['log_user_id'];
-function countFileComments($file_id){
-    include "../DatabaseConn/databaseConn.php";
 
-    $sql = "SELECT COUNT(*) AS comment_count FROM tbl_revision WHERE file_id = ?";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $file_id);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-
-    $row = $result->fetch_assoc();
-    $comment_count = $row['comment_count'];
-
-    return $comment_count;
-}
 ?>
 <section class="w-full min-h-screen flex justify-center mt-2">
 
@@ -34,11 +19,11 @@ function countFileComments($file_id){
             <div class="w-[40%]">
                 <input class="bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                 focus:outline-none focus:shadow-outline" id="weeklyReportSearch" type="text" placeholder="Search"
-                       onkeyup="handleSearch('weeklyReportSearch',getVisibleTableId())">
+                       onkeyup="handleSearch('weeklyReportSearch',getVisibleTableId());">
             </div>
 
             <div class="flex justify-evenly gap-5">
-                <button class=" font-semibold btn btn-neutral  " id="stud-weekly-rpt-btn" onclick="change_stud_table()">View logs</button>
+                <button class=" font-semibold btn btn-neutral  " id="stud-weekly-rpt-btn" onclick="change_stud_table();$('#noResultRow').remove();">View logs</button>
                 <div class="tooltip  tooltip-bottom" data-tip="Upload weekly journal">
                     <a class="btn btn-neutral btn-circle " onclick="openModalForm('newReport')"><i class="fa-solid fa-plus"></i></a>
                 </div>
