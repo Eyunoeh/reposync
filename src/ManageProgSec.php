@@ -1,10 +1,10 @@
 <?php ?>
-<div class=" flex justify-end pr-7" >
+<div class=" flex justify-end pr-7 w-full" >
     <button onclick="openModalForm('ProgSecFormModal'); if (!document.getElementById('formSelect')) renderSelectformOption();" class=" btn btn-circle btn-success ">
         <i class="fa-solid fa-plus"></i>
     </button>
 </div>
-<section class=" ml- sm:ml-0 flex justify-between  sm:gap-5 h-[100vh] ">
+<section class=" ml- sm:ml-0 flex justify-between sm:flex-nowrap flex-wrap sm:gap-5 h-[100vh] ">
     <div class="flex sm:w-[90%]  transition  shadow rounded
               justify-center  ">
         <div class="w-full  overflow-hidden hover:overflow-auto">
@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div class="flex w-1/2  transition  shadow rounded
+    <div class="flex sm:w-1/2 w-full  transition  shadow rounded
               justify-center  ">
         <div class="w-full overflow-hidden hover:overflow-auto">
             <h1></h1>

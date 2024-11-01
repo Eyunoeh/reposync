@@ -4406,6 +4406,10 @@ details.collapse summary::-webkit-details-marker {
   right: 0.5rem;
 }
 
+.right-7 {
+  right: 1.75rem;
+}
+
 .top-0 {
   top: 0px;
 }
@@ -4478,6 +4482,11 @@ details.collapse summary::-webkit-details-marker {
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.my-7 {
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
 }
 
 .mb-1 {
@@ -4930,6 +4939,10 @@ details.collapse summary::-webkit-details-marker {
 
 .flex-\[1_auto\] {
   flex: 1 auto;
+}
+
+.flex-auto {
+  flex: 1 1 auto;
 }
 
 .shrink {
@@ -5962,6 +5975,10 @@ body{
 
   .sm\:flex-row {
     flex-direction: row;
+  }
+
+  .sm\:flex-wrap {
+    flex-wrap: wrap;
   }
 
   .sm\:flex-nowrap {
