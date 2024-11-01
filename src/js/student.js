@@ -445,3 +445,5 @@ function resetNarratveFormModal(){
 
    $('#NarrativeReportForm')[0].reset();
 }
+
+

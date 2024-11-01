@@ -582,11 +582,15 @@ ORDER BY narrativereports.upload_date DESC;
 
 
 
-if ($action == 'ArchiveNarrativeReport'){
+if ($action == 'archiveNarrative'){
     header('Content-Type: application/json');
+
+
     $response = 1;
     $responseMessage = 'Narrative report has been archived!';
-    $narrative_id = isset($_POST['narrative_id']) ? sanitizeInput($_POST['narrative_id']) : '';
+    $narrative_id = isset($_GET['narrative_id']) ? $_GET['narrative_id'] : '';
+
+
     if ($narrative_id !== ''){
         $narrative_id = decrypt_data($narrative_id, $secret_key);
         $file_status = 'Archived';
@@ -1293,7 +1297,18 @@ if ($action === 'Notes') {
 }
 
 if ($action == 'getDashboardNotes') {
+
+    if (!isset($_SESSION['log_user_id'])) {
+        echo json_encode([
+            'response' => 1,
+            'data' => []
+        ]);
+        exit();
+    }
+
     $user_id = $_SESSION['log_user_id'];
+
+
 
 
     if ( $_SESSION['log_user_type'] === 'student'){
@@ -1448,6 +1463,8 @@ WHERE tbl_accounts.status = 'active' and  program.program_code = ?;";
 if ($action == 'getDashboardActSched'){
     header('Content-Type: application/json');
 
+
+
     $actSched = "SELECT *    
     FROM announcement 
         WHERE 1 = 1
@@ -1561,125 +1578,9 @@ if ($action == 'getProgJSON'){
 
 }
 
-if ($action === 'getHomeActSched') {
-    $user_id = $_SESSION['log_user_id'] ?? '';
-    $targetViewer = '';
-
-    if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] === 'student') {
-        $getStudProg = "
-            SELECT program.*, tbl_students.*, tbl_user_info.*
-            FROM tbl_students
-            JOIN tbl_user_info ON tbl_students.user_id = tbl_user_info.user_id
-            JOIN program ON tbl_students.program_id = program.program_id
-            WHERE tbl_students.user_id = ?;
-        ";
-
-        $getStudProgStmt = $conn->prepare($getStudProg);
-        $getStudProgStmt->bind_param('i', $user_id);
-
-        if (!$getStudProgStmt->execute()) {
-            echo $getStudProgStmt->error;
-            exit();
-        }
-
-        $res = $getStudProgStmt->get_result();
-
-        if ($res->num_rows !== 1) {
-            echo 'No records';
-            exit();
-        }
-
-        $row = $res->fetch_assoc();
-        $programCode = $row['program_code'];
-        $targetViewer = "AND SchedAct_targetViewer IN ('All', '$programCode')";
-    } else {
-        $targetViewer = "AND SchedAct_targetViewer = 'All'";
-    }
-
-    $actSched = "
-        SELECT *    
-        FROM announcement 
-        WHERE status = 'Active'
-        AND type = 'schedule and activities' $targetViewer
-        ORDER BY starting_date;
-    ";
-
-    $stmt = $conn->prepare($actSched);
-
-    if (!$stmt->execute()) {
-        echo $stmt->error;
-        exit();
-    }
-
-    $res = $stmt->get_result();
-
-    if ($res->num_rows > 0) {
-        while ($row = $res->fetch_assoc()) {
-            $announcementPosted = date('h:i A', strtotime($row['announcementPosted']));
-            $formattedDatePosted = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
-            $formattedStartingDate = date("F j, Y", strtotime($row['starting_date']));
-            $formattedEndingDate = date("F j, Y", strtotime($row['end_date']));
-
-            echo '<div class="flex min-w-[40rem] ' . (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'student' ? 'w-[40rem]' : 'w-[50rem]') . ' shadow rounded transition duration-500 transform hover:scale-110 hover:bg-slate-300 cursor-pointer justify-start items-center">
-                    <div class="w-[12rem] p-2 sm:p-5 b text-center flex flex-col justify-start text-sm ">
-                    ';
-
-            if ($formattedStartingDate === $formattedEndingDate) {
-                echo '<h4 class="text-start">' . $formattedStartingDate . '</h4>';
-            } else {
-                echo '<h4 class="text-start">' . $formattedStartingDate . '</h4>';
-                echo '<h4 class="text-start">' . $formattedEndingDate . '</h4>';
-            }
-
-            echo '</div>
-                    <div class="flex flex-col justify-center max-h-[10rem] overflow-auto ">
-                        <h1 class="font-semibold">' . $row['title'] . '</h1>
-                        <div class="max-h-[10rem] transition duration-100 overflow-hidden hover:overflow-auto">
-                            <p class="text-justify text-sm pr-5">' . $row['description'] . '</p>
-                        </div>
-                    </div>
-                </div>';
-        }
-    }
-}
 
 
-if ($action == 'getHomeNotes'){
-    $user_id = $_SESSION['log_user_id'];
 
-    $getstud = "SELECT * FROM tbl_students WHERE user_id = ?";
-
-    $get_data = mysqlQuery($getstud, 'i', [$user_id])[0];
-    $adv_id = $get_data['adv_id'];
-
-    $getAdv_announcement = "SELECT * FROM announcement
-
-         WHERE user_id = ? AND type = 'Notes' AND status = 'Active' order by announcementPosted";
-    $getannouncementStmt = $conn->prepare($getAdv_announcement);
-    $getannouncementStmt->bind_param('i', $adv_id);
-    $getannouncementStmt->execute();
-    $results = $getannouncementStmt->get_result();
-
-    while ($row = $results->fetch_assoc()){
-        $notePosted = DateTime::createFromFormat('Y-m-d H:i:s', $row['announcementPosted'])->format('m/d/Y h:i A');
-
-        echo '
-
-<div class="flex transition duration-500 transform scale-90 hover:scale-100 hover:bg-slate-300 cursor-pointer w-full">
-    <div class="flex flex-col justify-center p-2 w-full">
-        <h1 class="font-semibold">'.$row['title'].'</h1>
-        <div class="max-h-[10rem] transition overflow-hidden hover:overflow-auto w-full">
-            <p class="text-justify text-sm break-words w-full">'.$row['description'].'
-            </p>
-            <p class="text-[12px] text-slate-400 text-end">'.$notePosted.'
-        </div>
-    </div>
-</div>
-
-       
-        ';
-    }
-}
 
 if ($action == 'getAdvNotes'){
     header('Content-Type: application/json');
@@ -2004,11 +1905,12 @@ if ($action == "get_User_info"){
 
     $user_id = isset($_GET['data_id']) ? $_GET['data_id'] : $_SESSION['log_user_id'];
 
-    $get_User_info = "SELECT ui.*, acc.*, stud.enrolled_stud_id, stud.adv_id, stud.program_id,
-       stud.year_sec_Id, stud.ojt_center, stud.ojt_location
+    $get_User_info = "SELECT ui.*, acc.*, stud.*, p.*, ys.*
             FROM tbl_user_info ui
             INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
             LEFT JOIN tbl_students stud on ui.user_id = stud.user_id
+            LEFT JOIN program p on p.program_id = stud.program_id
+            LEFT JOIN section ys on ys.year_sec_Id = stud.year_sec_Id
             WHERE ui.user_id = ?";
 
     $profile_Info = mysqlQuery($get_User_info, 'i', [$user_id])[0];
@@ -2154,4 +2056,3 @@ if ($action == 'weeklyJournalList'){
     }
 
 }
-

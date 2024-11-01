@@ -1,7 +1,7 @@
 let urlParams = new URLSearchParams(window.location.search);
 //onload call
 linkPages();
-function navigate(page) {
+async function navigate(page) {
     return fetch(page + '.php', {
         headers: {
             'X-Requested-With': 'XMLHttpRequest' // Add a custom header
@@ -146,25 +146,6 @@ function toggleNav() {
     }
 }
 
-/*
-
-function getHomeActSched(){
-    $.ajax({
-        url: '../ajax.php?action=getHomeActSched' ,
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            if (response){
-                $('#actSched').html(response);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-
-}
-*/
 
 
 async function getHomeActSched() {
@@ -174,37 +155,51 @@ async function getHomeActSched() {
             method: 'GET',
             dataType: 'json'
         });
-        let actAndschedList = '';
-        if (response.response === 1){
-            let actScheds = response.data;
-            actScheds.forEach(actSched =>{
-                actAndschedList += `<div 
-             class="text-sm text-slate-700 sm:text-base flex transform max-w-[50rem] w-full transition duration-500 shadow rounded
-            hover:scale-105 hover:bg-slate-300  justify-start items-center cursor-pointer">
-            <div class=" min-w-[12rem]  p-2 sm:p-5 b text-center flex flex-col justify-center text-sm">`
-                if (actSched['starting_date'] === actSched['end_date']){
-                    actAndschedList += `<h4 class="text-start">${actSched['starting_date']}</h4>`
-                }else {
-                    actAndschedList += `<h4 class="text-start">${actSched['starting_date']}</h4>`
-                    actAndschedList += `<h4 class="text-start">${actSched['end_date']}</h4>`
-                }
-                actAndschedList += `
-            </div>
-            <div class="flex flex-col justify-center  p-3">
-                <h1 class="font-semibold  break-words">${actSched['title']}</h1>
-                
-                     <p class="text-justify text-sm pr-5 break-words">
-        ${actSched['description'].replace(/\r\n|\r|\n/g, '<br>')}
-                </p>
 
-            </div>
-        </div>`
-            })
+        let actAndschedList = '';
+        const user = await user_info();
+        const user_data = user.data;
+
+        if (response.response === 1) {
+            const actScheds = response.data;
+            const actSchedsTargetViewer = actScheds.filter(actSched => {
+                return (
+                    actSched['SchedAct_targetViewer'] === 'All' ||
+                    (user_data.user_type === 'student' && actSched['SchedAct_targetViewer'] === user_data.program_code)
+                );
+            });
+
+            actSchedsTargetViewer.forEach(actSched => {
+                actAndschedList += `
+                    <div class="text-sm text-slate-700 sm:text-base flex transform max-w-[50rem] w-full transition duration-500 shadow rounded
+                    hover:scale-105 hover:bg-slate-300 justify-start items-center cursor-pointer">
+                        <div class="min-w-[12rem] p-2 sm:p-5 text-center flex flex-col justify-center text-sm">`;
+
+                if (actSched['starting_date'] === actSched['end_date']) {
+                    actAndschedList += `<h4 class="text-start">${actSched['starting_date']}</h4>`;
+                } else {
+                    actAndschedList += `
+                        <h4 class="text-start">${actSched['starting_date']}</h4>
+                        <h4 class="text-start">${actSched['end_date']}</h4>`;
+                }
+
+                actAndschedList += `
+                        </div>
+                        <div class="flex flex-col justify-center p-3">
+                            <h1 class="font-semibold break-words">${actSched['title']}</h1>
+                            <p class="text-justify text-sm pr-5 break-words">
+                                ${actSched['description'].replace(/\r\n|\r|\n/g, '<br>')}
+                            </p>
+                        </div>
+                    </div>`;
+            });
+
             $('#actSched').html(actAndschedList);
-        }else {
-            $('#actSched').html(`<div class="flex transform w-[50rem]    justify-center items-center ">
-            <h1 class="font-semibold">No activity and schedule posted</h1>
-        </div>`);
+        } else {
+            $('#actSched').html(`
+                <div class="flex transform w-[50rem] justify-center items-center">
+                    <h1 class="font-semibold">No activity and schedule posted</h1>
+                </div>`);
         }
 
     } catch (error) {
@@ -221,14 +216,17 @@ async function getHomeNotes(){
             method: 'GET',
             dataType: 'json'
         });
-        let advNoteCard = '';
-        if (response.response === 1){
-            let adv_Notes = response.data;
-            adv_Notes.forEach(note =>{
+
+        let  user = await user_info();
+        if (user.response === 1){
+            let advNoteCard = '';
+            if (response.response === 1){
+                let adv_Notes = response.data;
+                adv_Notes.forEach(note =>{
 
 
-                const notePosted = formatDateTime(note.announcementPosted)
-                advNoteCard += `<div class="shadow flex transition duration-500 transform scale-90 hover:scale-100 hover:bg-slate-300 cursor-pointer w-full">
+                    const notePosted = formatDateTime(note.announcementPosted)
+                    advNoteCard += `<div class="shadow flex transition duration-500 transform scale-90 hover:scale-100 hover:bg-slate-300 cursor-pointer w-full">
     <div class="flex flex-col justify-center p-2 w-full">
         <h1 class="font-semibold">${note.title}</h1>
         <div class="max-h-[10rem] transition overflow-hidden hover:overflow-auto w-full">
@@ -239,15 +237,18 @@ async function getHomeNotes(){
     </div>
 </div>
 `
-            })
-            $('#studNotes').html(advNoteCard);
+                })
+                $('#studNotes').html(advNoteCard);
+            }
         }
+
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 
 
 }
+
 
 document.getElementById('homeLink').addEventListener('click', async function(event) {
     event.preventDefault();
