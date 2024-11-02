@@ -23,23 +23,23 @@
                             <span class="font-semibold text-light-inverse text-md/normal break-words">Narrative Reports</span>
                         </td>
                         <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">10</span>
+                            <span class="font-semibold text-light-inverse text-md/normal break-words" id="totalArchiveNarrative"></span>
                         </td>
                         <td class="p-3 text-end">
-                            <a href="manage_ArchiveList.php?route=NarrativeReports" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                            <a href="manage_ArchiveList.php?route=NarrativeReports"  class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                                 <i class="fa-regular fa-eye"></i>
                             </a>
                         </td>
                     </tr>
                     <tr class="border-b border-dashed last:border-b-0">
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">Users</span>
+                            <span class="font-semibold text-light-inverse text-md/normal break-words" >Users</span>
                         </td>
                         <td class="p-3 text-end">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">10</span>
+                            <span class="font-semibold text-light-inverse text-md/normal break-words" id="total_archiveUsers"></span>
                         </td>
                         <td class="p-3 text-end">
-                            <a href="manage_ArchiveList.php?route=Users" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                            <a href="manage_ArchiveList.php?route=Users"  class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                                 <i class="fa-regular fa-eye"></i>
                             </a>
                         </td>

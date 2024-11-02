@@ -17,34 +17,41 @@ async function dashboard_student_NarrativeReports() {
     let narrativeTblData = '';
     if (narratives_length === 0){
         $('#tableLoader').html(`<p class="text-slate-700 font-sans">No result</p>`)
-    }else {
-        const  adviserList  = await $.ajax({
-            url: '../ajax.php?action=getAdvisers' ,
-            method: 'GET',
-            dataType: 'json'
-        });
+    }
+    const  adviserList  = await $.ajax({
+        url: '../ajax.php?action=getAdvisers' ,
+        method: 'GET',
+        dataType: 'json'
+    });
 
-        let advisers = adviserList.data.reduce((acc, adviser) => {
-            let { user_id, first_name, last_name } = adviser;
-            if (!acc[user_id]) {
-                acc[user_id] = { name: `${first_name} ${last_name}`, user_id: user_id };
-            }
-            return acc;
-        }, {});
-
-
+    let advisers = adviserList.data.reduce((acc, adviser) => {
+        let { user_id, first_name, last_name } = adviser;
+        if (!acc[user_id]) {
+            acc[user_id] = { name: `${first_name} ${last_name}`, user_id: user_id };
+        }
+        return acc;
+    }, {});
 
 
-        let array_narrativeList = []
+    console.log(advisers)
 
 
 
-        Object.entries(narrative_listData).forEach(([key, narrative]) => {
+
+    let array_narrativeList = []
+
+
+
+    Object.entries(narrative_listData).forEach(([key, narrative]) => {
+        if (narrative.program_code === program && narrative.file_status === 'Approved'){
             array_narrativeList.push(narrative)
+        }
 
+    });
+    if (array_narrativeList.length === 0){
+        $('#tableLoader').html(`<p class="text-slate-700 font-sans">No result</p>`)
 
-        });
-
+    }else {
         let offset = (page_no - 1) * totalRecPerpage;
         total_page = Math.ceil( array_narrativeList.length/ totalRecPerpage);
 
@@ -81,8 +88,8 @@ async function dashboard_student_NarrativeReports() {
                         `;
 
 
-                    if (user_data.user_type === 'admin') {
-                        narrativeTblData += `
+            if (user_data.user_type === 'admin') {
+                narrativeTblData += `
                                         <div class="tooltip tooltip-warning tooltip-bottom" data-tip="Archive">
 <a onclick="openModalForm('archiveNarrativeModal'); $('#archiveNarrative').attr('data-narrative', $(this).attr('data-narrative'));" 
    id="archive_narrative" 
@@ -91,12 +98,10 @@ async function dashboard_student_NarrativeReports() {
    <i class="fa-solid fa-pen-to-square"></i>
 </a>
                                         </div>`;
-                    }
+            }
 
 
-
-
-                      narrativeTblData += `      
+            narrativeTblData += `      
                             <a href="flipbook.php?view=${narrative.narrative_id}" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
                         </td>
                       </tr>`;
@@ -105,7 +110,6 @@ async function dashboard_student_NarrativeReports() {
         $('#tableLoader').empty()
 
         $('#narrativeReportsTableBody').html(narrativeTblData);
-
     }
 
 }

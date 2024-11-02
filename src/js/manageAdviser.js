@@ -88,6 +88,7 @@ async function editAdvInfo(user_id){
 
         if (userInfo.response === 1 && adv_handle_stud.response === 1) {
             let  user_data = userInfo.data;
+            console.log( user_data)
             let adv_handle_stud_data = adv_handle_stud.data;
             let assignments = [];
 
@@ -123,7 +124,7 @@ async function editAdvInfo(user_id){
 
 
 
-            renderDeacAccLink('newAdvierDialog', 'render_AdvUsertList')
+
 
             $('#admin_adv_Form input[name="user_Fname"]').val(user_data.first_name);
             $('#admin_adv_Form input[name="user_Mname"]').val(user_data.middle_name);
@@ -134,7 +135,12 @@ async function editAdvInfo(user_id){
             $('#admin_adv_Form input[name="user_Email"]').val(user_data.email);
             $('#admin_adv_Form input[name="user_id"]').val(user_data.user_id);
             $('#admin_adv_Form select[name="user_type"]').val(user_data.user_type);
+
+
+            renderDeacAccLink('newAdvierDialog', 'render_AdvUsertList');
+
             $('#deactivate_acc').attr('data-user_id', user_data.user_id);
+
             $('#admin_adv_Submit').html('Save');
 
             if (user_data.sex === "male") {

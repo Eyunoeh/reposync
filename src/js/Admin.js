@@ -451,7 +451,17 @@ function advNoteReqEventListener(){
 }
 
 
+async function renderTotalArchive(){
+    let total_ArchivedNarrative = await getTotalPublihed(4)
+    let totalArchiveStud = parseInt(await totalUser(2, 3), 10);
+    let totalAchiveAdv = parseInt(await totalUser(2, 2), 10);
+    let totalArchiveUsers = totalArchiveStud + totalAchiveAdv;
 
+
+
+    $('#totalArchiveNarrative').html(total_ArchivedNarrative)
+    $('#total_archiveUsers').html(totalArchiveUsers)
+}
 
 
 

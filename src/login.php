@@ -26,45 +26,43 @@ if (isset($_SESSION['log_user_type'])){
     <title>Login</title>
 </head>
 <body  class="bg-slate-100 grid place-items-center">
-<main class="h-screen mx-auto flex  justify-center items-center sm:flex-row overflow-y-auto ">
-    <img id="login_img" class="hover:cursor-pointer lg:block hidden object-fit h-[32rem] w-full sm:w-auto md:w-[720px] border border-black " src="assets/reposync%20bg%204.png" alt="Cookie Image">
-    <div class="bg-white card h-[90vh] w-full  sm:w-96 sm:h-[32rem] bg-transparent text-neutral-content border-none md:border rounded-none">
-        <div class="card-body flex flex-col justify-center items-center lg:border-black lg:border">
-            <div class="text-center">
+<main class="h-screen mx-auto flex  justify-center items-center sm:flex-row overflow-y-auto p-5">
+    <img id="login_img"
+         class="hover:cursor-pointer md:block hidden object-scale-down h-full
+           mx-auto border border-black "
+         src="assets/loginPic.png" alt="loginpic">
+    <div class="bg-white card  w-full   h-full  bg-transparent text-neutral-content border-none md:border rounded-none">
+        <div class="card-body flex flex-col justify-center items-center lg:border-black lg:border ">
+            <div class="text-center mb-16">
                 <h2 class="text-2xl text-black font-bold">Welcome</h2>
                 <h2 class="text-2xl text-black font-bold">Login to your account</h2>
             </div>
-            <section class="overflow-y-auto max-h-[20rem] scroll-smooth  mt-16">
-                <form id="login-form">
-                    <div class="flex flex-col gap-2.5 justify-center text-black">
-                        <div class="flex flex-col gap-2">
-                            <label class="input input-bordered flex items-center gap-2 bg-slate-50">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
-                                <input type="email" class="grow bg-slate-50" name="log_email" placeholder="Email" />
-                            </label>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="input input-bordered flex items-center gap-2 bg-slate-50">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" /></svg>
-                                <input name="log_password"
-                                       type="password" autocomplete="off" placeholder="Password" data-theme="light"
-                                       class="grow bg-slate-50  " />
-                            </label>
-
-                        </div>
-                        <a href="#" class="text-sm text-center text-info">Fogot password?</a>
+            <form id="login-form">
+                <div class="flex flex-col gap-2.5 justify-center text-black">
+                    <div class="flex flex-col gap-2">
+                        <label class="input input-bordered flex items-center gap-2 bg-slate-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
+                            <input type="email" class="grow bg-slate-50" name="log_email" placeholder="Email" />
+                        </label>
                     </div>
-                    <div class="card-actions flex-col flex items-center  w-full mt-10">
-                        <button id="login-btn-submit" class="btn btn-success btn-outline mr-2 h-10 p-3 w-20">Login</button>
-
-                        <a href="#" class="text-sm text-center text-info">Continue with Google?</a>
+                    <div class="flex flex-col gap-2">
+                        <label class="input input-bordered flex items-center gap-2 bg-slate-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" /></svg>
+                            <input name="log_password"
+                                   type="password" autocomplete="off" placeholder="Password" data-theme="light"
+                                   class="grow bg-slate-50  " />
+                        </label>
 
                     </div>
+                    <a href="#" class="text-sm text-center text-info">Fogot password?</a>
+                </div>
+                <div class="card-actions flex-col flex items-center  w-full mt-10">
+                    <button id="login-btn-submit" class="btn btn-success btn-outline mr-2 h-10 p-3 w-20">Login</button>
 
+                    <a href="#" class="text-sm text-center text-info">Continue with Google?</a>
 
-                </form>
-            </section>
-
+                </div>
+            </form>
         </div>
     </div>
 </main>

@@ -504,80 +504,6 @@ if ($action == 'narrativeReportsJson'){
 
 
 
-if ($action == 'get_narrativeReports') {
-    if (!isset($_SESSION['log_user_id'])){
-        exit();
-    }
-    $selectProgram = $_GET['program'];
-
-    $sql = "SELECT narrativereports.*, tbl_user_info.user_id,
-       tbl_user_info.first_name AS adv_first_name, 
-       tbl_user_info.last_name AS adv_last_name
-FROM narrativereports
-JOIN tbl_user_info ON narrativereports.OJT_adviser_ID = tbl_user_info.user_id
-WHERE narrativereports.file_status = 'OK' AND narrativereports.program = ?
-ORDER BY narrativereports.upload_date DESC;
-
-";
-    $getNarrtivesStmt = $conn->prepare($sql);
-    $getNarrtivesStmt->bind_param('s', $selectProgram);
-    $getNarrtivesStmt->execute();
-    $result = $getNarrtivesStmt->get_result();
-    $number = 1;
-
-    if ($result === false) {
-        echo "Error: " . $conn->error;
-    } else {
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $middle_initial = $row['middle_name']!== 'N/A' ? ' ' . $row['middle_name']  : '';
-                echo '<tr class="border-b border-dashed last:border-b-0 p-3">';
-                if ($_SESSION['log_user_type'] !== 'student'){
-                    echo '<td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-sm">' . $row['stud_school_id'] . '</span>
-                        </td>';
-                }
-                echo '
-                        
-                        <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . $row['first_name'] . ' ' . $middle_initial . ' ' . $row['last_name'] . '</span>
-                        </td>
-                         <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal  break-words">' . $row['adv_first_name'] . ' ' . $row['adv_last_name'] . '</span>
-                        </td>
-                        <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">' . str_replace(',', ' - ', $row['sySubmitted']) . ' </span>
-                        </td>
-                  
-                    <td class="p-3 text-end ">
-                  ';
-
-                if ($_SESSION['log_user_id'] === $row['OJT_adviser_ID']){
-                    echo '
-                            <a onclick="openModalForm(\'EditNarrative\');editNarrative(this.getAttribute(\'data-narrative\'))" id="archive_narrative" data-narrative="' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
-                        ';
-                }else{
-                    echo ' <a href="flipbook.php?view=' . urlencode(encrypt_data($row['narrative_id'], $secret_key)) .'" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>';
-                }
-
-                echo'</td>
-                      </tr>';
-            }
-        }else{
-            echo '<tr><td colspan="9">No Result</td></tr>';
-        }
-    }
-    $conn->close();
-}
-
-
-
-
-
-
-
-
 
 
 
@@ -617,81 +543,23 @@ if ($action == 'archiveNarrative'){
 if ($action === 'recoverNarrativeReport') {
     header('Content-Type: application/json');
 
-    $narrative_id = isset($_GET['archived_id']) && sanitizeInput($_GET['archived_id']) ? $_GET['archived_id'] : '';
-    if ($narrative_id !== ''){
-        $file_status = 'OK';
-        $archive_final_report = $conn->prepare("UPDATE narrativereports
+    $archive_id = isset($_GET['archived_id'])  ? $_GET['archived_id'] : '';
+    $narrative_id = decrypt_data($archive_id, $secret_key);
+    if (!$narrative_id ) {
+     handleError('emptyID');
+    }
+    $recoverNarrativeQuery ="UPDATE narrativereports
                                       SET 
-                                          file_status = ?
-                                      WHERE narrative_id = ?");
-        $archive_final_report->bind_param('si',$file_status, $narrative_id);
-        if (!$archive_final_report->execute()){
-            header('Content-Type: application/json');
-            echo json_encode(['response' => 2,
-                'message' => $archive_final_report->error]);
-            exit();
-        }
-        header('Content-Type: application/json');
-        echo json_encode(['response' => 1,
-            'message' => 'Report has been successfully recovered']);
-        exit();
-    }else{
-        echo json_encode(['response' => 2,
-            'message' => 'emptyID']);
-        exit();
-    }
+                                          file_status = 3
+                                      WHERE narrative_id = ?";
+        $recoverNarrative = mysqlQuery($recoverNarrativeQuery, 'i', [$narrative_id]);
+    echo json_encode(['response' => 1,
+        'message' => 'Report has been successfully recovered']);
+    exit();
+
+
+
 }
-
-if ($action === 'getArchiveNarrative') {
-    header('Content-Type: application/json');
-
-    $archive_id = isset($_GET['archive_id']) ? intval($_GET['archive_id']) : null;
-    if ($archive_id) {
-        $getArchiveNarrative = "SELECT narrativereports.*, tbl_user_info.first_name as 'OJT_adviser_Fname', 
-tbl_user_info.last_name as 'OJT_adviser_Lname' FROM narrativereports 
-                            JOIN tbl_user_info ON tbl_user_info.user_id = narrativereports.OJT_adviser_ID
-                            WHERE narrativereports.narrative_id = ?";
-        $getArchiveNarrativeSTMT = $conn->prepare($getArchiveNarrative);
-        if ($getArchiveNarrativeSTMT) {
-            $getArchiveNarrativeSTMT->bind_param('i', $archive_id);
-        } else {
-            echo json_encode(['response' => 2, 'message' => 'Query preparation failed.']);
-            exit;
-        }
-    } else {
-        $getArchiveNarrative = "SELECT narrativereports.*, tbl_user_info.first_name as 'OJT_adviser_Fname', 
-tbl_user_info.last_name as 'OJT_adviser_Lname' FROM narrativereports 
-                            JOIN tbl_user_info ON tbl_user_info.user_id = narrativereports.OJT_adviser_ID
-                            WHERE file_status = 'Archived'";
-        $getArchiveNarrativeSTMT = $conn->prepare($getArchiveNarrative);
-        if (!$getArchiveNarrativeSTMT) {
-            echo json_encode(['response' => 2, 'message' => 'Query preparation failed.']);
-            exit;
-        }
-    }
-
-
-    if ($getArchiveNarrativeSTMT->execute()) {
-        $result = $getArchiveNarrativeSTMT->get_result();
-        $resultList = [];
-        $flipbookList = [];
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $flipbookList[] = urlencode(encrypt_data($row['narrative_id'], $secret_key));
-                $resultList[] = $row;
-            }
-            echo json_encode(['response' => 1,
-                'data' => $resultList,
-                'flipbookCode' => $flipbookList,
-                'message' => 'OK']);
-        } else {
-            echo json_encode(['response' => 0, 'message' => 'Empty Result']);
-        }
-    } else {
-        echo json_encode(['response' => 2, 'message' => $getArchiveNarrativeSTMT->error]);
-    }
-}
-
 
 
 
@@ -959,8 +827,7 @@ if ($action == 'deactivate_account'){
     if ($user_id !== ''){
         $sql = "UPDATE tbl_accounts SET status = 2  where user_id = ?";
         mysqlQuery($sql,'i',[$user_id]);
-        $removeAdv = "UPDATE tbl_students SET adv_id = null  where user_id = ?";//forstud
-        mysqlQuery($removeAdv,'i', [$user_id]);
+
     }
     echo json_encode([
         'response' => 1,
@@ -1007,8 +874,8 @@ WHERE tbl_user_info.user_id = ?";
         if ($getArchiveUsersSTMT) {
             $getArchiveUsersSTMT->bind_param('i', $archive_id);
         } else {
-            echo json_encode(['response' => 2, 'message' => 'Query preparation failed.']);
-            exit;
+            echo handleError('Query preparation failed.');
+
         }
     } else {
         $getArchiveUsers = "SELECT tbl_user_info.*, tbl_accounts.* 
@@ -1017,8 +884,7 @@ WHERE tbl_user_info.user_id = ?";
                         WHERE tbl_accounts.status = 'inactive'";
         $getArchiveUsersSTMT = $conn->prepare($getArchiveUsers);
         if (!$getArchiveUsersSTMT) {
-            echo json_encode(['response' => 2, 'message' => 'Query preparation failed.']);
-            exit;
+            echo handleError('Query preparation failed.');
         }
     }
 
@@ -1033,10 +899,10 @@ WHERE tbl_user_info.user_id = ?";
             }
             echo json_encode(['response' => 1, 'data' => $resultList, 'message' => 'OK']);
         } else {
-            echo json_encode(['response' => 0, 'message' => 'Empty Result']);
+            echo handleError('Empty Result');
         }
     } else {
-        echo json_encode(['response' => 2, 'message' => $getArchiveUsersSTMT->error]);
+        echo handleError( $getArchiveUsersSTMT->error);
     }
 }
 
@@ -1724,14 +1590,13 @@ header('Content-Type: application/json');
 
 if ($action == 'getPublishedNarrativeReport'){
     header('Content-Type: application/json');
-    $program_code = $_GET['program'] ?? '';
     $approveConvertedNarratives = "SELECT n.* , ui.*, s.*, p.* FROM narrativereports n
     JOIN tbl_students s on n.enrolled_stud_id = s.enrolled_stud_id
     JOIN program p on p.program_id = s.program_id
     JOIN tbl_user_info ui on ui.user_id = s.user_id
-    WHERE p.program_code = ? and n.file_status = 3 and n.convertStatus = 3;";
+    WHERE n.convertStatus = 3;";
 
-    $approveConvertedNarrativesRes = mysqlQuery($approveConvertedNarratives, 's' ,[$program_code]);
+    $approveConvertedNarrativesRes = mysqlQuery($approveConvertedNarratives, '' ,[]);
 
 
     if (count($approveConvertedNarrativesRes) > 0){
@@ -1805,7 +1670,10 @@ if ($action == 'dshbGePendingFinalReports') {
 
 }
 if ($action == 'totalPublihedReport'){
-    $result = getTotalNarrativeReports('', 3,'');
+
+    $file_status = $_GET['file_status'];// 1,2,3,4
+
+    $result = getTotalNarrativeReports('', $file_status,'');
     echo $result;
     exit();
 }
@@ -1905,7 +1773,12 @@ if ($action == "get_User_info"){
 
     $user_id = isset($_GET['data_id']) ? $_GET['data_id'] : $_SESSION['log_user_id'];
 
-    $get_User_info = "SELECT ui.*, acc.*, stud.*, p.*, ys.*
+    $get_User_info = "SELECT ui.*, acc.*, 
+       stud.enrolled_stud_id, 
+       stud.adv_id,  
+       stud.ojt_center, 
+       stud.ojt_location, 
+       p.*, ys.*
             FROM tbl_user_info ui
             INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
             LEFT JOIN tbl_students stud on ui.user_id = stud.user_id

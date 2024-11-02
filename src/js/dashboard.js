@@ -189,7 +189,10 @@ async function dashboard_tab(id) {
         },
         'account_archived': {
             page: 'manageArchive.php',
-            afterNavigate: () => act_tab(tab.id)
+            afterNavigate: () => {
+                renderTotalArchive();
+                act_tab(tab.id)
+            }
         },
         'profile': {
             page: 'manage_dhshboardProfile.php',
@@ -248,7 +251,7 @@ async function renderChart(ctx) {
 
     try {
         // Fetch the narrative data
-        activeNarrative = await getTotalPublihed();
+        activeNarrative = await getTotalPublihed(3);
         total_activeStudent = await totalUser(1, 3);
         total_activeAdv = await totalUser(1, 2);
         totalArchiveStud = await totalUser(2, 3);
@@ -261,7 +264,7 @@ async function renderChart(ctx) {
     const myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Published Narrative Reports', 'Active student', 'Active adviser', 'Archived adviser', 'Archived student'],
+            labels: ['Published Narrative Reports', 'Active student', 'Active adviser', 'Archived student', 'Archived adviser'],
             datasets: [{
                 label: '',
                 data: [activeNarrative, total_activeStudent, total_activeAdv, totalArchiveStud, totalAchiveAdv], // Use activeNarrative here
@@ -516,10 +519,12 @@ function getTotalPendingNotes(){
             }
         });
     });
-}function getTotalPublihed(){
+}
+
+function getTotalPublihed(file_status = 3){
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '../ajax.php?action=totalPublihedReport',
+            url: '../ajax.php?action=totalPublihedReport&file_status=' + file_status,
             method: 'GET',
             success: function(response) {
                 resolve(response);
