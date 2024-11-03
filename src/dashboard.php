@@ -11,7 +11,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/output.css">
     <link rel="stylesheet" href="css/scrollbar.css">
-    <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
+    <link rel="icon" type="image/x-icon" href="assets/insightlogo1.png">
     <script src="https://kit.fontawesome.com/470d815d8e.js"crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">

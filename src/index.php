@@ -5,7 +5,7 @@ session_start();
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-    <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
+    <link rel="icon" type="image/x-icon" href="assets/insightlogo1.png">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@ session_start();
 
     <title>Home</title>
 </head>
-<body  class="min-h-screen bg-slate-200">
+<body  class="min-h-screen bg-slate-100">
 
     <?php include('home_nav.php') ?>
     <main class=" mx-auto overflow-hidden" id="mainContent">

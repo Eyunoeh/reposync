@@ -1,6 +1,19 @@
-document.getElementById('login_img').addEventListener('click', function() {
-    window.location.href = 'index.php';
-});
+
+
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById('password');
+    const icon = document.getElementById('togglePasswordIcon');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
 document.addEventListener('submit', async function (e){
     e.preventDefault();
     let formData = new FormData(e.target);

@@ -59,7 +59,7 @@ if (count($result) === 1) {
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
     <script type="text/javascript" src="turnjs4/extras/jquery.min.1.7.js"></script>
     <script type="text/javascript" src="turnjs4/extras/modernizr.2.5.3.min.js"></script>
-    <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
+    <link rel="icon" type="image/x-icon" href="assets/insightlogo1.png">
     <title>Narrative Report</title>
 </head>
 <body class="bg-slate-700 ">

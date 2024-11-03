@@ -12,7 +12,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
      p-5">
         <div class="card-title flex items-center justify-between">
             <div class="">
-                <h1 class="font-bold text-2xl text-warning font-sans">Activity and Schedule</h1>
+                <h1 class="font-bold text-2xl text-[#f4ce14] font-sans">Activity and Schedule</h1>
             </div>
         </div>
         <div class="card-body flex flex-col items-center h-[70vh] sm:p-5 overflow-hidden hover:overflow-auto scroll-smooth gap-5" id="actSched">

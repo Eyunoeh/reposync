@@ -93,8 +93,12 @@ function getTotalNarrativeReports($program, $file_status, $ojtAdviser) {
 
 function getTotalAdvList($adv_user_id, $program_id, $section_id){
 
-    $sql = "SELECT COUNT(*) AS total FROM tbl_students WHERE adv_id = ? 
-                                             and program_id = ? and year_sec_Id = ?";
+    $sql = "SELECT COUNT(*) AS total FROM tbl_students s
+                         JOIN tbl_accounts acc on acc.user_id = s.user_id
+                         WHERE s.adv_id = ? 
+                                             and s.program_id = ? and s.year_sec_Id = ?
+                                             and acc.status = 1
+                            ";
 
     $total = mysqlQuery($sql, 'iii', [$adv_user_id, $program_id, $section_id])[0]['total'];
 

@@ -48,7 +48,7 @@ while ($row = $res->fetch_assoc()) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
-    <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
+    <link rel="icon" type="image/x-icon" href="assets/insightlogo1.png">
 
     <title>Narrative Reports</title>
 </head>

@@ -125,3 +125,7 @@ function validateInput(input) {
     // Allow only alphabetic characters and spaces
     input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
 }
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}

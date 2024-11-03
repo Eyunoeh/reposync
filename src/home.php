@@ -15,5 +15,5 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
             management  system for Cavite  State University - Carmona Campus </span>
         </h2>
     </article>
-    <img class=" w-[40%] object-fit" src="assets/open-book-clipart-07.png" alt="Rockets dab">
+    <img class=" w-[40%] object-fit" src="assets/insightlogo2.png" alt="logo">
 </div>

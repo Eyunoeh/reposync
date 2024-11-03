@@ -23,32 +23,37 @@ async function renderArchiveUsers(){
         $('#ArchiveTbody').html('<tr><td colspan="9">No Result</td></tr>');
     }else {
         console.log(data)
-        for (let i = 0; i < data.length; i++) {
+
+        let offset = (page_no - 1) * totalRecPerpage;
+        total_page = Math.ceil( data.length/ totalRecPerpage);
+        let paginatedList = data.slice(offset, offset + totalRecPerpage);
+        paginatedList.forEach(user=>{
             let middleName = '';
-            if (data[i].middle_name !== 'N/A') {
-                middleName = data[i].middle_name;
+            if (user.middle_name !== 'N/A') {
+                middleName = user.middle_name;
             }
 
             tbRowData += ` <tr>
 
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${data[i].first_name} ${middleName} ${data[i].last_name}</span>
+                            <span class="font-semibold text-light-inverse text-md/normal">${user.first_name} ${middleName} ${user.last_name}</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${data[i].user_type}</span>
+                            <span class="font-semibold text-light-inverse text-md/normal">${user.user_type}</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${data[i].email}</span>
+                            <span class="font-semibold text-light-inverse text-md/normal">${user.email}</span>
                         </td>
                         <td class="p-3  text-center">
                             <a onclick="openModalForm('unarchiveModal'); $('#unarchiveLink').attr('data-archive_id', $(this).attr('data-archive_id'));"
-                           data-archive_id="${data[i].acc_id}" 
+                           data-archive_id="${user.acc_id}" 
                            class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out 
                            text-lg/normal text-secondary-inverse hover:text-accent">   <i class="fa-solid fa-pen-to-square"></i></a>
                        
                         </td>
                         </tr>`;
-        }
+        })
+
         $('#noteText').html('Are you sure you want to recover this user account?')
         $('#ArchiveTbody').html(tbRowData);
     }
