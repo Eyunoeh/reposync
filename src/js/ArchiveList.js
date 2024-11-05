@@ -13,10 +13,10 @@ async function renderArchiveUsers(){
     let data = get_archiveUsers.data
 
     tableHeadRow = `
-                    <th class="p-3 text-start min-w-10">Name</th>
-                    <th class="p-3 text-start min-w-10">User type</th>
-                    <th class="p-3 text-start min-w-10">Email</th>
-                    <th class="p-3 text-center ">Action</th>`;
+                    <th onclick="sortTable(0, 'ArhiveTable')" class="p-3 text-start min-w-10 cursor-pointer">Name<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(1, 'ArhiveTable')" class="p-3 text-start min-w-10 cursor-pointer">User type<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(2, 'ArhiveTable')" class="p-3 text-start min-w-10 cursor-pointer">Email<span class="sort-icon text-xs"></span></th>
+                    <th  class="p-3 text-center ">Action</th>`;
 
     $('#archiveThRow').html(tableHeadRow);
     if (get_archiveUsers.response !== 1){
@@ -69,12 +69,12 @@ async function renderArchiveNarratives(){
 
     let data = get_archiveNarratives.data
 
-    tableHeadRow  = `<th class="p-3 text-start ">School ID</th>
-                    <th class="p-3 text-start min-w-10">Name</th>
-                    <th class="p-3 text-start min-w-10">Program</th>
-                    <th class="p-3 text-start min-w-10">OJT adviser</th>
-                    <th   class="p-3 text-start min-w-10">Semester<span class="sort-icon text-xs"></th>
-                    <th   class="p-3 text-start min-w-10">Academic year<span class="sort-icon text-xs"></th>
+    tableHeadRow  = `<th onclick="sortTable(0, 'ArhiveTable')"  class="p-3 text-start cursor-pointer ">School ID<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(1, 'ArhiveTable')"   class="p-3 text-start cursor-pointer min-w-10">Name<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(2, 'ArhiveTable')"  class="p-3 text-start cursor-pointer min-w-10">Program<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(3, 'ArhiveTable')"  class="p-3 text-start cursor-pointer min-w-10">OJT adviser<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(4, 'ArhiveTable')"   class="p-3 text-start cursor-pointer min-w-10">Semester<span class="sort-icon text-xs"></th>
+                    <th onclick="sortTable(5, 'ArhiveTable')"   class="p-3 text-start cursor-pointer min-w-10">Academic year<span class="sort-icon text-xs"></th>
 
                     <th class="p-3 text-end ">Action</th>`;
 

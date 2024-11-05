@@ -33,16 +33,17 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
     <div class="sidebar hidden sm:inline-block scroll-smooth  p-2 w-[300px] min-w-[300px] overflow-y-hidden hover:overflow-y-auto  text-center bg-green-700" >
         <div class=" text-gray-100 text-xl bg-green-700 transition-all ">
             <div class="p-2.5 mt-1 flex items-center">
-                <div class="avatar">
-                    <div class="w-8 rounded">
-                        <img src="assets/cvsulogo-removebg-preview.png" />
-                    </div>
+                <div class="w-8 ">
+                    <img src="assets/insightlogo2.png" />
                 </div>
-                <h1 class="font-bold text-gray-200 text-[15px] ml-3">Insight</h1>
+
+
+
+                <h1 class="font-bold text-[#f4ce14] text-[15px] ml-3">Insight</h1>
                 <i class="bi bi-x cursor-pointer ml-28 lg:hidden" onclick="//openSidebar()"></i>
             </div>
             <div class="text-start">
-                <p class="pl-2.5 text-black text-xs font-semibold " id="side_tabName"></p>
+                <p class="pl-2.5 text-slate-700 text-xs font-semibold " id="side_tabName"></p>
             </div>
             <div class="my-2 bg-gray-600 h-[1px]"></div>
         </div>
@@ -187,8 +188,9 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 
 <script src="js/Datatables.js"></script>
 <script src="js/buttons_modal.js"></script>
-<script src="js/dashboard.js"></script>
 <script src="js/Users.js"></script>
+<script src="js/dashboard.js"></script>
+
 <script src="js/manageStudent.js"></script>
 <?php if ($_SESSION['log_user_type'] === 'admin'):?>
 <script src="js/manageAdviser.js"></script>

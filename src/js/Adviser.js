@@ -12,7 +12,7 @@ async function get_dashBoardnotes() {
 
         if (response.response !== 1) {
             $('#advNotePageLoader').html(`
-                <h1 class="font-semibold text-xl text-black font-sans">No notes posted</h1>
+                <p class=" text-xl text-black font-sans">No notes posted</p>
             `);
         }else {
 
@@ -144,7 +144,6 @@ async function renderWeeklyJournaltbl(){
     $('#AdvisoryWeeklyReportList').html(weeklyJournalTbl);
 
 
-    $('#tableadvLoader').empty();
 }
 function convertToFlibookLister(){
     let uploadstat = document.getElementById('UploadStat');
@@ -225,6 +224,11 @@ async function getStudSubmittedNarratives(){
                 </td>
             </tr>`;
         });
+    }else {
+        subNarrativesTbl =`
+            <tr>
+            <td colSpan="9">No Result</td>
+        </tr>`
     }
 
     $('#narrativeReportsReqTableBody').html(subNarrativesTbl);

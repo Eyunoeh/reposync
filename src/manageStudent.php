@@ -37,7 +37,7 @@ include '../DatabaseConn/databaseConn.php';
             </div>
         </div>
         <div class="block  px-9 overflow-auto h-[70vh] xl:h-[70vh]">
-            <table id="studListTbl" class="w-full my-0 border-neutral-200 text-sm   table table-xs" >
+            <table id="studListTbl" class="w-full my-0 b text-sm  border border-none table table-xs" >
                 <thead class="align-bottom z-20">
                 <tr class="font-bold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
                     <th onclick="sortTable(0, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">School ID<span class="sort-icon text-xs"></span></th>
@@ -76,12 +76,16 @@ include '../DatabaseConn/databaseConn.php';
                                   <a href="#" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
                               </td>
                           </tr>-->
+                <tr>
+                    <td colSpan="9">
+                        <span class="loading loading-spinner loading-lg"></span>
+                    </td>
+                </tr>
+
                 </tbody>
             </table>
 
-            <div id="tableadvLoader" class="flex justify-center items-center">
-                <span class="loading loading-spinner loading-lg"></span>
-            </div>
+
         </div>
         <div class="flex justify-center gap-5">
             <button id="prevBtn" onclick="get_studentUserList(); prevPage(this.id, 'nextBtn')" class="btn-neutral btn-sm btn font-semibold">Prev</button>

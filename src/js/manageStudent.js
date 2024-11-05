@@ -53,6 +53,9 @@ async function get_studentUserList() {
 
 
         let paginatedList = org_studList.slice(offset, offset + totalRecPerpage);
+        if (paginatedList.length > 0 ){
+
+
 
 
         paginatedList.forEach(student => {
@@ -87,13 +90,18 @@ async function get_studentUserList() {
                 </td>
             </tr>`;
         });
+        }else {
+            table_data = `<tr><td colspan="9">No Result</td></tr>`;
 
-        $('#studentsList').html(table_data);
+        }
+
+
 
     } else {
         table_data = `<tr><td colspan="9">No Result</td></tr>`;
     }
-    $('#tableadvLoader').empty();
+
+    $('#studentsList').html(table_data);
 
 }
 

@@ -27,7 +27,7 @@ if (isset($_SESSION['log_user_type'])){
 </head>
 <body >
 
-<div class="min-h-screen flex items-center justify-center w-full bg-gradient-to-r from-yellow-400 to-green-700 p-4">
+<div class="min-h-screen flex items-center justify-center w-full bg-gradient-to-r from-green-700 to-slate-50 p-4">
     <div class="bg-slate-50 shadow-2xl rounded-xl px-8 py-6 max-w-md w-full transform transition-all duration-300 hover:scale-[1.01] animate-fade-in">
         <h1 class="text-3xl font-bold text-center mb-8 text-slate-700 ">Login</h1>
         <form  id="login-form" class="space-y-6">

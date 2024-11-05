@@ -38,21 +38,9 @@ session_start();
                 </tr>
                 </thead>
                 <tbody id="narrativeReportsReqTableBody" class="text-center text-slate-600">
-                <tr class="border-b border-dashed last:border-b-0 p-3">
-                    <td class="p-3 text-start w-[10rem]">
-                        <span class="font-semibold text-light-inverse text-md/normal break-words">012344454</span>
-                    </td>
-                    <td class="p-3 text-start">
-                        <span class="font-semibold text-light-inverse text-md/normal">first_name last_name</span>
-                    </td>
-                    <td class="p-3 text-start">
-                        <span class="font-semibold text-light-inverse text-md/normal">ADVNAME</span>
-                    </td>
-                    <td class="p-3 text-start">
-                        <span class="font-semibold text-light-inverse text-md/normal">Pending</span>
-                    </td>
-                    <td class="p-3 text-end">
-                        <a onclick="openModalForm('EditNarrativeReq')" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent"><i class="fa-solid fa-circle-info"></i></a>
+                <tr>
+                    <td colSpan="9">
+                        <span class="loading loading-spinner loading-lg"></span>
                     </td>
                 </tr>
                 </tbody>
