@@ -26,7 +26,7 @@ function mailer($subjectType,$bodyMessage, $emailAddress){
         $mail->Port = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
 
-        $mail->setFrom('cc.riocarl.delacruz@cvsu.edu.ph',
+        $mail->setFrom('',
             'Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus');
         $mail->addAddress($emailAddress, 'Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus');     //Add a recipient
 
