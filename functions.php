@@ -6,7 +6,7 @@ function handleError($message) {
     exit();
 }
 function getPostData($field, $default = '') {
-    return isset($_POST[$field]) ? sanitizeInput($_POST[$field]) : $default;
+    return !empty($_POST[$field]) ? sanitizeInput($_POST[$field]) : $default;
 }
 function encrypt_data($data, $key) {
     $cipher = "aes-256-cbc";

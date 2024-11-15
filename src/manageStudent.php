@@ -226,7 +226,7 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Location</span>
                                 </div>
-                                <input type="text" name="stud_ojtLocation" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text" name="stud_ojtContact" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                         </div>
                         <div class="flex justify-start gap-2 flex-wrap sm:flex-nowrap" id>

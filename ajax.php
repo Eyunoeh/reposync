@@ -1777,7 +1777,7 @@ if ($action == "get_User_info"){
        stud.enrolled_stud_id, 
        stud.adv_id,  
        stud.ojt_center, 
-       stud.ojt_location, 
+       stud.ojt_contact     , 
        p.*, ys.*
             FROM tbl_user_info ui
             INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id

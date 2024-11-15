@@ -2,7 +2,7 @@
 
 $host = "localhost";
 $username = "root";
-$database = "revised_reposync_db";
+$database = "insight_db";
 
 $conn = new mysqli($host, $username, '', $database);
 
