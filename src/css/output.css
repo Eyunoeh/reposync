@@ -4480,6 +4480,11 @@ details.collapse summary::-webkit-details-marker {
   margin-bottom: 1rem;
 }
 
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -5442,6 +5447,10 @@ details.collapse summary::-webkit-details-marker {
   padding-left: 1.25rem;
 }
 
+.pl-7 {
+  padding-left: 1.75rem;
+}
+
 .pr-0 {
   padding-right: 0px;
 }
@@ -5564,6 +5573,10 @@ details.collapse summary::-webkit-details-marker {
 
 .font-bold {
   font-weight: 700;
+}
+
+.font-light {
+  font-weight: 300;
 }
 
 .font-medium {

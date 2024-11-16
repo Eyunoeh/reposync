@@ -1,8 +1,14 @@
 <?php ?>
-<div class=" flex justify-end pr-7 w-full" >
+
+
+<div class=" flex justify-between pr-7 pl-7 pt-2 w-full" >
+
     <button onclick="openModalForm('ProgSecFormModal'); if (!document.getElementById('formSelect')) renderSelectformOption();" class=" btn btn-circle btn-success ">
         <i class="fa-solid fa-plus"></i>
     </button>
+    <a href="manageAcadYear.php" class="text-info font-light btn btn-ghost ">
+        <u> Manage Academic Year</u>
+    </a>
 </div>
 <section class=" ml- sm:ml-0 flex justify-between sm:flex-nowrap flex-wrap sm:gap-5 h-[100vh] ">
     <div class="flex sm:w-[90%]  transition  shadow rounded
@@ -77,7 +83,7 @@
                                     <input type="text" required name="ProgramCode" placeholder="Type here" class="bg-slate-100 input input-bordered w-full" />
                                 </label>
                             </div>
-                            <div class="flex justify-start gap-2">
+                            <div class="flex justify-start gap-2 w-full">
                                 <label class="form-control w-full">
                                     <div class="label">
                                         <span class="label-text text-slate-700 font-bold">Program Name</span>
@@ -85,32 +91,40 @@
                                     <input type="text" required name="ProgramName" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
                                 </label>
                             </div>
-                            <div class="flex justify-start gap-2">
-                                <label class="form-control w-full">
+                            <div class=" flex justify-between w-full items-end">
+
+                                <div class=" w-full">
                                     <div class="label">
-                                        <span class="label-text text-slate-700 font-bold">Total OJT Hours</span>
+                                        <span class="label-text text-slate-700">Course Code</span>
                                     </div>
-                                    <input type="number" min="1" required name="ojt_hours" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
-                                </label>
-                            </div>
-                            <div class="flex justify-start gap-2">
-                                <label class="form-control w-full">
+                                    <input  type="text" required name="course_code"  class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
+                                </div>
+                                <div class=" w-full">
                                     <div class="label">
-                                        <span class="label-text text-slate-700 font-bold">Total Narrative Reports</span>
+                                        <span class="label-text text-slate-700">OJT hours</span>
                                     </div>
-                                    <input type="number" min="1" required name="totalNarratives" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
-                                </label>
+                                    <select    required name="OJT_hours" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs" >
+                                        <option>300</option>
+                                        <option>486</option>
+                                        <option>600</option>
+                                    </select>
+                                </div>
+                                <a class="btn btn-success ">Add</a>
                             </div>
+
                         </div>
                     </div>
                 </div>
+                <div class="w-full my-5 overflow-hidden hover:overflow-auto" id="progCourseSec">
 
+                </div>
                 <hr class=" m-3">
                 <p id="progyrsecLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
                 <div id="progyrsecLoaderbtn" class="flex justify-center ">
                     <button id="progYrSecSubmit" class="btn btn-success btn-outline w-1/4" >Add</button>
                 </div>
             </form>
+
         </div>
     </div>
 </dialog>

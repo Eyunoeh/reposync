@@ -109,42 +109,67 @@ async function getAdvNotes() {
 function renderAddProgramInputs() {
     $('#SectionProgramFormInputs').html(`
         <div class="flex flex-col gap-2">
-            <div class="flex flex-col gap-2">
-                <div class="flex justify-start gap-2">
-                    <label class="form-control w-full">
-                        <div class="label">
-                            <span class="label-text text-slate-700 font-bold">Program Code</span>
-                        </div>
-                        <input type="text" required name="ProgramCode" placeholder="Type here" class="bg-slate-100 input input-bordered w-full" />
-                    </label>
-                </div>
-                <div class="flex justify-start gap-2">
-                    <label class="form-control w-full">
-                        <div class="label">
-                            <span class="label-text text-slate-700 font-bold">Program Name</span>
-                        </div>
-                        <input type="text" required name="ProgramName" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
-                    </label>
-                </div>
-                <div class="flex justify-start gap-2">
-                    <label class="form-control w-full">
-                        <div class="label">
-                            <span class="label-text text-slate-700 font-bold">Total OJT Hours</span>
-                        </div>
-                        <input type="number" min="1" required name="ojt_hours" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
-                    </label>
-                </div>
-                <div class="flex justify-start gap-2">
-              <label class="form-control w-full">
+                        <div class="flex flex-col gap-2">
+                            <div class="flex justify-start gap-2">
+                                <label class="form-control w-full">
                                     <div class="label">
-                                        <span class="label-text text-slate-700 font-bold">Total Narrative Reports</span>
+                                        <span class="label-text text-slate-700 font-bold">Program Code</span>
                                     </div>
-                                    <input type="number" min="1" required name="totalNarratives" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
+                                    <input type="text" required name="ProgramCode" placeholder="Type here" class="bg-slate-100 input input-bordered w-full" />
                                 </label>
-                </div>
-            </div>
-        </div>
+                            </div>
+                            <div class="flex justify-start gap-2 w-full">
+                                <label class="form-control w-full">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700 font-bold">Program Name</span>
+                                    </div>
+                                    <input type="text" required name="ProgramName" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
+                                </label>
+                            </div>
+                            <div class=" flex justify-between w-full items-end">
+
+                                <div class=" w-full">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700">Course Code</span>
+                                    </div>
+                                    <input  type="text" required name="course_code"  class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
+                                </div>
+                                <div class=" w-full">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700">OJT hours</span>
+                                    </div>
+                                    <select    required name="OJT_hours" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs" >
+                                        <option>300</option>
+                                        <option>486</option>
+                                        <option>600</option>
+                                    </select>
+                                </div>
+                                <a class="btn btn-success ">Add</a>
+                            </div>
+
+                        </div>
+                    </div>
     `);
+    $('#progCourseSec').html( `<table class="table table-sm bordered" id="">
+                        <!-- head -->
+                        <thead class="w-full sticky top-0 shadow bg-slate-100 rounded text-slate-700">
+                        <tr>
+                            <th onclick="sortTable(0,'progam_tbl')" class="cursor-pointer">Program code<span class="sort-icon text-xs"></span></th>
+                            <th onclick="sortTable(2,'progam_tbl')" class="cursor-pointer"> OJT hours<span class="sort-icon text-xs"></span></th>
+                            <th class="text-center">Action</th>
+
+                        </tr>
+                        </thead>
+                        <tbody id="">
+                        <tr>
+                            <td>ITEC 199</td>
+                            <td>300</td>
+                            <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div id="" class="flex justify-center items-center">
+                    </div>`)
 }
 
 async function getYrSec(){

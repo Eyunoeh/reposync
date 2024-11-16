@@ -115,9 +115,7 @@ async function renderWeeklyJournaltbl(){
         <td class="p-3 text-start w-[300px] break-words">
             <span class=" text-light-inverse text-md/normal">${rowData['ojt_center']}</span>
         </td>
-        <td class="p-3 text-start">
-            <span class="d text-light-inverse text-md/normal">${rowData['ojt_location']}</span>
-        </td>
+
         <td class="p-3 text-center">
             <span class=" text-light-inverse text-md/normal">${rowData['lastActivity']}</span>
         </td>
@@ -191,6 +189,9 @@ async function getStudSubmittedNarratives(){
                 Summer: 'Summer'
             };
 
+            let narrativeStatuses = {Pending: ['text-warning', 'Unread'],
+                Declined: ['text-info','With Revision'],
+                Approved: ['text-success', 'Approved']}
 
 
             subNarrativesTbl += `
@@ -202,7 +203,7 @@ async function getStudSubmittedNarratives(){
                     <span class=" text-light-inverse text-md/normal">${narratives.first_name} ${narratives.last_name}</span>
                 </td>
                 <td class="p-3 text-start">
-                    <span class=" text-light-inverse text-md/normal">${narratives.file_status}</span>
+                    <span class=" text-light-inverse text-md/normal">${narrativeStatuses[narratives.file_status][1]}</span>
                 </td>
                  <td class="p-3 text-start">
                     <span class=" text-light-inverse text-md/normal">${formattedSem[narratives.sem_submitted]}, ${startingAC + ' - '+ endingAC}</span>

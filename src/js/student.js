@@ -180,8 +180,17 @@ async function getProfileInfo() {
 
 }
 
-function resubmitWeeklyReport(weeklyReport_id){
+function resubmitWeeklyReport(weeklyReport_id, week) {
    document.querySelector('#resubmitReport input[name="file_id"]').value = weeklyReport_id;
+
+   let [startDateStr, endDateStr] = week.split(" - ");
+   let startWeekDate = formatDate(startDateStr);
+   let endWeekDate = formatDate(endDateStr);
+   console.log(startWeekDate);
+   console.log(endWeekDate);
+
+   $('#resubmitReport input[type="date"][name="startWeek"]').val(startWeekDate);
+   $('#resubmitReport input[type="date"][name="endWeek"]').val(endWeekDate);
 }
 
 async function getUploadLogs() {
@@ -212,7 +221,7 @@ async function getUploadLogs() {
             table_data_logs += `
                <tr class="border-b border-dashed last:border-b-0">
                   <td class="p-3 pr-0 ">
-                     <span class=" text-light-inverse text-md/normal">${formattedWeek}</span>
+                     <span class=" text-light-inverse text-md/normal">${log.week}</span>
                   </td>
                   <td class="p-3 pr-0 ">
                      <span class=" text-light-inverse text-md/normal">${formattedDateTime}</span>
@@ -281,7 +290,7 @@ async function get_WeeklyReports() {
         weeklyJournal.forEach(journal => {
 
 
-           let journalStatuses = {pending: ['text-warning', 'Pending'],
+           let journalStatuses = {pending: ['text-warning', 'Unread'],
               revision: ['text-info','With Revision'],
               approved: ['text-success', 'Approved']}
 
@@ -289,7 +298,9 @@ async function get_WeeklyReports() {
            weeklyJournalTable += `<tr class="border-b border-dashed last:border-b-0">
 
                                 <td class="p-3 pr-0 ">
-                                    <span class=" text-light-inverse text-md/normal">Week ${counter}</span>
+                                    <span class=" text-light-inverse text-md/normal">${counter}</span>
+                                </td><td class="p-3 pr-0 ">
+                                    <span class=" text-light-inverse text-md/normal"> ${journal.week}</span>
                                 </td>
 
                                 <td class="p-3 pr-0 ">
@@ -305,7 +316,7 @@ async function get_WeeklyReports() {
            if (['pending', 'revision'].includes(journal.upload_status)){
               weeklyJournalTable += `<div class="tooltip tooltip-bottom" data-tip="Resubmit">
                                         <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer 
-                                transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  data-report_id="${journal.file_id}" onclick="openModalForm('resubmitReport');resubmitWeeklyReport(this.getAttribute('data-report_id'))"><i class="fa-solid fa-pen-to-square"></i></a>
+                                transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  data-report_id="${journal.file_id}" onclick="openModalForm('resubmitReport');resubmitWeeklyReport(this.getAttribute('data-report_id'),' ${journal.week}')"><i class="fa-solid fa-pen-to-square"></i></a>
                                     </div>`
 
            }
@@ -446,4 +457,38 @@ function resetNarratveFormModal(){
    $('#NarrativeReportForm')[0].reset();
 }
 
+
+function WeeklyReportForm_inp_lstner() {
+   // Get all startWeek and endWeek inputs
+   const startDateInputs = document.querySelectorAll('input[name="startWeek"]');
+   const endDateInputs = document.querySelectorAll('input[name="endWeek"]');
+
+   // Loop through each pair of start and end date inputs
+   startDateInputs.forEach((startDateInput, index) => {
+      const endDateInput = endDateInputs[index]; // Get the corresponding end date input
+
+      // Add the event listener for start date input
+      startDateInput.addEventListener('input', function() {
+         if (endDateInput.value < startDateInput.value) {
+            endDateInput.value = '';
+         }
+         endDateInput.setAttribute('min', startDateInput.value);
+      });
+
+      // Add the event listener for end date input
+      endDateInput.addEventListener('input', function() {
+         if (startDateInput.value > endDateInput.value) {
+            startDateInput.value = '';
+         }
+      });
+   });
+
+   // Example event listener for form reset (if needed)
+   document.getElementById('newWeeklyReport').addEventListener('click', function () {
+      // Perform form reset or any additional actions
+      // document.getElementById('action_type').value = '';
+      // document.getElementById('announcementID').value = '';
+      // document.getElementById('act_n_schedForm').reset();
+   });
+}
 

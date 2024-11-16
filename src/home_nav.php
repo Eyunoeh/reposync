@@ -31,7 +31,7 @@
                     <a href="#" id="narrativesLink" class="transition-all hover:cursor-pointer
                 hover:text-black hover:bg-gray-300  hover:rounded p-2 " >Narrative Reports</a>
 
-                    <?php if ($_SESSION['log_user_type'] == 'student') {?>
+                    <?php if ($_SESSION['log_user_type'] == 'student' && $_SESSION['log_acc_stat'] === 'active') {?>
                         <a href="#" id="reportLink" class="transition-all hover:cursor-pointer
                 hover:text-black hover:bg-gray-300 hover:rounded p-2
                 ">Weekly Journal</a>
@@ -53,8 +53,8 @@
                     </div>
                     <ul tabindex="0" class="absolute bg-slate-100 text-black right-0 dropdown-content z-[1] menu p-2 shadow  rounded w-52">
 
-                        <?php echo $_SESSION['log_user_type'] != 'student' ? '<li><a href="dashboard.php">Dashboard</a></li>': ''?>
-                        <?php echo $_SESSION['log_user_type'] == 'student' ? '<li><a id="accountSettings" href="#">Account Settings</a></li>': ''?>
+                        <?php echo $_SESSION['log_user_type'] != 'student'  && $_SESSION['log_acc_stat'] === 'active' ? '<li><a href="dashboard.php">Dashboard</a></li>': ''?>
+                        <?php echo $_SESSION['log_user_type'] == 'student'  && $_SESSION['log_acc_stat'] === 'active'? '<li><a id="accountSettings" href="#">Account Settings</a></li>': ''?>
                         <li><a href="logout.php">Logout</a></li>
                     </ul>
                 </div><?php

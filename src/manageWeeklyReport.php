@@ -42,11 +42,10 @@ session_start();
             <thead class="align-bottom  sticky top-0 z-20
             font-bold text-[0.95rem]  text-secondary-dark bg-slate-200 rounded text-neutral">
                 <tr class="" >
-                    <th onclick="sortTable(0, 'AdvisoryWeeklyReportTbl')" class="p-3 text-start cursor-pointer">School ID <span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(0, 'AdvisoryWeeklyReportTbl')" class="p-3 text-start cursor-pointer">Student No. <span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(1, 'AdvisoryWeeklyReportTbl')" class="p-3 text-start cursor-pointer">Name <span class="sort-icon text-xs"></span></th>
-                    <th onclick="sortTable(2, 'AdvisoryWeeklyReportTbl')" class="p-3 text-start w-40 cursor-pointer">Company <span class="sort-icon text-xs"></span></th>
-                    <th onclick="sortTable(3, 'AdvisoryWeeklyReportTbl')" class="p-3 text-start w-40 cursor-pointer">Location <span class="sort-icon text-xs"></span></th>
-                    <th onclick="sortTable(4, 'AdvisoryWeeklyReportTbl')" class="p-3 text-center cursor-pointer">Last Activity <span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(2, 'AdvisoryWeeklyReportTbl')" class="p-3 text-start w-40 cursor-pointer">OJT center <span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(3, 'AdvisoryWeeklyReportTbl')" class="p-3 text-center cursor-pointer">Date submitted <span class="sort-icon text-xs"></span></th>
                     <th class="p-3 text-end " colspan="9">Check Reports </th>
                 </tr>
             </thead>

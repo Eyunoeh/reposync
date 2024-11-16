@@ -49,7 +49,7 @@ if ($action == 'login') {
     if ($log_email == '' && $log_password == '') {
         handleError('Email or password empty');
     }
-    $fetch_acc = "SELECT user_id, password FROM tbl_accounts WHERE email = ? and status = 'active'";
+    $fetch_acc = "SELECT user_id, password, status FROM tbl_accounts WHERE email = ? ";
 
     $result = mysqlQuery($fetch_acc, 's', [$log_email]);
 
@@ -59,6 +59,7 @@ if ($action == 'login') {
     $row = $result[0];
     $user_id = $row['user_id'];
     $hashed_password = $row['password'];
+    $acc_stat = $row['status'];
     if (!password_verify($log_password, $hashed_password)) {
         handleError('Incorrect password');
     }
@@ -70,14 +71,21 @@ if ($action == 'login') {
     $row_user_info = $result_user_info[0];
     $_SESSION['log_user_id'] = $user_id;
     $_SESSION['log_user_email'] = $log_email;
+    $_SESSION['log_acc_stat'] = $acc_stat;
     $_SESSION['log_user_type'] = $row_user_info['user_type'];
     $_SESSION['log_user_firstName'] = $row_user_info['first_name'];
     $_SESSION['log_user_middleName'] = $row_user_info['middle_name'] !== 'N/A' ? $row_user_info['middle_name'] : '';
     $_SESSION['log_user_lastName'] = $row_user_info['last_name'];
     $_SESSION['log_user_profileImg'] = $row_user_info['profile_img_file'];
+    if ($acc_stat === 'active'){
+        $redirectPage = in_array($row_user_info['user_type'], ['adviser', 'admin']) ? 'dashboard.php' : 'index.php?page=weeklyJournal';
 
-    $redirectPage = in_array($row_user_info['user_type'], ['adviser', 'admin']) ? 'dashboard.php' : 'index.php?page=weeklyJournal';
-   echo json_encode(['response' => $response,
+    }else{
+        $redirectPage = 'index.php';
+    }
+
+
+    echo json_encode(['response' => $response,
        'redirect' => $redirectPage]);
    exit();
 
@@ -94,9 +102,7 @@ if ($action == 'addWeeklyReport') {
     $responseMessage = 'Weekly report has been submitted';
     header('Content-Type: application/json');
 
-
-
-    $user_id =  $_SESSION['log_user_id']; // student
+    $user_id = $_SESSION['log_user_id']; // student
 
     if (empty($user_id)) {
         handleError('missing_user_id');
@@ -118,30 +124,29 @@ if ($action == 'addWeeklyReport') {
         return;
     }
 
-// Fetch weekly report count and user info
-    $get_weeklyReportCount = "SELECT COUNT(*) AS weeklyReportCount FROM weeklyReport WHERE stud_user_id = ?";
-    $res = mysqlQuery($get_weeklyReportCount, 'i', [$user_id]);
-    $weeklyReport_count = $res[0];
-
     $get_User_info = "SELECT * FROM tbl_students WHERE user_id = ?";
     $result = mysqlQuery($get_User_info, 'i', [$user_id]);
+
     $row = $result[0];
+    $file_name = "{$row['enrolled_stud_id']}_WeeklyJournal_week_" . uniqid('', true) . ".pdf";
 
-// Determine file name
-    $reportWeek = ($weeklyReport_count['weeklyReportCount'] > 0)
-        ? $weeklyReport_count['weeklyReportCount'] + 1
-        : 1;
+    try {
+        $startWeek = new DateTime(getPostData('startWeek'));
+        $endWeek = new DateTime(getPostData('endWeek'));
+        $week = $startWeek->format('M j, Y') . " - " . $endWeek->format('M j, Y');
+    } catch (Exception $e) {
+        handleError('invalid_date');
+        return;
+    }
 
-    $file_name = "{$row['enrolled_stud_id']}_WeeklyJournal_week_{$reportWeek}.pdf";
 
-// Insert the weekly report
-    $insert_weekly_report = "INSERT INTO weeklyReport (stud_user_id, weeklyFileReport, upload_date, upload_status) 
-                         VALUES (?, ?, CURRENT_TIMESTAMP, 1)";
-    $file_id = mysqlQuery($insert_weekly_report, 'is', [$user_id, $file_name])[1];
+    $insert_weekly_report = "INSERT INTO weeklyReport (stud_user_id, weeklyFileReport, week, upload_date, upload_status) 
+                             VALUES (?, ?, ?, CURRENT_TIMESTAMP, 1)";
+
+    $file_id = mysqlQuery($insert_weekly_report, 'iss', [$user_id, $file_name, $week])[1];
 
     insertActivityLog('upload', $file_id);
 
-// Move the uploaded file
     $temp_file = $_FILES['weeklyReport']['tmp_name'];
     $final_destination = 'src/StudentWeeklyReports/' . $file_name;
 
@@ -149,24 +154,86 @@ if ($action == 'addWeeklyReport') {
         handleError('move_error');
         return;
     }
+
     echo json_encode(['response' => $response, 'message' => $responseMessage]);
     exit();
-
-
 }
+
+if ($action == 'resubmitReport') {
+    $response = 1;
+    $responseMessage = 'Weekly report has been resubmitted';
+    header('Content-Type: application/json');
+
+    $file_id = isset($_POST['file_id']) ? sanitizeInput($_POST['file_id']) : '';
+
+    if (empty($file_id)) {
+        handleError('missing_file_id');
+        return;
+    }
+
+    if (!isset($_FILES['resubmitReport'])) {
+        handleError('file_missing');
+        return;
+    }
+
+    if (!isPDF($_FILES['resubmitReport']['name'])) {
+        handleError('format_error');
+        return;
+    }
+
+    if ($_FILES['resubmitReport']['error'] !== UPLOAD_ERR_OK) {
+        handleError('upload_error');
+        return;
+    }
+
+    $get_weeklyReport = "SELECT * FROM weeklyReport WHERE file_id = ?";
+    $row = mysqlQuery($get_weeklyReport, 'i', [$file_id]);
+
+    if (!$row || count($row) == 0) {
+        handleError('file_not_found');
+        return;
+    }
+
+    $file_path = 'src/StudentWeeklyReports/' . $row[0]['weeklyFileReport'];
+    if (file_exists($file_path)) {
+        unlink($file_path);
+    }
+
+    if (!move_uploaded_file($_FILES['resubmitReport']['tmp_name'], $file_path)) {
+        handleError('move error');
+        return;
+    }
+
+    try {
+        $startWeek = new DateTime(getPostData('startWeek'));
+        $endWeek = new DateTime(getPostData('endWeek'));
+        $week = $startWeek->format('M j, Y') . " - " . $endWeek->format('M j, Y');
+    } catch (Exception $e) {
+        handleError('invalid_date');
+        return;
+    }
+
+
+    $updateWeeklyReport = "UPDATE weeklyReport SET readStatus = 'Unread', week = ? WHERE file_id = ?";
+    mysqlQuery($updateWeeklyReport, 'si', [$week, $file_id]);
+
+    insertActivityLog('resubmit', $file_id);
+    echo json_encode(['response' => $response, 'message' => $responseMessage]);
+    exit();
+}
+
+
+
 if ($action == 'getWeeklyReports'){
     header('Content-Type: application/json');
     $user_id = $_SESSION['log_user_id'];
     $week = 1;
-    $sql = "SELECT file_id, upload_status, weeklyFileReport
+    $sql = "SELECT *
         FROM weeklyReport
         WHERE stud_user_id = ?
         ORDER BY upload_date";
 
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
     $result = mysqlQuery($sql, 'i',[$user_id] );
     if(count($result) > 0){
 
@@ -210,53 +277,6 @@ if ($action == 'updateWeeklyreportStat'){
 
 
 
-if ($action == 'resubmitReport'){
-    $response =  1;
-    $responseMessage = 'Weekly report has been resubmitted';
-    header('Content-Type: application/json');
-
-
-    $file_id = isset($_POST['file_id']) ? sanitizeInput($_POST['file_id']) : '';
-    if ($file_id !== '') {
-        if (isset($_FILES['resubmitReport'])) {
-            if (isPDF($_FILES['resubmitReport']['name'])) {
-                if ($_FILES['resubmitReport']['error'] === UPLOAD_ERR_OK) {
-                    $get_weeklyReport = "SELECT * FROM weeklyReport WHERE file_id = ?";
-                    $stmt = $conn->prepare($get_weeklyReport);
-                    $stmt->bind_param("i", $file_id);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $row = $result->fetch_assoc();
-                    $file_path = 'src/StudentWeeklyReports/' . $row['weeklyFileReport'];
-                    if (file_exists($file_path)) {
-                        unlink($file_path);
-                        move_uploaded_file($_FILES['resubmitReport']['tmp_name'], $file_path);
-                    }
-                    else{
-                        exit();
-                    }
-                    $updateReadStat = "UPDATE weeklyreport SET readStatus = 'Unread' where file_id = ?";
-                    $updateReadStatSTMT = $conn->prepare($updateReadStat);
-                    $updateReadStatSTMT->bind_param('i', $file_id);
-                    $updateReadStatSTMT->execute();
-
-                    insertActivityLog('resubmit', $file_id);
-                    echo json_encode(['response' => $response,
-                        'message' => $responseMessage]);
-                    exit();
-                } else {
-                    handleError('upload_error');
-                }
-            } else {
-                handleError('format_error');
-            }
-        } else {
-            handleError('file_missing');
-        }
-    } else {
-        handleError('missing_file_id');
-    }
-}
 
 if ($action == 'updateReadStat'){
     $file_id = $_GET['file_id'];
@@ -270,11 +290,13 @@ if ($action == 'updateReadStat'){
         echo $updateReadStatSTMT->error;
     }
 }
+
+
 if ($action == 'getUploadLogs'){
     header('Content-Type: application/json');
     $user_id = $_SESSION['log_user_id'];
 
-    $sql = "SELECT a.*, w.stud_user_id, w.weeklyFileReport
+    $sql = "SELECT a.*, w.stud_user_id, w.weeklyFileReport, w.week
             FROM activity_logs AS a
             JOIN weeklyReport AS w ON a.file_id = w.file_id
             WHERE w.stud_user_id = ?
@@ -1118,22 +1140,22 @@ if ($action === 'Notes') {
                         title = ?, 
                         description = ?, 
                         announcementUpdated = NOW() ,
-                        status = 'Pending'
+                        status = 1
                     where announcement_id = ?";
 
             mysqlQuery($sql, 'ssi', [$note_title, $message, $announcement_id]);
 
             $actionMessageType = 'has updated a note';
 
-            $responseMessage = 'Status has been updated! Please wait for admin approval';
+            $responseMessage = 'Status has been updated!';
 
 
         }else {
-            $sql = "INSERT INTO announcement  (user_id, title, description,type)
-                    VALUES (?,?,?,'Notes')";
+            $sql = "INSERT INTO announcement  (user_id, title, description,type, status)
+                    VALUES (?,?,?,'Notes', 1)";
             mysqlQuery($sql, 'iss', [$user_id, $note_title, $message]);
             $actionMessageType = 'has posted a new note';
-            $responseMessage = 'Note has been posted! Please wait for admin approval';
+            $responseMessage = 'Note has been posted!';
 
         }
 
@@ -1157,6 +1179,27 @@ if ($action === 'Notes') {
                 handleError('Admin didnt notified through email');
             }
         }
+
+/*        $getAdvStudentsTargetRecipient = "SELECT advisory_list.*, tbl_accounts.status
+FROM advisory_list JOIN tbl_accounts on tbl_accounts.user_id = advisory_list.adv_sch_user_id
+where adv_sch_user_id = ? and tbl_accounts.status = 'active';";
+        $getAdvStudentsTargetRecipientSTMT = $conn->prepare($getAdvStudentsTargetRecipient);
+        $getAdvStudentsTargetRecipientSTMT ->bind_param('i', $noteDetails['user_id'] );// OJT adviser students
+        $getAdvStudentsTargetRecipientSTMT->execute();
+        $result = $getAdvStudentsTargetRecipientSTMT->get_result();
+        $bodyMessageToStudents = '<h1>Notification</h1> <br><br>';
+
+        $bodyMessageToStudents .= "<h3><b>Title: </b>".$noteDetails['title']." <h3><br>";
+        $bodyMessageToStudents .= "<b>Description: </b> ".$noteDetails['description']." <br>";
+        $bodyMessageToStudents .= "<br>Click to review:
+ <a href='http://localhost/ReposyncNarrativeManagementSystem/src/index.php'>Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a><br>";
+        while ($row = $result->fetch_assoc()){
+            email_queuing($subjectType, $bodyMessageToStudents, getRecipient($row['stud_sch_user_id']));
+        }
+        */
+
+
+
         echo json_encode(['response' => $response,
             'message' => $responseMessage]);
     }
@@ -1528,22 +1571,7 @@ if ($action == 'UpdateNotePostReq'){
 
 
 
-                $getAdvStudentsTargetRecipient = "SELECT advisory_list.*, tbl_accounts.status 
-FROM advisory_list JOIN tbl_accounts on tbl_accounts.user_id = advisory_list.adv_sch_user_id
-where adv_sch_user_id = ? and tbl_accounts.status = 'active';";
-                $getAdvStudentsTargetRecipientSTMT = $conn->prepare($getAdvStudentsTargetRecipient);
-                $getAdvStudentsTargetRecipientSTMT ->bind_param('i', $noteDetails['user_id'] /* OJT adviser students*/);
-                $getAdvStudentsTargetRecipientSTMT->execute();
-                $result = $getAdvStudentsTargetRecipientSTMT->get_result();
-                $bodyMessageToStudents = '<h1>Notification</h1> <br><br>';
 
-                $bodyMessageToStudents .= "<h3><b>Title: </b>".$noteDetails['title']." <h3><br>";
-                $bodyMessageToStudents .= "<b>Description: </b> ".$noteDetails['description']." <br>";
-                $bodyMessageToStudents .= "<br>Click to review:
- <a href='http://localhost/ReposyncNarrativeManagementSystem/src/index.php'>Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a><br>";
-                while ($row = $result->fetch_assoc()){
-                    email_queuing($subjectType, $bodyMessageToStudents, getRecipient($row['stud_sch_user_id']));
-                }
 
             }
         }

@@ -8,7 +8,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 <section class=" overflow-auto flex sm:flex-row flex-col  gap-2 mt-2 mx-5  ">
     <section class="bg-white  bordered sm:border-none w-full
     h-full rounded
-    <?php echo isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'student' ? 'sm:w-[60%]' : '' ?>
+    <?php echo isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] == 'student' && $_SESSION['log_acc_stat'] === 'active' ? 'sm:w-[60%]' : '' ?>
      p-5">
         <div class="card-title flex items-center justify-between">
             <div class="">
@@ -40,7 +40,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     </section>
 
     <?php
-    if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'student'):
+    if (isset($_SESSION['log_user_type']) and $_SESSION['log_user_type'] == 'student' && $_SESSION['log_acc_stat'] === 'active'):
     ?>
 
 

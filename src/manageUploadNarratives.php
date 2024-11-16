@@ -72,7 +72,7 @@ session_start();
                     <select id="UploadStat" name="UploadStat" class="select select-bordered">
                         <option disabled value="Pending">Pending</option>
                         <option value="Approved">Approved</option>
-                        <option value="Declined">Declined</option>
+                        <option value="Declined">With Revision</option>
                     </select>
                 </label>
 

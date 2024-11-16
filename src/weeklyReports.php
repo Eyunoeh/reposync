@@ -25,7 +25,7 @@ $user_id = $_SESSION['log_user_id'];
             <div class="flex justify-evenly gap-5">
                 <button class=" font-semibold btn btn-neutral  " id="stud-weekly-rpt-btn" onclick="change_stud_table();$('#noResultRow').remove();">View logs</button>
                 <div class="tooltip  tooltip-bottom" data-tip="Upload weekly journal">
-                    <a class="btn btn-neutral btn-circle " onclick="openModalForm('newReport')"><i class="fa-solid fa-plus"></i></a>
+                    <a class="btn btn-neutral btn-circle " id="newWeeklyReport" onclick="openModalForm('newReport')"><i class="fa-solid fa-plus"></i></a>
                 </div>
             </div>
         </div>
@@ -36,9 +36,10 @@ $user_id = $_SESSION['log_user_id'];
                 <table class="w-full my-0  border-neutral-200 " id="weeklyReportTable" >
                     <thead class="align-bottom  z-10">
                     <tr class="font-semibold text-[0.95rem] 0 sticky top-0  text-secondary-dark bg-slate-200 rounded">
-                        <th class="p-3  ">Week</th>
-                        <th class="p-3 ">Status</th>
-                        <th class="p-3 ">View Comments</th>
+                        <th class="p-3  " onclick="sortTable(0, 'weeklyReportTable')" >#<span class="sort-icon text-xs"></th>
+                        <th class="p-3  " onclick="sortTable(1, 'weeklyReportTable')">Week<span class="sort-icon text-xs"></th>
+                        <th class="p-3 " onclick="sortTable(2, 'weeklyReportTable')">Status<span class="sort-icon text-xs"></th>
+                        <th class="p-3 " onclick="sortTable(3, 'weeklyReportTable')">View Comments<span class="sort-icon text-xs"></th>
                         <th class="p-3 text-end">Action</th>
                     </tr>
                     </thead>
@@ -52,9 +53,9 @@ $user_id = $_SESSION['log_user_id'];
                 <table class="w-full my-0   border-neutral-200 hidden" id="logsTable" >
                     <thead class="align-bottom  z-20">
                     <tr class="font-semibold text-[0.95rem] sticky top-0  text-secondary-dark bg-slate-200 rounded">
-                        <th class="p-3 ">Week</th>
-                        <th class="p-3">Activity Date</th>
-                        <th class="p-3">Type</th>
+                        <th class="p-3 " onclick="sortTable(0, 'logsTable')">Week<span class="sort-icon text-xs"></th>
+                        <th class="p-3" onclick="sortTable(1, 'logsTable')">Activity Date<span class="sort-icon text-xs"></th>
+                        <th class="p-3" onclick="sortTable(2, 'logsTable')">Type<span class="sort-icon text-xs"></th>
                     </tr>
                     </thead>
                     <tbody class=" text-center " id="logsTable_body">
@@ -194,8 +195,17 @@ $user_id = $_SESSION['log_user_id'];
         <h3 class="font-bold text-center text-lg mb-5">Upload weekly report</h3>
         <form id="addWeeklyReportForm">
             <div class="flex flex-col gap-8">
+                <label class="form-control flex justify-center w-full ">
+                    <div class="label">
+                        <span class="label-text text-slate-700">Week</span>
+                    </div>
+                    <div class="flex gap-2 justify-between items-center w-full">
+                        <input  type="date" required name="startWeek"  class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
+                        <p class="text-center items-center "> to </p>
+                        <input  type="date" required name="endWeek" class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
+                    </div>
+                </label>
                 <input name="weeklyReport" required type="file" accept="application/pdf" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
-                <input type="hidden" name="stud_user_id" value="<?php echo $user_id?>">
                 <button class="btn btn-neutral btn-outline ">Submit</button>
             </div>
         </form>
@@ -208,6 +218,16 @@ $user_id = $_SESSION['log_user_id'];
         <h3 class="font-bold text-center text-lg mb-5">Resubmit report</h3>
         <form id="resubmitReportForm">
             <div class="flex flex-col gap-8">
+                <label class="form-control flex justify-center w-full ">
+                    <div class="label">
+                        <span class="label-text text-slate-700">Week</span>
+                    </div>
+                    <div class="flex gap-2 justify-between items-center w-full">
+                        <input  type="date" required name="startWeek"  class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
+                        <p class="text-center items-center "> to </p>
+                        <input  type="date" required name="endWeek" class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
+                    </div>
+                </label>
                 <input name="resubmitReport" required type="file" accept="application/pdf" class="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
                 <input type="hidden" name="file_id" value="">
                 <button class="btn btn-neutral btn-outline ">Submit</button>

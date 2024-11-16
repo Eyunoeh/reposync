@@ -107,11 +107,11 @@ async function linkPages() {
     }
 
     // If user is a student, handle student-specific navigation
-    if (user.data['user_type'] === 'student') {
+    if (user.data['user_type'] === 'student' && user.data['status'] === 'active') {
         switch (page) {
             case 'weeklyJournal':
                 await navigate('weeklyReports'); // Ensure navigate completes before other actions
-
+                WeeklyReportForm_inp_lstner();
                 get_WeeklyReports();
                 break;
             case 'settings':
@@ -266,6 +266,7 @@ reportLink?.addEventListener('click', async function(event) {
     navigate('weeklyReports').then(()=>{
 
         get_WeeklyReports();
+        WeeklyReportForm_inp_lstner()
     });
 
 });

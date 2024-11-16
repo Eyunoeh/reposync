@@ -34,13 +34,13 @@ session_start();
             <h1 class="font-bold font-sans text-[4rem]" id="pendingUploadNarrativeReport">
                 <span class="loading loading-spinner loading-lg"></span>
             </h1>
-            <h1 class="font-sans  text-sm   ">Pending submitted narrative report</h1>
+            <h1 class="font-sans  text-sm   ">Unread submitted narrative report</h1>
         </div>
         <div onclick="dashboard_tab(this.id)" id="declinedNarrativeReqCount" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
             <h1 class="font-bold font-sans text-[4rem]" id="declinedUploadNarrativeReport">
                 <span class="loading loading-spinner loading-lg"></span>
             </h1>
-            <h1 class="font-sans text-sm">Declined submitted narrative report</h1>
+            <h1 class="font-sans text-sm">Revision submitted narrative report</h1>
         </div>
         <div onclick="dashboard_tab(this.id) ;" id="dshbweeklyReport" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
             <h1 class="font-bold font-sans text-[4rem]" id="UnreadStudWeeklyReport">
