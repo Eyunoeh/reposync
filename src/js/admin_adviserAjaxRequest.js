@@ -85,7 +85,14 @@ document.addEventListener('submit', function(e) {
         }else {
             if (e.target.querySelector('input[name="ProgramCode"]') &&
                 e.target.querySelector('input[name="ProgramName"]')) {
-                $('#ProgrYrSecNotifText').html('New program has been added!')
+                let prog_course = e.target.querySelector('input[name="ojt_course_json"]').value;
+
+                if (prog_course && Array.isArray(JSON.parse(prog_course)) && JSON.parse(prog_course).length > 0) {
+                    $('#ProgrYrSecNotifText').html('New program has been added!');
+                } else {
+                    Alert('errNotifcotainer', 'Please add a course code.', 'warning');
+                    return;
+                }
 
             }else if (e.target.querySelector('input[name="year"]') &&
                 e.target.querySelector('input[name="section"]')) {

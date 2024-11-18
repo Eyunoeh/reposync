@@ -132,43 +132,64 @@ function renderAddProgramInputs() {
                                     <div class="label">
                                         <span class="label-text text-slate-700">Course Code</span>
                                     </div>
-                                    <input  type="text" required name="course_code"  class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
+                                    <input  type="text" id="course_code"
+                                   required name="course_code" placeholder="Type here" class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
                                 </div>
                                 <div class=" w-full">
                                     <div class="label">
                                         <span class="label-text text-slate-700">OJT hours</span>
                                     </div>
-                                    <select    required name="OJT_hours" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs" >
-                                        <option>300</option>
-                                        <option>486</option>
-                                        <option>600</option>
+                                       <select  id="OJT_hoursOption"
+                                       required name="OJT_hoursOption" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs" >
+                                        <option disabled selected>Select</option>
+                                        <option value="150">150</option>
+                                        <option value="200">200</option>
+                                        <option value="240">240</option>
+                                        <option value="300">300</option>
+                                        <option value="486">486</option>
+                                        <option value="600">600</option>
+                                        <option value="640">640</option>
                                     </select>
                                 </div>
-                                <a class="btn btn-success ">Add</a>
+                                <a class="btn btn-success " id="addCourseBtn">Add</a>
+                                <input type="hidden" name="ojt_course_json" id="ojt_course_json">
                             </div>
 
                         </div>
                     </div>
+                    
+                    
+                </div>
+                <hr>
+                <div class="flex justify-start">
+                    
+                        <span class="cursor-pointer tooltip tooltip-warning textarea-warning tooltip-right" 
+                        
+                        data-tip="You cannot add, update and delete
+                         course once the program is added">
+                         Note
+                            <i class="fa-solid fa-circle-info"></i>
+                           </span>
+               </div>
+                    
+                    
     `);
-    $('#progCourseSec').html( `<table class="table table-sm bordered" id="">
+    $('#progCourseSec').html( `<table class="table table-sm bordered" id="progCourseSec">
                         <!-- head -->
                         <thead class="w-full sticky top-0 shadow bg-slate-100 rounded text-slate-700">
                         <tr>
-                            <th onclick="sortTable(0,'progam_tbl')" class="cursor-pointer">Program code<span class="sort-icon text-xs"></span></th>
-                            <th onclick="sortTable(2,'progam_tbl')" class="cursor-pointer"> OJT hours<span class="sort-icon text-xs"></span></th>
+                                  <th  class="cursor-pointer">Course code</th>
+                            <th  class="cursor-pointer"> OJT hours</th>
                             <th class="text-center">Action</th>
 
                         </tr>
                         </thead>
-                        <tbody id="">
-                        <tr>
-                            <td>ITEC 199</td>
-                            <td>300</td>
-                            <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                        </tr>
+                        <tbody id="programCourses">
+                 
                         </tbody>
                     </table>
-                    <div id="" class="flex justify-center items-center">
+                    <div id="nocourseNote" class="flex justify-center items-center">
+                        <p class="text-sm text-slate-700 font-sans">No selected course</p>
                     </div>`)
 }
 
@@ -234,8 +255,8 @@ async function getPrograms(){
             programs_tbl += `<tr class="hover">
                 <td>${programs[i]['program_code']}</td>
                 <td>${programs[i]['program_name']}</td>
-                <td>${programs[i]['ojt_hours']}</td>
-                <td class="text-center">${programs[i]['totalNarratives']}</td>
+                <td class="text-center">${programs[i]['total_ojt_hours']}</td>
+                <td class="text-center">${programs[i]['total_courses']}</td>
                 <td class="text-center cursor-pointer">
                     <a onclick="openModalForm('ProgSecFormModal'); EditProgram(${programs[i]['program_id']})">
                         <i class="fa-solid fa-pen-to-square"></i>
@@ -258,7 +279,52 @@ async function EditProgram(Id){
     });
 
     if (response === 1 && programs.length > 0) {
-        renderAddProgramInputs();
+        $('#SectionProgramFormInputs').html(`
+        <div class="flex flex-col gap-2">
+                        <div class="flex flex-col gap-2">
+                            <div class="flex justify-start gap-2">
+                                <label class="form-control w-full">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700 font-bold">Program Code</span>
+                                    </div>
+                                    <input type="text" required name="ProgramCode" placeholder="Type here" class="bg-slate-100 input input-bordered w-full" />
+                                </label>
+                            </div>
+                            <div class="flex justify-start gap-2 w-full">
+                                <label class="form-control w-full">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700 font-bold">Program Name</span>
+                                    </div>
+                                    <input type="text" required name="ProgramName" class="bg-slate-100 input input-bordered w-full" placeholder="Type here">
+                                </label>
+                            </div>
+             
+                        </div>
+                    </div>
+    `);
+        $('#progCourseSec').html( `<table class="table table-sm bordered" id="progCourseSec">
+                        <!-- head -->
+                        <thead class="w-full sticky top-0 shadow bg-slate-100 rounded text-slate-700">
+                        <tr>
+                                  <th  class="cursor-pointer">Course code</th>
+                            <th  class="cursor-pointer"> OJT hours</th>
+<!--
+-->
+
+                        </tr>
+                        </thead>
+                        <tbody id="programCourses">
+                        <tr>
+                            <td>ITEC 199</td>
+                               <td>300</td>
+                 
+                        </tr>
+                        </tbody>
+                    </table>
+             `)
+
+
+        let programCoursesTbl_data = '';
         for (let i = 0; i < programs.length; i++) {
             if (programs[i]['program_id'] === Id){
 
@@ -267,8 +333,20 @@ async function EditProgram(Id){
                 $('#sectionProgramForm input[name="ID"]').val(programs[i]['program_id']);
                 $('#sectionProgramForm input[name="ProgramCode"]').val(programs[i]['program_code']);
                 $('#sectionProgramForm input[name="ProgramName"]').val(programs[i]['program_name']);
-                $('#sectionProgramForm input[name="ojt_hours"]').val(programs[i]['ojt_hours']);
-                $('#sectionProgramForm input[name="totalNarratives"]').val(programs[i]['totalNarratives']);
+
+                const program_courses = programs[i]['courses'] ? programs[i]['courses'].split(',') : [];
+                const program_hours = programs[i]['course_ojt_hours'] ? programs[i]['course_ojt_hours'].split(',') : [];
+
+                programCoursesTbl_data += program_courses.map((course, index) => `
+                            <tr>
+                                <td>${course.trim()}</td>
+                                <td>${program_hours[index]?.trim() || '-'}</td>
+                            </tr>
+                        `).join('');
+
+                $('#programCourses').html(programCoursesTbl_data);
+
+
                 return;
             }
         }
@@ -299,10 +377,12 @@ function renderAddYearSec(){
         </div>
     `
     );
+    $('#progCourseSec').empty();
 }
 
 
 function renderSelectformOption(){
+    renderAddProgramInputs()
     $('#option').html(`
         <select id="formSelect" class="select  select-bordered w-full max-w-xs">
             <option value="newProg">Program</option>
@@ -323,23 +403,118 @@ function attachSelectEventListener() {
 
 
     let formSelect = document.getElementById('formSelect');
-    if (formSelect) {
-        let selectedValue = 'newProg';
-        formSelect.addEventListener('change', function() {
-            selectedValue = this.value;
-            if (document.getElementById('SectionProgramFormInputs')) {
-                if (selectedValue === 'newProg') {
-                    renderAddProgramInputs();
-                } else if (selectedValue === 'newyrSec') {
-                    renderAddYearSec();
-                }
+    let selectedValue = 'newProg';
+    formSelect.addEventListener('change', function() {
+        selectedValue = this.value;
+        if (document.getElementById('SectionProgramFormInputs')) {
+            if (selectedValue === 'newProg') {
+                renderAddProgramInputs();
+                addCourseListner()
+            } else if (selectedValue === 'newyrSec') {
+                renderAddYearSec();
             }
-        });
+        }
+    });
+
+
+
+}
+
+function addCourseListner(){
+    let ojtHoursOption = document.getElementById('OJT_hoursOption');
+    let courseCode = document.getElementById('course_code');
+    let addCourseBtn = document.getElementById('addCourseBtn');
+    let hiddenInp_ojt_course = document.getElementById('ojt_course_json');
+
+// Collect all option values into an array
+    let ojtHourOptions = [];
+    for (let option of ojtHoursOption.options) {
+        if (!option.disabled && option.value !== "") {
+            ojtHourOptions.push(option.value);
+        }
     }
+
+// Function to render the table
+
+
+// Add click event listener to the button
+    addCourseBtn.addEventListener('click', function () {
+        if (!ojtHoursOption || !hiddenInp_ojt_course) {
+            console.error('Missing input or select elements');
+            return;
+        }
+
+        // Get existing data or initialize an empty array
+        let existingData = hiddenInp_ojt_course.value ? JSON.parse(hiddenInp_ojt_course.value) : [];
+
+        // Validate inputs
+        if (courseCode.value === '') {
+            Alert('errNotifcotainer', 'Please enter a course code.', 'warning');
+            return;
+        }
+        if (!ojtHourOptions.includes(ojtHoursOption.value)) {
+            Alert('errNotifcotainer', 'Invalid OJT hours selected.', 'warning');
+            return;
+        }
+
+        // Prevent duplicate course codes
+        if (existingData.some(entry => entry.courseCode === courseCode.value)) {
+            Alert('errNotifcotainer', 'Course code already exists.', 'warning');
+            return;
+        }
+
+        // Add new data
+        existingData.push({
+            courseCode: courseCode.value,
+            ojtHoursOption: ojtHoursOption.value
+        });
+
+        // Update the hidden input
+        hiddenInp_ojt_course.value = JSON.stringify(existingData);
+
+        // Render the updated table
+        renderTable(existingData);
+    });
 }
 
 
+function renderTable(data) {
+    let courseCodetbl_data = ``;
 
+    data.forEach((course, index) => {
+        courseCodetbl_data += `
+            <tr>
+                <td>${course.courseCode}</td>
+                <td>${course.ojtHoursOption}</td>
+                <td class="text-center">
+                    <div class="tooltip tooltip-bottom tooltip-error" data-tip="Remove">
+                         <a onclick="removeItem(${index})" class="cursor-pointer text-error p-2"><i class="fa-solid fa-minus"></i></a>
+
+                    </div>
+                </td>
+            </tr>`;
+    });
+
+    $('#programCourses').html(courseCodetbl_data);
+
+    if (data.length === 0){
+        $('#nocourseNote').html(`<p class="text-sm text-slate-700 font-sans">No selected course</p>`);
+    }else {
+        $('#nocourseNote').empty()
+    }
+}
+
+// Function to remove an item
+function removeItem(index) {
+    let hiddenInp_ojt_hours = document.getElementById('ojt_course_json');
+
+    let existingData = hiddenInp_ojt_hours.value ? JSON.parse(hiddenInp_ojt_hours.value) : [];
+    if (index >= 0 && index < existingData.length) {
+        existingData.splice(index, 1); // Remove the item at the specified index
+        hiddenInp_ojt_hours.value = JSON.stringify(existingData); // Update the hidden input
+        renderTable(existingData); // Re-render the table
+    }
+}
 function removeSelectFormOption(){
     $('#formSelect').remove()
 }

@@ -1404,60 +1404,99 @@ if ($action == 'ProgYrSec') {
 
     $program_code = isset($_POST['ProgramCode']) ? sanitizeInput($_POST['ProgramCode']) : '';
     $program_name = isset($_POST['ProgramName']) ? sanitizeInput($_POST['ProgramName']) : '';
-    $ojtHours = isset($_POST['ojt_hours']) ? sanitizeInput($_POST['ojt_hours']) : '';
-    $totalNarratives = isset($_POST['totalNarratives']) ? sanitizeInput($_POST['totalNarratives']) : '';
     $year = isset($_POST['year']) ? sanitizeInput($_POST['year']) : '';
     $section = isset($_POST['section']) ? sanitizeInput($_POST['section']) : '';
     $actionType = isset($_POST['action_type']) ? sanitizeInput($_POST['action_type']) : '';
     $id = isset($_POST['ID']) ? sanitizeInput($_POST['ID']) : '';
 
-    $update_proram = "UPDATE program SET program_code = ?, program_name = ? , ojt_hours = ?, totalNarratives = ? WHERE program_id = ?";
-    $insert_program = "INSERT INTO program (program_code, program_name, ojt_hours, totalNarratives) VALUES (? , ?, ?, ?)";
+    $update_program = "UPDATE program SET program_code = ?, program_name = ? WHERE program_id = ?";
+    $insert_program = "INSERT INTO program (program_code, program_name) VALUES (?, ?)";
     $update_yrSec = "UPDATE section SET year = ?, section = ? WHERE year_sec_Id = ?";
-    $insert_yrSec = "INSERT INTO section (year,section) VALUES (?,?)";
-    $sql = '';
-    $params = [];
-    $types = '';
+    $insert_yrSec = "INSERT INTO section (year, section) VALUES (?, ?)";
 
     try {
-        if ($program_code !== '' && $program_name !== '' && $ojtHours !== '') {
+        // Begin transaction
+        $conn->begin_transaction();
+
+        // Handle program insert/update
+        if ($program_code !== '' && $program_name !== '') {
             if (isset($actionType) && $actionType == 'edit') {
-                $sql = $update_proram;
-                $params = [$program_code, $program_name,$ojtHours,$totalNarratives, $id];
-                $types = 'ssiii';
+                $stmt = $conn->prepare($update_program);
+                $stmt->bind_param('ssi', $program_code, $program_name, $id);
                 $responseMessage = 'Program information has been updated.';
-
+                $stmt->execute();
             } else {
-                $sql = $insert_program;
-                $params = [$program_code, $program_name, $ojtHours, $totalNarratives];
-                $types = 'ssii';
+                $stmt = $conn->prepare($insert_program);
+                $stmt->bind_param('ss', $program_code, $program_name);
                 $responseMessage = 'New program has been added.';
+                $stmt->execute();
+                $program_id =  $conn->insert_id;
             }
-            mysqlQuery($sql, $types, $params);
 
-        } elseif ($year !== '' && $section !== '') {
+            $stmt->close();
+
+            // Handle ojt_course_json
+            if (isset($_POST['ojt_course_json'])) {
+                $course_jsonData = $_POST['ojt_course_json'];
+                $decodedData = json_decode($course_jsonData, true);
+
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    foreach ($decodedData as $item) {
+                        $courseCode = $item['courseCode'] ?? null;
+                        $ojtHoursOption = $item['ojtHoursOption'] ?? null;
+
+                        if ($courseCode && $ojtHoursOption) {
+                            $ojt_insert = "INSERT INTO tbl_course_code (course_code, ojt_hours, program_id) VALUES (?, ?, ?)";
+                            $stmt = $conn->prepare($ojt_insert);
+                            $stmt->bind_param('sii', $courseCode, $ojtHoursOption, $program_id);
+                            $stmt->execute();
+                            $stmt->close();
+                        } else {
+                            throw new Exception('Invalid course data.');
+                        }
+                    }
+                } else {
+                    throw new Exception('Invalid JSON data.');
+                }
+            }
+        }
+
+        // Handle year/section insert/update
+        if ($year !== '' && $section !== '') {
+            // Ensure year and section combination is unique
+            $yrSec = "SELECT * FROM section WHERE year = ? AND section = ?";
+            $stmt = $conn->prepare($yrSec);
+            $stmt->bind_param('is', $year, $section);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                throw new Exception('Year and section already exist.');
+            }
+            $stmt->close();
+
             if (isset($actionType) && $actionType == 'edit') {
-                $yrSec = "SELECT * FROM  section";
-                $yrSecs = mysqlQuery($yrSec, '', []);
-                $sql = $update_yrSec;
-                $params = [$year, $section, $id];
-                $types = 'isi';
-                $responseMessage = 'Year and section has been updated.';
+                $stmt = $conn->prepare($update_yrSec);
+                $stmt->bind_param('isi', $year, $section, $id);
+                $responseMessage = 'Year and section have been updated.';
             } else {
-                $sql = $insert_yrSec;
-                $params = [$year, $section];
-                $types = 'is';
+                $stmt = $conn->prepare($insert_yrSec);
+                $stmt->bind_param('is', $year, $section);
                 $responseMessage = 'New year and section added!';
             }
-            mysqlQuery($sql, $types, $params);
-        } else {
-            handleError("Please provide valid input.");
+            $stmt->execute();
+            $stmt->close();
         }
+
+        // Commit the transaction
+        $conn->commit();
 
         echo json_encode(['response' => $response, 'message' => $responseMessage]);
         exit();
     } catch (Exception $e) {
-        handleError($e->getMessage());
+        // Rollback the transaction on error
+        $conn->rollback();
+        echo json_encode(['response' => 0, 'message' => $e->getMessage()]);
+        exit();
     }
 }
 
@@ -1477,15 +1516,36 @@ if ($action == 'getYrSecJson'){
 
 
 
-if ($action == 'getProgJSON'){
-   header('Content-Type: application/json');
-    $getProg = "SELECT * FROM program order by ojt_hours asc";
-    $programs = mysqlQuery($getProg, '', []);
+if ($action == 'getProgJSON') {
+    header('Content-Type: application/json');
 
-    echo json_encode(['response' => 1,
-        'data' => $programs]);
+    $getProgQuery = "
+        SELECT 
+    program.program_id,
+    program.program_code,
+    program.program_name,
+    COUNT(tbl_course_code.course_code) AS total_courses,
+    SUM(tbl_course_code.ojt_hours) AS total_ojt_hours,
+    GROUP_CONCAT(tbl_course_code.course_code SEPARATOR ', ') AS courses,
+    GROUP_CONCAT(tbl_course_code.ojt_hours SEPARATOR ', ') AS course_ojt_hours
+FROM 
+    program
+LEFT JOIN 
+    tbl_course_code ON program.program_id = tbl_course_code.program_id
+GROUP BY 
+    program.program_id
+ORDER BY 
+    total_ojt_hours;
+";
 
+    $programs = mysqlQuery($getProgQuery, '', []);
+    echo json_encode([
+        'response' => 1,
+        'data' => $programs,
+    ]);
 }
+
+
 
 
 
@@ -1731,14 +1791,10 @@ WHERE tbl_user_info.user_type = ? AND tbl_accounts.status = ?";
 
     }
 
-
-
     $result = mysqlQuery($totalUserquery, $types, $params)[0]['totaluserCount'];
 
 
     echo $result;
-
-
 
 
 }

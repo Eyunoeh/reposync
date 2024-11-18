@@ -17,8 +17,13 @@ if (isset($_SESSION['log_user_type'])){
     <link rel="icon" type="image/x-icon" href="assets/insightlogo1.png">
     <link rel="stylesheet" href="css/output.css">
     <link rel="stylesheet" href="css/scrollbar.css">
-    <script src="https://kit.fontawesome.com/470d815d8e.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
+
+    <!--    <script src="https://kit.fontawesome.com/470d815d8e.js" crossorigin="anonymous"></script>
+    -->
+
+<!--    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+-->    <script src="jquery/jquery-3.7.1.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -65,7 +70,7 @@ if (isset($_SESSION['log_user_type'])){
                     >
                     <!-- Eye Icon -->
                     <div onclick="togglePasswordVisibility()" class=" cursor-pointer text-slate-500">
-                        <i id="togglePasswordIcon" class="fas fa-eye"></i> <!-- Font Awesome icon -->
+                        <i id="togglePasswordIcon" class="fa fa-eye"></i> <!-- Font Awesome icon -->
                     </div>
                 </div>
 

@@ -34,6 +34,33 @@
                                onkeyup="handleSearch('AYSearch','AcadYearsTbl')">
                     </div>
                 </div>
+                <div class="px-9 flex justify-between flex-wrap-reverse pb-0 bg-transparent items-end">
+                    <label class="form-control w-full max-w-sm">
+                        <div class="label">
+                            <span class="label-text text-slate-700">Current Semester & Academic Year</span>
+                        </div>
+                        <div class="flex gap-2 justify-start items-center w-full">
+                            <select id="Currsem" required name="Currsem" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs">
+                                <option disabled selected>Select</option>
+                                <option value="">First</option>
+                                <option value="200">Second</option>
+                                <option value="240">Midyear</option>
+                            </select>
+                            <p class="text-center items-center"> - </p>
+                            <select id="CurracademicYear" required name="CurracademicYear" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs">
+                                <option disabled selected>Select</option>
+                                <option value="">2021-2022</option>
+                                <option value="200">2022-2023</option>
+                                <option value="240">2023-2024</option>
+                            </select>
+                            <button class="btn btn-ghost btn-sm">Save</button>
+                        </div>
+                    </label>
+
+                    <button class="btn btn-success self-start">Create Academic Year</button>
+                </div>
+
+
                 <div class="px-9 flex justify-end w-full">
                 </div>
                 <div class="block py-8 pt-6 px-9">
