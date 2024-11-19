@@ -1526,6 +1526,7 @@ if ($action == 'getProgJSON') {
     program.program_name,
     COUNT(tbl_course_code.course_code) AS total_courses,
     SUM(tbl_course_code.ojt_hours) AS total_ojt_hours,
+    GROUP_CONCAT(tbl_course_code.course_code_id SEPARATOR ', ') AS courses_id,
     GROUP_CONCAT(tbl_course_code.course_code SEPARATOR ', ') AS courses,
     GROUP_CONCAT(tbl_course_code.ojt_hours SEPARATOR ', ') AS course_ojt_hours
 FROM 

@@ -3,7 +3,7 @@
 
 
 
-<section class="  overflow-auto   bg-white pl-5 pb-5 pr-5 pt-0">
+<section class=" overflow-auto   bg-white pl-5 pb-5 pr-5 pt-0">
     <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-50 justify-between ">
         <div class="">
             <a href="manageAcadYear.php" class=" font-light btn btn-neutral ">
@@ -21,10 +21,10 @@
 
 
 
-<section class=" ml- sm:ml-0 flex justify-between sm:flex-nowrap flex-wrap sm:gap-5 h-[100vh] p-5">
+<section class=" ml- sm:ml-0 flex justify-between sm:flex-nowrap flex-wrap sm:gap-5 px-5 ">
     <div class="flex sm:w-[90%]  transition  shadow rounded
               justify-center  ">
-        <div class="w-full  overflow-hidden hover:overflow-auto">
+        <div class="w-full max-h-[80vh] overflow-hidden hover:overflow-auto">
             <table class="table table-sm bordered" id="progam_tbl">
                 <!-- head -->
                 <thead class="w-full sticky top-0 shadow bg-slate-100 rounded text-slate-700">
@@ -47,8 +47,7 @@
     </div>
     <div class="flex sm:w-1/2 w-full  transition  shadow rounded
               justify-center  ">
-        <div class="w-full overflow-hidden hover:overflow-auto">
-            <h1></h1>
+        <div class="w-full  max-h-[80vh] overflow-hidden hover:overflow-auto">
             <table class="table  table-sm" id="yr_sectbl">
                 <!-- head -->
                 <thead class="sticky top-0 shadow bg-slate-100 rounded text-slate-700">
