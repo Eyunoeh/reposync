@@ -22,12 +22,71 @@ document.getElementById('ManageAcadYearForm').addEventListener('submit', functio
     });
 });
 
-$('#addCourseBtn').on('click', function(e) {
+$('#addCourseBtn').on('click', async function (e) {
+    // Collect inputs
+    let program_selected = $('#program').val();
+    let course_selected = $('#program_course').val();
+    let semester = $('#semester').val();
+    let aystartYear = $('#aystartYear').val();
+    let ayendYear = $('#ayendYear').val();
+    let ay = `${aystartYear}, ${ayendYear}`;
+
     const container = document.getElementById('yrSecOptions');
-    const checkedValues = Array.from(container.querySelectorAll('.dynamic-checkbox:checked'))
+    const checkedYrSec = Array.from(container.querySelectorAll('.dynamic-checkbox:checked'))
         .map(checkbox => checkbox.value);
-    console.log(checkedValues); // Outputs the values of checked checkboxes
+
+    // Validation
+    let missingInputs = [];
+    if (!aystartYear) missingInputs.push('Academic Year Start is empty');
+    if (!ayendYear) missingInputs.push('Academic Year End is empty');
+    if (!semester) missingInputs.push('Semester not selected');
+    if (!program_selected) missingInputs.push('Program not selected');
+    if (!course_selected) missingInputs.push('Course not selected');
+    if (checkedYrSec.length === 0) missingInputs.push('No Year/Section selected');
+
+    if (missingInputs.length > 0) {
+        Alert('errNotifcotainer', missingInputs[0], 'warning');
+        return;
+    }
+
+    // Retrieve and parse existing data
+    let Ay_availableCourse = $('#Ay_availableCourse');
+    let existingData = Ay_availableCourse.val() ? JSON.parse(Ay_availableCourse.val()) : [];
+
+    // Create new data structure
+    let newData = {
+        course_code_id: course_selected,
+        semester: semester,
+        ay: ay,
+        yearSec: checkedYrSec
+    };
+
+    // Merge logic
+    let existingItem = existingData.find(item =>
+        item.course_code_id === newData.course_code_id &&
+        item.semester === newData.semester &&
+        item.ay === newData.ay
+    );
+
+    if (existingItem) {
+        // Add new year/sections to the existing item's yearSec array without duplicates
+        newData.yearSec.forEach(yrSec => {
+            if (!existingItem.yearSec.includes(yrSec)) {
+                existingItem.yearSec.push(yrSec);
+            }
+        });
+    } else {
+        // Add new item to the array
+        existingData.push(newData);
+    }
+
+    // Update hidden input with merged data
+    Ay_availableCourse.val(JSON.stringify(existingData));
+
+    console.log(existingData); // Debugging output
 });
+
+
 
 async function render_ProgOptions() {
     let { response, data: programs } = await $.ajax({

@@ -141,9 +141,9 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                                         <span class="label-text text-slate-700">Academic Year</span>
                                     </div>
                                     <div class="flex gap-2 justify-start items-center w-full">
-                                        <input  type="number" required name="startYear" placeholder="XXXX"  class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
+                                        <input  type="number" oninput="this.value = this.value.slice(0, 4)" required name="aystartYear" id="aystartYear" placeholder="XXXX"  class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
                                         <p class="text-center items-center "> to </p>
-                                        <input  type="number" required name="endYear" placeholder="XXXX" class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
+                                        <input  type="number" oninput="this.value = this.value.slice(0, 4)" required name="ayendYear" id="ayendYear" placeholder="XXXX" class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs"  />
                                     </div>
                                 </div>
                                 <div class="w-full">
@@ -167,8 +167,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                                     </div>
                                     <select id="program" onchange="render_CourseOptions(this.value)" required name="program" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs" >
                                         <option disabled selected>Select</option>
-                                        <option value="2">BSIT</option>
-                                        <option value="3">BSinT</option>
+
 
                                     </select>
                                 </div>
@@ -231,6 +230,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                         <tr>
                             <th  class="cursor-pointer">Program code</th>
                             <th  class="cursor-pointer">Course</th>
+                            <th  class="cursor-pointer">Yr & Sec</th>
                             <th class="">Action</th>
 
                         </tr>
@@ -242,6 +242,9 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                             </td>
                             <td>
                                 ITEC 199
+                            </td>
+                            <td>
+                                1A, 1B, 1C
                             </td>
                              <td>
                                  <a onclick="" class="cursor-pointer text-error p-2"><i class="fa-solid fa-minus"></i></a>
@@ -256,6 +259,9 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                                 ELEX 199A
                             </td>
                             <td>
+                                1A, 1B, 1C
+                            </td>
+                            <td>
                                 <a onclick="" class="cursor-pointer text-error p-2"><i class="fa-solid fa-minus"></i></a>
                             </td>
                         </tr>
@@ -266,6 +272,9 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                             </td>
                             <td>
                                 ELEX 199A
+                            </td>
+                            <td>
+                                1A, 1B, 1C
                             </td>
                             <td>
                                 <a onclick="" class="cursor-pointer text-error p-2"><i class="fa-solid fa-minus"></i></a>
@@ -280,7 +289,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                     </div>
                 </div>
                 <hr class=" m-3">
-
+                <input type="hidden" name="Ay_availableCourse" id="Ay_availableCourse">
                 <p id="progyrsecLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
                 <div id="progyrsecLoaderbtn" class="flex justify-center ">
                     <button id="progYrSecSubmit" class="btn btn-success btn-outline w-1/4" >Add</button>
