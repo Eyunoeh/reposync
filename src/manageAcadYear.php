@@ -236,56 +236,12 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                         </tr>
                         </thead>
                         <tbody id="ay_openProgCourse" class="text-start">
-                        <tr>
-                            <td>
-                                BSIT
-                            </td>
-                            <td>
-                                ITEC 199
-                            </td>
-                            <td>
-                                1A, 1B, 1C
-                            </td>
-                             <td>
-                                 <a onclick="" class="cursor-pointer text-error p-2"><i class="fa-solid fa-minus"></i></a>
-                            </td>
 
-                        </tr>
-                        <tr>
-                            <td>
-                                BSinT
-                            </td>
-                            <td>
-                                ELEX 199A
-                            </td>
-                            <td>
-                                1A, 1B, 1C
-                            </td>
-                            <td>
-                                <a onclick="" class="cursor-pointer text-error p-2"><i class="fa-solid fa-minus"></i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                BSinT
-                            </td>
-                            <td>
-                                ELEX 199A
-                            </td>
-                            <td>
-                                1A, 1B, 1C
-                            </td>
-                            <td>
-                                <a onclick="" class="cursor-pointer text-error p-2"><i class="fa-solid fa-minus"></i></a>
-                            </td>
-                        </tr>
 
                         </tbody>
                     </table>
                     <div id="nocourseNote" class="flex justify-center items-center ">
-                        <p class="text-sm text-slate-700 font-sans">No <p class="text-sm text-slate-700 font-sans">No selected course</p>
-
+                        <p class="text-sm text-slate-700 font-sans">No selected program course</p>
                     </div>
                 </div>
                 <hr class=" m-3">
