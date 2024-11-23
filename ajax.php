@@ -2014,3 +2014,175 @@ if ($action == 'weeklyJournalList'){
     }
 
 }
+
+if ($action == 'newAy') {
+    header('Content-Type: application/json');
+
+    $aystartYear = getPostData('aystartYear', 'N/A');
+    $ayendYear = getPostData('ayendYear', 'N/A');
+    $semester = getPostData('semester', 'N/A');
+
+    if (in_array('N/A', [$aystartYear, $ayendYear])) {
+        handleError('Invalid academic year');
+    }
+
+    $semesters = [
+        'First' => 1,
+        'Second' => 2,
+        'Midyear' => 3,
+    ];
+
+    if (!isset($semesters[$semester])) {
+        handleError('Invalid semester');
+    }
+
+    $conn->begin_transaction();
+    try {
+        // Insert academic year and semester
+        $newAyquery = "INSERT INTO tbl_aysem (ayStarting, ayEnding, Semester, Curray_sem) VALUES (?, ?, ?, 2)";
+        $newAyqueryStmt = $conn->prepare($newAyquery);
+        $newAyqueryStmt->bind_param('iii', $aystartYear, $ayendYear, $semesters[$semester]);
+        $newAyqueryStmt->execute();
+        $aySem_id = $conn->insert_id;
+
+        // Decode JSON data for available courses
+        $available_ayCourse_json = $_POST['Ay_availableCourse'];
+        $decoded_ayCourse_json = json_decode($available_ayCourse_json, true);
+
+        if (json_last_error() === JSON_ERROR_NONE) {
+            $insertAvailableCourseQuery = "
+                INSERT INTO tbl_courseavailability (course_code_id, year_sec_Id, ay_sem_id) 
+                VALUES (?, ?, ?)";
+            $insertStmt = $conn->prepare($insertAvailableCourseQuery);
+
+            foreach ($decoded_ayCourse_json as $available_ayCourse) {
+                if (!isset($available_ayCourse['course_code_id'], $available_ayCourse['yearSec']) ||
+                    !is_array($available_ayCourse['yearSec'])) {
+                    throw new Exception('Invalid JSON structure.');
+                }
+
+                $course_code_id = $available_ayCourse['course_code_id'];
+                $yrSecArray = $available_ayCourse['yearSec'];
+
+                foreach ($yrSecArray as $yrSec_ID) {
+                    $insertStmt->bind_param('iii', $course_code_id, $yrSec_ID, $aySem_id);
+                    $insertStmt->execute();
+                }
+            }
+        } else {
+            throw new Exception('Invalid JSON data.');
+        }
+
+        $conn->commit();
+        echo json_encode([
+            'response' => 1,
+            'message' => 'New academic year created'
+        ]);
+    } catch (Exception $e) {
+        $conn->rollback();
+        handleError($e->getMessage());
+    } finally {
+        $conn->close();
+    }
+}
+
+if ($action === 'updateAy') {
+    header('Content-Type: application/json');
+
+    $aystartYear = getPostData('aystartYear', 'N/A');
+    $ayendYear = getPostData('ayendYear', 'N/A');
+    $semester = getPostData('semester', 'N/A');
+    $ay_ID = getPostData('ay_ID', 'N/A');
+
+    if (in_array('N/A', [$aystartYear, $ayendYear, $ay_ID], true)) {
+        handleError('Missing or invalid academic year or ID.');
+    }
+
+    $semesters = [
+        'First' => 1,
+        'Second' => 2,
+        'Midyear' => 3,
+    ];
+
+    if (!isset($semesters[$semester])) {
+        handleError('Invalid semester.');
+    }
+
+    // Begin database transaction
+    $conn->begin_transaction();
+    try {
+        $updateAyQuery = "UPDATE tbl_aysem SET ayStarting = ?, ayEnding = ?, Semester = ? WHERE id = ?";
+        $updateAyStmt = $conn->prepare($updateAyQuery);
+        $updateAyStmt->bind_param('iiii', $aystartYear, $ayendYear, $semesters[$semester], $ay_ID);
+        $updateAyStmt->execute();
+
+        // Delete existing course availability records
+        $deleteCoursesQuery = "DELETE FROM tbl_courseavailability WHERE ay_sem_id = ?";
+        $deleteCoursesStmt = $conn->prepare($deleteCoursesQuery);
+        $deleteCoursesStmt->bind_param('i', $ay_ID);
+        $deleteCoursesStmt->execute();
+
+        if (!isset($_POST['Ay_availableCourse'])) {
+            throw new Exception('Missing Ay_availableCourse in POST data.');
+        }
+
+        $availableCoursesJson = $_POST['Ay_availableCourse'];
+        $decodedCourses = json_decode($availableCoursesJson, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception('JSON decoding error: ' . json_last_error_msg());
+        }
+
+        // Insert new course availability records
+        $insertCoursesQuery = "
+            INSERT INTO tbl_courseavailability (course_code_id, year_sec_Id, ay_sem_id)
+            VALUES (?, ?, ?)";
+        $insertCoursesStmt = $conn->prepare($insertCoursesQuery);
+
+        foreach ($decodedCourses as $course) {
+            if (!isset($course['course_code_id'], $course['yearSec']) || !is_array($course['yearSec'])) {
+                throw new Exception('Invalid JSON structure for course availability.');
+            }
+
+            $courseCodeId = $course['course_code_id'];
+            foreach ($course['yearSec'] as $yearSecId) {
+
+                $insertCoursesStmt->bind_param('iii', $courseCodeId, $yearSecId, $ay_ID);
+                $insertCoursesStmt->execute();
+            }
+        }
+
+        // Commit transaction
+        $conn->commit();
+
+        echo json_encode([
+            'response' => 1,
+            'message' => 'Academic year has been updated successfully.',
+        ]);
+    } catch (Exception $e) {
+        // Rollback transaction on failure
+        $conn->rollback();
+        handleError($e->getMessage());
+    } finally {
+        $conn->close();
+    }
+}
+
+
+if ($action == 'AcadYears'){
+    header('Content-Type: application/json');
+    $acadYearsQuery = "SELECT * FROM tbl_aysem";
+    $result = mysqlQuery($acadYearsQuery, '', []);
+    echo json_encode(['response' => 1,
+        'data' => $result,]);
+}
+if ($action == 'avaialbleyrSecCourse'){
+    $acadYearID = $_GET['acadYearID'];
+    header('Content-Type: application/json');
+
+
+    $avaialbleyrSecCoursesQuery = "SELECT * FROM tbl_courseavailability where ay_sem_id = ?";
+    $result = mysqlQuery($avaialbleyrSecCoursesQuery, 'i', [$acadYearID]);
+    echo json_encode(['response' => 1,
+        'data' => $result,]);
+}

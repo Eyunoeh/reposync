@@ -1,19 +1,34 @@
 document.getElementById('ManageAcadYearForm').addEventListener('submit', function(e) {
     e.preventDefault(); // Prevent form submission
-    let endpoint;
+    let endpoint, notifType;
     const formData = new FormData(this); // Collect form data
-    endpoint = $('#action_type').val() === 'edit' ? 'updateAy' : 'newAy';
+
+    if ($('#action_type').val() === 'edit') {
+        endpoint = 'updateAy';
+        notifType = 'info';
+    } else {
+        endpoint = 'newAy';
+        notifType = 'success';
+    }
 
 
     $.ajax({
-        url: '../ajax.php?action= '+ endpoint,
+        url: '../ajax.php?action='+ endpoint,
         type: 'POST',
         data: formData,
         processData: false,
         contentType: false,
         success: function(response) {
-            console.log('Success:', response);
+            if (response.response === 1){
+                Alert('notif', response.message, notifType)
+                closeModalForm('ManageAcadYear')
+                displayAcadYears();
+                manageAcadYearReset()
 
+
+            }else {
+                Alert('errNotifcotainer', response.message, 'warning')
+            }
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -147,7 +162,7 @@ async function render_ProgOptions() {
         });
     }
 
-    console.log(programs);
+
     $('#program').html(program_options);
 }
 async function render_CourseOptions(program_id) {
@@ -216,9 +231,130 @@ async function yrSecCheckboxesOptions() {
         $('#yrSecOptions').html('<p>No options available</p>');
     }
 }
+async function editAy(acadYearID) {
+    // Fetch year-section-course associations
+    let { data: acadYearsryrSecCourses } = await $.ajax({
+        url: '../ajax.php?action=avaialbleyrSecCourse&acadYearID=' + encodeURIComponent(acadYearID),
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    // Fetch program mappings
+    let { data: programs } = await $.ajax({
+        url: '../ajax.php?action=getProgJSON',
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    // Map course IDs to program and course details
+    let mapPrograms = programs.reduce((map, program) => {
+        let program_code = program.program_code;
+        let program_courses_id = program.courses_id.split(',').map(id => id.trim());
+        let program_courses = program.courses.split(',').map(course => course.trim());
+
+        program_courses_id.forEach((course_id, index) => {
+            map[course_id] = {
+                course_code: program_courses[index] || "Unknown",
+                program_code: program_code
+            };
+        });
+        return map;
+    }, {});
+
+    // Group year-section associations by course_id
+    let groupedByCourse = acadYearsryrSecCourses.reduce((group, item) => {
+        let course_id = item.course_code_id;
+        let yrSec_id = item.year_sec_Id;
+
+        if (!group[course_id]) {
+            group[course_id] = [];
+        }
+        group[course_id].push(yrSec_id);
+        return group;
+    }, {});
+
+
+    // Fetch academic year details
+    let { data: acadYears } = await $.ajax({
+        url: '../ajax.php?action=AcadYears',
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    let ayDetails = acadYears.find(acadYear => acadYear.id === acadYearID) || {};
+    let aySemester = ayDetails.Semester || "Unknown";
+    let ayStarting = ayDetails.ayStarting || "Unknown";
+    let ayEnding = ayDetails.ayEnding || "Unknown";
+
+    let existingData = [];
+    Object.keys(groupedByCourse).forEach(course_id => {
+        if (mapPrograms[course_id]) {
+            existingData.push({
+                program_Code: mapPrograms[course_id].program_code,
+                course_code: mapPrograms[course_id].course_code,
+                course_code_id: course_id,
+                semester: aySemester,
+                ay: `${ayStarting}-${ayEnding}`,
+                yearSec: groupedByCourse[course_id]
+            });
+        }
+    });
+    $('#Ay_availableCourse').val(JSON.stringify(existingData));
+    $('#ManageAcadYearForm input[name="aystartYear"]').val(ayStarting);
+    $('#ManageAcadYearForm input[name="ayendYear"]').val(ayEnding);
+    $('#ManageAcadYearForm select[name="semester"]').val(aySemester);
+    $('#ManageAcadYearForm input[name="action_type"]').val('edit');
+    $('#ManageAcadYearForm input[name="ay_ID"]').val(acadYearID);
+    $('#progYrSecSubmit').html(`Save`);
 
 
 
 
+    displaySelectedAvaiableProgCourseSec(existingData);
+
+
+}
+
+
+async function displayAcadYears(){
+    let { data: acadYears } = await $.ajax({
+        url: '../ajax.php?action=AcadYears',
+        method: 'GET',
+        dataType: 'json'
+    });
+    let acadYearstbl_data = '';
+    if (acadYears.length === 0){
+        $('#AcadYears').empty();
+        $('#noAcadYearsNote').html(`<p class="text-sm text-slate-700 font-sans">No <p class="text-sm text-slate-700 font-sans">No Result</p>`)
+    }else{
+        acadYears.forEach(acadYear => {
+            acadYearstbl_data+= `<tr>
+                                <td>${acadYear.ayStarting}-${acadYear.ayEnding}</td>
+                                <td>${acadYear.Semester}</td>
+                                <td  class="text-center"><a class="cursor-pointer" onclick="editAy(${acadYear.id});
+                                    openModalForm('ManageAcadYear')"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                            </tr>`
+        })
+        $('#AcadYears').html(acadYearstbl_data);
+        $('#noAcadYearsNote').empty();
+    }
+
+}
+
+function manageAcadYearReset(){
+    $('#ManageAcadYearForm').trigger('reset');
+    $('#ManageAcadYearForm input[name="action_type"]').val('add');
+    $('#ManageAcadYearForm input[name="ay_ID"]').val('');
+    $('#program_course').html(`<option disabled selected>Select program first</option>`);
+    $('#progYrSecSubmit').html(`Add`);
+    $('#ay_openProgCourse').empty();
+    $('#nocourseNote').html(`<p class="text-sm text-slate-700 font-sans">No selected program course</p>`)
+    document.querySelectorAll('.dynamic-checkbox:checked').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    $('#Ay_availableCourse').val('');
+
+}
 render_ProgOptions();
 yrSecCheckboxesOptions()
+displayAcadYears();

@@ -82,30 +82,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                             </tr>
                             </thead>
                             <tbody id="AcadYears">
-                            <tr>
-                                <td>2021-2022</td>
-                                <td>First</td>
-                                <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                            </tr>
-                            <tr>
-                                <td>2021-2022</td>
-                                <td>Second</td>
-                                <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                            </tr>
-                            <tr>
-                                <td>2021-2022</td>
-                                <td>Midyear</td>
-                                <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                            </tr>
-                            <tr>
-                                <td>2022-2023</td>
-                                <td>First</td>
-                                <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                            </tr> <tr>
-                                <td>2022-2023</td>
-                                <td>Second</td>
-                                <td class="text-center"><i class="fa-solid fa-pen-to-square"></i></td>
-                            </tr>
+
                             <tr>
                                 <td>2022-2023</td>
                                 <td>Midyear</td>
@@ -113,6 +90,9 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                             </tr>
                             </tbody>
                         </table>
+                        <div id="noAcadYearsNote" class="flex justify-center items-center ">
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -122,12 +102,12 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
 <dialog id="ManageAcadYear" class="modal bg-black  bg-opacity-40">
     <div class="card bg-slate-50 w-[100vw] sm:w-[50rem]   flex flex-col text-slate-700">
         <div  class=" card-title sticky flex justify-end" id="act_schedtitle">
-            <button class=" btn btn-sm btn-circle btn-ghost "  onclick="closeModalForm('ManageAcadYear')">✕</button>
+            <button class=" btn btn-sm btn-circle btn-ghost "  onclick="closeModalForm('ManageAcadYear');manageAcadYearReset()">✕</button>
         </div>
         <div class="p-4 ">
             <form id="ManageAcadYearForm" class="overflow-y-auto h-full max-h-[87vh]" >
-                <input type="hidden" name="action_type" value="" id="action_type">
-                <input type="hidden" name="ID" value="">
+                <input type="hidden" name="action_type" value="new" id="action_type">
+                <input type="hidden" id="ay_ID" name="ay_ID" value="">
                 <div class="w-full flex justify-end" id="option">
 
                 </div>
@@ -165,7 +145,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                                     <div class="label">
                                         <span class="label-text text-slate-700">Program code</span>
                                     </div>
-                                    <select id="program" onchange="render_CourseOptions(this.value)" required name="program" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs" >
+                                    <select id="program" onchange="render_CourseOptions(this.value)"  name="program" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs" >
                                         <option disabled selected>Select</option>
 
 
@@ -175,7 +155,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                                     <div class="label">
                                         <span class="label-text text-slate-700">Course code</span>
                                     </div>
-                                    <select id="program_course" required name="program_course" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs" >
+                                    <select id="program_course"  name="program_course" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs" >
                                         <option disabled selected>Select program first</option>
 
                                     </select>
@@ -256,6 +236,8 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
         <div id="errNotifcotainer" onclick="resetAlertBox(this.id)"></div>
     </div>
 </dialog>
+
+<div id="notif" onclick="resetAlertBox(this.id)"></div>
 
 
 </body>
