@@ -335,6 +335,7 @@ async function displayAcadYears(){
                                     openModalForm('ManageAcadYear')"><i class="fa-solid fa-pen-to-square"></i></a></td>
                             </tr>`
         })
+
         $('#AcadYears').html(acadYearstbl_data);
         $('#noAcadYearsNote').empty();
     }
@@ -355,6 +356,32 @@ function manageAcadYearReset(){
     $('#Ay_availableCourse').val('');
 
 }
+
+async function CurracadYearsOption(){
+    let { data: acadYears } = await $.ajax({
+        url: '../ajax.php?action=AcadYears',
+        method: 'GET',
+        dataType: 'json'
+    });
+    if (acadYears.length === 0){
+        $('#CurracademicYear').html(`<option disabled selected>No academic year option</option>`);
+    }else{
+        let displayedSem = {First: '1st',
+            Second: '2nd',
+        Midyear: 'Midyear'}
+        let acadYearsOptions = acadYears.map(acadYear => {
+
+            return `<option ${acadYear.Curray_sem === 'Yes' ? 'selected' : ''} value="${acadYear.id}">
+${displayedSem[acadYear.Semester]} Semester, AY ${acadYear.ayStarting}-${acadYear.ayEnding}
+            </option>`;
+        }).join('');
+
+        $('#CurracademicYear').html(acadYearsOptions);
+
+
+    }
+}
 render_ProgOptions();
+CurracadYearsOption()
 yrSecCheckboxesOptions()
 displayAcadYears();

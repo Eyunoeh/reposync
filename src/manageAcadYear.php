@@ -46,14 +46,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                             <span class="label-text text-slate-700">Current Semester & Academic Year</span>
                         </div>
                         <div class="flex gap-2 justify-start items-center w-full">
-                            <select id="Currsem" required name="Currsem" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs">
-                                <option disabled selected>Select</option>
-                                <option value="">First</option>
-                                <option value="200">Second</option>
-                                <option value="240">Midyear</option>
-                            </select>
-                            <p class="text-center items-center"> - </p>
-                            <select id="CurracademicYear" required name="CurracademicYear" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-xs">
+                            <select id="CurracademicYear" required name="CurracademicYear" class="disabled:text-black bg-slate-100 select select-bordered w-full max-w-sm">
                                 <option disabled selected>Select</option>
                                 <option value="">2021-2022</option>
                                 <option value="200">2022-2023</option>

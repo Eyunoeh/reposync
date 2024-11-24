@@ -2038,7 +2038,25 @@ if ($action == 'newAy') {
 
     $conn->begin_transaction();
     try {
-        // Insert academic year and semester
+
+        if ($ayendYear <= $aystartYear) {
+            throw new Exception('Invalid academic year range: Ending year cannot be less than or equal to the starting year.');
+        }
+        if ($ayendYear > $aystartYear + 1) {
+            throw new Exception('Invalid academic year range: Ending year cannot be more than one year greater than the starting year.');
+        }
+
+        $checkQuery = "SELECT COUNT(*) AS count 
+                   FROM tbl_aysem 
+                   WHERE ayStarting = ? AND ayEnding = ? AND Semester = ?";
+        $result = mysqlQuery($checkQuery,'iii' ,[ $aystartYear, $ayendYear, $semesters[$semester]]);
+
+
+        if ($result[0]['count'] > 0) {
+            throw new Exception('Duplicate semester for this academic year.');
+        }
+
+        // If no duplicates, insert the new record
         $newAyquery = "INSERT INTO tbl_aysem (ayStarting, ayEnding, Semester, Curray_sem) VALUES (?, ?, ?, 2)";
         $newAyqueryStmt = $conn->prepare($newAyquery);
         $newAyqueryStmt->bind_param('iii', $aystartYear, $ayendYear, $semesters[$semester]);
@@ -2080,6 +2098,8 @@ if ($action == 'newAy') {
         ]);
     } catch (Exception $e) {
         $conn->rollback();
+        //if error is duplicate entry put in the handle error if ayStarting "Duplicate entry for Starting year"
+        //if error is duplicate entry put in the handle error if ayEnding  "Duplicate entry for Ending  year"
         handleError($e->getMessage());
     } finally {
         $conn->close();
@@ -2111,10 +2131,33 @@ if ($action === 'updateAy') {
     // Begin database transaction
     $conn->begin_transaction();
     try {
+        if ($ayendYear <= $aystartYear) {
+            throw new Exception('Invalid academic year range: Ending year cannot be less than or equal to the starting year.');
+        }
+        if ($ayendYear > $aystartYear + 1) {
+            throw new Exception('Invalid academic year range: Ending year cannot be more than one year greater than the starting year.');
+        }
+
+        $checkQuery = "SELECT COUNT(*) AS count 
+                   FROM tbl_aysem 
+                   WHERE ayStarting = ? AND ayEnding = ? AND Semester = ?";
+        $result = mysqlQuery($checkQuery,'iii' ,[ $aystartYear, $ayendYear, $semesters[$semester]]);
+
+
+
+
+
         $updateAyQuery = "UPDATE tbl_aysem SET ayStarting = ?, ayEnding = ?, Semester = ? WHERE id = ?";
         $updateAyStmt = $conn->prepare($updateAyQuery);
         $updateAyStmt->bind_param('iiii', $aystartYear, $ayendYear, $semesters[$semester], $ay_ID);
         $updateAyStmt->execute();
+
+        if ($updateAyStmt->affected_rows > 0){
+            if ($result[0]['count'] > 0) {
+                throw new Exception('Duplicate semester for this academic year.');
+            }
+        }
+
 
         // Delete existing course availability records
         $deleteCoursesQuery = "DELETE FROM tbl_courseavailability WHERE ay_sem_id = ?";
@@ -2171,7 +2214,7 @@ if ($action === 'updateAy') {
 
 if ($action == 'AcadYears'){
     header('Content-Type: application/json');
-    $acadYearsQuery = "SELECT * FROM tbl_aysem";
+    $acadYearsQuery = "SELECT * FROM tbl_aysem order by ayStarting asc";
     $result = mysqlQuery($acadYearsQuery, '', []);
     echo json_encode(['response' => 1,
         'data' => $result,]);
