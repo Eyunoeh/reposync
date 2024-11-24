@@ -47,7 +47,7 @@ include '../DatabaseConn/databaseConn.php';
 
                     <?php if ($_SESSION['log_user_type'] == 'admin'):?>
                         <th onclick="sortTable(4, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT center<span class="sort-icon text-xs"></span></th>
-                        <th onclick="sortTable(5, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT location<span class="sort-icon text-xs"></span></th>
+                        <th onclick="sortTable(5, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT contact<span class="sort-icon text-xs"></span></th>
                         <th onclick="sortTable(6, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT Adviser<span class="sort-icon text-xs"></span></th>
 
                     <?php endif;?>
@@ -224,7 +224,7 @@ include '../DatabaseConn/databaseConn.php';
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">OJT Location</span>
+                                    <span class="label-text text-slate-700">OJT contact</span>
                                 </div>
                                 <input type="text" name="stud_ojtContact" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
