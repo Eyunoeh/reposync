@@ -460,8 +460,11 @@ if ($action === 'editFinalReport') {
 if($action == 'StudsubmittedNarratives'){
     header('Content-Type: application/json');
 
-    $submtdNarratives = mysqlQuery('SELECT * from narrativereports JOIN tbl_students
+    $submtdNarratives = mysqlQuery('SELECT narrativereports.*, tbl_aysem.*
+from narrativereports
+    JOIN tbl_students
          on tbl_students.enrolled_stud_id = narrativereports.enrolled_stud_id  
+    JOIN tbl_aysem on tbl_aysem.id = narrativereports.ay_sem_id
          where  tbl_students.user_id = ? ', 'i', [$_SESSION['log_user_id']]);
 
 
@@ -475,20 +478,15 @@ if($action == 'StudsubmittedNarratives'){
         exit();
     }
 
+    $currAcadYear = mysqlQuery(
+        'SELECT id FROM tbl_aysem WHERE Curray_sem = 1',
+        'i', [])[0]['id'];
+    $studSemAYnarrativeequery = mysqlQuery("SELECT * FROM narrativereports n
+                JOIN tbl_students s on s.enrolled_stud_id = n.enrolled_stud_id 
+         where user_id = ? and ay_sem_id = ?", 'ii', [$_SESSION['log_user_id'], $currAcadYear]);
 
-    $total_narrativequery = "SELECT COUNT(*) as totalSubNarrative FROM narrativereports n
-                JOIN tbl_students s on s.enrolled_stud_id = n.enrolled_stud_id where user_id = ?";
 
-
-    $total_result = mysqlQuery($total_narrativequery ,'i', [$_SESSION['log_user_id']])[0];
-
-    $checkStudProgramQuery = "SELECT * FROM program p 
-    JOIN  tbl_students s on s.program_id = p.program_id where s.user_id = ?";
-
-    $StudProgramLimitNarratives = mysqlQuery($checkStudProgramQuery, 'i', [$_SESSION['log_user_id']])[0];
-
-    $isStudCanSubmitNewNarrative = $total_result['totalSubNarrative'] < $StudProgramLimitNarratives['totalNarratives'] ?
-        true : false;
+    $isStudCanSubmitNewNarrative =  count($studSemAYnarrativeequery) === 0 ? false : true;
 
 
     echo json_encode(['response' => 1,

@@ -362,9 +362,9 @@ async function getSubmittedNarratives(){
    }
    else {
       narratives.forEach(narrative => {
-         let years = narrative.ay_submitted.split(',');
-         let startingAC = years[0].trim();
-         let endingAC =  years[1].trim();
+         let years = narrative.ayStarting
+         let startingAC = narrative.ayStarting
+         let endingAC =  narrative.ayEnding
 
 
          table_data += `<tr class="border-b border-dashed last:border-b-0">
@@ -372,7 +372,7 @@ async function getSubmittedNarratives(){
                             <span class=" text-light-inverse text-md/normal break-words">${number}</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class=" text-light-inverse text-md/normal break-words">${narrative.sem_submitted}</span>
+                            <span class=" text-light-inverse text-md/normal break-words">${narrative.Semester}</span>
                         </td>
                         <td class="p-3 text-start">
                             <span class=" text-light-inverse text-md/normal break-words">${startingAC} - ${endingAC}</span>
