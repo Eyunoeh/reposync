@@ -52,7 +52,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                                 <option value="200">2022-2023</option>
                                 <option value="240">2023-2024</option>
                             </select>
-                            <button class="btn btn-ghost btn-sm">Save</button>
+                            <button class="btn btn-ghost btn-sm" onclick="openModalForm('changecurrAcadyearModal')">Save</button>
                         </div>
                     </label>
 
@@ -227,6 +227,28 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
 
         </div>
         <div id="errNotifcotainer" onclick="resetAlertBox(this.id)"></div>
+    </div>
+</dialog>
+
+<dialog id="changecurrAcadyearModal" class="modal bg-black bg-opacity-40">
+    <div class="card bg-slate-50 w-[80vw] absolute top-10 sm:w-[30rem] max-h-[35rem] flex flex-col text-slate-700">
+
+        <div  class=" card-title sticky flex justify-end" id="">
+            <a class=" btn btn-sm btn-circle btn-ghost "  onclick="closeModalForm('changecurrAcadyearModal')">✕</a>
+        </div>
+        <div class="card-title sticky flex justify-center">
+            <h3 class=" text-lg p-5">
+                Do you want to reset user accounts along with changing the semester and academic year?
+
+            </h3>
+        </div>
+        <div class="p-4 w-full flex justify-evenly">
+            <a id="deactivate_acc" class="btn btn-warning w-1/4"
+               onclick="closeModalForm('changecurrAcadyearModal');changeCurrSemAY('Yes')">
+                Yes
+            </a>
+            <a class="btn btn-info w-1/4" onclick="closeModalForm('changecurrAcadyearModal');changeCurrSemAY('No')">No</a>
+        </div>
     </div>
 </dialog>
 

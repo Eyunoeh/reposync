@@ -381,6 +381,17 @@ ${displayedSem[acadYear.Semester]} Semester, AY ${acadYear.ayStarting}-${acadYea
 
     }
 }
+
+async function changeCurrSemAY(resetUsers){
+    let ayID = $('#CurracademicYear').val();
+    console.log(ayID);
+    let {response, message: callmessage } = await $.ajax({
+        url: '../ajax.php?action=changeAcadYear&acadYearID=' + encodeURIComponent(ayID) +'&resetUser=' + resetUsers,
+        method: 'GET',
+        dataType: 'json'
+    });
+    console.log(callmessage);
+}
 render_ProgOptions();
 CurracadYearsOption()
 yrSecCheckboxesOptions()

@@ -2229,3 +2229,104 @@ if ($action == 'avaialbleyrSecCourse'){
     echo json_encode(['response' => 1,
         'data' => $result,]);
 }
+
+if ($action == 'changeAcadYear') {
+    header('Content-Type: application/json');
+    $acadYearID = $_GET['acadYearID'];
+    $resetUser = $_GET['resetUser'];
+
+    $resetUserVal = ['Yes' => 'Yes', 'No' => 'No'];
+    if (!isset($resetUserVal[$resetUser])) {
+        handleError('Invalid reset option');
+    }
+
+    $conn->begin_transaction();
+    try {
+        if ($resetUserVal[$resetUser] === 'Yes') {
+            // Get current academic year
+            $currAcadYear = mysqlQuery(
+                'SELECT id FROM tbl_aysem WHERE Curray_sem = 1',
+                'i',
+                []
+            )[0]['id'];
+
+            // Fetch student user IDs for current academic year
+            $student_user_ids = [];
+            $getStudNarrative = mysqlQuery(
+                'SELECT ui.user_id 
+                 FROM narrativereports n 
+                 JOIN tbl_students s ON s.enrolled_stud_id = n.enrolled_stud_id 
+                 JOIN tbl_user_info ui ON s.user_id = ui.user_id 
+                 WHERE n.ay_sem_id = ?',
+                'i',
+                [$currAcadYear]
+            );
+
+            foreach ($getStudNarrative as $studs) {
+                $student_user_ids[] = $studs['user_id'];
+            }
+
+            if (!empty($student_user_ids)) {
+                // Prepare placeholders for `IN` clause
+                $placeholders = implode(',', array_fill(0, count($student_user_ids), '?'));
+
+                // Delete from `activity_logs`
+                $delActLogs = $conn->prepare(
+                    "DELETE act
+                     FROM activity_logs AS act
+                     JOIN weeklyreport AS wr ON act.file_id = wr.file_id
+                     WHERE wr.stud_user_id IN ($placeholders)"
+                );
+                $delActLogs->bind_param(str_repeat('i', count($student_user_ids)), ...$student_user_ids);
+                $delActLogs->execute();
+
+                // Delete from `revision_attachment`
+                $delRevAtt = $conn->prepare(
+                    "DELETE ra
+                     FROM revision_attachment AS ra
+                     JOIN tbl_revision AS tr ON ra.comment_id = tr.comment_id
+                     JOIN weeklyreport AS wr ON wr.file_id = tr.file_id
+                     WHERE wr.stud_user_id IN ($placeholders)"
+                );
+                $delRevAtt->bind_param(str_repeat('i', count($student_user_ids)), ...$student_user_ids);
+                $delRevAtt->execute();
+
+                $delRev = $conn->prepare(
+                    "DELETE tr
+                     FROM tbl_revision AS tr
+                     JOIN weeklyreport AS wr ON wr.file_id = tr.file_id
+                     WHERE wr.stud_user_id IN ($placeholders)"
+                );
+                $delRev->bind_param(str_repeat('i', count($student_user_ids)), ...$student_user_ids);
+                $delRev->execute();
+
+                $delWeeklyReport = $conn->prepare(
+                    "DELETE FROM weeklyreport WHERE stud_user_id IN ($placeholders)"
+                );
+                $delWeeklyReport->bind_param(str_repeat('i', count($student_user_ids)), ...$student_user_ids);
+                $delWeeklyReport->execute();
+            }
+
+            $deactUsers = "UPDATE tbl_accounts acc 
+                           SET acc.status = 2 
+                           WHERE acc.user_id IN (
+                               SELECT ui.user_id 
+                               FROM tbl_user_info ui 
+                               WHERE ui.user_type != 1
+                           )";
+            $conn->query($deactUsers);
+        }
+
+        $conn->query("UPDATE tbl_aysem SET Curray_sem = 2");
+
+        $setAcadYearQuery = $conn->prepare("UPDATE tbl_aysem SET Curray_sem = 1 WHERE id = ?");
+        $setAcadYearQuery->bind_param('i', $acadYearID);
+        $setAcadYearQuery->execute();
+
+       $conn->commit();
+        echo json_encode(['response' => 1, 'message' => 'Academic year has been changed successfully.']);
+    } catch (Exception $e) {
+        $conn->rollback();
+        handleError($e->getMessage());
+    }
+}

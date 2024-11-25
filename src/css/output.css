@@ -4733,16 +4733,16 @@ details.collapse summary::-webkit-details-marker {
   max-height: 5rem;
 }
 
+.max-h-\[80vh\] {
+  max-height: 80vh;
+}
+
 .max-h-\[87vh\] {
   max-height: 87vh;
 }
 
 .max-h-\[90\%\] {
   max-height: 90%;
-}
-
-.max-h-\[80vh\] {
-  max-height: 80vh;
 }
 
 .min-h-\[3rem\] {
@@ -5407,6 +5407,11 @@ details.collapse summary::-webkit-details-marker {
   padding-right: 1rem;
 }
 
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
 .px-8 {
   padding-left: 2rem;
   padding-right: 2rem;
@@ -5445,11 +5450,6 @@ details.collapse summary::-webkit-details-marker {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-
-.px-5 {
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
 }
 
 .pb-0 {
