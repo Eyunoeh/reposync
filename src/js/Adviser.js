@@ -180,13 +180,13 @@ async function getStudSubmittedNarratives(){
     if (submittedNarrativesList && Object.keys(submittedNarrativesList).length > 0) {
         Object.entries(submittedNarrativesList).forEach(([key, narratives]) => {
 
-            let years = narratives.ay_submitted.split(',');
-            let startingAC = years[0].trim();
-            let endingAC =  years[1].trim();
+
+            let startingAC = narratives.ayStarting
+            let endingAC =  narratives.ayEnding
             let formattedSem = {
                 First: '1st',
                 Second: '2nd',
-                Summer: 'Summer'
+                Midyear: 'Summer'
             };
 
             let narrativeStatuses = {Pending: ['text-warning', 'Unread'],
@@ -206,7 +206,7 @@ async function getStudSubmittedNarratives(){
                     <span class=" text-light-inverse text-md/normal">${narrativeStatuses[narratives.file_status][1]}</span>
                 </td>
                  <td class="p-3 text-start">
-                    <span class=" text-light-inverse text-md/normal">${formattedSem[narratives.sem_submitted]}, ${startingAC + ' - '+ endingAC}</span>
+                    <span class=" text-light-inverse text-md/normal">${formattedSem[narratives.Semester]}, ${startingAC + ' - '+ endingAC}</span>
                 </td>
                 
                 <td class="p-3 text-start">

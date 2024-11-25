@@ -1646,9 +1646,10 @@ if ($action == 'UpdateNotePostReq'){
 }
 if ($action === 'getSubmittedNarrativeReport'){
 header('Content-Type: application/json');
-    $submittedUploadReq = "SELECT n.* , ui.*, s.* FROM narrativereports n
+    $submittedUploadReq = "SELECT n.* , ui.*, s.*, semAY.* FROM narrativereports n
     JOIN tbl_students s on n.enrolled_stud_id = s.enrolled_stud_id
     JOIN tbl_user_info ui on ui.user_id = s.user_id
+    JOIN tbl_aysem semAY on semAY.id = n.ay_sem_id
     WHERE s.adv_id = ? and n.file_status IN (1, 2, 3);";
 
     $result = mysqlQuery($submittedUploadReq, 'i', [$_SESSION['log_user_id']]);
