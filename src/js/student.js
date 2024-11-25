@@ -329,11 +329,12 @@ async function get_WeeklyReports() {
 
            counter ++
         })
+         $('#tableNoRes').empty();
       }else{
          $('#tableNoRes').html(`  <p class="text-sm text-slate-700 font-sans">${response.message}</p>`)
       }
 
-      $('#tableNoRes').empty();
+
       $('#Weeklyreports').html(weeklyJournalTable);
    } catch (error) {
       console.error('Error fetching data:', error);
