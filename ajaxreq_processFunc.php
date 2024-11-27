@@ -12,16 +12,14 @@ function updateBasicInfo($editUser_user_id, $edituser_type) {
     $editUser_middle_name = getPostData('user_Mname', 'N/A');
     $editUser_last_name = getPostData('user_Lname');
     $editUser_sex = getPostData('user_Sex');
-    $editUser_contact_number = getPostData('contactNumber');
-    $editUser_address = getPostData('user_address');
+    $editUser_contact_number = getPostData('contactNumber', null);
+    $editUser_address = getPostData('user_address', null);
 
     // Validate required fields
     $requiredFields = [
         'First Name' => $editUser_first_name,
         'Last Name' => $editUser_last_name,
         'Sex' => $editUser_sex,
-        'Contact Number' => $editUser_contact_number,
-        'Address' => $editUser_address,
         'User ID' => $editUser_user_id,
         'User Type' => $edituser_type
     ];
@@ -170,26 +168,22 @@ function update_password($user_id)
 function updAdvisory($user_id = null)
 {
     try {
-        // Delete only if user_id is provided
         if ($user_id !== null) {
             mysqlQuery("DELETE FROM tbl_advisoryhandle WHERE adv_id = ?", 'i', [$user_id]);
         }
 
-        // Handle assigned advisory list
-        $assignedadvList = json_decode($_POST['assignedAdvList'], true) ?? '';
+        $assignedadvListProg = $_POST['assignedProg'];
+        $assignedadvsql = "INSERT INTO tbl_advisoryhandle (program_id, adv_id) VALUES (?,  ?)";
+        $types = 'ii';
+        $params = [$assignedadvListProg,  $user_id];
+        mysqlQuery($assignedadvsql, $types, $params);
 
-        if ($assignedadvList !== '') {
-            foreach ($assignedadvList as $assignedadv) {
-                $assignedadvsql = "INSERT INTO tbl_advisoryhandle (program_id, year_sec_Id, adv_id) VALUES (?, ?, ?)";
-                $types = 'iii';
-                $params = [$assignedadv['program'], $assignedadv['section'], $user_id];
-                mysqlQuery($assignedadvsql, $types, $params);
-            }
-        }
     } catch (Exception $e) {
         handleError($e->getMessage());
     }
 }
+
+
 function upd_stud_tbl($user_id)
 {
     $editstud_shc_id = getPostData('school_id');

@@ -109,22 +109,22 @@ async function editUserStud_Info(user_id) {
     let stud_info = await user_info(user_id)
     if (stud_info.response  === 1){
         let data = stud_info.data;
-        loadStudentprogSecDropdown(data.adv_id)
+        loalAdvHandle_prog(data.adv_id)
+
+
         $('#studentForm input[name="user_Fname"]').val(data.first_name);
         $('#studentForm input[name="user_Mname"]').val(data.middle_name);
         $('#studentForm input[name="user_Lname"]').val(data.last_name);
-        $('#studentForm input[name="user_address"]').val(data.address);
-        $('#studentForm input[name="contactNumber"]').val(data.contact_number);
+        $('#studentForm input[name="user_address"]').val(data.address?.trim() ? data.address.trim() : 'N/A' );
+        $('#studentForm input[name="contactNumber"]').val(data.contact_number?.trim() ? data.contact_number.trim() : 0 );
         $('#studentForm input[name="school_id"]').val(data.enrolled_stud_id);
         $('#studentForm input[name="stud_OJT_center"]').val(data.ojt_center);
-        $('#studentForm input[name="stud_ojtLocation"]').val(data.ojt_location);
+        $('#studentForm input[name="stud_ojtContact"]').val(data.ojt_contact?.trim() ? data.ojt_contact.trim() : 'N/A' );
         $('#studentForm input[name="user_id"]').val(data.user_id);
         $('#studentForm select[name="stud_Program"]').val(data.program_id);
         $('#studentForm select[name="stud_Section"]').val(data.year_sec_Id);
         $('#studentForm select[name="stud_adviser"]').val(data.adv_id);
-
         $('#studentForm input[name="user_Email"]').val(data.email);
-
         renderDeacAccLink('manageStudModalForm', 'get_studentUserList');
         $('#deactivate_acc').attr('data-user_id', data.user_id);
 
@@ -160,16 +160,11 @@ async function jsonExcelSheet(excel_file) {
     // Extract unique lists of IDs, contact numbers, and emails
     const existingStudID = student_list.map(student => student.enrolled_stud_id);
 
-    const existingCnum = [...new Set([
-        ...student_list.map(student => student.contact_number),
-        ...adv_listData.map(advisor => advisor.contact_number)
-    ])];
-    console.log(existingCnum);
+
     const existingEmail = [...new Set([
         ...student_list.map(student => student.email),
         ...adv_listData.map(advisor => advisor.email)
     ])];
-    console.log(existingEmail);
 
     // Process file on load
     fileReader.onload = (event) => {
@@ -180,18 +175,12 @@ async function jsonExcelSheet(excel_file) {
         let excelErrorNote = '';
 
         const unqStud_id = new Set();
-        const unqCnum = new Set();
         const unqAccEmail = new Set();
 
         // Validate rows
         jsonData.forEach(row => {
-            const requiredKeys = [
-                'Student No', 'First name', 'Middle name', 'Last name',
-                'Contact No', 'Address', 'Sex', 'OJT Center',
-                'OJT Location', 'Acc Email'
-            ];
+            const requiredKeys = ['Student No', 'Name', 'Sex', 'Acc Email'];
 
-            // Check for required keys
             for (const key of requiredKeys) {
                 if (!row.hasOwnProperty(key)) {
                     excelErrorNote = `No '${key}' column found.`;
@@ -200,31 +189,47 @@ async function jsonExcelSheet(excel_file) {
             }
 
             const studNo = row['Student No'];
-            const studCnum = row['Contact No'];
             const studEmail = row['Acc Email'];
+            const name = row['Name'];
+            const sex = row['Sex'];
+
+            if (!name || !/^([A-Za-z.\s]+,\s[A-Za-z.\s]+(?:,\s(?:[A-Za-z.\s]+|[A-Za-z]\.))?)$/.test(name)) {
+                excelErrorNote = `Invalid Name format in row: "${name}". 
+                Name must be "Lastname, FirstName, Middlename"
+                 or "Lastname, FirstName, M." 
+                 or "Lastname, FirstName" with valid dot placement.`;
+                return;
+            }
+
+            const nameParts = name.split(',').map(part => part.trim());
+            if (nameParts.length < 2 || nameParts.length > 3) {
+                excelErrorNote = `Invalid Name format in row: "${name}". Ensure correct separation with commas.`;
+                return;
+            }
 
 
-            // Check for duplicates within the Excel file
+            if (!sex || !/^(Male|Female)$/i.test(sex)) {
+                excelErrorNote = `Invalid Sex value in row: "${sex}". Only "Male" or "Female" are allowed.`;
+                return;
+            }
+            if (!studEmail || !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(studEmail)) {
+                excelErrorNote = `Invalid Acc Email format in row: "${studEmail}". Please provide a valid email address.`;
+                return;
+            }
+
+
             if (unqStud_id.has(studNo)) {
                 excelErrorNote = `Student No: ${studNo} is duplicate.`;
                 return;
             }
-            if (unqCnum.has(studCnum)) {
-                excelErrorNote = `Contact No: ${studCnum} is duplicate.`;
-                return;
-            }
+
             if (unqAccEmail.has(studEmail)) {
                 excelErrorNote = `Acc Email: ${studEmail} is duplicate.`;
                 return;
             }
 
-            // Check for duplicates with existing data
             if (existingStudID.includes(studNo)) {
                 excelErrorNote = `StudNo ${studNo} already exists in the system.`;
-                return;
-            }
-            if (existingCnum.map(String).includes(String(studCnum))) {
-                excelErrorNote = `Contact No: ${studCnum} already exists in the system.`;
                 return;
             }
 
@@ -233,13 +238,10 @@ async function jsonExcelSheet(excel_file) {
                 return;
             }
 
-            // Add unique values to sets
             unqStud_id.add(studNo);
-            unqCnum.add(studCnum);
             unqAccEmail.add(studEmail);
         });
 
-        // Output the results based on validation
         if (!excelErrorNote) {
             $('#excelStudData').val(JSON.stringify(jsonData));
             $('#excelErrorNote').empty();
@@ -271,6 +273,7 @@ function resetStudentEditForm(){
     $('#stud_Submit').html('Submit');
     $('#deaccSectionModal').empty()
     $('#deactSectionLink').empty();
+    $('#progCourse').html(`<option value="" selected disabled>Select OJT adviser</option>`);
 
     $('#stud_xlsSection').html(`<option value="" selected disabled>Select OJT adviser</option>`);
     $('#stud_xlsProgram').html(`<option value="" selected disabled>Select OJT adviser</option>`);
@@ -285,41 +288,78 @@ function resetStudentEditForm(){
                                     </div>`)
 }
 
-async function loadStudentprogSecDropdown(adv_id) {
+async function loalAdvHandle_prog(adv_id) {
     const  adv_list = await $.ajax({
         url: '../ajax.php?action=getAdvisers',
         method: 'GET',
         dataType: 'json'
     });
 
-
     let prog_yearSec = adv_list.data.reduce((acc, adviser) => {
-        let { user_id, program_code, program_id, year, section, year_sec_Id } = adviser;
+        let { user_id, program_code, program_id } = adviser;
         if (!acc[user_id]) {
             acc[user_id] = {
                 adviser_id: user_id,
                 program: program_code,
                 program_id: program_id,
-                yr_sec: []
             };
         }
-        acc[user_id].yr_sec.push({ year, section, year_sec_Id });
         return acc;
     }, {});
 
     let program_option = ``;
-    let yr_sec_option = ``;
+
 
     if (prog_yearSec[adv_id]) {
         program_option += `<option value="${prog_yearSec[adv_id].program_id !== null ? prog_yearSec[adv_id].program_id : 'N/A'}" selected>
 ${prog_yearSec[adv_id].program_id !== null ? prog_yearSec[adv_id].program : 'N/A'}</option>`;
-        yr_sec_option = prog_yearSec[adv_id].yr_sec.map(yearsec =>
-            `<option value="${yearsec.year_sec_Id !== null ? yearsec.year_sec_Id : 'N/A'}">
-${yearsec.year_sec_Id !== null ? yearsec.year + yearsec.section : 'N/A'}</option>`
-        ).join('');
+
     }
+
+
+
     $('#stud_Program').html(program_option);
+
     $('#stud_xlsProgram').html(program_option);
-    $('#stud_Section').html(yr_sec_option);
-    $('#stud_xlsSection').html(yr_sec_option);
+
+
+
+    loadAvailableProgCourse($('#stud_Program').val())
+
+
+}
+
+async function loadAvailableProgCourse(prog_id){
+    let { data: courses } = await $.ajax({
+        url: '../ajax.php?action=AvailableCourse&programID=' + encodeURIComponent(prog_id),
+        method: 'GET',
+        dataType: 'json'
+    });
+    let coursesOption = ''
+    if (courses.length > 0){
+        courses.forEach(course => {
+            coursesOption += `<option
+             value="${course.course_code_id}" selected>${course.course_code}</option>`
+        })
+    }
+    $('#progCourse').html(coursesOption);
+    $('#prog_course').html(coursesOption);
+    loadAvailableYearSec($('#progCourse').val())
+}
+async function loadAvailableYearSec(course_id){
+    let { data: yearSecs } = await $.ajax({
+        url: '../ajax.php?action=AvailableyrSec&Course_Id=' + encodeURIComponent(course_id),
+        method: 'GET',
+        dataType: 'json'
+    });
+    let yearSecOption = ''
+    if (yearSecs.length > 0){
+        yearSecs.forEach(yrSec => {
+            yearSecOption += `<option
+             value="${yrSec.year_sec_Id}" selected>${yrSec.year}${yrSec.section}</option>`
+        })
+    }
+
+  $('#stud_xlsSection').html(yearSecOption);
+  $('#stud_yrSection').html(yearSecOption);
 }

@@ -24,6 +24,7 @@ document.getElementById('ManageAcadYearForm').addEventListener('submit', functio
                 closeModalForm('ManageAcadYear')
                 displayAcadYears();
                 manageAcadYearReset()
+                CurracadYearsOption();
 
 
             }else {
@@ -232,7 +233,6 @@ async function yrSecCheckboxesOptions() {
     }
 }
 async function editAy(acadYearID) {
-    // Fetch year-section-course associations
     let { data: acadYearsryrSecCourses } = await $.ajax({
         url: '../ajax.php?action=avaialbleyrSecCourse&acadYearID=' + encodeURIComponent(acadYearID),
         method: 'GET',
@@ -384,13 +384,16 @@ ${displayedSem[acadYear.Semester]} Semester, AY ${acadYear.ayStarting}-${acadYea
 
 async function changeCurrSemAY(resetUsers){
     let ayID = $('#CurracademicYear').val();
-    console.log(ayID);
+
     let {response, message: callmessage } = await $.ajax({
         url: '../ajax.php?action=changeAcadYear&acadYearID=' + encodeURIComponent(ayID) +'&resetUser=' + resetUsers,
         method: 'GET',
         dataType: 'json'
     });
-    console.log(callmessage);
+    console.log(response );
+    if (response === 1){
+        window.location.href = 'manageAcadYear.php'
+    }
 }
 render_ProgOptions();
 CurracadYearsOption()

@@ -59,9 +59,8 @@ async function dashboard_student_NarrativeReports() {
         let paginatedList = array_narrativeList.slice(offset, offset + totalRecPerpage);
 
         paginatedList.forEach(narrative =>{
-            let years = narrative.ay_submitted.split(',');
-            let startingAC = years[0].trim();
-            let endingAC =  years[1].trim();
+            let startingAC = narrative.ayStarting
+            let endingAC =  narrative.ayEnding
             let formattedSem = {
                 First: '1st',
                 Second: '2nd',
@@ -75,10 +74,10 @@ async function dashboard_student_NarrativeReports() {
                             <span class="font-semibold text-light-inverse text-md/normal break-words">${narrative.first_name} ${narrative.last_name}</span>
                         </td>
                          <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal  break-words">${advisers[narrative.adv_id].name}</span>
+                            <span class="font-semibold text-light-inverse text-md/normal  break-words">${advisers[narrative.ojt_adv_id].name}</span>
                         </td>
                         <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">${formattedSem[narrative.sem_submitted]}</span>
+                            <span class="font-semibold text-light-inverse text-md/normal break-words">${formattedSem[narrative.Semester]}</span>
                         </td>
                          <td class="p-3 text-start min-w-32">
                             <span class="font-semibold text-light-inverse text-md/normal break-words">${startingAC} - ${endingAC}</span>

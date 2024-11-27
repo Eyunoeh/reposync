@@ -8,7 +8,7 @@ include '../DatabaseConn/databaseConn.php';
 ?>
 <div class="px-9 pt-2 flex justify-end items-stretch flex-wrap gap-5 pb-0 bg-transparent">
     <!--    <button class="btn btn-neutral btn-sm bg-slate-500 border-none text-slate-100 " >Export accounts</button>-->
-    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalForm'); resetStudentEditForm()">New Student form</button>
+<!--    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalForm'); resetStudentEditForm()">New Student form</button>-->
     <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalFormxls');resetStudentEditForm()">Import excel <i class="fa-solid fa-download"></i></button>
 </div>
 
@@ -159,7 +159,7 @@ include '../DatabaseConn/databaseConn.php';
                                 </div>
                             </label>
                         </div>
-                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
+                        <div class="flex justify-start gap-2 flex-wrap sm:flex-nowrap">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
@@ -170,7 +170,7 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Adviser</span>
                                 </div>
-                                <select id="stud_adviser" onchange="loadStudentprogSecDropdown(this.value)" name="stud_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                <select id="stud_adviser" onchange="loalAdvHandle_prog(this.value)" name="stud_adviser" class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select</option>
                                     <?php
                                     $adv_option_query = "SELECT ui.*, acc.*
@@ -195,6 +195,10 @@ include '../DatabaseConn/databaseConn.php';
                                 </select>
                             </label>
 
+
+                        </div>
+                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Program</span>
@@ -205,17 +209,29 @@ include '../DatabaseConn/databaseConn.php';
                                 </select>
 
                             </label>
-                        </div>
-                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
+                                    <span class="label-text text-slate-700">Program</span>
+                                </div>
+                                <select name="progCourse" id="prog_course"  class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select</option>
+
+                                </select>
+
+                            </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Year & Section</span>
                                 </div>
-                                <select id="stud_Section"   name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
+                                <select id="stud_yrSection"   name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select</option>
 
                                 </select>
                             </label>
+
+                        </div>
+                        <div class="flex justify-start gap-2 flex-wrap sm:flex-nowrap">
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT center</span>
@@ -288,12 +304,12 @@ include '../DatabaseConn/databaseConn.php';
             <form id="studentFormxls"  enctype="multipart/form-data">
                 <div class="flex flex-col gap-8 mb-2 overflow-auto">
                     <div class="flex flex-col gap-5">
-                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
+                        <div class="flex justify-start gap-2 flex-wrap sm:flex-nowrap">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT Adviser</span>
                                 </div>
-                                <select id="stud_adviser" onchange="loadStudentprogSecDropdown(this.value)" name="stud_adviser" class="select select-bordered w-full bg-slate-100 " required>
+                                <select id="stud_adviser" onchange="loalAdvHandle_prog(this.value)" name="stud_adviser" class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select</option>
                                     <?php
                                     $adv_option_query = "SELECT ui.*, acc.*
@@ -319,11 +335,14 @@ include '../DatabaseConn/databaseConn.php';
                                 </select>
                             </label>
 
+                        </div>
+                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
+
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Program</span>
                                 </div>
-                                <select name="stud_Program" id="stud_xlsProgram"  class="select select-bordered w-full bg-slate-100 " required>
+                                <select name="stud_Program" onchange="loadAvailableProgCourse(this.value) " id="stud_xlsProgram"  class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select</option>
 
                                 </select>
@@ -331,10 +350,22 @@ include '../DatabaseConn/databaseConn.php';
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
+                                    <span class="label-text text-slate-700">Course</span>
+                                </div>
+                                <select name="progCourse" onchange="loadAvailableYearSec(this.value) "
+                                        id="progCourse"  class="select select-bordered w-full bg-slate-100 " required>
+                                    <option value="" selected disabled>Select program</option>
+
+                                </select>
+
+                            </label>
+
+                            <label class="form-control w-full max-w-xs">
+                                <div class="label">
                                     <span class="label-text text-slate-700">Year & Section</span>
                                 </div>
                                 <select id="stud_xlsSection"   name="stud_Section" class="select select-bordered w-full bg-slate-100 " required>
-                                    <option value="" selected disabled>Select</option>
+                                    <option value="" selected disabled>Select course</option>
 
                                 </select>
                             </label>

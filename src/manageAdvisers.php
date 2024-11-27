@@ -106,17 +106,18 @@ include '../DatabaseConn/databaseConn.php';
                                 </div>
                             </label>
                         </div>
+
+                        <hr class="m-2">
+
+                        <h1>Account email
+                            <div class="tooltip tooltip-right ml-2 z-10 cursor-pointer" data-tip="System will notify the user about the account through email">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </div>
+                        </h1>
+
                         <div id="adv_formSecPage" class="flex flex-col gap-2 justify-center h-full " >
                             <div class="flex justify-start gap-2">
                                 <label class="form-control w-full max-w-xs">
-                                    <div class="label">
-                                        <span class="label-text text-slate-700">Account email
-                                        <div class="tooltip tooltip-right ml-2 z-10 cursor-pointer" data-tip="System will notify the user about the account through email">
-                                            <i class="fa-solid fa-circle-info"></i>
-                                        </div>
-                                        </span>
-
-                                    </div>
                                     <input name="user_Email" type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                                 </label>
                             </div>
@@ -125,58 +126,38 @@ include '../DatabaseConn/databaseConn.php';
                         <hr class="m-2">
 
                         <h1>Handle Advisory</h1>
-
-
-                        <div class="flex justify-start gap-2">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Program</span>
-                                </div>
-                                <select required name="assignedProg" id="assignedProg"  class=" select-sm bg-slate-100 select-bordered
+                        <div id="" class="flex flex-col gap-2 justify-center h-full " >
+                            <div class="flex justify-start gap-2">
+                                <label class="form-control w-full max-w-xs">
+                                    <div class="label">
+                                        <span class="label-text text-slate-700">Program</span>
+                                    </div>
+                                    <select required name="assignedProg" id="assignedProg"  class="  bg-slate-100 select-bordered
                                  select w-full max-w-xs" >
-                                    <?php
-                                    $sql = "SELECT * FROM  program";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $res = $stmt->get_result();
-                                    while ($row = $res->fetch_assoc()){
-                                        echo '<option value="'.$row['program_id'].'">'.$row['program_code'].'</option>
+                                        <?php
+                                        $sql = "SELECT DISTINCT  p.* FROM tbl_courseavailability tca
+                                JOIN tbl_course_code cc on cc.course_code_id = tca.course_code_id
+                                JOIN program p ON p.program_id = cc.program_id
+                                JOIN tbl_aysem aysem ON aysem.id = tca.ay_sem_id
+                                
+                                WHERE  aysem.Curray_sem = 1;";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->execute();
+                                        $res = $stmt->get_result();
+                                        while ($row = $res->fetch_assoc()){
+                                            echo '<option value="'.$row['program_id'].'">'.$row['program_code'].'</option>
                                                ';
 
-                                    }
+                                        }
 
-                                    ?>
+                                        ?>
 
-                                </select>
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Year and Section</span>
-                                </div>
-                                <select required name="assignedYearSec" id="assignedYearSec" class="select-sm  bg-slate-100 select-bordered
-                                 select w-full max-w-xs" >
-                                    <?php
-                                    $sql = "SELECT * FROM  section";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $res = $stmt->get_result();
-                                    while ($row = $res->fetch_assoc()){
-                                        echo '<option value="'.$row['year_sec_Id'].'">'.$row['year'].$row['section'].'</option>';
-                                    }
-                                    ?>
-                                </select>
-                            </label>
-                            <div class="flex justify-center items-end flex-grow">
-                                <div>
-                                    <a class="btn  btn-md btn-neutral" onclick="addAdvisoryAssignment()">Add</a>
-                                </div>
+                                    </select>
+                                </label>
                             </div>
                         </div>
-                        <div class="pl-10 p-5" id="hndl_adv_list">
-                            <li>Empty advisory</li>
 
 
-                        </div>
 
                     </div>
                     <div id="deaccSectionModal">
@@ -190,13 +171,13 @@ include '../DatabaseConn/databaseConn.php';
 
 
                 </div>
-                <hr class="mb-5">
+                <hr class="mb-2">
                 <div id="hidden_inputs">
                     <input name="user_id" type="hidden" value="">
                     <input name="user_type" type="hidden" value="adviser">
                 </div>
-                <input type="hidden" id="assignedAdvList" name="assignedAdvList">
-
+<!--                <input type="hidden" id="assignedAdvList" name="assignedAdvList">
+-->
 
                 <div id="formAlertbox" onclick="resetAlertBox(this.id)"></div>
                 <div id="adv_formsbtBTN" >

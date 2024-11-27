@@ -702,60 +702,119 @@ if ($action == 'newUser') {
 }
 
 
-if ($action === 'ExcelImport'){
+if ($action == 'ExcelImport') {
     header('Content-Type: application/json');
-    $user_type = getPostData('user_type', 'student');
 
+
+
+
+    $user_type = getPostData('user_type', 'student');
     $excel_data = json_decode($_POST['excelStudData'], true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        echo json_encode(['response' => 0, 'message' => 'Invalid JSON data.']);
+        exit;
+    }
 
     try {
         $conn->begin_transaction();
 
-        if (json_last_error() === JSON_ERROR_NONE) {
-            foreach ($excel_data as $row) {
-                $firstName = $row['First name'];
-                $middleName = $row['Middle name'];
-                $lastName = $row['Last name'];
-                $contactNo = $row['Contact No'];
-                $address = $row['Address'];
-                $sex = strtolower($row['Sex']);
+        foreach ($excel_data as $row) {
+            // Split and sanitize Name field
+            [$lastName, $firstName, $middleName] = array_map('trim', explode(',', $row['Name']) + ['', '', '']);
+            $middleName = rtrim($middleName, '.'); // Remove trailing dot from middle name
+            $sex = strtolower(trim($row['Sex']));
 
-                $tbl_user_infoQ = 'INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number, user_type) VALUES (?, ?, ?, ?, ?, ?)';
+            // Validate `sex` field
+            if (!in_array($sex, ['male', 'female'])) {
+                throw new Exception("Invalid sex value in row for Student No: {$row['Student No']}.");
+            }
+
+            $studNo = trim($row['Student No']);
+            $adviser_id = getPostData('stud_adviser', '');
+            $prog_id = getPostData('stud_Program', '');
+            $yrSec_ID = getPostData('stud_Section', '');
+            $course_code_id = getPostData('progCourse', null);
+
+            // Generate and hash default password
+            $studuser_def_password = generatePassword($studNo);
+            $hashed_password = password_hash($studuser_def_password, PASSWORD_DEFAULT);
+            $Acc_Email = trim($row['Acc Email']);
+
+            // Check if the student already exists
+            $checkStudent = mysqlQuery(
+                "SELECT enrolled_stud_id FROM tbl_students WHERE enrolled_stud_id = ?",
+                'i',
+                [$studNo]
+            );
+
+
+            if (count($checkStudent) > 0) {
+                $reactivateStud = "
+                    UPDATE tbl_students s
+                    JOIN tbl_accounts acc ON acc.user_id = s.user_id
+                    JOIN tbl_user_info ui ON ui.user_id = s.user_id
+                    SET 
+                        ui.first_name = ?, 
+                        ui.middle_name = ?, 
+                        ui.last_name = ?, 
+                        ui.sex = ?, 
+                        s.adv_id = ?, 
+                        s.program_id = ?, 
+                        s.year_sec_Id = ?, 
+                        s.course_code_id = ?, 
+                        acc.email = ?, 
+                        acc.password = ?,
+                        acc.status = 1
+                    WHERE s.enrolled_stud_id = ?;
+                ";
+                $reactivateStudSTMT = $conn->prepare($reactivateStud);
+                $reactivateStudSTMT->bind_param(
+                    'ssssiiiissi',
+                    $firstName, $middleName, $lastName, $sex,
+                    $adviser_id, $prog_id, $yrSec_ID, $course_code_id,
+                    $Acc_Email, $hashed_password, $studNo
+                );
+                if (!$reactivateStudSTMT->execute()) {
+                    throw new Exception("Failed to update student record: " . $reactivateStudSTMT->error);
+                }
+            } else {
+                // Insert new records for student
+                $tbl_user_infoQ = "
+                    INSERT INTO tbl_user_info (first_name, middle_name, last_name, sex, user_type) 
+                    VALUES (?, ?, ?, ?, ?)";
                 $tbl_user_infoSTMT = $conn->prepare($tbl_user_infoQ);
-                $tbl_user_infoSTMT->bind_param('ssssss', $firstName, $middleName, $lastName, $address, $contactNo, $user_type);
-                $tbl_user_infoSTMT->execute();
-
+                $tbl_user_infoSTMT->bind_param('sssss', $firstName, $middleName, $lastName, $sex, $user_type);
+                if (!$tbl_user_infoSTMT->execute()) {
+                    throw new Exception("Failed to insert user info: " . $tbl_user_infoSTMT->error);
+                }
                 $stud_user_ref_id = $tbl_user_infoSTMT->insert_id;
 
-                $studNo = $row['Student No'];
-                $OJT_Center = $row['OJT Center'];
-                $OJT_loc = $row['OJT Location'];
-                $adviser_id = getPostData('stud_adviser', '');
-                $yrSec_ID = getPostData('stud_Section', '');
-                $prog_id = getPostData('stud_Program', '');
-
-
-                $tbl_studntsQ = 'INSERT INTO tbl_students (enrolled_stud_id, user_id, adv_id, 
-                          program_id, year_sec_Id, ojt_center, ojt_location) VALUES (?, ?, ?, ?, ?, ?, ?)';
-
+                $tbl_studntsQ = "
+                    INSERT INTO tbl_students (enrolled_stud_id, user_id, adv_id, program_id, year_sec_Id, course_code_id) 
+                    VALUES (?, ?, ?, ?, ?, ?)";
                 $tbl_studntsSTMT = $conn->prepare($tbl_studntsQ);
-                $tbl_studntsSTMT->bind_param('iiiiiss', $studNo,
-                    $stud_user_ref_id, $adviser_id, $prog_id,
-                    $yrSec_ID, $OJT_Center, $OJT_loc);
-                $tbl_studntsSTMT->execute();
+                $tbl_studntsSTMT->bind_param(
+                    'iiiiii',
+                    $studNo, $stud_user_ref_id, $adviser_id, $prog_id, $yrSec_ID, $course_code_id
+                );
+                if (!$tbl_studntsSTMT->execute()) {
+                    throw new Exception("Failed to insert student record: " . $tbl_studntsSTMT->error);
+                }
 
-                $Acc_Email = strtolower($row['Acc Email']);
-                $studuser_def_password = generatePassword($studNo);
-                $hashed_password = password_hash($studuser_def_password, PASSWORD_DEFAULT);
-
-                $stud_account_q = 'INSERT INTO tbl_accounts (user_id, email, password, status) VALUES (?, ?, ?, 1)';
+                $stud_account_q = "
+                    INSERT INTO tbl_accounts (user_id, email, password, status) 
+                    VALUES (?, ?, ?, 1)";
                 $account_stmt = $conn->prepare($stud_account_q);
                 $account_stmt->bind_param('iss', $stud_user_ref_id, $Acc_Email, $hashed_password);
-                $account_stmt->execute();
+                if (!$account_stmt->execute()) {
+                    throw new Exception("Failed to insert account record: " . $account_stmt->error);
+                }
+            }
 
-                // Send email notification
-                $subjectType = 'Insight Account';
-                $bodyMessage = "
+            // Send email notification
+            $subjectType = 'Insight Account';
+            $bodyMessage = "
                 <h1><b>Notification</b></h1><br><br>
                 Your email has been successfully registered!<br>
                 Use these credentials to log in:<br>
@@ -764,19 +823,24 @@ if ($action === 'ExcelImport'){
                 <b>Password:</b> $studuser_def_password<br><br>
                 <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
                 Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a>";
-                email_queuing($subjectType, $bodyMessage, $Acc_Email);
-            }
+            email_queuing($subjectType, $bodyMessage, $Acc_Email);
         }
-        // Commit the transaction if everything succeeds
-        $conn->commit();
-        echo json_encode(['response' => 1,
-            'message' => 'All student records imported and accounts created successfully.']);
 
+        // Commit the transaction
+        $conn->commit();
+        echo json_encode([
+            'response' => 1,
+            'message' => 'All student records imported and accounts created successfully.'
+        ]);
     } catch (Exception $e) {
         $conn->rollback();
-        handleError($e->getMessage());
+        echo json_encode([
+            'response' => 0,
+            'message' => 'Failed to import records: ' . $e->getMessage()
+        ]);
     }
 }
+
 
 if ($action == 'getStudentsList'){
     isset($_SESSION['log_user_type']) || exit();
@@ -931,32 +995,44 @@ WHERE tbl_user_info.user_id = ?";
 if ($action == 'getAdvisers') {
     header('Content-Type: application/json');
 
-
-    $getAdvListsql = "SELECT ui.*, prog.*, sec.* , acc.*
+    $getAdvListsql = "SELECT ui.*, acc.email, acc.status, hd_adv.*, p.*
     FROM tbl_user_info ui 
-    LEFT JOIN  tbl_advisoryhandle hndl_class ON ui.user_id = hndl_class.adv_id 
-    LEFT JOIN tbl_accounts acc ON ui.user_id = acc.user_id 
-    LEFT JOIN program prog ON hndl_class.program_id = prog.program_id 
-    LEFT JOIN section sec ON hndl_class.year_sec_Id = sec.year_sec_Id 
+    JOIN tbl_accounts acc ON ui.user_id = acc.user_id 
+    JOIN tbl_advisoryhandle hd_adv ON hd_adv.adv_id = ui.user_id 
+    JOIN program p ON p.program_id = hd_adv.program_id 
     WHERE acc.status = 1 AND ui.user_type = 2;";
-
 
     $advList = mysqlQuery($getAdvListsql, '', []);
 
-    for ($i = 0; $i < count($advList); $i++){
-        $advList[$i]['totalStud'] = getTotalAdvList($advList[$i]['user_id'],
-            $advList[$i]['program_id'], $advList[$i]['year_sec_Id']);
+    for ($i = 0; $i < count($advList); $i++) {
+        $handle_advList = mysqlQuery(
+            "SELECT 
+    sec.year_sec_Id, 
+    CONCAT(sec.year, sec.section) AS yearSec, -- Proper concatenation of columns
+    COUNT(*) AS total_students
+FROM  tbl_students s
+JOIN  section sec ON  sec.year_sec_Id = s.year_sec_Id
+JOIN tbl_accounts acc on acc.user_id = s.user_id
+WHERE 
+    s.adv_id = ? and acc.status = 1
+GROUP BY 
+    sec.year_sec_Id, sec.year, sec.section -- Include all non-aggregated columns in GROUP BY
+ORDER BY 
+    sec.year_sec_Id",
+            'i',
+            [$advList[$i]['user_id']]
+        );
+        $advList[$i]['handleAdvisory'] = $handle_advList;
     }
-
     $data = [
         'response' => 1,
         'data' => $advList
     ];
 
-
     echo json_encode($data);
     exit();
 }
+
 
 
 
@@ -1678,9 +1754,10 @@ header('Content-Type: application/json');
 
 if ($action == 'getPublishedNarrativeReport'){
     header('Content-Type: application/json');
-    $approveConvertedNarratives = "SELECT n.* , ui.*, s.*, p.* FROM narrativereports n
+    $approveConvertedNarratives = "SELECT n.* , ui.*, s.*, p.*, ay.* FROM narrativereports n
     JOIN tbl_students s on n.enrolled_stud_id = s.enrolled_stud_id
     JOIN program p on p.program_id = s.program_id
+    JOIN tbl_aysem ay on ay.id = n.ay_sem_id
     JOIN tbl_user_info ui on ui.user_id = s.user_id
     WHERE n.convertStatus = 3;";
 
@@ -2329,3 +2406,33 @@ if ($action == 'changeAcadYear') {
         handleError($e->getMessage());
     }
 }
+
+
+if ($action == 'AvailableCourse') {
+    header('Content-Type: application/json');
+
+    $programID = $_GET['programID'];
+
+    $result = mysqlQuery("SELECT DISTINCT  cc.* FROM tbl_courseavailability tca
+                                JOIN tbl_course_code cc on cc.course_code_id = tca.course_code_id
+                                JOIN program p ON p.program_id = cc.program_id
+                                JOIN tbl_aysem aysem ON aysem.id = tca.ay_sem_id
+                                
+                                WHERE  aysem.Curray_sem = 1 and p.program_id = ?; ", 'i', [$programID]);
+
+    echo json_encode(['response' => 1, 'data' => $result]);
+}
+
+if ($action == 'AvailableyrSec') {
+    header('Content-Type: application/json');
+
+    $course_Id = $_GET['Course_Id'];
+
+    $result = mysqlQuery("SELECT sec.* FROM tbl_courseavailability tca
+JOIN section sec on sec.year_sec_Id = tca.year_sec_Id
+JOIN tbl_aysem aysem ON aysem.id = tca.ay_sem_id
+WHERE  aysem.Curray_sem = 1 and tca.course_code_id = ?; ", 'i', [$course_Id]);
+
+    echo json_encode(['response' => 1, 'data' => $result]);
+}
+

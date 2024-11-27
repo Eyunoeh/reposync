@@ -1,5 +1,6 @@
 
 
+/*
 function addAdvisoryAssignment() {
     let assignAdvInput = document.getElementById("assignedAdvList");
     let assignments = assignAdvInput.value ? JSON.parse(assignAdvInput.value) : [];
@@ -76,79 +77,50 @@ function displayAssignments(assignments) {
     }
 
 }
+*/
 
 
 
 async function editAdvInfo(user_id){
-
     try {
 
-        let userInfo = await user_info(user_id);
         let adv_handle_stud = await getAdv_list();
+        if (adv_handle_stud.response === 1) {
+            let adv_list = adv_handle_stud.data;
+            if (adv_list.length > 0) {
+                for (let i = 0; i < adv_list.length; i++) {
+                    if (user_id === adv_list[i].user_id) {
+                        let user_data = adv_list[i]
+                        $('#admin_adv_Form input[name="user_Fname"]').val(user_data.first_name);
+                        $('#admin_adv_Form input[name="user_Mname"]').val(user_data.middle_name);
+                        $('#admin_adv_Form input[name="user_Lname"]').val(user_data.last_name);
+                        $('#admin_adv_Form input[name="user_address"]').val(user_data.address);
+                        $('#admin_adv_Form input[name="contactNumber"]').val(user_data.contact_number);
 
-        if (userInfo.response === 1 && adv_handle_stud.response === 1) {
-            let  user_data = userInfo.data;
-            console.log( user_data)
-            let adv_handle_stud_data = adv_handle_stud.data;
-            let assignments = [];
+                        $('#admin_adv_Form input[name="user_Email"]').val(user_data.email);
+                        $('#admin_adv_Form input[name="user_id"]').val(user_data.user_id);
+                        $('#admin_adv_Form select[name="user_type"]').val(user_data.user_type);
 
-            let hndle_advList = '';
+                        $('#admin_adv_Form select[name="assignedProg"]').val(user_data.program_id);
 
 
-            if (adv_handle_stud_data.length > 0) {
-                for (let i = 0; i < adv_handle_stud_data.length; i++) {
-                    if (user_id === adv_handle_stud_data[i].user_id) {
-                        if (adv_handle_stud_data[i].program_id && adv_handle_stud_data[i].year_sec_Id !== null){
-                            hndle_advList += `<li>${adv_handle_stud_data[i].program_code} ${adv_handle_stud_data[i].year} ${adv_handle_stud_data[i].section}</li>`;
+                        renderDeacAccLink('newAdvierDialog', 'render_AdvUsertList');
 
-                            assignments.push({
-                                program: `${adv_handle_stud_data[i].program_id}`,
-                                section: `${adv_handle_stud_data[i].year_sec_Id}`
-                            });
+                        $('#deactivate_acc').attr('data-user_id', user_data.user_id);
+
+                        $('#admin_adv_Submit').html('Save');
+
+                        if (user_data.sex === "male") {
+                            $('#admin_adv_Form input[name="user_Sex"][value="male"]').prop('checked', true);
+                        } else if (user_data.sex === "female") {
+                            $('#admin_adv_Form input[name="user_Sex"][value="female"]').prop('checked', true);
                         }
-
-
+                        console.log(user_data)
                     }
 
                 }
 
             }
-
-            $('#assignedAdvList').val(JSON.stringify(assignments));
-            displayAssignments(assignments)
-
-
-
-
-            $('#assignedAdvList').html(hndle_advList);
-
-
-
-
-
-            $('#admin_adv_Form input[name="user_Fname"]').val(user_data.first_name);
-            $('#admin_adv_Form input[name="user_Mname"]').val(user_data.middle_name);
-            $('#admin_adv_Form input[name="user_Lname"]').val(user_data.last_name);
-            $('#admin_adv_Form input[name="user_address"]').val(user_data.address);
-            $('#admin_adv_Form input[name="contactNumber"]').val(user_data.contact_number);
-
-            $('#admin_adv_Form input[name="user_Email"]').val(user_data.email);
-            $('#admin_adv_Form input[name="user_id"]').val(user_data.user_id);
-            $('#admin_adv_Form select[name="user_type"]').val(user_data.user_type);
-
-
-            renderDeacAccLink('newAdvierDialog', 'render_AdvUsertList');
-
-            $('#deactivate_acc').attr('data-user_id', user_data.user_id);
-
-            $('#admin_adv_Submit').html('Save');
-
-            if (user_data.sex === "male") {
-                $('#admin_adv_Form input[name="user_Sex"][value="male"]').prop('checked', true);
-            } else if (user_data.sex === "female") {
-                $('#admin_adv_Form input[name="user_Sex"][value="female"]').prop('checked', true);
-            }
-
 
         } else {
             console.error('Error: Unexpected response format or no data');
@@ -177,49 +149,46 @@ async function render_AdvUsertList() {
     try {
         let response = await getAdv_list();
         if (response.response === 1 && response.data.length > 0) {
-            let advisers = response.data.reduce((acc, adviser) => {
-                let { user_id, first_name, last_name, program_code,year_sec_Id, year, section, totalStud } = adviser;
-                if (!acc[user_id]) acc[user_id] =
-                    { name: `${first_name} ${last_name}`,
-                    user_id : user_id,
-                    programs: [] };
-                acc[user_id].programs.push({ program_code,year_sec_Id, year, section, totalStud });
-                return acc;
-            }, {});
+            let advisers = response.data;
 
-
-            console.log(advisers);
-
-
-
-
-
-            let table_data = Object.values(advisers).map(({ name, user_id, programs }) => `
+            // Generate table rows using map
+            let table_data = advisers.map(adviser => {
+                return `
                     <tr class="border-b border-dashed last:border-b-0 p-3 hover">
                         <td class="p-3 text-start">
-                            <span class="text-light-inverse text-md/normal">${name}</span>
+                            <span class="text-light-inverse text-md/normal">${adviser.first_name} ${adviser.last_name}</span>
                         </td>
-                        <td class="p-3 text-center">${programs.map(p => `${p.program_code !== null ? p.program_code  : 'N/A'}`).join('<hr>')}</td>
-                        <td class="p-3 text-center">${programs.map(p => `${p.year_sec_Id !== null ? p.year + p.section: 'N/A'}`).join('<hr>')}</td>
-                        <td class="p-3 text-center">${programs.map(p => `${p.totalStud}`).join('<hr>')}</td>
+                        <td class="p-3 text-center">${adviser.program_code || 'N/A'}</td>
+                    <td class="p-3 text-center">
+    ${adviser.handleAdvisory.length > 0
+                    ? adviser.handleAdvisory.map(adv => adv.yearSec ).join('<hr>') : 'N/A'}
+</td>
+<td class="p-3 text-center">
+    ${adviser.handleAdvisory.length > 0
+                    ? adviser.handleAdvisory.map(adv => adv.total_students).join('<hr>') : 'N/A'}
+</td>
+
                         <td class="p-3 text-end">
-                            <a onclick="openModalForm('newAdvierDialog');editAdvInfo(${user_id})" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                            <a onclick="openModalForm('newAdvierDialog');editAdvInfo(${adviser.user_id})" 
+                               class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                                 <i class="fa-solid fa-circle-info"></i>
                             </a>
                         </td>
-                    </tr>
-                `).join('');
+                    </tr>`;
+            }).join('');
+
 
             $('#tableadvLoader').empty();
             $('#advList').html(table_data);
+
         } else {
             $('#tableadvLoader').html('<h1>No record</h1>');
         }
     } catch (error) {
         console.error('Error:', error);
     }
-
 }
+
 
 function clearAdviserForm(){
     $('#admin_adv_Form').trigger("reset");
@@ -227,7 +196,7 @@ function clearAdviserForm(){
     $('#admin_adv_Submit').html('Submit');
     $('#deaccSectionModal').empty()
     $('#deactSectionLink').empty();
-    $('#assignedAdvList').val('');
+   // $('#assignedAdvList').val('');
     $('#hndl_adv_list').html(`<li>Empty advisory</li>`)
 }
 

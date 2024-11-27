@@ -37,10 +37,6 @@ document.addEventListener('submit', function(e) {
         }else if (submitterName === 'Save'){
             endpoint =  'updateUserInfo'
         }
-         if (e.target.querySelector('input[name="assignedAdvList"]').value === '') {
-             Alert('formAlertbox', 'Must select at least 1 handle advisory', 'warning');
-             return ;
-         }
          loader_id ='new_adv_adminLoader'
          btn = 'new_adv_adminBtn';
          modal = 'newAdvierDialog';
