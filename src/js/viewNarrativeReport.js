@@ -10,6 +10,18 @@ async function dashboard_student_NarrativeReports() {
     let Semester =  new URLSearchParams(window.location.search).get('Semester');
     let user = await user_info();
     let user_data = user.data;
+    let table_head = `
+  <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral">
+    ${user_data.user_type === 'admin' ? `
+      <th onclick="sortTable(0, 'narrativeReportsTable')" class="p-3 text-start">School ID<span class="sort-icon text-xs"></span></th>
+      <th onclick="sortTable(1, 'narrativeReportsTable')" class="p-3 text-start min-w-10">Name<span class="sort-icon text-xs"></span></th>
+      <th onclick="sortTable(2, 'narrativeReportsTable')" class="p-3 text-start min-w-10">OJT Adviser<span class="sort-icon text-xs"></span></th>
+    ` : `
+      <th onclick="sortTable(0, 'narrativeReportsTable')" class="p-3 text-start min-w-10">Name<span class="sort-icon text-xs"></span></th>
+    `}
+    <th class="p-3 text-end">Action</th>
+  </tr>`;
+    $('#narrativeListThead').html(table_head);
 
 
     const  narratives  = await $.ajax({
@@ -76,39 +88,33 @@ async function dashboard_student_NarrativeReports() {
                 Summer: 'Summer'
             };
             narrativeTblData += `
-                        <tr class="border-b border-dashed last:border-b-0 p-3">
-                        <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-sm">${narrative.enrolled_stud_id}</span>
-                        </td>
-                        <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">${narrative.first_name} ${narrative.last_name}</span>
-                        </td>
-                         <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal  break-words">${advisers[narrative.ojt_adv_id].name}</span>
-                        </td>
-                        
-
-                        <td class="p-3 text-end ">
-                        `;
-
-
-            if (user_data.user_type === 'admin') {
-                narrativeTblData += `
-                                        <div class="tooltip tooltip-warning tooltip-bottom" data-tip="Archive">
-<a onclick="openModalForm('archiveNarrativeModal'); $('#archiveNarrative').attr('data-narrative', $(this).attr('data-narrative'));" 
-   id="archive_narrative" 
-   data-narrative="${narrative.narrative_id}" 
-   class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info">
-   <i class="fa-solid fa-pen-to-square"></i>
-</a>
-                                        </div>`;
-            }
-
-
-            narrativeTblData += `      
-                            <a href="flipbook.php?view=${narrative.narrative_id}" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2"><i class="fa-regular fa-eye"></i></a>
-                        </td>
-                      </tr>`;
+  <tr class="border-b border-dashed last:border-b-0 p-3">
+    ${user_data.user_type === 'admin' ? `
+      <td class="p-3 text-start">
+        <span class="font-semibold text-light-inverse text-sm">${narrative.enrolled_stud_id}</span>
+      </td>` : ''}
+    <td class="p-3 text-start min-w-32">
+      <span class="font-semibold text-light-inverse text-md/normal break-words">${narrative.first_name} ${narrative.last_name}</span>
+    </td>
+    ${user_data.user_type === 'admin' ? `
+      <td class="p-3 text-start min-w-32">
+        <span class="font-semibold text-light-inverse text-md/normal break-words">${advisers[narrative.ojt_adv_id]?.name || 'N/A'}</span>
+      </td>` : ''}
+    <td class="p-3 text-end">
+      ${user_data.user_type === 'admin' ? `
+        <div class="tooltip tooltip-warning tooltip-bottom" data-tip="Archive">
+          <a onclick="openModalForm('archiveNarrativeModal'); $('#archiveNarrative').attr('data-narrative', $(this).attr('data-narrative'));" 
+             id="archive_narrative" 
+             data-narrative="${narrative.narrative_id}" 
+             class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </a>
+        </div>` : ''}
+      <a href="flipbook.php?view=${narrative.narrative_id}" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2">
+        <i class="fa-regular fa-eye"></i>
+      </a>
+    </td>
+  </tr>`;
 
         })
         $('#tableLoader').empty()

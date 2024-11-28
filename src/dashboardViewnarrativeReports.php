@@ -7,24 +7,7 @@ session_start();
 if (!isset($_SESSION['log_user_type'])){
     header('Location: 404.php');
 }
-include '../DatabaseConn/databaseConn.php';
 
-
-
-$getPrograms = "SELECT * FROM program";
-$getProgStmt = $conn->prepare($getPrograms);
-$getProgStmt->execute();
-$res = $getProgStmt->get_result();
-$programCodes = [];
-
-while ($row = $res->fetch_assoc()) {
-    $programCodes[] = $row['program_code'];
-}
-
-/*if (!isset($_GET['program']) || !in_array($_GET['program'], $programCodes)) {
-    header('Location: dashboard.php');
-    exit();
-}*/
 
 
 
@@ -87,19 +70,8 @@ while ($row = $res->fetch_assoc()) {
         <div class="block  px-9 overflow-auto h-[70vh] xl:h-[70vh]">
 
                 <table id="narrativeReportsTable" class="w-full my-0 border-neutral-200 text-sm" >
-                    <thead class="align-bottom z-20">
-                    <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
+                    <thead class="align-bottom z-20" id="narrativeListThead">
 
-
-                        <th onclick="sortTable(0, 'narrativeReportsTable')"  class="p-3 text-start ">School ID<span class="sort-icon text-xs"></th>
-
-                        <th onclick="sortTable(1, 'narrativeReportsTable')" class="p-3 text-start min-w-10">Name<span class="sort-icon text-xs"></th>
-                        <th onclick="sortTable(2, 'narrativeReportsTable')"  class="p-3 text-start min-w-10">OJT adviser<span class="sort-icon text-xs"></th>
-
-
-
-                        <th class="p-3 text-end ">Action</th>
-                    </tr>
                     </thead>
                     <tbody id="narrativeReportsTableBody" class="text-center text-slate-600">
 
