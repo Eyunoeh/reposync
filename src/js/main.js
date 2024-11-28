@@ -62,24 +62,20 @@ function updateActiveLink(page) {
     const sideNarrativesLink = document.getElementById('side-narrativesLink');
     const sideAnnouncement = document.getElementById('side-announcement');
     const reportLink = document.getElementById('reportLink');
-    if (narrativesLink && announcement && sideNarrativesLink && sideAnnouncement && reportLink) {
-        narrativesLink.classList.remove('text-black', 'bg-gray-300', 'rounded');
-        announcement.classList.remove('text-black', 'bg-gray-300', 'rounded');
-        sideNarrativesLink.classList.remove('bg-gray-200', 'text-black');
-        sideAnnouncement.classList.remove('bg-gray-200', 'text-black');
-        reportLink.classList.remove('text-black', 'bg-gray-300', 'rounded');
+    [narrativesLink, announcement, sideNarrativesLink, sideAnnouncement, reportLink].forEach(link => {
+        link?.classList.remove('text-black', 'bg-gray-300', 'rounded', 'bg-gray-200');
+    });
 
-
-        if (page === 'narratives') {
-            narrativesLink.classList.add('text-black', 'bg-gray-300', 'rounded');
-            sideNarrativesLink.classList.add('bg-gray-200', 'text-black');
-        } else if (page === 'announcement') {
-            announcement.classList.add('text-black', 'bg-gray-300', 'rounded');
-            sideAnnouncement.classList.add('bg-gray-200', 'text-black');
-        } else if (page === 'weeklyReports') {
-            reportLink.classList.add('text-black', 'bg-gray-300', 'rounded');
-        }
+    if (page === 'narratives') {
+        narrativesLink?.classList.add('text-black', 'bg-gray-300', 'rounded');
+        sideNarrativesLink?.classList.add('bg-gray-200', 'text-black');
+    } else if (page === 'announcement') {
+        announcement?.classList.add('text-black', 'bg-gray-300', 'rounded');
+        sideAnnouncement?.classList.add('bg-gray-200', 'text-black');
+    } else if (page === 'weeklyReports') {
+        reportLink?.classList.add('text-black', 'bg-gray-300', 'rounded');
     }
+
 }
 
 
@@ -98,6 +94,10 @@ async function linkPages() {
     switch (page) {
         case 'narratives':
             await navigate('narratives');
+            await narrativeReportsTree().then(() => {
+                treeListener();
+            });
+
             return;
         case 'announcement':
             await navigate('announcement');
@@ -259,6 +259,9 @@ const narrativesLink = document.getElementById('narrativesLink')
 narrativesLink?.addEventListener('click',  async function(event) {
     event.preventDefault();
     navigate('narratives');
+    narrativeReportsTree().then(() => {
+        treeListener();
+    });
 });
 let reportLink = document.getElementById('reportLink')
 reportLink?.addEventListener('click', async function(event) {

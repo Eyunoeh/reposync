@@ -44,6 +44,7 @@ session_start();
 
 
         <script src="js/buttons_modal.js"></script>
+        <script src="js/manageNarrativeReport.js"></script>
 
 
     <?php
