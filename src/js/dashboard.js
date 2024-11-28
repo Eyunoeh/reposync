@@ -97,7 +97,15 @@ async function dashboard_tab(id) {
     const tabActions = {
         'dashboard_narrative': {
             page: 'manageNarrativeReports.php',
-            afterNavigate: () => act_tab(tab.id)
+            afterNavigate: () => {
+                act_tab(tab.id)
+                narrativeReportsTree().then(() => {
+                    treeListener();
+                });
+
+
+
+            }
         },
         'dashboard_ReviewUploadNarrative': {
             page: 'manageUploadNarratives.php',

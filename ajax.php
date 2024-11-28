@@ -2407,6 +2407,22 @@ if ($action == 'changeAcadYear') {
     }
 }
 
+if ($action == 'acadyearPrograms'){
+    header('Content-Type: application/json');
+    $ay_id = $_GET['ay_id'];
+    $getayPrograms = "SELECT DISTINCT p.* FROM tbl_courseavailability tca
+                                JOIN tbl_course_code cc on cc.course_code_id = tca.course_code_id
+                                JOIN program p ON p.program_id = cc.program_id
+                                JOIN tbl_aysem aysem ON aysem.id = tca.ay_sem_id
+                                
+                                WHERE  aysem.id = ?;";
+    $result = mysqlQuery($getayPrograms, 'i', [$ay_id]);
+
+
+
+    echo json_encode(['response' => 1,
+        'data' => $result]);
+}
 
 if ($action == 'AvailableCourse') {
     header('Content-Type: application/json');

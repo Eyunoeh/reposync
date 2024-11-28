@@ -11,8 +11,10 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 
 <div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
     <div class="relative flex flex-col min-w-0 break-words  h-full rounded-2xl border-stone-200 bg-light/30">
-        <div class="px-9 pt-5 flex justify-center items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent ">
-            <h1 class="text-2xl font-bold">Archived List</h1>
+        <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-50 justify-center ">
+            <div class="">
+                <h1 class="font-bold text-2xl text-slate-700 font-sans">Archive list</h1>
+            </div>
         </div>
         <div class="block py-8 pt-6 px-9">
             <div class="overflow-auto h-full">

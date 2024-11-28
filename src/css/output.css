@@ -2849,6 +2849,19 @@ details.collapse summary::-webkit-details-marker {
   margin-inline-start: -1px;
 }
 
+@supports (color:color-mix(in oklab,black,black)) {
+  @media (hover:hover) {
+    .link-info:hover {
+      color: color-mix(in oklab,var(--fallback-in,oklch(var(--in)/1)) 80%,black);
+    }
+  }
+}
+
+.link-info {
+  --tw-text-opacity: 1;
+  color: var(--fallback-in,oklch(var(--in)/var(--tw-text-opacity)));
+}
+
 .link:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -4450,10 +4463,6 @@ details.collapse summary::-webkit-details-marker {
   margin: 1.25rem;
 }
 
-.m-1 {
-  margin: 0.25rem;
-}
-
 .mx-5 {
   margin-left: 1.25rem;
   margin-right: 1.25rem;
@@ -4527,6 +4536,10 @@ details.collapse summary::-webkit-details-marker {
 
 .ml-4 {
   margin-left: 1rem;
+}
+
+.ml-8 {
+  margin-left: 2rem;
 }
 
 .mr-2 {
@@ -5012,6 +5025,10 @@ details.collapse summary::-webkit-details-marker {
   resize: both;
 }
 
+.list-none {
+  list-style-type: none;
+}
+
 .appearance-none {
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -5462,10 +5479,6 @@ details.collapse summary::-webkit-details-marker {
 
 .pb-5 {
   padding-bottom: 1.25rem;
-}
-
-.pl-10 {
-  padding-left: 2.5rem;
 }
 
 .pl-2 {

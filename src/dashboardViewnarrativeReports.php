@@ -95,8 +95,6 @@ while ($row = $res->fetch_assoc()) {
 
                         <th onclick="sortTable(1, 'narrativeReportsTable')" class="p-3 text-start min-w-10">Name<span class="sort-icon text-xs"></th>
                         <th onclick="sortTable(2, 'narrativeReportsTable')"  class="p-3 text-start min-w-10">OJT adviser<span class="sort-icon text-xs"></th>
-                        <th onclick="sortTable(3, 'narrativeReportsTable')"  class="p-3 text-start min-w-10">Semester<span class="sort-icon text-xs"></th>
-                        <th onclick="sortTable(4, 'narrativeReportsTable')"  class="p-3 text-start min-w-10">Academic year<span class="sort-icon text-xs"></th>
 
 
 

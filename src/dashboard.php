@@ -195,6 +195,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 
 <script src="js/manageStudent.js"></script>
 <script src="js/manageAdviser.js"></script>
+<script src="js/manageNarrativeReport.js"></script>
 <?php if ($_SESSION['log_user_type'] === 'admin'):?>
 
 <script src="js/Admin.js"></script>

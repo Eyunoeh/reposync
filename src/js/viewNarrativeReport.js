@@ -2,13 +2,18 @@ document.addEventListener('DOMContentLoaded', function (){
     dashboard_student_NarrativeReports();
 })
 async function dashboard_student_NarrativeReports() {
+    //ayStarting=2023 & ayEnding=2024 &Semester= First & program=BSIT
+
     let program =  new URLSearchParams(window.location.search).get('program');
+    let ayStarted =  new URLSearchParams(window.location.search).get('ayStarting');
+    let ayEnded =  new URLSearchParams(window.location.search).get('ayEnding');
+    let Semester =  new URLSearchParams(window.location.search).get('Semester');
     let user = await user_info();
     let user_data = user.data;
 
 
     const  narratives  = await $.ajax({
-        url: '../ajax.php?action=getPublishedNarrativeReport&program=' + program ,
+        url: '../ajax.php?action=getPublishedNarrativeReport' ,
         method: 'GET',
         dataType: 'json'
     });
@@ -23,7 +28,6 @@ async function dashboard_student_NarrativeReports() {
         method: 'GET',
         dataType: 'json'
     });
-
     let advisers = adviserList.data.reduce((acc, adviser) => {
         let { user_id, first_name, last_name } = adviser;
         if (!acc[user_id]) {
@@ -43,7 +47,12 @@ async function dashboard_student_NarrativeReports() {
 
 
     Object.entries(narrative_listData).forEach(([key, narrative]) => {
-        if (narrative.program_code === program && narrative.file_status === 'Approved'){
+        console.log(narrative);
+        if (narrative.program_code === program &&
+            narrative.ayStarting === parseInt(ayStarted) &&
+            narrative.ayEnding === parseInt(ayEnded) &&
+            narrative.Semester === Semester &&
+            narrative.file_status === 'Approved'){
             array_narrativeList.push(narrative)
         }
 
@@ -66,7 +75,8 @@ async function dashboard_student_NarrativeReports() {
                 Second: '2nd',
                 Summer: 'Summer'
             };
-            narrativeTblData += `<tr class="border-b border-dashed last:border-b-0 p-3">
+            narrativeTblData += `
+                        <tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
                             <span class="font-semibold text-light-inverse text-sm">${narrative.enrolled_stud_id}</span>
                         </td>
@@ -76,12 +86,7 @@ async function dashboard_student_NarrativeReports() {
                          <td class="p-3 text-start min-w-32">
                             <span class="font-semibold text-light-inverse text-md/normal  break-words">${advisers[narrative.ojt_adv_id].name}</span>
                         </td>
-                        <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">${formattedSem[narrative.Semester]}</span>
-                        </td>
-                         <td class="p-3 text-start min-w-32">
-                            <span class="font-semibold text-light-inverse text-md/normal break-words">${startingAC} - ${endingAC}</span>
-                        </td>
+                        
 
                         <td class="p-3 text-end ">
                         `;
