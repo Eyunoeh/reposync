@@ -161,7 +161,9 @@ async function getProfileInfo() {
             $('#StudprofileForm input[name="user_address"]').val(data.address);
             $('#StudprofileForm input[name="contactNumber"]').val(data.contact_number);
             $('#StudprofileForm input[name="stud_OJT_center"]').val(data.ojt_center);
-            $('#StudprofileForm input[name="stud_ojtLocation"]').val(data.ojt_location);
+            $('#StudprofileForm input[name="stud_ojtContact"]').val(data.ojt_contact);
+            $('#StudprofileForm input[name="OJT_started"]').val(data.OJT_started);
+            $('#StudprofileForm input[name="OJT_ended"]').val(data.OJT_ended);
 
             // Handle sex radio buttons
             if (data.sex === "male") {
@@ -362,7 +364,6 @@ async function getSubmittedNarratives(){
    }
    else {
       narratives.forEach(narrative => {
-         let years = narrative.ayStarting
          let startingAC = narrative.ayStarting
          let endingAC =  narrative.ayEnding
 
@@ -393,11 +394,25 @@ async function getSubmittedNarratives(){
                                         `
                                        if (['Approved', 'Archived'].includes(narrative.file_status)){
 
-                                          table_data +=  `<a href="flipbook.php?view=${narrative.narrative_id}" class=" cursor-pointer text-light-inverse text-md/normal break-words">
-                                                            <i class="fa-regular fa-eye"></i></a>`
+                                          table_data +=  `
+                                    <div class="tooltip tooltip-info   tooltip-bottom" data-tip="View flipbook">
+                                      <a href="flipbook.php?view=${narrative.narrative_id}" class=" cursor-pointer text-light-inverse text-md/normal break-words">
+                                                                                               
+                                                 <i class="fa-regular fa-eye"></i></a>
+                                    </div>
+                                    `
                                        }else {
-                                          table_data += ` <a onclick="editSubmittedNarrative('${narrative.narrative_id}')" class="font-semibold cursor-pointer text-light-inverse text-md/normal break-words">
-                                                            <i class="fa-solid fa-circle-info"></i></a>`
+                                          table_data += `
+                                       <div class="tooltip tooltip-info   tooltip-bottom" data-tip="View pdf">
+                                         <a href="NarrativeReportsPDF/${narrative.narrative_file_name}" target="_blank" class=" cursor-pointer text-light-inverse text-md/normal break-words">
+                                                            <i class="fa-regular fa-eye"></i></a>
+                                       </div>
+                                                
+                                                 
+                                             <div class="tooltip tooltip-bottom" data-tip="Resubmit">
+                                               <a onclick="editSubmittedNarrative('${narrative.narrative_id}')" class="font-semibold cursor-pointer text-light-inverse text-md/normal break-words">
+                                                  <i class="fa-solid fa-circle-info"></i></a>
+                                             </div>`
                                        }
                                       table_data += `
                                        
@@ -439,11 +454,7 @@ async function editSubmittedNarrative(narrative_id){
    if (response.response === 1){
       let SubmittedNarratives = response.data;
 
-      let acadYear = SubmittedNarratives['ay_submitted'].split(',');
 
-      $('#NarrativeReportForm select[name="semester"]').val(SubmittedNarratives['sem_submitted']);
-      $('#NarrativeReportForm input[name="startYear"]').val(acadYear[0]);
-      $('#NarrativeReportForm input[name="endYear"]').val(acadYear[1]);
       $('#NarrativeReportForm input[name="NarraActType"]').val('Edit');
       $('#NarrativeReportForm input[name="narrative_id"]').val(narrative_id);
    }

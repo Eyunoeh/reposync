@@ -343,8 +343,6 @@ if ($action == 'newFinalReport'){
     }
 
 
-    $ay_Submitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']).','.sanitizeInput($_POST['endYear']) :'';
-    $sem_Submitted = getPostData('semester');
 
 
     $stud_info = mysqlQuery('SELECT s.*, ui.* 
@@ -355,18 +353,20 @@ where s.user_id = ?', 'i', [$_SESSION['log_user_id']])[0];
 
 
 
-    $ojt_adviser_UID = $stud_info['adv_id'];
+
     $school_id = $stud_info['enrolled_stud_id'];
+    $ojt_adviser_UID = $stud_info['adv_id'];
+    $semAyId = mysqlQuery("SELECT id from tbl_aysem where Curray_sem = 1", '', [])[0]['id'];
     $new_file_name =  $school_id.'_'. uniqid('', true) . ".pdf";
     $current_date_time = date('Y-m-d H:i:s');
 
     try {
         $new_final_report = "INSERT INTO narrativereports
-    (enrolled_stud_id ,  ay_submitted, sem_submitted,  narrative_file_name)
+    (enrolled_stud_id , ojt_adv_id, ay_sem_id,  narrative_file_name)
     values (?,?,?,?)";
 
         $valueTypes = "isss";
-        $params = [$school_id, $ay_Submitted,$sem_Submitted, $new_file_name ];
+        $params = [$school_id, $ojt_adviser_UID,$semAyId, $new_file_name ];
 
         $narrative_id = mysqlQuery($new_final_report,$valueTypes, $params)[1];
         handleNarrativeUpload('', $new_file_name, $file_temp);
@@ -411,12 +411,11 @@ if ($action === 'editFinalReport') {
     $school_id = $stud_info['enrolled_stud_id'];
     $narrative_id = $stud_info['narrative_id'];
 
-    $ay_Submitted = isset($_POST['startYear']) && isset($_POST['endYear']) ? sanitizeInput($_POST['startYear']) . ',' . sanitizeInput($_POST['endYear']) : '';
-    $sem_Submitted = getPostData('semester');
 
-    $update_query = 'UPDATE narrativereports SET ay_submitted = ?, sem_submitted = ?,file_status = 1, upload_date = NOW()';
-    $types = 'ss';
-    $params = [$ay_Submitted, $sem_Submitted];
+
+    $update_query = 'UPDATE narrativereports SET file_status = 1, upload_date = NOW()';
+    $types = '';
+    $params = [];
 
     if (isset($_FILES['narrativeReportPDF'])) {
         $file_name = $_FILES['narrativeReportPDF']['name'];
@@ -486,7 +485,7 @@ from narrativereports
          where user_id = ? and ay_sem_id = ?", 'ii', [$_SESSION['log_user_id'], $currAcadYear]);
 
 
-    $isStudCanSubmitNewNarrative =  count($studSemAYnarrativeequery) === 0 ? false : true;
+    $isStudCanSubmitNewNarrative =  count($studSemAYnarrativeequery) !== 0 ? false : true;
 
 
     echo json_encode(['response' => 1,
@@ -1631,7 +1630,7 @@ if ($action == 'getAdvNotes'){
     $getpendingAdvNotes= "SELECT announcement.*, tbl_user_info.*
     FROM announcement 
     JOIN tbl_user_info ON announcement.user_id = tbl_user_info.user_id
-        WHERE announcement.status = 'Pending'
+        WHERE announcement.status = 1
             AND type = 'Notes'
         ORDER BY announcement.announcementUpdated desc;";
 
@@ -1938,7 +1937,9 @@ if ($action == "get_User_info"){
        stud.enrolled_stud_id, 
        stud.adv_id,  
        stud.ojt_center, 
-       stud.ojt_contact     , 
+       stud.ojt_contact, 
+       stud.OJT_started, 
+       stud.OJT_ended, 
        p.*, ys.*
             FROM tbl_user_info ui
             INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
@@ -1965,11 +1966,15 @@ if ($action == 'profileUpdate') {
         updateBasicInfo($user_id, $_SESSION['log_user_type']);
 
         if ($_SESSION['log_user_type'] === 'student'){
-            $ojt_loc = getPostData('stud_ojtLocation');
+            $ojt_contact = getPostData('stud_ojtContact');
             $ojt_center = getPostData('stud_OJT_center');
-            $updStudInfo = "UPDATE tbl_students SET ojt_center= ?, ojt_location = ? where user_id = ?";
+            $ojt_started = getPostData('OJT_started');
+            $ojt_ended = getPostData('OJT_ended');
+            $updStudInfo = "UPDATE tbl_students SET ojt_center= ?, ojt_contact = ?, 
+                        OJT_started = ?, OJT_ended = ? where user_id = ?";
 
-            mysqlQuery($updStudInfo, 'ssi',[$ojt_center,$ojt_loc, $user_id] );
+            mysqlQuery($updStudInfo, 'ssssi',[$ojt_center,$ojt_contact,$ojt_started,
+                $ojt_ended, $user_id] );
 
         }
 

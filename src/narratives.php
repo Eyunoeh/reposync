@@ -172,31 +172,7 @@ include '../DatabaseConn/databaseConn.php';
             <div class="p-4 flex justify-center flex-col">
                 <form id="NarrativeReportForm">
                     <div class="flex flex-col gap-8">
-                        <div class="flex justify-evenly gap-2 flex-wrap sm:flex-nowrap">
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Semester</span>
-                                </div>
-                                <select required name="semester"  class="select bg-slate-100  select-bordered w-full max-w-xs" >
-                                    <option>First</option>
-                                    <option>Second</option>
-                                    <option>Summer</option>
-                                </select>
 
-                            </label>
-                            <label class="form-control w-full max-w-xs">
-                                <div class="label">
-                                    <span class="label-text text-slate-700">Academic year</span>
-                                </div>
-                                <div class="flex gap-2 items-center">
-                                    <input  type="number" required name="startYear" oninput="this.value = this.value.slice(0, 4)" class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs" placeholder="0000" />
-                                    <p class="text-center items-center font-bold text-lg"> - </p>
-                                    <input  type="number" required name="endYear" oninput="this.value = this.value.slice(0, 4)" class="disabled:text-black bg-slate-100 input input-bordered w-full max-w-xs" placeholder="0000" />
-                                </div>
-
-                            </label>
-
-                        </div>
                         <div class="flex justify-center items-center flex-wrap sm:flex-nowrap">
                             <input name="narrativeReportPDF" required type="file"
                                    accept="application/pdf"

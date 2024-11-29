@@ -215,10 +215,15 @@ async function getStudSubmittedNarratives(){
                 <td class="p-3 text-start">
                     <span class=" text-light-inverse text-md/normal">${capitalizeFirstLetter(narratives.convertStatus)}</span>
                 </td>
-                <td class="p-3 text-end">
+                <td class="p-3 text-end">`
+            if (narrativeStatuses[narratives.file_status][1] === 'Approved') {
+                subNarrativesTbl += `
                     <a href="flipbook.php?view=${narratives.narrative_id}" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2">
                         <i class="fa-regular fa-eye"></i>
-                    </a>
+                    </a>`
+            }
+
+            subNarrativesTbl += `
                     <a onclick="openModalForm('EditNarrativeReq'); upd_SubmittedNarrative(this.getAttribute('data-narrative'))" data-narrative="${key}" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                         <i class="fa-solid fa-circle-info"></i>
                     </a>

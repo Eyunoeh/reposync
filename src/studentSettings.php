@@ -94,9 +94,25 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                 <div>
                     <label class="form-control w-full">
                         <div class="label">
-                            <span class="label-text text-slate-700">OJT Location</span>
+                            <span class="label-text text-slate-700">OJT Contact</span>
                         </div>
-                        <input type="text" name="stud_ojtLocation" placeholder="Type here"    class=" bg-slate-100 input input-bordered w-full " />
+                        <input type="text" name="stud_ojtContact" placeholder="Type here"    class=" bg-slate-100 input input-bordered w-full " />
+                    </label>
+                </div>
+                <div>
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text text-slate-700">OJT started</span>
+                        </div>
+                        <input type="date" name="OJT_started" placeholder="Type here"    class=" bg-slate-100 input input-bordered w-full " />
+                    </label>
+                </div>
+                <div>
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text text-slate-700">OJT ended</span>
+                        </div>
+                        <input type="date" name="OJT_ended" placeholder="Type here"    class=" bg-slate-100 input input-bordered w-full " />
                     </label>
                 </div>
             </div>

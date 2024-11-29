@@ -61,25 +61,25 @@ async function getAdvNotes() {
             noteReqs.forEach(noteReq =>{
                 NotesReq += `<tr class="border-b border-dashed last:border-b-0 p-3">
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${noteReq['first_name']} ${noteReq['last_name']}</span>
+                            <span class=" text-light-inverse text-md/normal">${noteReq['first_name']} ${noteReq['last_name']}</span>
                         </td>
 
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${noteReq['title']}</span>
+                            <span class=" text-light-inverse text-md/normal">${noteReq['title']}</span>
                         </td>
                         
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${noteReq['status']}</span>
+                            <span class=" text-light-inverse text-md/normal">${noteReq['status']}</span>
                         </td>
                          <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${formatDateTime(noteReq['announcementPosted'])}</span>
+                            <span class=" text-light-inverse text-md/normal">${formatDateTime(noteReq['announcementPosted'])}</span>
                         </td>
                         <td class="p-3 text-start">
-                            <span class="font-semibold text-light-inverse text-md/normal">${formatDateTime(noteReq['announcementUpdated'])}</span>
+                            <span class=" text-light-inverse text-md/normal">${formatDateTime(noteReq['announcementUpdated'])}</span>
                         </td>
                         <td class="p-3 text-end">
                             <a href="#" class="hover:cursor-pointer mb-1
-                            font-semibold transition-colors duration-200
+                             transition-colors duration-200
                             ease-in-out text-lg/normal text-secondary-inverse
                             hover:text-accent"><i class="fa-solid fa-circle-info" onclick="openModalForm('AdviserNoteReq');getAdvReqNotesInfo(${noteReq['announcement_id']})"></i></a>
                         </td>
@@ -539,14 +539,14 @@ function getAdvReqNotesInfo(id){
 
                 }
                 if (data.status === 'Active' || data.status === 'Declined'){
-                    $('#NoteStatReqOptions'). html('<option value="Active">Approve</option>\n' +
-                        '                            <option value="Declined">Declined</option>');
+                    $('#NoteStatReqOptions'). html('<option value="Active">Active</option>\n' +
+                        '                            <option value="Declined">Inactive</option>');
                     $('#emailCheckbox').html('<input type="checkbox"  name="emailNotif" value="Notify" checked class="checkbox checkbox-xs mr-2 checkbox-info" />\n' +
                         '                        <span class="label-text text-sm"> Notify OJT adviser through Email?</span>');
                 }else{
                     $('#NoteStatReqOptions'). html('<option value="Pending">Pending</option>' +
-                        '                            <option value="Active">Approve</option>\n' +
-                        '                            <option value="Declined">Declined</option>');
+                        '                            <option value="Active">Active</option>\n' +
+                        '                            <option value="Declined">Inactive</option>');
                 }
                 $('#AdvNoteReqForm select[name="NoteStat"]').val(data.status);
                 $('#AdvNoteReqForm input[name="announcementID"]').val(data.announcement_id);

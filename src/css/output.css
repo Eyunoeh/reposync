@@ -4345,6 +4345,11 @@ details.collapse summary::-webkit-details-marker {
   bottom: auto;
 }
 
+.tooltip-info {
+  --tooltip-color: var(--fallback-in,oklch(var(--in)/1));
+  --tooltip-text-color: var(--fallback-inc,oklch(var(--inc)/1));
+}
+
 .tooltip-warning {
   --tooltip-color: var(--fallback-wa,oklch(var(--wa)/1));
   --tooltip-text-color: var(--fallback-wac,oklch(var(--wac)/1));

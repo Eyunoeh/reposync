@@ -42,6 +42,8 @@ async function get_studentUserList() {
                     student_yrSec: student['year'] + student['section'],
                     ojt_center: student['ojt_center'],
                     ojt_contact: student['ojt_contact'],
+                    ojt_started: student['OJT_started'] !== null ? formatDate(student['OJT_started']): 'N/A',
+                    ojt_ended: student['OJT_ended'] !== null ? formatDate(student['OJT_ended']): 'N/A',
                     adviser_id: student['adv_id'],
                     adviser_name: student['adv_id'] !== null ? adv_info['first_name']+ ' ' + adv_info['last_name'] : 'N/A'
                 });
@@ -73,7 +75,14 @@ async function get_studentUserList() {
                 <td class="p-3 text-start text-wrap mx-w-32">
                     <span class=" text-light-inverse text-md/normal">${student['student_yrSec']}</span>
                 </td> 
-                ${isAdviser ? '' : `
+                ${isAdviser ? `
+                <td class="p-3 text-start text-wrap mx-w-32">
+                    <span class=" text-light-inverse text-md/normal">${(student['ojt_started'])}</span>
+                </td>
+                <td class="p-3 text-start text-wrap mx-w-32">
+                    <span class=" text-light-inverse text-md/normal">${student['ojt_ended']}</span>
+                </td>
+                ` : `
                 <td class="p-3 text-start text-wrap mx-w-32">
                     <span class=" text-light-inverse text-md/normal ">${student['ojt_center']}</span>
                 </td>

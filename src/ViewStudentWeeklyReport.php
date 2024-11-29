@@ -170,7 +170,7 @@ if (!$student_user_id){
 
                             <?php
                             $week = 1;
-                            $sql = "SELECT file_id, upload_status, weeklyFileReport, readStatus
+                            $sql = "SELECT *
         FROM weeklyReport
         WHERE stud_user_id = ?
         ORDER BY upload_date desc";
@@ -180,12 +180,7 @@ if (!$student_user_id){
                             $result = $stmt->get_result();
 
                             while ($row = $result->fetch_assoc()) {
-                                $filename = $row['weeklyFileReport'];
 
-                                preg_match('/week_([0-9]+)\.pdf/', $filename, $matches);
-                                $week_number = isset($matches[1]) ? (int)$matches[1] : '';
-
-                                $formatted_week = ($week_number !== '') ? "Week " . $week_number : '';
                                 $status = $row['upload_status'];
 
                                 switch ($status) {
@@ -212,29 +207,29 @@ if (!$student_user_id){
                                 echo ' <tr class="border-b border-dashed last:border-b-0">
 
                                 <td class="p-3 pr-0 ">
-                                    <span class="font-semibold text-light-inverse text-md/normal">' . $formatted_week . '</span>
+                                    <span class=" text-light-inverse text-md/normal">' . $row['week'] . '</span>
                                 </td>
 
                                 <td class="p-3 pr-0 ">
-                                    <span class="'.$status_color.'  font-semibold text-light-inverse text-md/normal">' . $formattedStatus . '</span>
+                                    <span class="'.$status_color.'   text-light-inverse text-md/normal">' . $formattedStatus . '</span>
                                 </td>
                                 <td class="p-3 pr-0 " >
                                     <div class="indicator hover:cursor-pointer" data-report-comment-id="'.$row['file_id'].'" onclick="openModalForm(\'comments\');getComments(this.getAttribute(\'data-report-comment-id\'))">
                                         <span class="indicator-item badge badge-neutral"   id="journal_comment_2">'.countFileComments( $row['file_id']).'</span>
-                                        <a class="font-semibold text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
+                                        <a class=" text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
                                     </div>
                                 </td>
                                    <td class="p-3 pr-0 ">
-                                    <span class=" font-semibold text-light-inverse text-md/normal">' . $row['readStatus'] . '</span>
+                                    <span class=" text-light-inverse text-md/normal">' . $row['readStatus'] . '</span>
                                 </td>
                                 <td class="p-3 pr-0  ">
                                     <div  class="tooltip tooltip-bottom"  data-tip="View">
-                          <a onclick="updateReadStat(\'StudentWeeklyReports/' . $row['weeklyFileReport'] . '\', this.getAttribute(\'data-report_id\'))" data-report_id="' . $row['file_id'] . '" target="_blank" class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                          <a onclick="updateReadStat(\'StudentWeeklyReports/' . $row['weeklyFileReport'] . '\', this.getAttribute(\'data-report_id\'))" data-report_id="' . $row['file_id'] . '" target="_blank" class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer  transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                             <i class="fa-regular fa-eye"></i>
                         </a>
                                     </div>
                                     <div class="tooltip tooltip-bottom" data-tip="Update remark">
-                                        <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer font-semibold
+                                        <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer 
                                 transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  data-report_id="' . $row['file_id'] . '" onclick="openModalForm(\'remarkForm\');updateWeeklyReportStat(this.getAttribute(\'data-report_id\'))"><i class="fa-solid fa-pen-to-square"></i></a>
                                     </div>
                                 </td>
