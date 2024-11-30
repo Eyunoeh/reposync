@@ -5,7 +5,7 @@ session_start();
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-    <link rel="icon" type="image/x-icon" href="assets/insightlogo1.png">
+    <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

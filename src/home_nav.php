@@ -5,11 +5,11 @@
         <div class="flex items-center justify-between border-accent gap-1">
             <div class="avatar">
                 <div class="w-14 rounded">
-                    <img class="object-scale-down" src="assets/insightlogo2.png" />
+                    <img class="object-scale-down" src="assets/cvsulogo-removebg-preview.png" />
                 </div>
             </div>
-            <div class="text-center font-bold  text-3xl text-[#f4ce14]">
-                <h1><a href="#" id="homeLink" >Insight</a></h1>
+            <div class="text-center font-bold  text-3xl text-white font-sans">
+                <h1><a href="#" id="homeLink" >INSIGHT</a></h1>
             </div>
         </div>
 

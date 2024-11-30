@@ -4559,6 +4559,10 @@ details.collapse summary::-webkit-details-marker {
   margin-top: 2.5rem;
 }
 
+.mt-12 {
+  margin-top: 3rem;
+}
+
 .mt-16 {
   margin-top: 4rem;
 }
@@ -4633,6 +4637,10 @@ details.collapse summary::-webkit-details-marker {
 
 .h-10 {
   height: 2.5rem;
+}
+
+.h-12 {
+  height: 3rem;
 }
 
 .h-16 {
@@ -4803,6 +4811,10 @@ details.collapse summary::-webkit-details-marker {
   width: 2.5rem;
 }
 
+.w-12 {
+  width: 3rem;
+}
+
 .w-14 {
   width: 3.5rem;
 }
@@ -4933,6 +4945,10 @@ details.collapse summary::-webkit-details-marker {
 
 .max-w-32 {
   max-width: 8rem;
+}
+
+.max-w-5xl {
+  max-width: 64rem;
 }
 
 .max-w-6xl {
@@ -5282,6 +5298,11 @@ details.collapse summary::-webkit-details-marker {
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+
 .bg-gray-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
@@ -5300,6 +5321,11 @@ details.collapse summary::-webkit-details-marker {
 .bg-green-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(21 128 61 / var(--tw-bg-opacity));
+}
+
+.bg-indigo-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(99 102 241 / var(--tw-bg-opacity));
 }
 
 .bg-info {
@@ -5344,6 +5370,16 @@ details.collapse summary::-webkit-details-marker {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-green-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
+}
+
+.bg-green-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 197 94 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-10 {
@@ -5446,6 +5482,11 @@ details.collapse summary::-webkit-details-marker {
 .px-9 {
   padding-left: 2.25rem;
   padding-right: 2.25rem;
+}
+
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 .py-2 {
@@ -5554,6 +5595,10 @@ details.collapse summary::-webkit-details-marker {
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+.font-serif {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -5589,6 +5634,11 @@ details.collapse summary::-webkit-details-marker {
   font-size: 4rem;
 }
 
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -5616,6 +5666,10 @@ details.collapse summary::-webkit-details-marker {
 
 .font-bold {
   font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
 }
 
 .font-light {
@@ -5671,9 +5725,19 @@ details.collapse summary::-webkit-details-marker {
   color: rgb(229 231 235 / var(--tw-text-opacity));
 }
 
+.text-gray-500 {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
 .text-gray-700 {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
 .text-info {
@@ -6167,6 +6231,11 @@ body{
     padding: 1.25rem;
   }
 
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
   .sm\:text-left {
     text-align: left;
   }
@@ -6217,6 +6286,10 @@ body{
     height: 37rem;
   }
 
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .lg\:justify-between {
     justify-content: space-between;
   }
@@ -6228,6 +6301,11 @@ body{
   .lg\:border-black {
     --tw-border-opacity: 1;
     border-color: rgb(0 0 0 / var(--tw-border-opacity));
+  }
+
+  .lg\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .lg\:text-xl {

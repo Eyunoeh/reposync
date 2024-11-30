@@ -14,7 +14,7 @@ if (isset($_SESSION['log_user_type'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="assets/insightlogo1.png">
+    <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
     <link rel="stylesheet" href="css/output.css">
     <link rel="stylesheet" href="css/scrollbar.css">
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
