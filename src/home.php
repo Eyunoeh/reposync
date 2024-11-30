@@ -10,7 +10,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     <article class="">
         <h2 class="max-w-lg ">
             <span class="text-4xl text-center sm:text-5xl
-         sm:text-left  text-[#f4ce14] font-bold">Insight</span>
+         sm:text-left  font-extrabold">Insight</span>
             <span class="text-3xl text-center font-sans
         text-slate-900"><br>An online on-the-job training narrative report
             management  system for Cavite  State University - Carmona Campus </span>
