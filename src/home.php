@@ -8,20 +8,21 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 <div id="hero" class="max-w-7xl py-16 mx-auto px-4 sm:px-6 lg:px-8">
     
     <article class="">
-        <h2 class="max-w-lg ">
+        <h2 class=" ">
             <span class="text-4xl text-center sm:text-5xl
          sm:text-left  font-extrabold">Insight</span>
-            <span class="text-3xl text-center font-sans
-        text-slate-900"><br>An online on-the-job training narrative report
-            management  system for Cavite  State University - Carmona Campus </span>
+
         </h2>
+        <h2 class="ml-8 max-w-lg text-3xl text-start font-sans
+        text-slate-900 "> An online on-the-job training narrative report
+            management  system for Cavite  State University - Carmona Campus </h2>
     </article>
 </div>
-
+<hr class="border shadow-lg max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <section class="bg-gray-100 py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl font-extrabold text-gray-900">Mission, Vision, and Core Values</h2>
-        <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-12 ml-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             <div>
                 <div class="flex items-center justify-center h-12 w-12 rounded-md bg-green-500 text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

@@ -1968,8 +1968,8 @@ if ($action == 'profileUpdate') {
         if ($_SESSION['log_user_type'] === 'student'){
             $ojt_contact = getPostData('stud_ojtContact');
             $ojt_center = getPostData('stud_OJT_center');
-            $ojt_started = getPostData('OJT_started');
-            $ojt_ended = getPostData('OJT_ended');
+            $ojt_started = getPostData('OJT_started', null);
+            $ojt_ended = getPostData('OJT_ended', null);
             $updStudInfo = "UPDATE tbl_students SET ojt_center= ?, ojt_contact = ?, 
                         OJT_started = ?, OJT_ended = ? where user_id = ?";
 

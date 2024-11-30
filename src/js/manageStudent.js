@@ -42,8 +42,8 @@ async function get_studentUserList() {
                     student_yrSec: student['year'] + student['section'],
                     ojt_center: student['ojt_center'],
                     ojt_contact: student['ojt_contact'],
-                    ojt_started: student['OJT_started'] !== null ? formatDate(student['OJT_started']): 'N/A',
-                    ojt_ended: student['OJT_ended'] !== null ? formatDate(student['OJT_ended']): 'N/A',
+                    ojt_started: student['OJT_started'] !== null ? formatDateTime(student['OJT_started'], false): 'N/A',
+                    ojt_ended: student['OJT_ended'] !== null ? formatDateTime(student['OJT_ended'], false): 'N/A',
                     adviser_id: student['adv_id'],
                     adviser_name: student['adv_id'] !== null ? adv_info['first_name']+ ' ' + adv_info['last_name'] : 'N/A'
                 });
