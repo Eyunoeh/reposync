@@ -6,25 +6,9 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 session_start();
 ?>
 <?php if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] === 'admin'):?>
-<div class=" flex flex-col">
-    <div class="flex gap-5 ml-3 my-3 flex-wrap justify-evenly sm:justify-start items-center text-slate-700">
+<div class=" flex flex-col justify-center items-center flex-grow  max-h-screen">
+    <canvas id="myChart" class="w-2/3 h-2/3"></canvas>
 
-        <div onclick="dashboard_tab(this.id); " id="adviserNotesReq" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
-            <h1 class="font-bold font-sans text-[4rem]" id="pendingNoteCount">
-                <span class="loading loading-spinner loading-lg"></span>
-            </h1>
-            <h1 class="font-sans  text-sm">Pending Adviser Notes</h1>
-        </div>
-        <!--<div onclick="dashboard_tab(this.id)" id="dshbuploadNarrativeReq" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
-            <h1 class="font-bold font-sans text-[4rem]" id="pendingUploadNarrativeReport">
-                <span class="loading loading-spinner loading-lg"></span>
-            </h1>
-            <h1 class="font-sans ">Pending Narrative Report Upload</h1>
-        </div>-->
-    </div>
-    <div class="flex-grow">
-        <canvas id="myChart" class="w-2/3 h-2/3"></canvas>
-    </div>
 </div>
 <?php elseif ( (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] === 'adviser')):?>
 
@@ -50,12 +34,12 @@ session_start();
             <h1 class="font-sans  text-sm" >Unread Weekly Reports</h1>
         </div>
 
-        <div onclick="dashboard_tab(this.id); " id="adviserNotesCard" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
+        <!--<div onclick="dashboard_tab(this.id); " id="adviserNotesCard" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
             <h1 class="font-bold font-sans text-[4rem]" id="pendingNoteCount">
                 <span class="loading loading-spinner loading-lg"></span>
             </h1>
             <h1 class="font-sans  text-sm">Pending Notes</h1>
-        </div>
+        </div>-->
         <div onclick="dashboard_tab(this.id);" id="stud_list" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
             <h1 class="font-bold font-sans text-[4rem]" id="totalAdvisory">
                 <span class="loading loading-spinner loading-lg"></span>

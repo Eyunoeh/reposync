@@ -74,7 +74,7 @@ if (isset($_POST['Update_remark']) and $_POST['Update_remark'] === 'Update'){
                 email_queuing($subjectType, $messageBody, $recipient);
                 $secret_key = 'TheSecretKey#02';
                 echo 1;
-                header("Location: ViewStudentWeeklyReport.php?checkStudent=".urlencode(encrypt_data($_POST['stud_id'], $secret_key)));
+                header("Location: StudentWeeklyReport.php?checkStudent=".urlencode(encrypt_data($_POST['stud_id'], $secret_key)));
                 exit();
 
             }
@@ -106,14 +106,15 @@ function countFileComments($file_id){
 
 
 if (!isset($_GET['checkStudent'])) {
-    header("Location: 404.php");
+    header("Location: dashboard.php");
     exit();
 }
 $secret_key = 'TheSecretKey#02';
 $student_user_id = decrypt_data($_GET['checkStudent'], $secret_key);
 
+
 if (!$student_user_id){
-    header("Location: 404.php");
+    header("Location: dashboard.php");
 }
 
 ?>
@@ -132,7 +133,7 @@ if (!$student_user_id){
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
     <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
 
-    <title>View Student Reports</title>
+    <title>Student Weekly Reports</title>
 </head>
 <body  class="min-h-screen bg-slate-200">
 <main class="max-w-6xl mx-auto grid place-items-center text-gray-700 overflow-auto" id="mainContent">
@@ -224,7 +225,7 @@ if (!$student_user_id){
                                 </td>
                                 <td class="p-3 pr-0  ">
                                     <div  class="tooltip tooltip-bottom"  data-tip="View">
-                          <a onclick="updateReadStat(\'StudentWeeklyReports/' . $row['weeklyFileReport'] . '\', this.getAttribute(\'data-report_id\'))" data-report_id="' . $row['file_id'] . '" target="_blank" class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer  transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                          <a href="StudentWeeklyReportViewer.php?checkStudent='.urlencode(encrypt_data($student_user_id, $secret_key)).'&weeklyJournal='. urlencode(encrypt_data($row['file_id'],$secret_key)) .'" class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer  transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                             <i class="fa-regular fa-eye"></i>
                         </a>
                                     </div>
@@ -254,7 +255,7 @@ if (!$student_user_id){
             <h3 class="font-bold text-lg text-center text-black  top-0  p-5" id="week">Week 1</h3>
         </div>
         <div class="p-3">
-            <form id="WeeklyReportForm" method="post" action="ViewStudentWeeklyReport.php" class="flex flex-col justify-center gap-12 items-center">
+            <form id="WeeklyReportForm" method="post" action="StudentWeeklyReport.php" class="flex flex-col justify-center gap-12 items-center">
                 <label class="form-control w-full max-w-xs">
                     <div class="label">
                         <span class="label-text">Update remark</span>

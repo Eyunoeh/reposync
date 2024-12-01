@@ -41,7 +41,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 
 
 
-                <h1 class="font-bold text-[#f4ce14] text-[15px] ml-3">Insight</h1>
+                <h1 class=" text-white font-extrabold text-[15px] ml-3">Insight</h1>
                 <i class="bi bi-x cursor-pointer ml-28 lg:hidden" onclick="//openSidebar()"></i>
             </div>
             <div class="text-start">

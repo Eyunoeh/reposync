@@ -14,6 +14,7 @@ async function get_dashBoardnotes() {
             $('#advNotePageLoader').html(`
                 <p class=" text-xl text-black font-sans">No notes posted</p>
             `);
+            $('#AdviserNotes').empty();
         }else {
 
             let notes = response.data;
@@ -126,7 +127,7 @@ async function renderWeeklyJournaltbl(){
             }
 
             weeklyJournalTbl += `
-            <a href="ViewStudentWeeklyReport.php?checkStudent=${rowData['user_id']}">
+            <a href="StudentWeeklyReport.php?checkStudent=${rowData['user_id']}">
                 <div class="relative hover:cursor-pointer h-auto mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                     <i class="fa-solid fa-arrow-right"></i>
                 </div>

@@ -2,12 +2,12 @@
 
 async function loadDashboardJS(){
     try {
-        let pendingNoteCount = await getTotalPendingNotes();
+        //let pendingNoteCount = await getTotalPendingNotes();
         let unreadWeeklyreports = await getTotalUnreadStudentWeeklyReport();
         let pendingUploadNarrative =  await getTotalPendingUploadNarrative();
         let declinedUploadNarrative =  await  getTotalDeclinedUploadNarrative();
         let totalAdv = await totalUser('','');
-        $('#pendingNoteCount').html(pendingNoteCount)
+        //$('#pendingNoteCount').html(pendingNoteCount)
         $('#UnreadStudWeeklyReport').html(unreadWeeklyreports)
         $('#pendingUploadNarrativeReport').html(pendingUploadNarrative);
         $('#declinedUploadNarrativeReport').html(declinedUploadNarrative);

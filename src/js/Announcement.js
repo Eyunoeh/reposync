@@ -1,15 +1,13 @@
-function deleteAnnoucement(id, modal_id){
+function deleteAnnoucement(id, modal_id) {
     $.ajax({
-        url: '../ajax.php?action=deleteAnnouncement&data_id=' + encodeURIComponent(id),
+        url: `../ajax.php?action=deleteAnnouncement&data_id=${encodeURIComponent(id)}`,
         method: 'GET',
         dataType: 'json',
         success: function(response) {
-            if (response){
-                if (parseInt(response) === 1){
-                    get_dashBoardnotes ();
-                    getActivitiesAndSched()
-                    closeModalForm(modal_id);
-                }
+            if (response && parseInt(response) === 1) {
+                typeof get_dashBoardnotes === 'function' && get_dashBoardnotes();
+                typeof getActivitiesAndSched === 'function' && getActivitiesAndSched();
+                typeof closeModalForm === 'function' && closeModalForm(modal_id);
             }
             console.log(response);
         },
