@@ -1,6 +1,7 @@
-let commentBody = document.getElementById('comment_body');
+
 
 function scrollToBottom() {
+    let commentBody = document.getElementById('comment_body');
     commentBody.scrollTop = commentBody.scrollHeight;
 }
 document.getElementById('chatBox').addEventListener('submit', function (e){
@@ -26,65 +27,8 @@ document.getElementById('chatBox').addEventListener('submit', function (e){
 });
 
 
-function viewImage(srcPath){
-    let path = 'comments_img/'+ srcPath;
-    $('#viewImage').attr('src', path);
-}
-function getComments(file_id){
-    $.ajax({
-        url: '../ajax.php?action=getCommentst&file_id=' + file_id,
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-            if (response){
-                $('#comment_body').html(response);
-                $('#chatBox input[name="file_id"]').val(file_id);
-                scrollToBottom();
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
 
-function updateWeeklyReportStat(weeklyReport_id){
-    $.ajax({
-        url: '../ajax.php?action=updateWeeklyreportStat&file_id=' + weeklyReport_id,
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            if (data){
-                $('#week').text(data.weeklyFileReport);
-                $('#WeeklyReportForm select[name="report_Stat"]').val(data.upload_status);
-                $('#WeeklyReportForm input[name="file_id"]').val(data.file_id);
 
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
 
-function updateReadStat(fileLocation, file_id) {
-    $.ajax({
-        url: '../ajax.php?action=updateReadStat&file_id=' + file_id,
-        method: 'GET',
-        dataType: 'html',
-        success: function(data) {
-            if (parseInt(data) === 1) {
-                var a = document.createElement('a');
-                a.href = fileLocation;
-                a.target = '_blank';
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-        }
-    });
-}
+
+

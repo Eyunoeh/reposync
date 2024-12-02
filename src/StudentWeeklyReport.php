@@ -18,71 +18,7 @@ if (!isset($_SESSION['log_user_type']) || ($_SESSION['log_user_type'] !== 'admin
 
 
 
-if (isset($_POST['Update_remark']) and $_POST['Update_remark'] === 'Update'){
-    $remark = $_POST['report_Stat'];
 
-    if (in_array($remark, ['pending', 'revision', 'approved'])) {
-
-
-        $file_id = $_POST['file_id'];
-        $sql = "UPDATE weeklyreport set upload_status = ? where file_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('si', $remark,$file_id);
-        if ($stmt->execute()){
-            $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
-                            VALUES (?, 'status update', CURRENT_TIMESTAMP)";
-            $stmt = $conn->prepare($insert_activity_log);
-            $stmt->bind_param("i", $file_id, );
-            $stmt->execute();
-
-
-            if ($stmt->affected_rows > 0) {
-
-                $getWeeklyReport = "SELECT * FROM weeklyreport where file_id = ?";
-                $getWeeklyReportStmt = $conn->prepare($getWeeklyReport);
-                $getWeeklyReportStmt->bind_param('i', $file_id);
-                $getWeeklyReportStmt->execute();
-                $result = $getWeeklyReportStmt->get_result();
-                $weeklyReportsRow = $result->fetch_assoc();
-                $status = $weeklyReportsRow['upload_status'];
-
-                switch ($status) {
-                    case 'pending':
-                        $formattedStatus = 'Pending';
-                        $status_color = 'text-warning';
-                        break;
-                    case 'revision':
-                        $formattedStatus = 'With Revision';
-                        $status_color = 'text-info';
-
-                        break;
-                    case 'approved':
-                        $formattedStatus = 'Approved';
-                        $status_color = 'text-success';
-                        break;
-                    default:
-                        $formattedStatus = 'Unknown';
-                        break;
-                }
-
-                $subjectType = "Weekly Report Update";
-                $messageBody = "Your submission of weekly report on  <b>".
-                    date("M d, Y g:i A", strtotime($weeklyReportsRow['upload_date'])).
-                    '</b> has been reviewed and updated its status to <b>'.$formattedStatus.'</b>';
-                $recipient =  getRecipient($_POST['stud_id']);
-
-                email_queuing($subjectType, $messageBody, $recipient);
-                $secret_key = 'TheSecretKey#02';
-                echo 1;
-                header("Location: StudentWeeklyReport.php?checkStudent=".urlencode(encrypt_data($_POST['stud_id'], $secret_key)));
-                exit();
-
-            }
-        }
-
-    }
-
-}
 
 
 
@@ -160,9 +96,9 @@ if (!$student_user_id){
                         <table class="w-full my-0  border-neutral-200 " id="stud_weekly_report" >
                             <thead class="align-bottom  z-20">
                             <tr class="font-semibold text-[0.95rem] sticky top-0  z-20 text-secondary-dark bg-slate-200 rounded">
+                                <th class="p-3  ">#</th>
                                 <th class="p-3  ">Week</th>
                                 <th class="p-3 ">Remark</th>
-                                <th class="p-3 ">View Comments</th>
                                 <th class="p-3 ">Read Status</th>
                                 <th class="p-3 ">Action</th>
                             </tr>
@@ -171,10 +107,7 @@ if (!$student_user_id){
 
                             <?php
                             $week = 1;
-                            $sql = "SELECT *
-        FROM weeklyReport
-        WHERE stud_user_id = ?
-        ORDER BY upload_date desc";
+                            $sql = "SELECT *  FROM weeklyReport WHERE stud_user_id = ? ORDER BY upload_date asc";
                             $stmt = $conn->prepare($sql);
                             $stmt->bind_param("i", $student_user_id); // Assuming $stud_user_id contains the user ID
                             $stmt->execute();
@@ -208,18 +141,16 @@ if (!$student_user_id){
                                 echo ' <tr class="border-b border-dashed last:border-b-0">
 
                                 <td class="p-3 pr-0 ">
+                                    <span class=" text-light-inverse text-md/normal">' . $week . '</span>
+                                </td>
+                                <td class="p-3 pr-0 ">
                                     <span class=" text-light-inverse text-md/normal">' . $row['week'] . '</span>
                                 </td>
 
                                 <td class="p-3 pr-0 ">
                                     <span class="'.$status_color.'   text-light-inverse text-md/normal">' . $formattedStatus . '</span>
                                 </td>
-                                <td class="p-3 pr-0 " >
-                                    <div class="indicator hover:cursor-pointer" data-report-comment-id="'.$row['file_id'].'" onclick="openModalForm(\'comments\');getComments(this.getAttribute(\'data-report-comment-id\'))">
-                                        <span class="indicator-item badge badge-neutral"   id="journal_comment_2">'.countFileComments( $row['file_id']).'</span>
-                                        <a class=" text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
-                                    </div>
-                                </td>
+                       
                                    <td class="p-3 pr-0 ">
                                     <span class=" text-light-inverse text-md/normal">' . $row['readStatus'] . '</span>
                                 </td>
@@ -229,12 +160,9 @@ if (!$student_user_id){
                             <i class="fa-regular fa-eye"></i>
                         </a>
                                     </div>
-                                    <div class="tooltip tooltip-bottom" data-tip="Update remark">
-                                        <a class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer 
-                                transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info"  data-report_id="' . $row['file_id'] . '" onclick="openModalForm(\'remarkForm\');updateWeeklyReportStat(this.getAttribute(\'data-report_id\'))"><i class="fa-solid fa-pen-to-square"></i></a>
-                                    </div>
-                                </td>
+                       
                             </tr>';
+                                $week++;
 
                             }
                             ?>

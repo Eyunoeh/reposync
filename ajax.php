@@ -249,46 +249,18 @@ if ($action == 'getWeeklyReports'){
 
 }
 
-if ($action == 'updateWeeklyreportStat'){
-    $file_id = $_GET['file_id'] ?? '';
-    if ($file_id !== ''){
-        $sql = "SELECT * FROM weeklyreport where file_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('i', $file_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-
-            $filename = $row['weeklyFileReport'];
-
-            preg_match('/week_([0-9]+)\.pdf/', $filename, $matches);
-            $week_number = isset($matches[1]) ? (int)$matches[1] : '';
-
-            $row['weeklyFileReport'] = 'Week '.$week_number;
-
-            header('Content-Type: application/json');
-            echo json_encode($row);
-        }else{
-            echo 'No result';
-        }
-    }
-}
 
 
 
 
 if ($action == 'updateReadStat'){
+    header('Content-Type: application/json');
     $file_id = $_GET['file_id'];
-    $updateReadStat = "UPDATE weeklyreport SET readStatus = 'Read' where file_id = ?";
-    $updateReadStatSTMT = $conn->prepare($updateReadStat);
-    $updateReadStatSTMT->bind_param('i', $file_id);
 
-    if ($updateReadStatSTMT->execute()){
-        echo 1;
-    }else{
-        echo $updateReadStatSTMT->error;
-    }
+    $updateReadStat = "UPDATE weeklyreport SET readStatus = 'Read' where file_id = ?";
+    $updateQuery  = mysqlQuery($updateReadStat,'i', [$file_id]);
+    echo json_encode(['response' => 1]);
+
 }
 
 
@@ -1062,137 +1034,67 @@ if ($action == 'getAdvInfoJson') {
 }
 
 if ($action == "getCommentst") {
+    header('Content-Type: application/json');
     $user_id = $_SESSION['log_user_id'];
     $file_id = $_GET['file_id'];
     $sql = "SELECT tbl_revision.*, tbl_user_info.* 
 FROM tbl_revision JOIN tbl_user_info ON tbl_user_info.user_id = tbl_revision.user_id
 WHERE tbl_revision.file_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $file_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-   if ($result->num_rows > 0){
-       while ($row = $result->fetch_assoc()) {
-           if ($row['user_id'] == $user_id) {
-               echo '<div class="grid place-items-center">
-                        <div class="flex justify-end items-end w-full mb-2">
-                            <div>
-                                <p class="py-4 px-2 bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-end ' . (isset($row['comment']) && $row['comment'] !== '' ? '' : 'hidden') . '" id="ref_id">' . $row['comment'] . '</p>
-                            </div>
-                            <div class="flex flex-col justify-center items-center">
-                                <div class="avatar">
-                                    <div class="w-10 rounded-full">
-                                     <img src="userProfile/'. ($row['profile_img_file'] != 'N/A' ? $row['profile_img_file'] : 'prof.jpg' ).'" />                               
-                                     </div>
-                                    </div>
-                             <span class="text-xs">You</span>
-                            </div>
-                        </div>';
 
-               $comment_id = $row['comment_id'];
-               $attachments_sql = "SELECT * FROM revision_attachment WHERE comment_id = ?";
-               $attachments_stmt = $conn->prepare($attachments_sql);
-               $attachments_stmt->bind_param("i", $comment_id);
-               $attachments_stmt->execute();
-               $attachments_result = $attachments_stmt->get_result();
+    $result = mysqlQuery($sql, 'i', [$file_id]);
 
-               if ($attachments_result->num_rows > 0) {
-                   echo '<div class="flex flex-wrap gap-1 w-full justify-end mb-2">';
-                   while ($attachment_row = $attachments_result->fetch_assoc()) {
-                       // Display attachment images here
-                       echo '<img src="comments_img/' . $attachment_row['attach_img_file_name'] . ' " onclick="openModalForm(\'img_modal\');viewImage(\''.$attachment_row['attach_img_file_name'].'\')" class="hover:cursor-pointer h-[5rem] min-h-[3rem] max-h-[5rem] object-contain" alt="attachment">';
-                   }
-                   echo '</div>';
-               }
+    if (count($result) > 0) {
+        for ($i = 0; $i < count($result); $i++) { // Start from 0 and loop through all rows
+            $comment_id = $result[$i]['comment_id'];
 
-               echo '</div>';
-           } else {
-               // Render the comment to the left
-               echo '<div class="grid place-items-center">
-                    <div class="flex justify-start items-start w-full mb-2">
-                        <div class="flex flex-col justify-center items-center">
-                           <div class="avatar">
-                                <div class="w-10 rounded-full">
-                                    <img src="userProfile/'. ($row['profile_img_file'] != 'N/A' ? $row['profile_img_file'] : 'prof.jpg' ).'" />
-                                </div>
-                            </div>
-                            <span class="text-xs">'.$row['first_name'].'</span>
-                        </div>
-                        <div>
-                                <p class="py-4 px-2 bg-slate-100 border rounded-lg min-w-8 text-sm text-slate-700 text-start ' . (isset($row['comment']) && $row['comment'] !== '' ? '' : 'hidden') . '" id="ref_id">' . $row['comment'] . '</p>
-                       </div>
-                        
-                    </div>';
+            $attachments_sql = "SELECT * FROM revision_attachment WHERE comment_id = ?";
+            $attachments_stmt = $conn->prepare($attachments_sql);
+            $attachments_stmt->bind_param("i", $comment_id);
+            $attachments_stmt->execute();
 
-               $comment_id = $row['comment_id'];
-               $attachments_sql = "SELECT * FROM revision_attachment WHERE comment_id = ?";
-               $attachments_stmt = $conn->prepare($attachments_sql);
-               $attachments_stmt->bind_param("i", $comment_id);
-               $attachments_stmt->execute();
-               $attachments_result = $attachments_stmt->get_result();
-
-               if ($attachments_result->num_rows > 0) {
-                   echo '<div class="flex flex-wrap gap-1  w-full justify-start mb-2">';
-                   while ($attachment_row = $attachments_result->fetch_assoc()) {
-                       echo '<img  src="comments_img/' . $attachment_row['attach_img_file_name'] . '" onclick="openModalForm(\'img_modal\');viewImage(\''.$attachment_row['attach_img_file_name'].'\')" class="hover:cursor-pointer min-h-[3rem] max-h-[5rem] h-[5rem] object-contain" alt="attachment">';
-                   }
-                   echo '</div>';
-               }
-               echo '</div>';
-           }
-           $comment_date_time = $row['comment_date'];
-           $timestamp = strtotime($comment_date_time);
-           $formatted_time = date("g:ia", $timestamp); // Format time as '2:30pm'
-           $formatted_date = date("n/j/Y", $timestamp); // Format date as '4/16/2024'
-           echo '<hr>';
-           echo '<div class="w-full grid place-items-center">
-        <p class="text-[10px] text-slate-400 text-center">' . $formatted_time . '</p>
-        <p class="text-[10px] text-slate-400 text-center">' . $formatted_date . '</p>
-      </div>';
-
-       }
-   }else{
-       echo '<p></p>';
-   }
+            // Fetch all attachments as an associative array
+            $attachments_result = $attachments_stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $result[$i]['attachment'] = $attachments_result; // Assign to 'attachment' key
+        }
+    }
+    echo json_encode(['response' => 1, 'data' => $result]);
+    exit();
 
 }
 if ($action == 'giveComment') {
+    header('Content-Type: application/json');
 
-    $revision_comment = $_POST['revision_comment'];
+    $revision_comment = $_POST['message'];
     $file_id = $_POST['file_id'];
     $user_id = $_SESSION['log_user_id'];
     $comment_date = date('Y-m-d H:i:s');
+
+    if ((empty($_FILES['attachment']['name'][0]) && empty($revision_comment))){
+       handleError('Empty commment');
+    }
     $insert_revision_sql = "INSERT INTO tbl_revision (file_id,user_id ,comment, comment_date) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($insert_revision_sql);
-    $stmt->bind_param("iiss", $file_id,$user_id , $revision_comment, $comment_date);
-    $stmt->execute();
-    $stmt->close();
-    $comment_id = $conn->insert_id;
 
-    if (!empty($_FILES['final_report_file']['name'][0])) {
+    $comment_id = mysqlQuery($insert_revision_sql, 'iiss', [$file_id,$user_id , $revision_comment, $comment_date])[1];
 
+    if (!empty($_FILES['attachment']['name'][0])) {
 
-        foreach ($_FILES['final_report_file']['tmp_name'] as $key => $tmp_name) {
-            $temp_file = $_FILES['final_report_file']['tmp_name'][$key];
-            $file_type = $_FILES['final_report_file']['type'][$key];
-            $file_name = uniqid() . '.' . pathinfo($_FILES['final_report_file']['name'][$key], PATHINFO_EXTENSION);
+        foreach ($_FILES['attachment']['tmp_name'] as $key => $tmp_name) {
+            $temp_file = $_FILES['attachment']['tmp_name'][$key];
+            $file_type = $_FILES['attachment']['type'][$key];
+            $file_name = uniqid() . '.' . pathinfo($_FILES['attachment']['name'][$key], PATHINFO_EXTENSION);
             $destination_directory = 'src/comments_img/';
             $destination_file = $destination_directory . $file_name;
             if (move_uploaded_file($temp_file, $destination_file)) {
                 $insert_attachment_sql = "INSERT INTO revision_attachment (comment_id, attach_img_file_name) VALUES (?, ?)";
-                $stmt = $conn->prepare($insert_attachment_sql);
-                $stmt->bind_param("is", $comment_id, $file_name);
-                $stmt->execute();
-                $stmt->close();
+
+                mysqlQuery($insert_attachment_sql, 'is', [$comment_id, $file_name]);
             } else {
-                echo "Error moving file to destination directory.";
+                handleError( "Error moving file to destination directory.");
             }
         }
-
-        echo 1; // Success response
-    } else {
-        echo 2; // No file uploaded
     }
+
+    echo json_encode(['response' => 1, 'message' => 'Comment has been sent']);
 }
 
 
@@ -2456,4 +2358,74 @@ WHERE  aysem.Curray_sem = 1 and tca.course_code_id = ?; ", 'i', [$course_Id]);
 
     echo json_encode(['response' => 1, 'data' => $result]);
 }
+
+
+if ($action === 'updateJournalRemark') {
+    header('Content-Type: application/json');
+
+    $remark = $_GET['journalStatus'];
+    $remarks = [
+        'pending' => 1,
+        'approved' => 2,
+        'revision' => 3
+    ];
+    $file_id = $_GET['file_id'];
+    if (!$file_id) {
+        echo handleError("Invalid file ID.");
+
+    }
+
+    if (!array_key_exists($remark,$remarks)) {
+        echo handleError('Invalid status');
+    }
+
+
+    $sql = "UPDATE weeklyreport SET upload_status = ? WHERE file_id = ?";
+    if (!mysqlQuery($sql, 'si', [$remarks[$remark], $file_id])) {
+        echo handleError("Failed to update status.");
+
+    }
+
+    $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
+                                VALUES (?, 'status update', CURRENT_TIMESTAMP)";
+    mysqlQuery($insert_activity_log, 'i', [$file_id]);
+
+    $status = $remarks[$remark];
+
+    switch ($status) {
+        case 1:
+            $formattedStatus = 'Pending';
+            $status_color = 'text-warning';
+            break;
+        case 2:
+            $formattedStatus = 'Approved';
+            $status_color = 'text-success';
+            break;
+        case 3:
+            $formattedStatus = 'With Revision';
+            $status_color = 'text-info';
+            break;
+
+        default:
+            $formattedStatus = 'Unknown';
+            $status_color = 'text-danger';
+            break;
+    }
+    $getWeeklyReport = "SELECT * FROM weeklyreport WHERE file_id = ?";
+    $weeklyReportsRow = mysqlQuery($getWeeklyReport, 'i', [$file_id])[0];
+
+    $subjectType = "Weekly Report Update";
+    $messageBody = "Your submission of weekly report on <b>" .
+        date("M d, Y g:i A", strtotime($weeklyReportsRow['upload_date'])) .
+        "</b> has been reviewed and updated its status to <b>$formattedStatus</b>";
+    $recipient = getRecipient($weeklyReportsRow['stud_user_id']);
+
+    email_queuing($subjectType, $messageBody, $recipient);
+
+    echo json_encode(['response' => 1, 'message' => "Student journal status has been updated successfully."]);
+
+
+
+}
+
 
