@@ -247,32 +247,7 @@ async function getUploadLogs() {
    }
 }
 
-async function getComments(file_id) {
-   try {
-      const response = await $.ajax({
-         url: '../ajax.php?action=getCommentst&file_id=' + file_id,
-         method: 'GET',
-         dataType: 'html'
-      });
 
-      if (response) {
-         $('#comment_body').html(response);
-         $('#chatBox input[name="file_id"]').val(file_id);
-         scrollToBottom();
-      }
-   } catch (error) {
-      console.error('Error fetching data:', error);
-   }
-}
-
-function viewImage(srcPath){
-   let path = 'comments_img/'+ srcPath;
-   $('#viewImage').attr('src', path);
-}
-function scrollToBottom() {
-   let commentBody = document.getElementById('comment_body');
-   commentBody.scrollTop = commentBody.scrollHeight;
-}
 
 
 
@@ -309,7 +284,10 @@ async function get_WeeklyReports() {
                                     <span class="${journalStatuses[journal.upload_status][0]} text-light-inverse text-md/normal">${journalStatuses[journal.upload_status][1]}</span>
                                 </td>
                                 <td class="p-3 pr-0 " >
-                                    <div class="indicator hover:cursor-pointer" data-report-comment-id="'${journal.file_id}" onclick="openModalForm('comments'); getComments(this.getAttribute('data-report-comment-id'))">
+                                    <div class="indicator hover:cursor-pointer" data-report-comment-id="${journal.file_id}" 
+                                    onclick="openModalForm('comments'); getComments(this.getAttribute('data-report-comment-id'));
+                                    $('#sendCommentbtn').attr('file_id', ${journal.file_id})
+">
                                         <span class="indicator-item badge badge-neutral"  data-journal-comment-id="3" id="journal_comment_2">${journal.totalJournalComment}</span>
                                         <a class=" text-light-inverse text-md/normal"><i class="fa-regular fa-comment"></i></a>
                                     </div>

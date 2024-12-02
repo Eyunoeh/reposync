@@ -108,6 +108,7 @@ async function giveComment(file_id) {
 
 
 async function getComments(file_id) {
+    commentBodyScrollBottom()
     const { data: userData } = await user_info();
     const { data: commentsData } = await $.ajax({
         url: `../ajax.php?action=getCommentst&file_id=${file_id}`,

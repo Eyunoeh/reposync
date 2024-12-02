@@ -55,6 +55,7 @@ session_start();
 
 
         <script src="js/student.js"></script>
+        <script src="js/weeklyJournalcomment.js"></script>
 
 
             <?php

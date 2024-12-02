@@ -81,8 +81,8 @@ $user_id = $_SESSION['log_user_id'];
 
             <h3 class="font-bold text-lg text-center text-black  top-0  p-5">Report Comments</h3>
         </div>
-        <div class="overflow-auto card-body" id="comment_body">
-            <div class="grid place-items-center">
+        <div id="comment_body" class="card bg-slate-50 hover:cursor-pointer transition-all w-full flex-grow h-screen  card-body flex flex-col text-slate-700 overflow-auto">
+            <!--<div class="grid place-items-center">
                 <div class="flex justify-end items-end">
                     <p class="py-4 px-2 border bg-slate-200 rounded-lg min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lor
                         em ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea
@@ -96,8 +96,10 @@ $user_id = $_SESSION['log_user_id'];
                 </div>
 
                 <div class="flex flex-wrap gap-1 w-full justify-end">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="assets/prof.jpg" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="assets/prof.jpg" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="assets/prof.jpg" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="assets/prof.jpg" alt="report comment">
 
                 </div>
             </div>
@@ -107,7 +109,7 @@ $user_id = $_SESSION['log_user_id'];
                 <p class="text-[10px] text-slate-400 text-center">4/16/2024</p>
             </div>
             <div class="grid place-items-center">
-                <div class="flex justify-start items-start">
+                <div class="flex justify-end items-end">
                     <div class="avatar">
                         <div class="w-10 rounded-full">
                             <img src="assets/prof.jpg" />
@@ -116,11 +118,7 @@ $user_id = $_SESSION['log_user_id'];
                     <p class="py-4 px-2 border bg-slate-200 rounded-lg min-w-8 text-sm text-slate-700 text-justify" id="ref_id">Lor
                         em ipsum dolor sit amet, consectetur adipisicing elit. Consectetur ea
                         ex facilis magni modi, molestias perferendis placeat quam quasi, qui
-                        ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!aaaa</p>
-                </div>
-                <div class="flex flex-wrap gap-1 w-full justify-start mb-2">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
+                        ratione recusandae sapiente totam. Aut consectetur dolore ex quod temporibus!</p>
 
                 </div>
             </div>
@@ -142,8 +140,10 @@ $user_id = $_SESSION['log_user_id'];
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-1">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
-                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="comments_img/sample.jpg" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="assets/open-book-clipart-07.png" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="assets/open-book-clipart-07.png" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="assets/open-book-clipart-07.png" alt="report comment">
+                    <img onclick="openModalForm('img_modal')" class=" hover:cursor-pointer min-h-[3rem] max-h-[5rem] object-contain" src="assets/open-book-clipart-07.png" alt="report comment">
 
                 </div>
             </div>
@@ -151,26 +151,37 @@ $user_id = $_SESSION['log_user_id'];
             <div class="w-full grid place-items-center">
                 <p class="text-[10px] text-slate-400 text-center">2:30pm</p>
                 <p class="text-[10px] text-slate-400 text-center">4/16/2024</p>
+            </div>-->
+
+
+        </div>
+
+
+        <div class="m-3 shadow-2xl rounded border bg-opacity-70 ">
+            <div  id="chatBox" class="flex   justify-start items-center p-2  gap-2 ">
+                <textarea id="revision_comment" name="revision_comment" class="sm:w-auto w-full flex-grow textarea  max-h-24 textarea-bordered  bg-slate-100" placeholder="Type here"></textarea>
+
+                <div class="relative">
+                    <label title="Click to upload" for="commentAttachment"
+                           class="cursor-pointer flex items-center
+                               gap-4 px-6 py-4 before:border-gray-400/60
+                                hover:before:border-gray-300 group before:bg-gray-100
+                                 before:absolute before:inset-0 before:rounded-3xl before:border
+                                  before:border-dashed before:transition-transform before:duration-300
+                                  hover:before:scale-105 active:duration-75 active:before:scale-95">
+                        <div class="w-max relative max-w-10 flex flex-wrap" id="imgAttachment">
+                            <img class="w-5" src="assets/clip-svgrepo-com.svg" alt="file upload icon" width="512" height="512">
+                        </div>
+
+                    </label>
+                    <input onchange="displaySelectedcommentAttachment()" hidden type="file" name="commentAttachment[]" id="commentAttachment" accept="image/png, image/jpeg" multiple>
+                </div>
+                <button id="sendCommentbtn" onclick="giveComment(this.getAttribute('file_id')); get_WeeklyReports()" class="btn btn-md btn-circle btn-ghost"><i class="fa-regular fa-paper-plane"></i></button>
+
             </div>
         </div>
-        <div class="m-3 shadow-2xl rounded bg-gray-300 bg-opacity-70 ">
-            <form enctype="multipart/form-data" id="chatBox" class="flex sm:flex-row flex-col justify-evenly items-center p-2 flex-wrap sm:gap-2 gap-0">
-                <textarea name="revision_comment" required class=" sm:w-auto w-full flex-grow textarea  max-h-24 textarea-bordered  bg-slate-100" placeholder="Type here"></textarea>
-                <input type="hidden" name="file_id" value="">
-                <div class=" flex  justify-center sm:justify-evenly sm:w-auto w-full flex-grow items-center p-2 sm:p-0">
-                    <label class="form-control max-w-xs">
-                        <div class="label">
-                            <span class="label-text text-slate-700">Image attachment</span>
-                        </div>
-                        <input name="final_report_file[]" accept="image/png, image/jpeg" multiple  type="file"
-                               class="block  text-sm text-black file:mr-4
-                    file:py-2 file:px-4 file:rounded-full file:border-0
-                    file:text-sm file:font-semibold file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
-                    </label>
-                    <button class="btn btn-accent">Send <i class="fa-regular fa-paper-plane"></i></button>
-                </div>
-            </form>
-        </div>
+
+
     </div>
 </dialog>
 <dialog id="img_modal" class="modal bg-black  bg-opacity-40">
