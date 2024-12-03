@@ -381,8 +381,7 @@ function getProfileInfo() {
                 } else {
                     profPath = 'userProfile/' + data.profile_img_file;
                 }
-
-                $('#side_tabName').html(data.first_name + ' ' + data.last_name  + ' - ' + data.user_type.toUpperCase());
+                updateUserInfo();
                 $("#selectedProfile").attr("src", profPath);
                 $('#profileForm input[name="user_Fname"]').val(data.first_name);
                 $('#profileForm input[name="user_Mname"]').val(data.middle_name);

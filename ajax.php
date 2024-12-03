@@ -457,7 +457,8 @@ from narrativereports
          where user_id = ? and ay_sem_id = ?", 'ii', [$_SESSION['log_user_id'], $currAcadYear]);
 
 
-    $isStudCanSubmitNewNarrative =  count($studSemAYnarrativeequery) !== 0 ? false : true;
+    $isStudCanSubmitNewNarrative =  count($studSemAYnarrativeequery) !== 0
+    || $_SESSION['log_acc_stat'] === 'inactive' ? false : true;
 
 
     echo json_encode(['response' => 1,

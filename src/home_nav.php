@@ -51,6 +51,8 @@
                             <img id="profile_nav" src="userProfile/<?=$_SESSION['log_user_profileImg'] !== 'N/A' ? $_SESSION['log_user_profileImg'] : 'prof.jpg'?>" />
                         </div>
                     </div>
+                   <p id="navName"  role="button" tabindex="0"
+                      class=" text-xs text-slate-50 font-sans font-semibold  max-w-24 break-words"></p>
                     <ul tabindex="0" class="absolute bg-slate-100 text-black right-0 dropdown-content z-[1] menu p-2 shadow  rounded w-52">
 
                         <?php echo $_SESSION['log_user_type'] != 'student'  && $_SESSION['log_acc_stat'] === 'active' ? '<li><a href="dashboard.php">Dashboard</a></li>': ''?>

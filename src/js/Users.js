@@ -17,3 +17,27 @@ function user_info(user_id = null) {
         });
     });
 }
+async function updateUserInfo() {
+    try {
+        let response = await user_info();
+
+        if (response.response === 1) {
+            let data = response.data;
+            let profPath;
+
+            if (data.profile_img_file === 'N/A') {
+                profPath = 'userProfile/prof.jpg';
+            } else {
+                profPath = 'userProfile/' + data.profile_img_file;
+            }
+
+            $('#side_tabName').html(`${data.first_name} ${data.last_name} - ${data.user_type.toUpperCase()}`);
+            $('#navName').html(`${data.first_name} ${data.last_name}`);
+            $("#profile_nav").attr("src", profPath);
+        }
+    } catch (error) {
+        console.error("Error fetching user info:", error);
+    }
+}
+
+

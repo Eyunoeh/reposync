@@ -14,6 +14,7 @@ async function navigate(page) {
             updateActiveLink(page);
             getHomeActSched();
             getHomeNotes();
+            updateUserInfo();
 
             let profileImgInput = document.getElementById('profileImg');
             profileImgInput?.addEventListener('change', function(event) {

@@ -146,15 +146,15 @@ async function getProfileInfo() {
             let profPath;
 
             if (data.profile_img_file === 'N/A') {
-               profPath = 'assets/profile.jpg';
+               profPath = 'userProfile/prof.jpg';
             } else {
                profPath = 'userProfile/' + data.profile_img_file;
             }
-            console.log()
 
-            $('#side_tabName').html(data.first_name + ' ' + data.last_name  + ' - ' + data.user_type.toUpperCase());
+            updateUserInfo();
+
             $("#selectedProfile").attr("src", profPath);
-            $("#profile_nav").attr("src", profPath);
+
             $('#StudprofileForm input[name="user_Fname"]').val(data.first_name);
             $('#StudprofileForm input[name="user_Mname"]').val(data.middle_name);
             $('#StudprofileForm input[name="user_Lname"]').val(data.last_name);
