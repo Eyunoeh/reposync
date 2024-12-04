@@ -40,7 +40,7 @@ include '../DatabaseConn/databaseConn.php';
             <table id="studListTbl" class="w-full my-0 b text-sm  border border-none table table-xs" >
                 <thead class="align-bottom z-20">
                 <tr class="font-bold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
-                    <th onclick="sortTable(0, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">School ID<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(0, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Student No.<span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(1, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Name<span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(2, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Program<span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(3, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Yr & Sec<span class="sort-icon text-xs"></span></th>
@@ -166,7 +166,7 @@ include '../DatabaseConn/databaseConn.php';
                         <div class="flex justify-start gap-2 flex-wrap sm:flex-nowrap">
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">School ID number <span class="text-warning"> (Must be unique)</span></span>
+                                    <span class="label-text text-slate-700">Student number <span class="text-warning"> (Must be unique)</span></span>
                                 </div>
                                 <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>

@@ -28,7 +28,7 @@ session_start();
                 <thead class="align-bottom  sticky top-0 z-20
             font-semibold text-[0.95rem]  text-secondary-dark bg-slate-200 rounded text-neutral">
                 <tr >
-                    <th class="p-3 text-start ">School ID</th>
+                    <th class="p-3 text-start ">Student No.</th>
                     <th class="p-3 text-start">Student name</th>
                     <th class="p-3 text-start">Status</th>
                     <th class="p-3 text-start">Sem & AY</th>

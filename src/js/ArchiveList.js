@@ -69,7 +69,7 @@ async function renderArchiveNarratives(){
 
     let data = get_archiveNarratives.data
 
-    tableHeadRow  = `<th onclick="sortTable(0, 'ArhiveTable')"  class="p-3 text-start cursor-pointer ">School ID<span class="sort-icon text-xs"></span></th>
+    tableHeadRow  = `<th onclick="sortTable(0, 'ArhiveTable')"  class="p-3 text-start cursor-pointer ">Student No.<span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(1, 'ArhiveTable')"   class="p-3 text-start cursor-pointer min-w-10">Name<span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(2, 'ArhiveTable')"  class="p-3 text-start cursor-pointer min-w-10">Program<span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(3, 'ArhiveTable')"  class="p-3 text-start cursor-pointer min-w-10">OJT adviser<span class="sort-icon text-xs"></span></th>

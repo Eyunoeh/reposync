@@ -13,7 +13,7 @@ async function dashboard_student_NarrativeReports() {
     let table_head = `
   <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral">
     ${user_data.user_type === 'admin' ? `
-      <th onclick="sortTable(0, 'narrativeReportsTable')" class="p-3 text-start">School ID<span class="sort-icon text-xs"></span></th>
+      <th onclick="sortTable(0, 'narrativeReportsTable')" class="p-3 text-start">Student No.<span class="sort-icon text-xs"></span></th>
       <th onclick="sortTable(1, 'narrativeReportsTable')" class="p-3 text-start min-w-10">Name<span class="sort-icon text-xs"></span></th>
       <th onclick="sortTable(2, 'narrativeReportsTable')" class="p-3 text-start min-w-10">OJT Adviser<span class="sort-icon text-xs"></span></th>
     ` : `

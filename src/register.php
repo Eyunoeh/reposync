@@ -50,7 +50,7 @@
                             <input required name="conf_password" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="password" placeholder="Confirm your password">
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label class="font-bold text-sm">School ID</label>
+                            <label class="font-bold text-sm">Student No.</label>
                             <input required name="sch_id" class="h-8 bg-slate-50 shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="0000-00000">
                         </div>
                         <div id="program" class="flex flex-col gap-2">
