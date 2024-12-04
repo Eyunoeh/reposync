@@ -6,10 +6,16 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 session_start();
 ?>
 <?php if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] === 'admin'):?>
-<div class=" flex flex-col justify-center items-center flex-grow  max-h-screen">
-    <canvas id="myChart" class="w-2/3 h-2/3"></canvas>
 
-</div>
+    <div class=" p-4 flex flex-col justify-center items-center flex-grow  max-h-[60vh]">
+        <canvas id="NarrativeReportChart" class="w-2/3 h-2/3"></canvas>
+        <h1 class=" text-sm ">Total narrative report</h1>
+    </div>
+<hr class="p-2">
+    <div class=" p-4 flex flex-col justify-center items-center flex-grow  max-h-[60vh]">
+        <canvas id="UserChart" class="w-2/3 h-2/3"></canvas>
+        <h1 class=" text-sm ">User summary</h1>
+    </div>
 <?php elseif ( (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] === 'adviser')):?>
 
     <div class="flex gap-5 ml-3 my-3 h-full flex-wrap justify-start  text-slate-700">
@@ -47,6 +53,13 @@ session_start();
             <h1 class="font-sans  text-sm">Total active student</h1>
         </div>
     </div>
+
+    <div class="p-4 flex flex-col justify-center items-center flex-grow  max-h-[60vh]">
+
+        <canvas id="NarrativeReportChart" class="w-2/3 h-2/3 "></canvas>
+        <h1 class=" text-sm ">Total Narrative Report Submissions by Section</h1>
+    </div>
+
 
 <?php endif;?>
 

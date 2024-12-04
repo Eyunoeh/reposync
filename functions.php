@@ -77,7 +77,7 @@ function getTotalNarrativeReports($program, $file_status, $ojtAdviser) {
         $params[] = $program;
     }
     if ($file_status !== ''){
-        $sql .= ' AND narrativereports.file_status = ? AND narrativereports.convertStatus = 3';
+        $sql .= ' AND narrativereports.file_status = ?';
         $types .= 'i';
         $params[] = $file_status;
     }if ($ojtAdviser !== ''){
@@ -216,6 +216,18 @@ function checkNewWeeklyReports($stud_sch_user_id)
     }else{
         return false;
     }
+}
+
+function totalUsers($userType, $accStatType)
+{
+    $totalUserquery = "SELECT COUNT(tbl_user_info.user_id) AS totaluserCount 
+FROM tbl_user_info JOIN tbl_accounts ON tbl_accounts.user_id = tbl_user_info.user_id 
+WHERE tbl_user_info.user_type = ? AND tbl_accounts.status = ?";
+    $types = 'ii';
+    $params[] = $userType;
+    $params[] = $accStatType;
+    return mysqlQuery($totalUserquery, $types, $params)[0]['totaluserCount'];
+
 }
 
 

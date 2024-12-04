@@ -25,16 +25,8 @@ let total_records = 0;
 
 
 
-navigate('dashboardContent.php')
-act_tab('dashboard');
-let domScript = ['dashboardContent.js']
-for (let i = 0; i< domScript.length; i++){
-    const scriptTag = document.createElement('script');
-    scriptTag.src ='js/' + domScript[i];
-    document.body.appendChild(scriptTag);
-    oldScripts.push(domScript[i]);
+dashboard_tab('dashboard')
 
-}
 
 
 async function navigate(page) {
@@ -80,11 +72,9 @@ async function navigate(page) {
                 });
 
             }
-            const ctx = document.getElementById('myChart')
-            if (ctx) {
-                ctx.getContext('2d');
-                renderChart(ctx);
-            }
+
+
+
         })
         .catch(error => console.error('Error fetching content:', error));
 }
@@ -122,6 +112,17 @@ async function dashboard_tab(id) {
             afterNavigate: () => {
                 act_tab(tab.id);
                 loadDashboardJS();
+                (async () => {
+                    let response = await user_info();
+                    if (response.data.user_type === 'admin'){
+                        renderChart('NarrativeReportChart', 'adminNarrative')
+                        renderChart('UserChart', 'Users')
+                    }else {
+                        renderChart('NarrativeReportChart', 'adviserNarrative')
+
+                    }
+
+                })()
             }
         },
         'adviserNotes': {
@@ -248,96 +249,6 @@ async function dashboard_tab(id) {
     }
 }
 
-
-
-async function renderChart(ctx) {
-    let activeNarrative = 0;
-    let total_activeStudent ;
-    let total_activeAdv;
-    let totalArchiveStud;
-    let totalAchiveAdv;
-
-    try {
-        // Fetch the narrative data
-        activeNarrative = await getTotalPublihed(3);
-        total_activeStudent = await totalUser(1, 3);
-        total_activeAdv = await totalUser(1, 2);
-        totalArchiveStud = await totalUser(2, 3);
-        totalAchiveAdv = await totalUser(2, 2);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-
-    // Initialize the chart only after activeNarrative has been fetched
-    const myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Published Narrative Reports', 'Active student', 'Active adviser', 'Archived student', 'Archived adviser'],
-            datasets: [{
-                label: '',
-                data: [activeNarrative, total_activeStudent, total_activeAdv, totalArchiveStud, totalAchiveAdv], // Use activeNarrative here
-                borderWidth: 1,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)'
-                ]
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false // Hide the legend
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return `# of Data: ${context.raw}`;
-                        }
-                    }
-                }
-            },
-            maintainAspectRatio: false,
-            responsive: true,
-            onClick: (event, elements) => {
-                if (elements.length > 0) {
-                    const elementIndex = elements[0].index;
-                    const label = myChart.data.labels[elementIndex];
-                    if (label === 'Active student') {
-                        const elementId = "stud_list";
-                        dashboard_tab(elementId);
-                    } else if (label === 'Active adviser') {
-                        const elementId = "adv_list";
-                        dashboard_tab(elementId);
-                    } else if (label === 'Published Narrative Reports') {
-                        const elementId = "dashboard_narrative";
-                        dashboard_tab(elementId);
-                    }else if (label === 'Archived adviser') {
-                        const elementId = "account_archived";
-                        dashboard_tab(elementId);
-                    }else if (label === 'Archived student') {
-                        const elementId = "account_archived";
-                        dashboard_tab(elementId);
-                    }
-                }
-            }
-        }
-    });
-}
 
 function act_tab(id){
     const allTabs = document.querySelectorAll('.dashboard_tab'); // Assuming all tabs have the 'tab' class

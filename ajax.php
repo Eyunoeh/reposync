@@ -1752,13 +1752,7 @@ if ($action === 'total_Users'){
     $types = '';
     $params = [];
     if ($userType !== '' &$accStatType !== ''){
-        $totalUserquery = "SELECT COUNT(tbl_user_info.user_id) AS totaluserCount 
-FROM tbl_user_info JOIN tbl_accounts ON tbl_accounts.user_id = tbl_user_info.user_id 
-WHERE tbl_user_info.user_type = ? AND tbl_accounts.status = ?";
-        $types = 'ii';
-        $params[] = $userType;
-        $params[] = $accStatType;
-
+        $result = totalUsers($userType, $accStatType);
     }else{ // total adviser advisory
         $totalUserquery = "SELECT COUNT(tbl_students.adv_id) as totaluserCount
                             FROM tbl_students JOIN tbl_accounts 
@@ -1767,10 +1761,9 @@ WHERE tbl_user_info.user_type = ? AND tbl_accounts.status = ?";
                             AND tbl_students.adv_id = ?;";
         $types = 'i';
         $params [] = $_SESSION['log_user_id'];
-
+        $result = mysqlQuery($totalUserquery, $types, $params)[0]['totaluserCount'];
     }
 
-    $result = mysqlQuery($totalUserquery, $types, $params)[0]['totaluserCount'];
 
 
     echo $result;
@@ -2427,6 +2420,75 @@ if ($action === 'updateJournalRemark') {
 
 
 
+}
+
+
+if ($action == 'ChartData'){
+    header('Content-Type: application/json');
+    $data = [];
+    $renderCharData = $_GET['renderChartData'];
+
+    if ($renderCharData == 'Users') {
+        $activeStudent = totalUsers(3, 1);
+        $activeAdv = totalUsers(2, 1);
+        $archStudent = totalUsers(3, 2);
+        $archAdv = totalUsers(2, 2);
+
+        $data[] =['label' => 'Active student', 'value' => $activeStudent, 'onclickElement' => 'stud_list'];
+        $data[] =['label' => 'Active adviser', 'value' => $activeAdv, 'onclickElement' => 'adv_list'];
+        $data[] =['label' => 'Archived student', 'value' => $archStudent, 'onclickElement' => 'account_archived'];
+        $data[] =['label' => 'Archived adviser', 'value' => $archAdv, 'onclickElement' => 'account_archived'];
+
+    }
+    if (
+        $renderCharData == 'adminNarrative') {
+        $totalNarrativePerAY = "SELECT  tbl_aysem.ayStarting, tbl_aysem.ayEnding, 
+        COUNT(narrativereports.narrative_id) AS total_reports 
+FROM 
+    narrativereports
+JOIN 
+    tbl_aysem ON narrativereports.ay_sem_id = tbl_aysem.id
+WHERE narrativereports.file_status = 3 and narrativereports.convertStatus = 3
+GROUP BY 
+    tbl_aysem.ayStarting, 
+    tbl_aysem.ayEnding;
+";
+        $result = mysqlQuery($totalNarrativePerAY, '', []);
+        foreach ($result as $row) {
+            $data[] =['label' => $row['ayStarting'].' - '.  $row['ayEnding'] , 'value' => $row['total_reports'], 'onclickElement' => 'dashboard_narrative'];
+        }
+
+
+    }
+
+    if ($renderCharData == 'adviserNarrative') {
+        $numberOfNarrativeSubPerSec = "SELECT  
+    section.year, 
+    section.section, 
+    COUNT(narrativereports.narrative_id) AS total_reports 
+FROM 
+    section
+LEFT JOIN 
+    tbl_students ON tbl_students.year_sec_Id = section.year_sec_Id
+LEFT JOIN 
+    narrativereports ON narrativereports.enrolled_stud_id = tbl_students.enrolled_stud_id
+WHERE 
+    tbl_students.adv_id = ?
+GROUP BY 
+    section.year, 
+    section.section;";
+        $result = mysqlQuery($numberOfNarrativeSubPerSec, 'i', [$_SESSION['log_user_id']]);
+        foreach ($result as $row) {
+            $data[] =['label' => $row['year'].  $row['section'] , 'value' => $row['total_reports'], 'onclickElement' => 'dashboard_ReviewUploadNarrative'];
+        }
+
+
+    }
+
+    echo json_encode([
+        'response' => 1,
+        'data' => $data
+    ]);
 }
 
 
