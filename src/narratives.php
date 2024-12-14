@@ -21,7 +21,7 @@ include '../DatabaseConn/databaseConn.php';
 
             <?php if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] === 'student'):?>
                 <a class="btn btn-ghost text-info font-semibold btn-neutral  cursor-pointer
-                    " id="newNarrative" onclick="openModalForm('NarrativeReportmodal'); getSubmittedNarratives()"><u>Submit narrative report</u></a>
+                    " id="newNarrative" onclick="openModalForm('NarrativeReportmodal'); getSubmittedNarratives()"><u>View submitted narrative report</u></a>
             <?php endif;?>
         </div>
 

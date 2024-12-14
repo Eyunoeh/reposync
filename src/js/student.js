@@ -81,9 +81,10 @@ document.addEventListener('submit', function(e) {
 
          } else {
             Alert(alertContainer,response.message, 'warning')
+            console.log(response)
          }
-         console.log(response)
-         e.target.reset();
+
+
       },
    });
 });

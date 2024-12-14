@@ -63,12 +63,12 @@ if (count($result) === 1) {
     <title>Narrative Report</title>
 </head>
 <body class="bg-slate-700 ">
-<a href="<?=$_SESSION['log_user_type'] == 'student'? 'index.php?page=narratives':'dashboard.php'?>" class="btn btn-neutral absolute left-2 top-2"><i class="fa-solid fa-circle-left"></i> Back</a>
+<a href="<?=$_SESSION['log_user_type'] == 'student'? 'index.php?page=narratives':'dashboard.php'?>" class="btn btn-neutral absolute left-2 top-2 text-white"><i class="fa-solid fa-circle-left"></i> Back</a>
 
 <div class="flipbook-viewport overflow-auto ">
     <div class="flex h-[100vh] justify-center items-center gap-5">
 
-        <button id="prev" class="btn btn-neutral"><i class="fa-solid fa-circle-left"></i> Prev</button>
+        <button id="prev" class="btn btn-neutral text-white"><i class="fa-solid fa-circle-left"></i> Prev</button>
 
         <div class="flipbook">
             <div class="hard" style="background-image:url('assets/reposync cover page 2.png')"></div>
@@ -114,7 +114,7 @@ if (count($result) === 1) {
 
         </div>
 
-        <button id="next" class="btn btn-neutral">Next <i class="fa-solid fa-circle-right"></i></button>
+        <button id="next" class="btn btn-neutral text-white">Next <i class="fa-solid fa-circle-right"></i></button>
     </div>
 </div>
 
@@ -138,7 +138,7 @@ if (count($result) === 1) {
                     <h3 class="font-bold text-center text-lg  p-5" id="loginNotiftext"><?=$message?></h3>
                 </div>
                 <div class="p-4 w-full flex justify-center">
-                    <a href="<?=$_SESSION['log_user_type'] == 'student'? 'index.php?page=narratives':'dashboard.php'?>" class="btn  btn-neutral  w-1/4 " onclick="closeModalForm('notifModal')">Back to dashboard</a>
+                    <a href="<?=$_SESSION['log_user_type'] == 'student'? 'index.php?page=narratives':'dashboard.php'?>" class="btn text-white btn-neutral  w-1/4 " onclick="closeModalForm('notifModal')">Back to dashboard</a>
                 </div>
             </div>
         </dialog>

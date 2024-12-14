@@ -4791,10 +4791,6 @@ details.collapse summary::-webkit-details-marker {
   max-height: 90%;
 }
 
-.max-h-screen {
-  max-height: 100vh;
-}
-
 .min-h-\[3rem\] {
   min-height: 3rem;
 }

@@ -96,7 +96,7 @@ if (isset($_SESSION['log_user_type'])){
             <button
                     id="login-btn-submit"
                     type="submit"
-                    class="w-full flex justify-center
+                    class="w-full flex justify-center text-white
                      py-3 px-4 btn btn-success">
                 Login
             </button>

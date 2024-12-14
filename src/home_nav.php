@@ -25,7 +25,8 @@
                 <?php if (!isset($_SESSION['log_user_type'])):?>
 
                  <div class="dropdown dropdown-bottom dropdown-end flex  items-center gap-2">
-                     <a href=" login.php" tabindex="0" role="button" class="text-lg/normal btn btn-success">Login</a>
+                     <a href=" login.php" tabindex="0" role="button" class="transition-all hover:cursor-pointer
+                hover:text-black hover:bg-gray-300  hover:rounded p-2 ">Login</a>
                  </div>
                 <?php else:?>
                     <a href="#" id="narrativesLink" class="transition-all hover:cursor-pointer

@@ -1855,7 +1855,7 @@ if ($action == "get_User_info"){
 if ($action == 'profileUpdate') {
 
 
-
+    header('Content-Type: application/json');
     $user_id = $_SESSION['log_user_id'];
 
     try {
