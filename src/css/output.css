@@ -5587,6 +5587,10 @@ details.collapse summary::-webkit-details-marker {
   padding-right: 1.5rem;
 }
 
+.pr-7 {
+  padding-right: 1.75rem;
+}
+
 .pt-0 {
   padding-top: 0px;
 }
@@ -5601,6 +5605,10 @@ details.collapse summary::-webkit-details-marker {
 
 .pt-6 {
   padding-top: 1.5rem;
+}
+
+.pr-10 {
+  padding-right: 2.5rem;
 }
 
 .text-left {

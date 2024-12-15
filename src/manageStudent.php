@@ -6,9 +6,9 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 session_start();
 include '../DatabaseConn/databaseConn.php';
 ?>
-<div class="px-9 pt-2 flex justify-end items-stretch flex-wrap gap-5 pb-0 bg-transparent">
-    <!--    <button class="btn btn-neutral btn-sm bg-slate-500 border-none text-slate-100 " >Export accounts</button>-->
-<!--    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalForm'); resetStudentEditForm()">New Student form</button>-->
+<div class="px-9 pt-2 flex <?php echo $_SESSION['log_user_type'] === 'admin' ? 'justify-end' : 'justify-between'?>  items-stretch flex-wrap gap-5 pb-0 bg-transparent">
+    <?php echo $_SESSION['log_user_type'] === 'adviser' ? '<button class="btn btn-neutral bg-slate-500 border-none text-slate-100">Export OJT summary <i class="fa-solid fa-file-export"></i></button>
+' : ''?>
     <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalFormxls');resetStudentEditForm()">Import excel <i class="fa-solid fa-download"></i></button>
 </div>
 
@@ -300,10 +300,16 @@ include '../DatabaseConn/databaseConn.php';
         <div  class=" card-title sticky ">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="closeModalForm('manageStudModalFormxls');resetStudentEditForm()">✕</button>
             <h3 class="font-bold text-center text-lg p-5" id="studFormTitle">Add new student</h3>
-            <div class="tooltip tooltip-bottom" data-tip="Download excel format">
+
+        </div>
+        <hr>
+        <div  class=" card-title sticky flex justify-end pr-10">
+            <div class="tooltip tooltip-bottom " data-tip="Download">
+                <p class="cursor-pointer text-center text-sm " id="studFormTitle">Excel format</p>
                 <a href="assets/Student_basic_info_list_format.xlsx" class="btn btn-circle btn-info btn-outline border-none"  id="exlFormat"><i class="fa-solid fa-download"></i></a>
             </div>
         </div>
+
         <div class="p-4">
             <form id="studentFormxls"  enctype="multipart/form-data">
                 <div class="flex flex-col gap-8 mb-2 overflow-auto">

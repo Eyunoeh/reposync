@@ -187,7 +187,7 @@ async function getStudSubmittedNarratives(){
             let formattedSem = {
                 First: '1st',
                 Second: '2nd',
-                Midyear: 'Summer'
+                Midyear: 'Midyear'
             };
 
             let narrativeStatuses = {Pending: ['text-warning', 'Unread'],
