@@ -44,6 +44,8 @@ if (!isset($_SESSION['log_user_type'])){
             <a href="<?=$_SESSION['log_user_type'] == 'student'? 'index.php?page=narratives':'dashboard.php'?>" class="btn btn-outline font-bold text-slate-700">
                 <?=$_SESSION['log_user_type'] == 'student'? '<i class="fa-solid fa-house"></i> Home':'<i class="fa-solid fa-circle-left"></i> Dashboard'?>
                 </a>
+            <?php echo $_SESSION['log_user_type'] === 'admin' ? '<button class="btn btn-neutral bg-slate-500 border-none text-slate-100">Export data <i class="fa-solid fa-file-export"></i></button>
+' : ''?>
         </div>
         <div class="px-9 pt-5 mb-5 flex justify-between items-stretch flex-wrap pb-0 bg-transparent ">
             <div class="w-50">

@@ -35,7 +35,7 @@ async function getActivitiesAndSched() {
             $('#actAndschedList').html(actAndschedList);
         }else {
             $('#actAndschedList').html(`<div class="flex transform w-[50rem]    justify-center items-center ">
-            <h1 class="font-semibold">No activity and schedule posted</h1>
+            <h1 class="">No activity and schedule posted</h1>
         </div>`);
         }
 

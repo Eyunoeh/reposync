@@ -2446,13 +2446,17 @@ if ($action == 'ChartData'){
     }
     if (
         $renderCharData == 'adminNarrative') {
-        $totalNarrativePerAY = "SELECT  tbl_aysem.ayStarting, tbl_aysem.ayEnding, 
-        COUNT(narrativereports.narrative_id) AS total_reports 
+        $totalNarrativePerAY = "SELECT 
+    tbl_aysem.ayStarting, 
+    tbl_aysem.ayEnding, 
+    COUNT(narrativereports.narrative_id) AS total_reports 
 FROM 
-    narrativereports
-JOIN 
-    tbl_aysem ON narrativereports.ay_sem_id = tbl_aysem.id
-WHERE narrativereports.file_status = 3 and narrativereports.convertStatus = 3
+    tbl_aysem
+LEFT JOIN 
+    narrativereports 
+    ON tbl_aysem.id = narrativereports.ay_sem_id 
+    AND narrativereports.file_status = 3 
+    AND narrativereports.convertStatus = 3
 GROUP BY 
     tbl_aysem.ayStarting, 
     tbl_aysem.ayEnding;
