@@ -13,7 +13,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
          sm:text-left  font-extrabold">Insight</span>
 
         </h2>
-        <h2 class="ml-8 max-w-lg text-3xl text-start font-sans
+        <h2 class=" max-w-lg text-3xl text-start font-sans
         text-slate-900 "> An online on-the-job training narrative report
             management  system for Cavite  State University - Carmona Campus </h2>
     </article>
