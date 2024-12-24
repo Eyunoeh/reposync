@@ -6,11 +6,11 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 session_start();
 ?>
 <?php if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] === 'admin'):?>
-<center class="mb-5">
-    <div class=" p-10 flex flex-col justify-center shadow-lg rounded items-center w-[80%] flex-grow  max-h-[60vh]">
+<center class="mb-5 mt-3">
+    <div class=" p-10 flex flex-col justify-center shadow rounded items-center w-[80%] flex-grow  max-h-[60vh]">
         <canvas id="NarrativeReportChart" class="w-2/3 h-2/3"></canvas>
     </div>
-    <div class=" p-10 shadow-lg flex flex-col rounded justify-center items-center w-[80%] flex-grow  max-h-[60vh]">
+    <div class=" p-10 shadow flex flex-col rounded justify-center items-center w-[80%] flex-grow  max-h-[60vh]">
         <canvas id="UserChart" class="w-2/3 h-2/3"></canvas>
     </div>
 </center>

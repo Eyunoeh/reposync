@@ -53,7 +53,8 @@ async function renderChart(canvas_ID, renderChart, ChartTitle) {
                         legend: { display: false },
                         title: {
                             display: true,
-                            text: ChartTitle
+                            text: ChartTitle,
+                            position: 'bottom'
                         },
                         tooltip: {
                             callbacks: {
