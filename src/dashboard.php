@@ -45,7 +45,7 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
                 <i class="bi bi-x cursor-pointer ml-28 lg:hidden" onclick="//openSidebar()"></i>
             </div>
             <div class="text-start">
-                <p class="pl-2.5 text-slate-700 text-xs font-semibold " id="side_tabName"></p>
+                <p class="pl-2.5 text-slate-50 text-xs font-semibold " id="side_tabName"></p>
             </div>
             <div class="my-2 bg-gray-600 h-[1px]"></div>
         </div>

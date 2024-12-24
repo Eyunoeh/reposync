@@ -1,6 +1,6 @@
 
 
-async function renderChart(canvas_ID, renderChart) {
+async function renderChart(canvas_ID, renderChart, ChartTitle) {
     let myChart;
     const ctx = document.getElementById(canvas_ID).getContext('2d');
     // Fetch data using AJAX
@@ -51,6 +51,10 @@ async function renderChart(canvas_ID, renderChart) {
                     },
                     plugins: {
                         legend: { display: false },
+                        title: {
+                            display: true,
+                            text: ChartTitle
+                        },
                         tooltip: {
                             callbacks: {
                                 label: function (context) {

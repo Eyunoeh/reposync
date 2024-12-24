@@ -115,10 +115,10 @@ async function dashboard_tab(id) {
                 (async () => {
                     let response = await user_info();
                     if (response.data.user_type === 'admin'){
-                        renderChart('NarrativeReportChart', 'adminNarrative')
-                        renderChart('UserChart', 'Users')
+                        renderChart('NarrativeReportChart', 'adminNarrative', 'Total narrative report')
+                        renderChart('UserChart', 'Users', 'User summary')
                     }else {
-                        renderChart('NarrativeReportChart', 'adviserNarrative')
+                        renderChart('NarrativeReportChart', 'adviserNarrative','Total Narrative Report Submissions by Section')
 
                     }
 

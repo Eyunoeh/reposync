@@ -31,87 +31,44 @@
 </head>
 <body>
 
-<table id="myTable">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-</table>
-
-<div class="pagination">
-    <button id="prevBtn">Previous</button>
-    <span id="pageInfo"></span>
-    <button id="nextBtn">Next</button>
+<div id="treeview" class="p-4">
+    <ul class="list-none">
+        <li>
+            <button class="tree-toggle">📂 Parent 1</button>
+            <ul class="ml-4 hidden">
+                <li>📄 Child 1</li>
+                <li>
+                    <button class="tree-toggle">📂 Nested Parent</button>
+                    <ul class="ml-4 hidden">
+                        <li>📄 Nested Child 1</li>
+                        <li>📄 Nested Child 2</li>
+                    </ul>
+                </li>
+                <li>📄 Child 2</li>
+            </ul>
+        </li>
+        <li>
+            <button class="tree-toggle">📂 Parent 2</button>
+            <ul class="ml-4 hidden">
+                <li>📄 Child 3</li>
+            </ul>
+        </li>
+    </ul>
 </div>
 
 <script>
-    const data = [
-        { id: 1, name: 'John Doe', email: 'john@example.com' },
-        { id: 2, name: 'Jane Doe', email: 'jane@example.com' },
-        { id: 3, name: 'Jim Beam', email: 'jim@example.com' },
-        { id: 4, name: 'Jill Smith', email: 'jill@example.com' },
-        { id: 5, name: 'Jack Brown', email: 'jack@example.com' },
-        { id: 6, name: 'Sam Green', email: 'sam@example.com' },
-        { id: 7, name: 'Alex Blue', email: 'alex@example.com' },
-        { id: 8, name: 'Rachel Yellow', email: 'rachel@example.com' },
-        { id: 9, name: 'George White', email: 'george@example.com' },
-        { id: 10, name: 'Lucy Black', email: 'lucy@example.com' }
-    ];
-
-    const rowsPerPage = 3; // Set how many rows you want to display per page
-    let currentPage = 1;
-
-    function displayTable(data, rowsPerPage, currentPage) {
-        const tableBody = document.querySelector('#myTable tbody');
-        tableBody.innerHTML = ''; // Clear existing table data
-
-        // Calculate start and end indexes of the rows for current page
-        const start = (currentPage - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        const paginatedData = data.slice(start, end);
-
-
-        // Insert rows into the table
-        paginatedData.forEach(row => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                    <td>${row.id}</td>
-                    <td>${row.name}</td>
-                    <td>${row.email}</td>
-                `;
-            tableBody.appendChild(tr);
-        });
-
-        // Update pagination info
-        document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${Math.ceil(data.length / rowsPerPage)}`;
-    }
-
-    function setupPagination(data, rowsPerPage) {
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-
-        nextBtn.addEventListener('click', () => {
-            if (currentPage < Math.ceil(data.length / rowsPerPage)) {
-                currentPage++;
-                displayTable(data, rowsPerPage, currentPage);
+    document.querySelectorAll('.tree-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const subtree = button.nextElementSibling;
+            if (subtree) {
+                subtree.classList.toggle('hidden');
+                button.textContent = subtree.classList.contains('hidden')
+                    ? button.textContent.replace('📂', '📁')
+                    : button.textContent.replace('📁', '📂');
             }
         });
+    });
 
-        prevBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayTable(data, rowsPerPage, currentPage);
-            }
-        });
-    }
-
-    // Initial setup
-    displayTable(data, rowsPerPage, currentPage);
-    setupPagination(data, rowsPerPage);
 </script>
 
 </body>
