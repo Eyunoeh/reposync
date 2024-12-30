@@ -56,7 +56,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
                         </div>
                     </label>
 
-                    <button class="btn btn-success self-start" onclick="openModalForm('ManageAcadYear'); ">Create Academic Year</button>
+                    <button class="btn btn-success self-start text-white" onclick="openModalForm('ManageAcadYear'); ">Create Academic Year</button>
                 </div>
 
 

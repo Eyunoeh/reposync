@@ -11,7 +11,7 @@ include '../DatabaseConn/databaseConn.php'
             <h1 class="font-bold text-2xl text-warning font-sans">Activities & Schedule</h1>
         </div>
         <div class="">
-            <button class="btn btn-circle btn-success bg-opacity-70 " id="newAct" onclick="openModalForm('Act&shedModal') ;removeTrashButton()"><i class="fa-solid fa-plus"></i></button>
+            <button class="btn btn-circle btn-success bg-opacity-70 text-white" id="newAct" onclick="openModalForm('Act&shedModal') ;removeTrashButton()"><i class="fa-solid fa-plus"></i></button>
         </div>
     </div>
     <div class=" card-body grid place-items-center gap-5  sm:p-5 overflow-hidden sm:overflow-auto  scroll-smooth" id="actAndschedList">

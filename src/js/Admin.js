@@ -151,7 +151,7 @@ function renderAddProgramInputs() {
                                         <option value="640">640</option>
                                     </select>
                                 </div>
-                                <a class="btn btn-success " id="addCourseBtn">Add</a>
+                                <a class="btn btn-success text-white" id="addCourseBtn">Add</a>
                                 <input type="hidden" name="ojt_course_json" id="ojt_course_json">
                             </div>
 

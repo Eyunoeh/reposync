@@ -11,7 +11,7 @@
             </a>
         </div>
         <div class="">
-            <button onclick="openModalForm('ProgSecFormModal'); if (!document.getElementById('formSelect')) renderSelectformOption(); addCourseListner()" class=" btn btn-circle btn-success ">
+            <button  onclick="openModalForm('ProgSecFormModal'); if (!document.getElementById('formSelect')) renderSelectformOption(); addCourseListner()" class="text-white btn btn-circle btn-success ">
                 <i class="fa-solid fa-plus"></i>
             </button>
         </div>
@@ -124,7 +124,7 @@
                                         <option value="640">640</option>
                                     </select>
                                 </div>
-                                <a class="btn btn-success " id="addCourseBtn">Add</a>
+                                <a class="btn btn-success text-white" id="addCourseBtn">Add</a>
                                 <input type="hidden" name="ojt_course_json" id="ojt_course_json">
                             </div>
 
