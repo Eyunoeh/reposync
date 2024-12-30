@@ -7,8 +7,10 @@ session_start();
 include '../DatabaseConn/databaseConn.php';
 ?>
 <div class="px-9 pt-2 flex <?php echo $_SESSION['log_user_type'] === 'admin' ? 'justify-end' : 'justify-between'?>  items-stretch flex-wrap gap-5 pb-0 bg-transparent">
-    <?php echo $_SESSION['log_user_type'] === 'adviser' ? '<button class="btn btn-neutral bg-slate-500 border-none text-slate-100">Export OJT summary <i class="fa-solid fa-file-export"></i></button>
-' : ''?>
+    <?php if ($_SESSION['log_user_type'] === 'adviser'):?>
+        <button onclick="printStudentOJTSummary()" class="btn btn-neutral bg-slate-500 border-none text-slate-100">Export OJT summary <i class="fa-solid fa-file-export"></i></button>
+    <?php endif;?>
+
     <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalFormxls');resetStudentEditForm()">Import excel <i class="fa-solid fa-download"></i></button>
 </div>
 
@@ -304,13 +306,17 @@ include '../DatabaseConn/databaseConn.php';
         </div>
         <hr>
         <div  class=" card-title sticky flex justify-end pr-10">
-            <div class="tooltip tooltip-bottom " data-tip="Download">
+            <div class="flex justify-center flex-col items-center">
+                <div class="tooltip tooltip-bottom " data-tip="Download">
+                    <a href="assets/Student_basic_info_list_format.xlsx" class="btn btn-circle btn-info btn-outline border-none"  id="exlFormat"><i class="fa-solid fa-download"></i></a>
+                </div>
                 <p class="cursor-pointer text-center text-sm " id="studFormTitle">Excel format</p>
-                <a href="assets/Student_basic_info_list_format.xlsx" class="btn btn-circle btn-info btn-outline border-none"  id="exlFormat"><i class="fa-solid fa-download"></i></a>
+
             </div>
+
         </div>
 
-        <div class="p-4">
+        <div class="p-4 pt-0">
             <form id="studentFormxls"  enctype="multipart/form-data">
                 <div class="flex flex-col gap-8 mb-2 overflow-auto">
                     <div class="flex flex-col gap-5">

@@ -190,9 +190,11 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 
 <script src="js/Datatables.js"></script>
 <script src="js/buttons_modal.js"></script>
+<script src="js/Print.js"></script>
 <script src="js/Users.js"></script>
 <script src="js/dashboardContent.js"></script>
 <script src="js/dashboard.js"></script>
+
 
 <script src="js/manageStudent.js"></script>
 <script src="js/manageAdviser.js"></script>
