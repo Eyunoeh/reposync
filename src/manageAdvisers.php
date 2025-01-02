@@ -7,9 +7,9 @@ session_start();
 include '../DatabaseConn/databaseConn.php';
 ?>
 
-<div class="px-9 pt-2 flex justify-between items-stretch flex-wrap  pb-0 bg-transparent">
-    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100">Export adviser list <i class="fa-solid fa-file-export"></i></button>
-    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('newAdvierDialog');clearAdviserForm()">Create new</button>
+<div class="px-9 pt-2 flex justify-end items-stretch flex-wrap  pb-0 bg-transparent">
+<!--    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100">Export adviser list <i class="fa-solid fa-file-export"></i></button>
+-->    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('newAdvierDialog');clearAdviserForm()">Create new</button>
 
 </div>
 <div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">

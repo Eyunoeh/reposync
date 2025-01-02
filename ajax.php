@@ -1155,25 +1155,25 @@ if ($action === 'Notes') {
                 handleError('Admin didnt notified through email');
             }
         }
+        if ($actionType != 'edit'){
+           $getAdvStudentsTargetRecipient = "SELECT tbl_students.*
+    FROM tbl_students JOIN tbl_accounts on tbl_accounts.user_id = tbl_students.user_id
+    Where tbl_students.adv_id = ? and tbl_accounts.status = 'active'";
+            $result = mysqlQuery($getAdvStudentsTargetRecipient, 'i',[$_SESSION['log_user_id']]);
+            $bodyMessageToStudents = '<h1>Notification</h1> <br><br>';
 
-/*        $getAdvStudentsTargetRecipient = "SELECT advisory_list.*, tbl_accounts.status
-FROM advisory_list JOIN tbl_accounts on tbl_accounts.user_id = advisory_list.adv_sch_user_id
-where adv_sch_user_id = ? and tbl_accounts.status = 'active';";
-        $getAdvStudentsTargetRecipientSTMT = $conn->prepare($getAdvStudentsTargetRecipient);
-        $getAdvStudentsTargetRecipientSTMT ->bind_param('i', $noteDetails['user_id'] );// OJT adviser students
-        $getAdvStudentsTargetRecipientSTMT->execute();
-        $result = $getAdvStudentsTargetRecipientSTMT->get_result();
-        $bodyMessageToStudents = '<h1>Notification</h1> <br><br>';
+            $bodyMessageToStudents .= "<b>Subject:</b> " . $note_title . "<br><br>";
+            $bodyMessageToStudents .= "<b>Message:</b> " . $message . "<br><br>";
+            $bodyMessageToStudents .= "<b>From:</b> " . $advFname . " " . $advLname . "<br>";
+            $bodyMessageToStudents .= "<br>Click to review:
+<a href='http://localhost/ReposyncNarrativeManagementSystem/src/index.php'>Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a><br>";
 
-        $bodyMessageToStudents .= "<h3><b>Title: </b>".$noteDetails['title']." <h3><br>";
-        $bodyMessageToStudents .= "<b>Description: </b> ".$noteDetails['description']." <br>";
-        $bodyMessageToStudents .= "<br>Click to review:
- <a href='http://localhost/ReposyncNarrativeManagementSystem/src/index.php'>Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a><br>";
-        while ($row = $result->fetch_assoc()){
-            email_queuing($subjectType, $bodyMessageToStudents, getRecipient($row['stud_sch_user_id']));
+
+            foreach ($result as $row){
+                $recipient = getRecipient($row['user_id']);
+                email_queuing('Adviser Note', $bodyMessageToStudents, $recipient);
+            }
         }
-        */
-
 
 
         echo json_encode(['response' => $response,

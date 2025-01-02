@@ -49,7 +49,7 @@ async function dashboard_student_NarrativeReports() {
     }, {});
 
 
-    console.log(advisers)
+
 
 
 
@@ -59,7 +59,6 @@ async function dashboard_student_NarrativeReports() {
 
 
     Object.entries(narrative_listData).forEach(([key, narrative]) => {
-        console.log(narrative);
         if (narrative.program_code === program &&
             narrative.ayStarting === parseInt(ayStarted) &&
             narrative.ayEnding === parseInt(ayEnded) &&

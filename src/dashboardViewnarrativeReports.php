@@ -32,6 +32,8 @@ if (!isset($_SESSION['log_user_type'])){
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
     <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 
     <title>Narrative Reports</title>
 </head>
@@ -44,8 +46,9 @@ if (!isset($_SESSION['log_user_type'])){
             <a href="<?=$_SESSION['log_user_type'] == 'student'? 'index.php?page=narratives':'dashboard.php'?>" class="btn btn-outline font-bold text-slate-700">
                 <?=$_SESSION['log_user_type'] == 'student'? '<i class="fa-solid fa-house"></i> Home':'<i class="fa-solid fa-circle-left"></i> Dashboard'?>
                 </a>
-            <?php echo $_SESSION['log_user_type'] === 'admin' ? '<button class="btn btn-neutral bg-slate-500 border-none text-slate-100">Export data <i class="fa-solid fa-file-export"></i></button>
-' : ''?>
+            <?php if ($_SESSION['log_user_type'] === 'admin'):?>
+                <button onclick="printNarrativeReportsList()" class="btn btn-neutral bg-slate-500 border-none text-slate-100">Export data <i class="fa-solid fa-file-export"></i></button>
+            <?php endif;?>
         </div>
         <div class="px-9 pt-5 mb-5 flex justify-between items-stretch flex-wrap pb-0 bg-transparent ">
             <div class="w-50">
@@ -123,6 +126,9 @@ if (!isset($_SESSION['log_user_type'])){
 <script src="js/Users.js"></script>
 
 <script src="js/viewNarrativeReport.js"></script>
+<?php if ($_SESSION['log_user_type'] === 'admin'):?>
+    <script src="js/Print.js"></script>
+<?php endif;?>
 <script src="js/ArchiveList.js"></script>
 <script src="js/buttons_modal.js"></script>
 
