@@ -24,7 +24,7 @@ async function printStudentOJTSummary() {
             worksheet['!cols'] = new Array(Object.keys(transformedData[0]).length).fill({ wch: 23 });
 
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-            XLSX.writeFile(workbook, 'exported_data.xlsx');
+            XLSX.writeFile(workbook, 'OJT_Summary.xlsx');
         } else {
             alert('No data available to export.');
         }
@@ -97,3 +97,59 @@ async function printNarrativeReportsList(){
         alert('Failed to export data.');
     }
 }
+
+async function printAdvList() {
+    try {
+        let { data: AdvList } = await $.ajax({
+            url: '../ajax.php?action=getAdvisers',
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        if (AdvList && AdvList.length) {
+            const transformedData = [];
+
+            AdvList.forEach(item => {
+                // Add the adviser's main row
+                transformedData.push({
+                    Name: `${item.last_name} ${item.first_name} ${item.middle_name || ''}`.trim(),
+                    Program: item.program_code,
+                    "Year and Section": item.handleAdvisory.length > 0 ? item.handleAdvisory[0].yearSec : '',
+                    "Total Advisory": item.handleAdvisory.length > 0 ? item.handleAdvisory[0].total_students : ''
+                });
+
+                // Add additional rows for handled Year/Sections
+                item.handleAdvisory.slice(1).forEach(advisory => {
+                    transformedData.push({
+                        Name: '',
+                        Program: '',
+                        "Year and Section": advisory.yearSec,
+                        "Total Advisory": advisory.total_students
+                    });
+                });
+            });
+
+            // Create workbook and worksheet
+            const workbook = XLSX.utils.book_new();
+            const worksheet = XLSX.utils.json_to_sheet(transformedData);
+
+            // Set column widths
+            worksheet['!cols'] = [
+                { wch: 25 }, // Name
+                { wch: 15 }, // Program
+                { wch: 20 }, // Year and Section
+                { wch: 15 }  // Total Advisory
+            ];
+
+            // Export to Excel
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Adviser List');
+            XLSX.writeFile(workbook, 'AdviserList.xlsx');
+        } else {
+            alert('No data available to export.');
+        }
+    } catch (error) {
+        console.error('Error exporting data:', error);
+        alert('Failed to export data.');
+    }
+}
+

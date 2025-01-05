@@ -28,40 +28,7 @@ include '../DatabaseConn/databaseConn.php';
         <div class="block py-8 pt-6 px-9">
             <div class="overflow-auto ">
                 <div id="treeview" class="p-4 text-lg grid gap-5">
-                    <ul class="list-none">
-                        <li>
-                            <button class="tree-toggle"><i class="fa-solid fa-plus"></i> AY 2021-2022</button>
-                            <ul class="ml-4 hidden">
-                                <li>
-                                    <button class="tree-toggle"><i class="fa-solid fa-plus"></i> First Semester</button>
-                                    <ul class="ml-4 hidden">
-                                        <li>📄 Nested Child 1</li>
-                                        <li>📄 Nested Child 2</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <button class="tree-toggle"><i class="fa-solid fa-plus"></i> Second Semester</button>
-                                    <ul class="ml-4 hidden">
-                                        <li>📄 Nested Child 1</li>
-                                        <li>📄 Nested Child 2</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <button class="tree-toggle"><i class="fa-solid fa-plus"></i> Midyear Semester</button>
-                                    <ul class="ml-4 hidden">
-                                        <li>📄 Nested Child 1</li>
-                                        <li>📄 Nested Child 2</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <button class="tree-toggle"><i class="fa-solid fa-plus"></i> Parent 2</button>
-                            <ul class="ml-4 hidden">
-                                <li>📄 Child 3</li>
-                            </ul>
-                        </li>
-                    </ul>
+
                 </div>
 
             </div>

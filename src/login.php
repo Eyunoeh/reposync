@@ -85,10 +85,10 @@ if (isset($_SESSION['log_user_type'])){
                   transition-colors duration-300">
                     Forgot Password?
                 </a>
-                <button class="btn btn-sm btn-neutral btn-ghost text-slate-700">
-                    <i class="fa-brands fa-google "></i>
-                    <span>Sign in with Google</span>
-                </button>
+<!--                <button class="btn btn-sm btn-neutral btn-ghost text-slate-700">-->
+<!--                    <i class="fa-brands fa-google "></i>-->
+<!--                    <span>Sign in with Google</span>-->
+<!--                </button>-->
             </div>
 
 
