@@ -165,6 +165,7 @@ async function getProfileInfo() {
             $('#StudprofileForm input[name="stud_ojtContact"]').val(data.ojt_contact);
             $('#StudprofileForm input[name="OJT_started"]').val(data.OJT_started);
             $('#StudprofileForm input[name="OJT_ended"]').val(data.OJT_ended);
+            $('#StudprofileForm input[name="studInfo"]').val(data.studInfo);
 
             // Handle sex radio buttons
             if (data.sex === "male") {

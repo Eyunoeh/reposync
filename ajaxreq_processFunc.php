@@ -184,8 +184,9 @@ function updAdvisory($user_id = null)
 }
 
 
-function upd_stud_tbl($user_id)
+function upd_stud_tbl()
 {
+    $editstud_shcinfo= getPostData('studInfo');
     $editstud_shc_id = getPostData('school_id');
     $editStud_adviser = getPostData('stud_adviser');
 
@@ -196,13 +197,15 @@ function upd_stud_tbl($user_id)
     $editStud_yr_sec = getPostData('stud_Section');
     $params = [];
     $requiredFields = [
+
         'Student ID' => $editstud_shc_id,
         'Student adviser' => $editStud_adviser,
         'Student program' => $editStud_program,
         'Student year and section' => $editStud_yr_sec,
         'OJT center' => $editStud_ojtCenter,
         'OJT Contact' => $edit_otjContact,
-        'User ID' => $user_id,
+        'Student info ID' => $editstud_shcinfo
+
     ];
     foreach ($requiredFields as $field => $value) {
         if (empty($value) ) {
@@ -214,10 +217,10 @@ function upd_stud_tbl($user_id)
 
     }
 
-    $upd_stud_info = 'UPDATE tbl_students set enrolled_stud_id = ?, 
+    $upd_stud_info = 'UPDATE tbl_studinfo set enrolled_stud_id = ?, 
                         adv_id = ?, program_id= ?, year_sec_Id = ?,
                         ojt_center = ?, ojt_contact = ? 
-                    where user_id = ?';
+                    where studInfo = ?';
     mysqlQuery($upd_stud_info,'iiiissi', $params);
 
 }

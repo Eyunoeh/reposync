@@ -278,6 +278,7 @@ include '../DatabaseConn/databaseConn.php';
 
                         <input type="hidden" name="user_type" value="student">
                         <input type="hidden" name="user_id" >
+                        <input type="hidden" name="studInfo" >
                         <div id="deaccSectionModal">
 
 

@@ -116,6 +116,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                     </label>
                 </div>
             </div>
+            <input type="hidden" name="studInfo" >
 
 
 

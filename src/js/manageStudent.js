@@ -134,6 +134,7 @@ async function editUserStud_Info(user_id) {
         $('#studentForm select[name="stud_Section"]').val(data.year_sec_Id);
         $('#studentForm select[name="stud_adviser"]').val(data.adv_id);
         $('#studentForm input[name="user_Email"]').val(data.email);
+        $('#studentForm input[name="studInfo"]').val(data.studInfo);
         renderDeacAccLink('manageStudModalForm', 'get_studentUserList');
         $('#deactivate_acc').attr('data-user_id', data.user_id);
 

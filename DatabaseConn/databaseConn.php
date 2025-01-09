@@ -2,7 +2,7 @@
 
 $host = "localhost";
 $username = "root";
-$database = "insight_db";
+$database = "insight_db_v2";
 
 $conn = new mysqli($host, $username, '', $database);
 
