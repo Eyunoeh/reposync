@@ -750,6 +750,31 @@ if ($action == 'ExcelImport') {
                 }
             }
 
+            $checkCurrEnrolledStudent = mysqlQuery(
+                "SELECT enrolled_stud_id FROM tbl_studinfo
+JOIN tbl_aysem ay_sem on ay_sem.id = tbl_studinfo.ay_sem_id
+WHERE enrolled_stud_id = ?  and ay_sem.Curray_sem = 1;",
+                'i',
+                [$studNo]
+            );
+
+            $checkOnGoingOJT = mysqlQuery(
+                "SELECT enrolled_stud_id FROM narrativereports 
+                        JOIN tbl_aysem ay_sem on ay_sem.id = narrativereports.ay_sem_id
+                        WHERE enrolled_stud_id = ? and ay_sem.Curray_sem = 2 
+                          and narrativereports.file_status  in (1,2);",
+                'i',
+                [$studNo]
+            );
+
+            if (count($checkCurrEnrolledStudent) !== 0) {
+                throw new Exception("The student with ID ". $studNo. "is already enrolled in
+                 current academic year and semester");
+            }
+            if (count($checkOnGoingOJT) !== 0) {
+                throw new Exception("The student with ID " . $studNo . " is currently undergoing OJT.");
+            }
+
             $currAcadYearSem= mysqlQuery("SELECT * FROM tbl_aysem WHERE Curray_sem = 1", '', []);
             $aySemId = $currAcadYearSem[0]['id'];
             $tbl_studntsQ = "
@@ -764,6 +789,7 @@ if ($action == 'ExcelImport') {
             if (!$tbl_studntsSTMT->execute()) {
                 throw new Exception("Failed to insert student record: " . $tbl_studntsSTMT->error);
             }
+
 
  /*           // Send email notification
             $subjectType = 'Insight Account';
@@ -789,7 +815,7 @@ if ($action == 'ExcelImport') {
         $conn->rollback();
         echo json_encode([
             'response' => 0,
-            'message' => 'Failed to import records: ' . $e->getMessage()
+            'message' =>   $e->getMessage()
         ]);
     }
 }

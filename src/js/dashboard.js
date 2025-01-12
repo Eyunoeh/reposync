@@ -326,7 +326,8 @@ function deactivate_account(id, modal_id, newData){
         success: function(response) {
             if (response.response === 1){ // Only need to check this line
                 closeModalForm(modal_id);
-                Alert('notifBox', 'User account has been archived', 'warning');
+                Alert('notifBox', 'User account has been deactivated! <br> ' +
+                    'Contact the admin if this was a mistake', 'warning');
                 window[newData]()
 
             }
@@ -343,7 +344,7 @@ function renderDeacAccLink(modal, refresh_tbl_data){
         <dialog id="deactivate_accModal" class="modal bg-black bg-opacity-40">
             <div class="card bg-slate-50 w-[80vw] absolute top-10 sm:w-[30rem] max-h-[35rem] flex flex-col text-slate-700">
                 <div class="card-title sticky">
-                    <h3 class="font-bold text-center text-lg p-5">Are you sure you want to deactivate this OJT Adviser account?</h3>
+                    <h3 class="font-bold text-center text-lg p-5">Are you sure you want to deactivate this account?</h3>
                 </div>
                 <div class="p-4 w-full flex justify-evenly">
                     <a id="deactivate_acc" class="btn btn-error w-1/4" 

@@ -107,7 +107,7 @@ if ($route === 'NarrativeReports'){
         <div class="p-4 w-full flex justify-evenly">
             <a id="unarchiveLink" class="btn btn-warning w-1/4"
                onclick="closeModalForm('unarchiveModal'); UnarchiveData($(this).attr('data-archive_id'));">
-                Unarchive
+                Retrieve
             </a>
             <a class="btn btn-info w-1/4" onclick="closeModalForm('unarchiveModal')">Close</a>
         </div>

@@ -217,7 +217,7 @@ include '../DatabaseConn/databaseConn.php';
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
-                                    <span class="label-text text-slate-700">Program</span>
+                                    <span class="label-text text-slate-700">Course</span>
                                 </div>
                                 <select name="progCourse" id="prog_course"  class="select select-bordered w-full bg-slate-100 " required>
                                     <option value="" selected disabled>Select</option>

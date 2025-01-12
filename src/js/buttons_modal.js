@@ -102,7 +102,7 @@ function Alert(container, message, type) {
 
     setTimeout(function () {
         resetAlertBox(container);
-    }, 5000);
+    }, 10000);
 }
 
 function formatDateTime(dateString, withTime = true) {
