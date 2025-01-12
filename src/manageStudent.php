@@ -46,14 +46,8 @@ include '../DatabaseConn/databaseConn.php';
                     <th onclick="sortTable(1, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Name<span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(2, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Program<span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(3, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Yr & Sec<span class="sort-icon text-xs"></span></th>
-
-                    <?php if ($_SESSION['log_user_type'] == 'adviser'):?>
-                        <th onclick="sortTable(4, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT started<span class="sort-icon text-xs"></span></th>
-                        <th onclick="sortTable(5, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT Ended<span class="sort-icon text-xs"></span></th>
-
-                    <?php elseif ($_SESSION['log_user_type'] == 'admin'):?>
-                        <th onclick="sortTable(4, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT center<span class="sort-icon text-xs"></span></th>
-                        <th onclick="sortTable(5, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT contact<span class="sort-icon text-xs"></span></th>
+                    <th onclick="sortTable(4, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT center<span class="sort-icon text-xs"></span></th>
+                    <?php if ($_SESSION['log_user_type'] == 'admin'):?>
                         <th onclick="sortTable(6, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">OJT Adviser<span class="sort-icon text-xs"></span></th>
 
                     <?php endif;?>

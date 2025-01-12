@@ -114,7 +114,7 @@ async function renderWeeklyJournaltbl(){
             <span class=" text-light-inverse text-md/normal">${rowData['first_name']} ${rowData['last_name']}</span>
         </td>
         <td class="p-3 text-start w-[300px] break-words">
-            <span class=" text-light-inverse text-md/normal">${rowData['ojt_center']}</span>
+            <span class=" text-light-inverse text-md/normal">${rowData['ojt_center'] === null ? 'Not yet started': rowData['ojt_center']}</span>
         </td>
 
         <td class="p-3 text-center">

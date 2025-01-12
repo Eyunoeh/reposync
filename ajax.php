@@ -317,11 +317,10 @@ if ($action == 'newFinalReport'){
 
 
 
-    $stud_info = mysqlQuery('SELECT s.*, ui.* 
-from tbl_students s 
-    JOIN tbl_user_info ui on ui.user_id = s.user_id
-   
-where s.user_id = ?', 'i', [$_SESSION['log_user_id']])[0];
+    $stud_info = mysqlQuery('SELECT sinfo.*, ui.* from tbl_studinfo sinfo 
+    JOIN tbl_students s on sinfo.enrolled_stud_id = s.enrolled_stud_id 
+    JOIN tbl_user_info ui on ui.user_id = s.user_id 
+                     where s.user_id = ?', 'i', [$_SESSION['log_user_id']])[0];
 
 
 
@@ -454,7 +453,8 @@ from narrativereports
         'i', [])[0]['id'];
     $studSemAYnarrativeequery = mysqlQuery("SELECT * FROM narrativereports n
                 JOIN tbl_students s on s.enrolled_stud_id = n.enrolled_stud_id 
-         where user_id = ? and ay_sem_id = ?", 'ii', [$_SESSION['log_user_id'], $currAcadYear]);
+         where s.user_id = ? and n.ay_sem_id = ? 
+            or n.file_status in (1,2)", 'ii', [$_SESSION['log_user_id'], $currAcadYear]);
 
 
     $isStudCanSubmitNewNarrative =  count($studSemAYnarrativeequery) !== 0
@@ -832,7 +832,9 @@ if ($action == 'getStudentsList'){
                             JOIN tbl_accounts a ON stud.user_id = a.user_id
                             JOIN section se ON s.year_sec_Id = se.year_sec_Id
                             JOIN tbl_aysem aySem ON aySem.id = s.ay_sem_id
-                            WHERE a.status = 1  AND u.user_type = 3 AND aySem.Curray_sem = 1
+                            LEFT JOIN narrativereports n ON n.enrolled_stud_id = s.enrolled_stud_id
+                            WHERE a.status = 1  AND u.user_type = 3 AND aySem.Curray_sem = 1 
+                               OR s.OJT_status = 1";"
                             ORDER BY 
                             a.date_created desc;";
     $data = mysqlQuery($fetch_enrolled_stud, '', []);
@@ -1659,7 +1661,8 @@ if ($action == 'getPublishedNarrativeReport'){
     header('Content-Type: application/json');
     $approveConvertedNarratives = "SELECT n.* , ui.*, s.*, p.*, ay.* FROM narrativereports n
     JOIN tbl_students s on n.enrolled_stud_id = s.enrolled_stud_id
-    JOIN program p on p.program_id = s.program_id
+    JOIN tbl_studinfo sinfo on sinfo.enrolled_stud_id = s.enrolled_stud_id
+    JOIN program p on p.program_id = sinfo.program_id
     JOIN tbl_aysem ay on ay.id = n.ay_sem_id
     JOIN tbl_user_info ui on ui.user_id = s.user_id
     WHERE n.convertStatus = 3;";
@@ -1853,10 +1856,11 @@ if ($action == "get_User_info") {
             LEFT JOIN tbl_accounts acc ON ui.user_id = acc.user_id
             LEFT JOIN tbl_students stud ON ui.user_id = stud.user_id
             LEFT JOIN tbl_studinfo studinf ON studinf.enrolled_stud_id = stud.enrolled_stud_id
+            LEFT JOIN narrativereports n ON n.enrolled_stud_id = studinf.enrolled_stud_id
             LEFT JOIN program p ON p.program_id = studinf.program_id
             LEFT JOIN section ys ON ys.year_sec_Id = studinf.year_sec_Id
             LEFT JOIN tbl_aysem aysem ON aysem.id = studinf.ay_sem_id
-            WHERE ui.user_id = ? AND aysem.Curray_sem = 1";
+            WHERE ui.user_id = ? AND aysem.Curray_sem = 1 OR studinf.OJT_status = 1";
 
         $get_User_infoRes = mysqlQuery($get_User_infoStud, 'i', [$user_id]);
     }
@@ -1968,11 +1972,15 @@ if ($action == 'updateAcc'){
 
 if ($action == 'weeklyJournalList'){
     header('Content-Type: application/json');
-    $weeklyJournalListlQuery = "SELECT s.* ,u.* FROM tbl_students s 
-        JOIN tbl_user_info u ON s.user_id = u.user_id 
-         WHERE s.adv_id = ? ORDER BY (SELECT activity_date 
+    $weeklyJournalListlQuery = "SELECT s.* ,u.* FROM tbl_studinfo s 
+        JOIN tbl_students stud ON stud.enrolled_stud_id = s.enrolled_stud_id 
+        JOIN tbl_user_info u ON u.user_id = stud.user_id 
+        JOIN tbl_aysem aysem on aysem.id = s.ay_sem_id
+         WHERE s.adv_id = ?  AND aysem.Curray_sem = 1 
+                               OR s.OJT_status = 1 
+         ORDER BY (SELECT activity_date 
         FROM activity_logs 
-        WHERE file_id IN ( SELECT file_id FROM weeklyReport WHERE stud_user_id = u.user_id ) 
+        WHERE file_id IN ( SELECT file_id FROM weeklyReport WHERE stud_user_id = stud.user_id ) 
         ORDER BY activity_date DESC LIMIT 1) DESC;";
 
     $weeklyJournalList = mysqlQuery($weeklyJournalListlQuery, 'i', [$_SESSION['log_user_id']]);
@@ -2238,32 +2246,24 @@ if ($action == 'changeAcadYear') {
     $conn->begin_transaction();
     try {
         if ($resetUserVal[$resetUser] === 'Yes') {
-            // Get current academic year
-            $currAcadYear = mysqlQuery(
-                'SELECT id FROM tbl_aysem WHERE Curray_sem = 1',
-                'i',
-                []
-            )[0]['id'];
-
-            // Fetch student user IDs for current academic year
+            // Fetch student user IDs of the students who have submitted narrative reports
             $student_user_ids = [];
-            $getStudNarrative = mysqlQuery(
-                'SELECT ui.user_id 
+            $getStudNarrative = $conn->query(
+                "SELECT ui.user_id 
                  FROM narrativereports n 
                  JOIN tbl_students s ON s.enrolled_stud_id = n.enrolled_stud_id 
                  JOIN tbl_user_info ui ON s.user_id = ui.user_id 
-                 WHERE n.ay_sem_id = ?',
-                'i',
-                [$currAcadYear]
+                 WHERE n.file_status IN (3, 4)"
             );
 
-            foreach ($getStudNarrative as $studs) {
+            while ($studs = $getStudNarrative->fetch_assoc()) {
                 $student_user_ids[] = $studs['user_id'];
             }
 
             if (!empty($student_user_ids)) {
                 // Prepare placeholders for `IN` clause
                 $placeholders = implode(',', array_fill(0, count($student_user_ids), '?'));
+                $types = str_repeat('i', count($student_user_ids)); // Assuming `user_id` is an integer
 
                 // Delete from `activity_logs`
                 $delActLogs = $conn->prepare(
@@ -2272,7 +2272,7 @@ if ($action == 'changeAcadYear') {
                      JOIN weeklyreport AS wr ON act.file_id = wr.file_id
                      WHERE wr.stud_user_id IN ($placeholders)"
                 );
-                $delActLogs->bind_param(str_repeat('i', count($student_user_ids)), ...$student_user_ids);
+                $delActLogs->bind_param($types, ...$student_user_ids);
                 $delActLogs->execute();
 
                 // Delete from `revision_attachment`
@@ -2283,42 +2283,45 @@ if ($action == 'changeAcadYear') {
                      JOIN weeklyreport AS wr ON wr.file_id = tr.file_id
                      WHERE wr.stud_user_id IN ($placeholders)"
                 );
-                $delRevAtt->bind_param(str_repeat('i', count($student_user_ids)), ...$student_user_ids);
+                $delRevAtt->bind_param($types, ...$student_user_ids);
                 $delRevAtt->execute();
 
+                // Delete from `tbl_revision`
                 $delRev = $conn->prepare(
                     "DELETE tr
                      FROM tbl_revision AS tr
                      JOIN weeklyreport AS wr ON wr.file_id = tr.file_id
                      WHERE wr.stud_user_id IN ($placeholders)"
                 );
-                $delRev->bind_param(str_repeat('i', count($student_user_ids)), ...$student_user_ids);
+                $delRev->bind_param($types, ...$student_user_ids);
                 $delRev->execute();
 
+                // Delete from `weeklyreport`
                 $delWeeklyReport = $conn->prepare(
                     "DELETE FROM weeklyreport WHERE stud_user_id IN ($placeholders)"
                 );
-                $delWeeklyReport->bind_param(str_repeat('i', count($student_user_ids)), ...$student_user_ids);
+                $delWeeklyReport->bind_param($types, ...$student_user_ids);
                 $delWeeklyReport->execute();
-            }
 
-            $deactUsers = "UPDATE tbl_accounts acc 
-                           SET acc.status = 2 
-                           WHERE acc.user_id IN (
-                               SELECT ui.user_id 
-                               FROM tbl_user_info ui 
-                               WHERE ui.user_type != 1
-                           )";
-            $conn->query($deactUsers);
+                // Deactivate users in `tbl_accounts`
+                $deactUsers = $conn->prepare(
+                    "UPDATE tbl_accounts 
+                     SET status = 2 
+                     WHERE user_id IN ($placeholders)"
+                );
+                $deactUsers->bind_param($types, ...$student_user_ids);
+                $deactUsers->execute();
+            }
         }
 
+        // Update academic year and semester
         $conn->query("UPDATE tbl_aysem SET Curray_sem = 2");
 
         $setAcadYearQuery = $conn->prepare("UPDATE tbl_aysem SET Curray_sem = 1 WHERE id = ?");
         $setAcadYearQuery->bind_param('i', $acadYearID);
         $setAcadYearQuery->execute();
 
-       $conn->commit();
+        $conn->commit();
         echo json_encode(['response' => 1, 'message' => 'Academic year has been changed successfully.']);
     } catch (Exception $e) {
         $conn->rollback();

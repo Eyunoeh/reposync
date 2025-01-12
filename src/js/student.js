@@ -391,7 +391,7 @@ async function getSubmittedNarratives(){
                                                  
                                              <div class="tooltip tooltip-bottom" data-tip="Resubmit">
                                                <a onclick="editSubmittedNarrative('${narrative.narrative_id}')" class="font-semibold cursor-pointer text-light-inverse text-md/normal break-words">
-                                                  <i class="fa-solid fa-circle-info"></i></a>
+                                                  <i class="fa-solid fa-pen-to-square"></i></a>
                                              </div>`
                                        }
                                       table_data += `

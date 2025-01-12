@@ -40,9 +40,9 @@ async function get_studentUserList() {
                     student_name: student['first_name'] + ' ' +  student['last_name'] ,
                     student_program: student['program_code'],
                     student_yrSec: student['year'] + student['section'],
-                    ojt_center: student['ojt_center'],
+                    ojt_center: student['ojt_center']  !== null ? student['ojt_center'] : 'Not yet started',
                     ojt_contact: student['ojt_contact'],
-                    ojt_started: student['OJT_started'] !== null ? formatDateTime(student['OJT_started'], false): 'N/A',
+                    ojt_started: student['OJT_started'] !== null ? formatDateTime(student['OJT_started'], false): 'Not yet started',
                     ojt_ended: student['OJT_ended'] !== null ? formatDateTime(student['OJT_ended'], false): 'N/A',
                     adviser_id: student['adv_id'],
                     adviser_name: student['adv_id'] !== null ? adv_info['first_name']+ ' ' + adv_info['last_name'] : 'N/A'
@@ -75,26 +75,19 @@ async function get_studentUserList() {
                 <td class="p-3 text-start text-wrap mx-w-32">
                     <span class=" text-light-inverse text-md/normal">${student['student_yrSec']}</span>
                 </td> 
-                ${isAdviser ? `
-                <td class="p-3 text-start text-wrap mx-w-32">
-                    <span class=" text-light-inverse text-md/normal">${(student['ojt_started'])}</span>
-                </td>
-                <td class="p-3 text-start text-wrap mx-w-32">
-                    <span class=" text-light-inverse text-md/normal">${student['ojt_ended']}</span>
-                </td>
-                ` : `
                 <td class="p-3 text-start text-wrap mx-w-32">
                     <span class=" text-light-inverse text-md/normal ">${student['ojt_center']}</span>
                 </td>
-                <td class="p-3 text-start text-wrap mx-w-32">
-                    <span class=" text-light-inverse text-md/normal "> ${student['ojt_contact']}</span>
-                </td>
+                
+                ${!isAdviser ? `
+         
                 <td class="p-3 text-start text-wrap mx-w-32">
                     <span class=" text-light-inverse text-md/normal ">${student['adviser_name']}</span>
-                </td>`}
+                </td>` : ``
+            }
                 <td class="p-3 text-end text-wrap mx-w-32">
                     <a href="#" onclick="openModalForm('manageStudModalForm');editUserStud_Info(${student['user_id']})"   class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
-                        <i class="fa-solid fa-circle-info"></i>
+                        <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                 </td>
             </tr>`;

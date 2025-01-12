@@ -390,7 +390,7 @@ async function changeCurrSemAY(resetUsers){
         method: 'GET',
         dataType: 'json'
     });
-    console.log(response );
+    console.log(callmessage );
     if (response === 1){
         window.location.href = 'manageAcadYear.php'
     }
