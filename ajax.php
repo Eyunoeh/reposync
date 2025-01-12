@@ -832,9 +832,9 @@ if ($action == 'getStudentsList'){
                             JOIN tbl_accounts a ON stud.user_id = a.user_id
                             JOIN section se ON s.year_sec_Id = se.year_sec_Id
                             JOIN tbl_aysem aySem ON aySem.id = s.ay_sem_id
-                            LEFT JOIN narrativereports n ON n.enrolled_stud_id = s.enrolled_stud_id
-                            WHERE a.status = 1  AND u.user_type = 3 AND aySem.Curray_sem = 1 
-                               OR s.OJT_status = 1";"
+                            WHERE a.status = 1
+                                      AND u.user_type = 3 
+                                      AND s.OJT_status = 1;";"
                             ORDER BY 
                             a.date_created desc;";
     $data = mysqlQuery($fetch_enrolled_stud, '', []);
@@ -1621,17 +1621,26 @@ if ($action == 'UpdateNotePostReq'){
     }
 
 }
+
 if ($action === 'getSubmittedNarrativeReport'){
 header('Content-Type: application/json');
-    $submittedUploadReq = "SELECT n.*, ui.*, s.*, semAY.* 
-FROM narrativereports n
-JOIN tbl_students s ON n.enrolled_stud_id = s.enrolled_stud_id
-JOIN tbl_user_info ui ON ui.user_id = s.user_id
-JOIN tbl_aysem semAY ON semAY.id = n.ay_sem_id
-WHERE s.adv_id = ?
-  AND semAY.Curray_sem = 1
-  AND n.file_status = 3
-  OR n.file_status IN (1, 2);";
+    $submittedUploadReq = "SELECT n.*, u.*, s.*, a.*, aySem.*
+FROM tbl_studinfo s
+JOIN tbl_students stud ON stud.enrolled_stud_id = s.enrolled_stud_id
+JOIN tbl_user_info u ON stud.user_id = u.user_id
+JOIN tbl_accounts a ON stud.user_id = a.user_id
+JOIN tbl_aysem aySem ON aySem.id = s.ay_sem_id
+JOIN narrativereports n ON n.enrolled_stud_id = s.enrolled_stud_id
+  AND n.upload_date = (
+      SELECT MAX(upload_date)
+      FROM narrativereports
+      WHERE enrolled_stud_id = s.enrolled_stud_id
+  )
+WHERE a.status = 1
+  AND u.user_type = 3
+  AND s.OJT_status = 1
+  AND s.adv_id = ?;
+";
 
     $result = mysqlQuery($submittedUploadReq, 'i', [$_SESSION['log_user_id']]);
 
@@ -2253,6 +2262,7 @@ if ($action == 'changeAcadYear') {
                  FROM narrativereports n 
                  JOIN tbl_students s ON s.enrolled_stud_id = n.enrolled_stud_id 
                  JOIN tbl_user_info ui ON s.user_id = ui.user_id 
+                 JOIN tbl_studinfo sinfo on sinfo.enrolled_stud_id = s.enrolled_stud_id
                  WHERE n.file_status IN (3, 4)"
             );
 
@@ -2304,6 +2314,16 @@ if ($action == 'changeAcadYear') {
                 $delWeeklyReport->execute();
 
                 // Deactivate users in `tbl_accounts`
+                $completeOJTUsers = $conn->prepare(
+                    "UPDATE tbl_studinfo sinfo
+                            JOIN tbl_students stud ON stud.enrolled_stud_id = sinfo.enrolled_stud_id
+                            SET sinfo.OJT_status = 2
+                            WHERE stud.user_id IN ($placeholders);
+                            "
+                );
+                $completeOJTUsers->bind_param($types, ...$student_user_ids);
+                $completeOJTUsers->execute();
+
                 $deactUsers = $conn->prepare(
                     "UPDATE tbl_accounts 
                      SET status = 2 
