@@ -226,7 +226,7 @@ async function getStudSubmittedNarratives(){
 
             subNarrativesTbl += `
                     <a onclick="openModalForm('EditNarrativeReq'); upd_SubmittedNarrative(this.getAttribute('data-narrative'))" data-narrative="${key}" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
-                        <i class="fa-solid fa-circle-info"></i>
+                        <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                 </td>
             </tr>`;

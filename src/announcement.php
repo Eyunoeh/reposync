@@ -47,10 +47,10 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
         <section class="bg-white  bordered sm:border-none w-full h-full rounded sm:w-[40%] p-5">
             <div class="card-title flex items-center justify-between">
                 <div class="">
-                    <h1 class="font-bold text-2xl text-slate-700 font-sans">Adviser Notes</h1>
+                    <h1 class="font-bold text-2xl text-slate-700 font-sans">Announcement</h1>
                 </div>
             </div>
-            <div class="card-body flex flex-col items-center h-[70vh] sm:p-5 overflow-hidden hover:overflow-auto scroll-smooth gap-5" id="studNotes">
+            <div class="card-body flex flex-col items-center h-[70vh] sm:p-5 overflow-hidden hover:overflow-auto scroll-smooth gap-5" id="noteAnnouncement">
 
 
             </div>

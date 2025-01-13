@@ -320,14 +320,14 @@ if ($action == 'newFinalReport'){
     $stud_info = mysqlQuery('SELECT sinfo.*, ui.* from tbl_studinfo sinfo 
     JOIN tbl_students s on sinfo.enrolled_stud_id = s.enrolled_stud_id 
     JOIN tbl_user_info ui on ui.user_id = s.user_id 
-                     where s.user_id = ?', 'i', [$_SESSION['log_user_id']])[0];
+                     where s.user_id = ? AND sinfo.OJT_status = 1', 'i', [$_SESSION['log_user_id']])[0];
 
 
 
 
     $school_id = $stud_info['enrolled_stud_id'];
     $ojt_adviser_UID = $stud_info['adv_id'];
-    $semAyId = mysqlQuery("SELECT id from tbl_aysem where Curray_sem = 1", '', [])[0]['id'];
+    $semAyId = $stud_info['ay_sem_id'];
     $new_file_name =  $school_id.'_'. uniqid('', true) . ".pdf";
     $current_date_time = date('Y-m-d H:i:s');
 
@@ -372,13 +372,14 @@ if ($action === 'editFinalReport') {
     $params = [];
     $types = '';
 
-    $stud_info = mysqlQuery('SELECT s.*, ui.*, n.*
-        FROM tbl_students s 
-        JOIN tbl_user_info ui ON ui.user_id = s.user_id
-        JOIN narrativereports n ON n.enrolled_stud_id = s.enrolled_stud_id
-        WHERE s.user_id = ?', 'i', [$_SESSION['log_user_id']])[0];
+    $stud_info = mysqlQuery('SELECT  n.* from narrativereports n
+JOIN tbl_studinfo sinfo on sinfo.enrolled_stud_id = n.enrolled_stud_id 
+JOIN tbl_students s on s.enrolled_stud_id = sinfo.enrolled_stud_id
 
-    $ojt_adviser_UID = $stud_info['adv_id'];
+where s.user_id = ? AND sinfo.OJT_status = 1;', 'i', [$_SESSION['log_user_id']])[0];
+
+
+    $ojt_adviser_UID = $stud_info['ojt_adv_id'];
     $school_id = $stud_info['enrolled_stud_id'];
     $narrative_id = $stud_info['narrative_id'];
 
@@ -1181,6 +1182,7 @@ if ($action === 'Notes') {
 }
 
 if ($action == 'getDashboardNotes') {
+    header('Content-Type: application/json');
 
     if (!isset($_SESSION['log_user_id'])) {
         echo json_encode([
@@ -1194,20 +1196,34 @@ if ($action == 'getDashboardNotes') {
 
 
 
-
     if ( $_SESSION['log_user_type'] === 'student'){
-        $stud_info = mysqlQuery('SELECT s.*
+        $stud_info = mysqlQuery('SELECT sinfo.*, s.user_id
         FROM tbl_students s 
-        WHERE s.user_id = ?', 'i', [$_SESSION['log_user_id']])[0];
+        JOIN tbl_studinfo sinfo on s.enrolled_stud_id = sinfo.enrolled_stud_id
+        WHERE s.user_id = ? and sinfo.OJT_status = 1', 'i', [$_SESSION['log_user_id']])[0];
         $adv_id = $stud_info['adv_id'];
         $user_id = $adv_id ;
 
     }
-    $condition  =  $_SESSION['log_user_type'] === 'student' ? "AND status = 1 " : "AND status IN (1, 2, 3) ";
 
 
-    header('Content-Type: application/json');
-    $getNotes = "SELECT * FROM announcement WHERE user_id = ? $condition AND type = 'Notes' ORDER BY announcementUpdated DESC";
+    if (isset($_GET['page']) and $_GET['page']  === 'home' ){
+        if ($_SESSION['log_user_type'] === 'student'){
+            $getNotes = "SELECT announcement.*, ui.*
+FROM announcement 
+JOIN tbl_user_info ui ON ui.user_id = announcement.user_id
+WHERE announcement.status = 1 
+  AND type = 'Notes' 
+  AND (announcement.user_id = ? OR ui.user_type = 1)
+ORDER BY announcementUpdated DESC;";
+        }
+    }else{
+        $getNotes = "SELECT * FROM announcement WHERE user_id = ? 
+                             AND status IN (1, 2, 3) AND type = 'Notes' ORDER BY announcementUpdated DESC";
+        $res = mysqlQuery($getNotes, 'i', [$user_id]);
+    }
+
+
     $res = mysqlQuery($getNotes, 'i', [$user_id]);
 
 
@@ -1869,7 +1885,7 @@ if ($action == "get_User_info") {
             LEFT JOIN program p ON p.program_id = studinf.program_id
             LEFT JOIN section ys ON ys.year_sec_Id = studinf.year_sec_Id
             LEFT JOIN tbl_aysem aysem ON aysem.id = studinf.ay_sem_id
-            WHERE ui.user_id = ? AND aysem.Curray_sem = 1 OR studinf.OJT_status = 1";
+            WHERE ui.user_id = ? AND  studinf.OJT_status = 1";
 
         $get_User_infoRes = mysqlQuery($get_User_infoStud, 'i', [$user_id]);
     }

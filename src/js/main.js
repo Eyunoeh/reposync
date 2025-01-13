@@ -213,7 +213,7 @@ async function getHomeActSched() {
 async function getHomeNotes(){
     try {
         const response = await $.ajax({
-            url: '../ajax.php?action=getDashboardNotes',
+            url: '../ajax.php?action=getDashboardNotes&page=home',
             method: 'GET',
             dataType: 'json'
         });
@@ -233,13 +233,15 @@ async function getHomeNotes(){
         <div class="max-h-[10rem] transition overflow-hidden hover:overflow-auto w-full">
             <p class="text-justify text-sm break-words w-full">${note.description}
             </p>
-            <p class="text-[12px] text-slate-400 text-end">${notePosted}
+            <p class="text-[12px] text-slate-400 text-end">${notePosted}</p>
+            <p class="text-[12px] text-slate-400 text-end"> ${note.user_type === 'admin'?   note.first_name + ' '+ note.last_name + ' (OJT Coordinator)' :   note.first_name + ' '+ note.last_name + ' (OJT Adviser)'}</p>
+            
         </div>
     </div>
 </div>
 `
                 })
-                $('#studNotes').html(advNoteCard);
+                $('#noteAnnouncement').html(advNoteCard);
             }
         }
 
