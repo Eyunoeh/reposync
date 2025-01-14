@@ -82,27 +82,25 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
         <div id="AnnouncementSubmenu" class="ani text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" >
 
 
-
+            <h1 onclick="dashboard_tab(this.id); " id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
+                <i class="fa-solid fa-envelopes-bulk"></i>
+                Post Announcement
+            </h1>
 
             <?php
             if ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'admin'):
             ?>
                 <h1 onclick="dashboard_tab(this.id) ;" id="notesReq" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
-                    <i class="fa-regular fa-note-sticky"></i>
-                    Advisers Notes
+                    <i class="fa-solid fa-list"></i>
+                    Announcement List
                 </h1>
 
                 <h1 onclick="dashboard_tab(this.id); " id="schedule&Act" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
                 <i class="fa-regular fa-calendar-days"></i>
                  Activities & Schedule
             </h1>
-
-            <?php elseif ( isset($_SESSION['log_user_type'])  && $_SESSION['log_user_type'] == 'adviser'):?>
-                <h1 onclick="dashboard_tab(this.id); " id="adviserNotes" class="dashboard_tab cursor-pointer p-2 hover:bg-slate-200 hover:text-slate-700  text-white rounded-md mt-1">
-                    <i class="fa-regular fa-note-sticky"></i>
-                    Notes
-                </h1>
             <?php endif;?>
+
         </div>
         <?php
 

@@ -1156,10 +1156,25 @@ if ($action === 'Notes') {
             }
         }
         if ($actionType != 'edit'){
-           $getAdvStudentsTargetRecipient = "SELECT tbl_students.*
-    FROM tbl_students JOIN tbl_accounts on tbl_accounts.user_id = tbl_students.user_id
-    Where tbl_students.adv_id = ? and tbl_accounts.status = 'active'";
-            $result = mysqlQuery($getAdvStudentsTargetRecipient, 'i',[$_SESSION['log_user_id']]);
+            $types = '';
+            $params = [];
+            if ($_SESSION['log_user_type'] === 'adviser') {
+                $getAdvStudentsTargetRecipient = "SELECT  a.* FROM tbl_studinfo s 
+                            JOIN tbl_students stud ON stud.enrolled_stud_id = s.enrolled_stud_id
+                            JOIN tbl_user_info u ON stud.user_id = u.user_id
+                            JOIN tbl_accounts a ON stud.user_id = a.user_id
+                            WHERE s.adv_id = ? AND
+                                a.status = 1
+                                      AND u.user_type = 3 
+                                      AND s.OJT_status = 1;";
+                $types = 'i';
+                $params [] = $_SESSION['log_user_id'];
+            }else{
+                $getAdvStudentsTargetRecipient = "SELECT a.* FROM tbl_accounts a 
+                                    JOIN tbl_user_info u ON u.user_id = a.user_id
+                                    WHERE u.user_type in (2,3 )AND a.status = 1;";
+            }
+            $result = mysqlQuery($getAdvStudentsTargetRecipient, $types,$params);
             $bodyMessageToStudents = '<h1>Notification</h1> <br><br>';
 
             $bodyMessageToStudents .= "<b>Subject:</b> " . $note_title . "<br><br>";
@@ -1220,7 +1235,6 @@ ORDER BY announcementUpdated DESC;";
     }else{
         $getNotes = "SELECT * FROM announcement WHERE user_id = ? 
                              AND status IN (1, 2, 3) AND type = 'Notes' ORDER BY announcementUpdated DESC";
-        $res = mysqlQuery($getNotes, 'i', [$user_id]);
     }
 
 
