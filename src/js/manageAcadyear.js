@@ -331,8 +331,20 @@ async function displayAcadYears(){
             acadYearstbl_data+= `<tr>
                                 <td>${acadYear.ayStarting}-${acadYear.ayEnding}</td>
                                 <td>${acadYear.Semester}</td>
-                                <td  class="text-center"><a class="cursor-pointer" onclick="editAy(${acadYear.id});
-                                    openModalForm('ManageAcadYear')"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                                
+                                <td  class="flex justify-center items-center gap-4">
+                                <div class="tooltip tooltip-bottom" data-tip="Edit">
+                                <a class="cursor-pointer" onclick="editAy(${acadYear.id});
+                                    openModalForm('ManageAcadYear')"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    
+</div>
+                                
+                                          <div class="tooltip tooltip-bottom" data-tip="Export students list">
+                                    <a class="cursor-pointer" ><i class="fa-solid fa-file-export"></i></a>
+</div>
+                                    
+                                    </td>                                
+                                    
                             </tr>`
         })
 

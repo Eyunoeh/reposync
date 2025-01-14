@@ -1797,11 +1797,10 @@ if ($action === 'total_Users'){
     if ($userType !== '' &$accStatType !== ''){
         $result = totalUsers($userType, $accStatType);
     }else{ // total adviser advisory
-        $totalUserquery = "SELECT COUNT(tbl_students.adv_id) as totaluserCount
-                            FROM tbl_students JOIN tbl_accounts 
-                            ON tbl_students.user_id = tbl_accounts.user_id 
-                            WHERE tbl_accounts.status = 1 
-                            AND tbl_students.adv_id = ?;";
+        $totalUserquery = "SELECT COUNT(sinfo.adv_id) as totaluserCount FROM tbl_studinfo sinfo
+JOIN tbl_students stud on stud.enrolled_stud_id = sinfo.enrolled_stud_id
+JOIN tbl_accounts acc ON stud.user_id = acc.user_id 
+WHERE acc.status = 1 AND sinfo.OJT_status = 1 AND sinfo.adv_id = ?;";
         $types = 'i';
         $params [] = $_SESSION['log_user_id'];
         $result = mysqlQuery($totalUserquery, $types, $params)[0]['totaluserCount'];
@@ -1828,7 +1827,8 @@ if ($action == 'dshbPendStudWeeklyReport'){
     $getTotalStudPedingWeeklyReport = "SELECT COUNT(*) AS totalStudentUnreadReport 
 FROM `weeklyreport` 
     JOIN tbl_students on tbl_students.user_id = weeklyreport.stud_user_id 
-WHERE tbl_students.adv_id = ? AND weeklyreport.readStatus = 'Unread';
+    JOIN tbl_studinfo sinfo on sinfo.enrolled_stud_id = tbl_students.enrolled_stud_id
+WHERE sinfo.adv_id = ? AND weeklyreport.readStatus = 'Unread';;
 ";
     $getTotalStudPedingWeeklyReportSTMT  = $conn->prepare($getTotalStudPedingWeeklyReport);
     $getTotalStudPedingWeeklyReportSTMT->bind_param('i',$_SESSION['log_user_id']);
@@ -2537,21 +2537,12 @@ GROUP BY
     }
 
     if ($renderCharData == 'adviserNarrative') {
-        $numberOfNarrativeSubPerSec = "SELECT  
-    section.year, 
-    section.section, 
-    COUNT(narrativereports.narrative_id) AS total_reports 
-FROM 
-    section
-LEFT JOIN 
-    tbl_students ON tbl_students.year_sec_Id = section.year_sec_Id
-LEFT JOIN 
-    narrativereports ON narrativereports.enrolled_stud_id = tbl_students.enrolled_stud_id
-WHERE 
-    tbl_students.adv_id = ?
-GROUP BY 
-    section.year, 
-    section.section;";
+        $numberOfNarrativeSubPerSec = "SELECT section.year, section.section, 
+       COUNT(narrativereports.narrative_id) AS total_reports FROM  section
+        LEFT JOIN tbl_studinfo sinfo ON sinfo.year_sec_Id = section.year_sec_Id
+        LEFT JOIN tbl_students stud ON stud.enrolled_stud_id = sinfo.enrolled_stud_id
+        LEFT JOIN narrativereports ON narrativereports.enrolled_stud_id = stud.enrolled_stud_id
+        WHERE sinfo.adv_id = ? AND sinfo.OJT_status = 1 GROUP BY section.year, section.section;";
         $result = mysqlQuery($numberOfNarrativeSubPerSec, 'i', [$_SESSION['log_user_id']]);
         foreach ($result as $row) {
             $data[] =['label' => $row['year'].  $row['section'] , 'value' => $row['total_reports'], 'onclickElement' => 'dashboard_ReviewUploadNarrative'];

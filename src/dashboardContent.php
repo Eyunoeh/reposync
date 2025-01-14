@@ -36,7 +36,7 @@ session_start();
                 <span class="loading loading-spinner loading-lg"></span>
 
             </h1>
-            <h1 class="font-sans  text-sm" >Unread Weekly Reports</h1>
+            <h1 class="font-sans  text-sm" >Unread Weekly journal</h1>
         </div>
 
         <!--<div onclick="dashboard_tab(this.id); " id="adviserNotesCard" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">

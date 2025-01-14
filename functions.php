@@ -71,17 +71,13 @@ function getTotalNarrativeReports($program, $file_status, $ojtAdviser) {
                          WHERE 1 = 1";
     $types = '';
     $params = [];
-    if ($program !== '') {
-        $sql .= ' AND tbl_students.program_id = ?';
-        $types .= 'i';
-        $params[] = $program;
-    }
+
     if ($file_status !== ''){
         $sql .= ' AND narrativereports.file_status = ?';
         $types .= 'i';
         $params[] = $file_status;
     }if ($ojtAdviser !== ''){
-        $sql .= ' AND tbl_students.adv_id = ?';
+        $sql .= ' AND narrativereports.ojt_adv_id = ?';
         $types .= 'i';
         $params[] = $ojtAdviser;
     }
