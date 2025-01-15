@@ -156,7 +156,7 @@ if (!$student_user_id){
                                 </td>
                                 <td class="p-3 pr-0  ">
                                     <div  class="tooltip tooltip-bottom"  data-tip="View">
-                          <a href="StudentWeeklyReportViewer.php?checkStudent='.urlencode(encrypt_data($student_user_id, $secret_key)).'&weeklyJournal='. urlencode(encrypt_data($row['file_id'],$secret_key)) .'" class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer  transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
+                          <a href="StudentWeeklyJournalViewer.php?checkStudent='.urlencode(encrypt_data($student_user_id, $secret_key)).'&weeklyJournal='. urlencode(encrypt_data($row['file_id'],$secret_key)) .'" class="text-light-inverse text-md/normal mb-1 hover:cursor-pointer  transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent">
                             <i class="fa-regular fa-eye"></i>
                         </a>
                                     </div>
@@ -183,7 +183,7 @@ if (!$student_user_id){
             <h3 class="font-bold text-lg text-center text-black  top-0  p-5" id="week">Week 1</h3>
         </div>
         <div class="p-3">
-            <form id="WeeklyReportForm" method="post" action="StudentWeeklyReport.php" class="flex flex-col justify-center gap-12 items-center">
+            <form id="WeeklyReportForm" method="post" action="StudentWeeklyJournal.php" class="flex flex-col justify-center gap-12 items-center">
                 <label class="form-control w-full max-w-xs">
                     <div class="label">
                         <span class="label-text">Update remark</span>

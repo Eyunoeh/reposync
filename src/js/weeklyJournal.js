@@ -7,10 +7,11 @@ async function updateWeeklyJournal(file_id){
         method: 'GET',
         dataType: 'json'
     });
+    let attributeValue = $('#backWeekyreportbtn').attr('data-redirect');
+    console.log(response.message)
+
     if (response.response === 1){
-        setTimeout(() => {
-            closeModalForm('loader');
-        }, 800);
+        window.location.href = attributeValue;
 
     }
 

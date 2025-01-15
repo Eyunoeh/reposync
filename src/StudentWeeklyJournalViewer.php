@@ -31,7 +31,7 @@ if (!$student_user_id){
     header("Location: dashboard.php");
 }
 if (!$file_id){
-    header("Location: StudentWeeklyReport.php");
+    header("Location: StudentWeeklyJournal.php");
 }
 
 $result = mysqlQuery("SELECT * FROM weeklyreport where file_id = ?", 'i', [$file_id])[0];
@@ -58,26 +58,12 @@ $result = mysqlQuery("SELECT * FROM weeklyreport where file_id = ?", 'i', [$file
 </head>
 <body  class="min-h-screen bg-slate-700 overflow-x-hidden overflow-y-auto">
 
-<div class="flex justify-between items-center gap-2 sticky pb-2 top-2 px-5 z-10">
-    <a href="StudentWeeklyReport.php?checkStudent=<?=urlencode(encrypt_data($student_user_id, $secret_key));?>" class=" opacity-50 hover:opacity-100 transition-all cursor-pointer btn  btn-neutral  z-20 top-5 left-5   font-bold text-white ">
+<div class="absolute top-5 left-5 z-10">
+    <a id="backWeekyreportbtn" onclick="openModalForm('remarkForm')" data-redirect="StudentWeeklyJournal.php?checkStudent=<?=urlencode(encrypt_data($student_user_id, $secret_key));?>"
+       class="cursor-pointer btn  btn-success     text-white ">
         <i class="fa-solid fa-circle-left"></i> Back
     </a>
-    <div class="opacity-50 bg-slate-100 hover:text-white
-    hover:bg-slate-700 hover:opacity-100 transition-all form-control w-full  max-w-xs  p-2  rounded-lg shadow-lg ">
-        <div class="label">
-            <span class="   text-sm">Status</span>
-        </div>
-        <div class="flex justify-center gap-2 items-end w-full">
-            <select id="report_Stat" name="report_Stat" class=" text-black flex-grow select select-bordered">
-                <option disabled value="pending" <?php echo $result['upload_status'] === 'pending' ? 'selected' : ''?>>Pending</option>
-                <option value="revision" <?php echo $result['upload_status'] === 'revision' ? 'selected' : ''?>>With revision</option>
-                <option value="approved" <?php echo $result['upload_status'] === 'approved' ? 'selected' : ''?>>Approved</option>
-            </select>
-            <button class="btn btn-md btn-circle btn-info cursor-pointer"
-                    onclick="updateWeeklyJournal(<?=$file_id?>); openModalForm('loader')">Save</button>
 
-        </div>
-    </div>
 </div>
 
 
@@ -204,7 +190,7 @@ $result = mysqlQuery("SELECT * FROM weeklyreport where file_id = ?", 'i', [$file
     </div>
 
     </div>
-<dialog id="img_modal" class="modal bg-black  bg-opacity-40">
+<dialog id="img_modal"  class="modal bg-black  bg-opacity-40">
     <div class="card  w-[100vw] sm:w-[55rem] h-[100vh]
           flex flex-col text-slate-700 overflow-auto">
         <div class="card-title sticky">
@@ -217,11 +203,38 @@ $result = mysqlQuery("SELECT * FROM weeklyreport where file_id = ?", 'i', [$file
         </div>
     </div>
 </dialog>
-<dialog id="loader"  class="modal bg-black  bg-opacity-40">
-    <div class=" absolute h-[100vh] w-full grid place-items-center bg-black bg-opacity-35">
-        <span class="loading loading-dots loading-lg text-white"></span>
+
+
+<dialog id="remarkForm" class="modal bg-black bg-opacity-40">
+    <div class=" bg-slate-100 form-control w-full  max-w-xs  p-2  rounded-lg shadow-lg ">
+        <div class="card-title sticky flex justify-end ">
+            <button class=" btn btn-sm btn-circle btn-ghost  " onclick="closeModalForm('remarkForm')">✕</button>
+        </div>
+        <div class="label">
+            <span class="   text-sm">Status</span>
+        </div>
+        <div class="grid grid-cols-1  gap-4 ">
+            <select id="report_Stat" name="report_Stat" class=" text-black flex-grow select select-bordered">
+                <option disabled value="pending" <?php echo $result['upload_status'] === 'pending' ? 'selected' : ''?>>Pending</option>
+                <option value="revision" <?php echo $result['upload_status'] === 'revision' ? 'selected' : ''?>>With revision</option>
+                <option value="approved" <?php echo $result['upload_status'] === 'approved' ? 'selected' : ''?>>Approved</option>
+            </select>
+            <button class="btn btn-info cursor-pointer" onclick="updateWeeklyJournal(<?=$file_id?>); openModalForm('loader')">Save</button>
+        </div>
+        <dialog id="loader"  class="modal bg-black  bg-opacity-40">
+            <div class=" absolute h-[100vh] w-full grid place-items-center bg-black bg-opacity-35">
+                <span class="loading loading-dots loading-lg text-white"></span>
+            </div>
+        </dialog>
+
+
     </div>
 </dialog>
+
+
+
+
+
 
 
 </body>

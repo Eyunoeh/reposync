@@ -2446,10 +2446,8 @@ if ($action === 'updateJournalRemark') {
 
 
     $sql = "UPDATE weeklyreport SET upload_status = ? WHERE file_id = ?";
-    if (!mysqlQuery($sql, 'si', [$remarks[$remark], $file_id])) {
-        echo handleError("Failed to update status.");
+    mysqlQuery($sql, 'si', [$remarks[$remark], $file_id]);
 
-    }
 
     $insert_activity_log = "INSERT INTO activity_logs (file_id, activity_type, activity_date) 
                                 VALUES (?, 'status update', CURRENT_TIMESTAMP)";
