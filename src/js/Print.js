@@ -153,3 +153,61 @@ async function printAdvList() {
     }
 }
 
+
+
+async function printAySemStudList(aysem_id,record_name){
+    try {
+        let {data: AySemstudList} = await $.ajax({
+            url: '../ajax.php?action=AySemStudList&aysem_id=' + encodeURIComponent(aysem_id),
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        const  adviserList  = await $.ajax({
+            url: '../ajax.php?action=getAdvisers' ,
+            method: 'GET',
+            dataType: 'json'
+        });
+        let advisers = adviserList.data.reduce((acc, adviser) => {
+            let { user_id, first_name, last_name, contact_number, email } = adviser;
+            if (!acc[user_id]) {
+                acc[user_id] = { name: `${first_name} ${last_name}`,
+                    user_id: user_id,
+                    adv_contact: `${contact_number}`,
+                    adv_email: `${email}`};
+            }
+            return acc;
+        }, {});
+
+        if (AySemstudList && AySemstudList.length) {
+            const transformedData = AySemstudList.map(item => ({
+                Student_no: item.enrolled_stud_id,
+                Name: `${item.last_name} ${item.first_name} ${item.middle_name || ''}`.trim(), // Combine names
+
+                Email: item.email,
+                Sex: item.sex,
+                OJT_Center: item.ojt_center,
+                OJT_Started: item.OJT_started !== null ? item.OJT_started : 'N/A',
+                Date_Completed: item.OJT_ended  !== null ? item.OJT_ended : 'N/A',
+                Adviser: advisers[item.adv_id]?.name  !== null ? advisers[item.adv_id]?.name  : 'N/A',
+                Adviser_contact_num: advisers[item.adv_id]?.adv_contact  !== null ? advisers[item.adv_id]?.adv_contact  : 'N/A',
+                Adviser_Email: advisers[item.adv_id]?.adv_email  !== null ? advisers[item.adv_id]?.adv_email  : 'N/A',
+            }));
+
+            const workbook = XLSX.utils.book_new();
+            const worksheet = XLSX.utils.json_to_sheet(transformedData);
+
+            worksheet['!cols'] = new Array(Object.keys(transformedData[0]).length).fill({ wch: 23 });
+
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+            XLSX.writeFile(workbook, record_name+'.xlsx');
+        } else {
+            Alert('notif','No data available to export.', 'error');
+        }
+    } catch (error) {
+        console.error('Error exporting data:', error);
+        Alert('notif','Failed to export data.', 'error');
+    }
+}
+
+

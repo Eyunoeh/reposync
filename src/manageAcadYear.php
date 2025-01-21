@@ -19,6 +19,8 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
     <link rel="icon" type="image/x-icon" href="assets/cvsulogo-removebg-preview.png">
 
@@ -258,4 +260,5 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'admin'
 </body>
 <script src="js/Datatables.js"></script>
 <script src="js/buttons_modal.js"></script>
+<script src="js/Print.js"></script>
 <script src="js/manageAcadyear.js"></script>

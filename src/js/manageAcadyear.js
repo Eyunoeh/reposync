@@ -340,7 +340,7 @@ async function displayAcadYears(){
 </div>
                                 
                                           <div class="tooltip tooltip-bottom" data-tip="Export students list">
-                                    <a class="cursor-pointer" ><i class="fa-solid fa-file-export"></i></a>
+                                    <a class="cursor-pointer" onclick="printAySemStudList(${acadYear.id},'${acadYear.Semester},AY${acadYear.ayStarting}-${acadYear.ayEnding}')"><i class="fa-solid fa-file-export"></i></a>
 </div>
                                     
                                     </td>                                

@@ -844,7 +844,24 @@ if ($action == 'getStudentsList'){
 
 }
 
+if($action === 'AySemStudList'){
+    $aysem_id = $_GET['aysem_id'];
+    header('Content-Type: application/json');
+    $fetch_enrolled_stud = "SELECT  u.*,s.*,p.*,a.email,se.* FROM tbl_studinfo s 
+                            JOIN tbl_students stud ON stud.enrolled_stud_id = s.enrolled_stud_id
+                            JOIN tbl_user_info u ON stud.user_id = u.user_id
+                            JOIN program p ON s.program_id = p.program_id
+                            JOIN tbl_accounts a ON stud.user_id = a.user_id
+                            JOIN section se ON s.year_sec_Id = se.year_sec_Id
+                            JOIN tbl_aysem aySem ON aySem.id = s.ay_sem_id
+                            WHERE s.ay_sem_id = ?";"
+                            ORDER BY 
+                            a.date_created desc;";
+    $data = mysqlQuery($fetch_enrolled_stud, 'i', [$aysem_id]);
+    echo json_encode(['response' => 1, 'data' => $data]);
+    exit();
 
+}
 
 
 
