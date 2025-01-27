@@ -99,8 +99,13 @@ async function dashboard_student_NarrativeReports() {
       <td class="p-3 text-start min-w-32">
         <span class="font-semibold text-light-inverse text-md/normal break-words">${advisers[narrative.ojt_adv_id]?.name || 'N/A'}</span>
       </td>` : ''}
-    <td class="p-3 text-end">
+    <td class="p-3 text-end flex justify-end items-center gap-2">
       ${user_data.user_type === 'admin' ? `
+        <div class="tooltip tooltip-info tooltip-bottom" data-tip="Download">
+          <a onclick="downloadNarrative('NarrativeReportsPDF/${narrative.narrative_file_name}')" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info">
+            <i class="fa-solid fa-download"></i>
+          </a>
+        </div>
         <div class="tooltip tooltip-warning tooltip-bottom" data-tip="Archive">
           <a onclick="openModalForm('archiveNarrativeModal'); $('#archiveNarrative').attr('data-narrative', $(this).attr('data-narrative'));" 
              id="archive_narrative" 
@@ -108,7 +113,11 @@ async function dashboard_student_NarrativeReports() {
              class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-info">
             <i class="fa-solid fa-pen-to-square"></i>
           </a>
-        </div>` : ''}
+        </div>
+        
+        
+`
+                : ''}
       <a href="flipbook.php?view=${narrative.narrative_id}" target="_blank" class="hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2">
         <i class="fa-regular fa-eye"></i>
       </a>

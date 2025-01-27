@@ -161,7 +161,7 @@ async function upd_SubmittedNarrative(key){
         dataType: 'json'
     });
     let narrative = submittedNarrativesList[key];
-    $('#dlLink').attr('href', 'NarrativeReportsPDF/' + narrative.narrative_file_name);
+    $('#dlLink').attr('data-download-path','NarrativeReportsPDF/'+ narrative.narrative_file_name);//create an attribute
     $('#UpdSubNarrativeReport select[name="UploadStat"]').val(narrative.file_status);
     $('#UpdSubNarrativeReport input[name="narrative_id"]').val(key);
     if (narrative.file_status === 'Declined'){

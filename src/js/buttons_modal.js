@@ -146,3 +146,23 @@ function formatDate(dateStr) {
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`; // Correct format for <input type="date">
 }
+
+function downloadNarrative(path) {
+    const filename = path.split('/').pop(); // Extracts filename from path
+    fetch(path)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename; // Suggest a filename
+            link.click();
+            URL.revokeObjectURL(url); // Clean up the URL object
+        })
+        .catch(error => console.error('Error downloading the file:', error));
+}

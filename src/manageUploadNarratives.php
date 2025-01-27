@@ -59,7 +59,7 @@ session_start();
             <h3 class="font-bold text-center text-lg  p-5">Review student narrative report</h3>
 
             <div data-tip="Download PDF" class="tooltip tooltip-bottom">
-                <a id="dlLink" href="" target="_blank" class="btn btn-circle  hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2 text-info"><i class="fa-solid fa-download"></i></a>
+                <a id="dlLink"  onclick="downloadNarrative(this.getAttribute('data-download-path'))"  class="btn btn-circle  hover:cursor-pointer mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-accent mr-2 text-info"><i class="fa-solid fa-download"></i></a>
             </div>
         </div>
         <div class="p-4">
