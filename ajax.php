@@ -708,7 +708,7 @@ if ($action == 'ExcelImport') {
             // Generate and hash default password
             $studuser_def_password = generatePassword($studNo);
             $hashed_password = password_hash($studuser_def_password, PASSWORD_DEFAULT);
-            $Acc_Email = trim($row['Acc Email']);
+            //$Acc_Email = trim($row['Acc Email']);
 
             // Check if the student already exists
             $checkStudent = mysqlQuery(
@@ -732,10 +732,10 @@ if ($action == 'ExcelImport') {
 
                 // Insert into tbl_accounts
                 $stud_account_q = "
-        INSERT INTO tbl_accounts (user_id, email, password, status) 
-        VALUES (?, ?, ?, 1)";
+        INSERT INTO tbl_accounts (user_id,  status)
+        VALUES (?,  1)";
                 $account_stmt = $conn->prepare($stud_account_q);
-                $account_stmt->bind_param('iss', $stud_user_ref_id, $Acc_Email, $hashed_password);
+                $account_stmt->bind_param('i', $stud_user_ref_id);
                 if (!$account_stmt->execute()) {
                     throw new Exception("Failed to insert account record: " . $account_stmt->error);
                 }
@@ -826,13 +826,13 @@ if ($action == 'getStudentsList'){
     isset($_SESSION['log_user_type']) || exit();
 
     header('Content-Type: application/json');
-    $fetch_enrolled_stud = "SELECT  u.*,s.*,p.*,a.*,se.* FROM tbl_studinfo s 
-                            JOIN tbl_students stud ON stud.enrolled_stud_id = s.enrolled_stud_id
-                            JOIN tbl_user_info u ON stud.user_id = u.user_id
-                            JOIN program p ON s.program_id = p.program_id
-                            JOIN tbl_accounts a ON stud.user_id = a.user_id
-                            JOIN section se ON s.year_sec_Id = se.year_sec_Id
-                            JOIN tbl_aysem aySem ON aySem.id = s.ay_sem_id
+    $fetch_enrolled_stud = "SELECT  u.*,s.*,p.*,se.* ,a.* FROM tbl_studinfo s 
+                             JOIN tbl_students stud ON stud.enrolled_stud_id = s.enrolled_stud_id
+                             JOIN tbl_user_info u ON stud.user_id = u.user_id
+                             JOIN program p ON s.program_id = p.program_id
+                             JOIN tbl_accounts a ON stud.user_id = a.user_id
+                             JOIN section se ON s.year_sec_Id = se.year_sec_Id
+                             JOIN tbl_aysem aySem ON aySem.id = s.ay_sem_id
                             WHERE a.status = 1
                                       AND u.user_type = 3 
                                       AND s.OJT_status = 1;";"

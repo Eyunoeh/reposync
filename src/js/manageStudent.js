@@ -182,7 +182,7 @@ async function jsonExcelSheet(excel_file) {
 
         // Validate rows
         jsonData.forEach(row => {
-            const requiredKeys = ['Student No', 'Name', 'Sex', 'Acc Email'];
+            const requiredKeys = ['Student No', 'Name', 'Sex'];// , 'Acc Email'
 
             for (const key of requiredKeys) {
                 if (!row.hasOwnProperty(key)) {
@@ -192,7 +192,7 @@ async function jsonExcelSheet(excel_file) {
             }
 
             const studNo = row['Student No'];
-            const studEmail = row['Acc Email'];
+        //    const studEmail = row['Acc Email'];
             const name = row['Name'];
             const sex = row['Sex'];
 
@@ -215,10 +215,10 @@ async function jsonExcelSheet(excel_file) {
                 excelErrorNote = `Invalid Sex value in row: "${sex}". Only "Male" or "Female" are allowed.`;
                 return;
             }
-            if (!studEmail || !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(studEmail)) {
-                excelErrorNote = `Invalid Acc Email format in row: "${studEmail}". Please provide a valid email address.`;
-                return;
-            }
+            // if (!studEmail || !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(studEmail)) {
+            //     excelErrorNote = `Invalid Acc Email format in row: "${studEmail}". Please provide a valid email address.`;
+            //     return;
+            // }
 
 
             if (unqStud_id.has(studNo)) {
@@ -226,23 +226,23 @@ async function jsonExcelSheet(excel_file) {
                 return;
             }
 
-            if (unqAccEmail.has(studEmail)) {
-                excelErrorNote = `Acc Email: ${studEmail} is duplicate.`;
-                return;
-            }
+            // if (unqAccEmail.has(studEmail)) {
+            //     excelErrorNote = `Acc Email: ${studEmail} is duplicate.`;
+            //     return;
+            // }
 
             if (existingStudID.includes(studNo)) {
                 excelErrorNote = `StudNo ${studNo} already exists in the system.`;
                 return;
             }
 
-            if (existingEmail.includes(studEmail)) {
-                excelErrorNote = `Acc Email: ${studEmail} already exists in the system.`;
-                return;
-            }
+            // if (existingEmail.includes(studEmail)) {
+            //     excelErrorNote = `Acc Email: ${studEmail} already exists in the system.`;
+            //     return;
+            // }
 
             unqStud_id.add(studNo);
-            unqAccEmail.add(studEmail);
+           // unqAccEmail.add(studEmail);
         });
 
         if (!excelErrorNote) {

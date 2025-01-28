@@ -68,7 +68,7 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
                         <div class="label">
                             <span class="label-text text-slate-700">Contact Number</span>
                         </div>
-                        <input type="number" name="contactNumber" placeholder="+63XXXXXXXXX"   oninput="this.value = this.value.slice(0, 11);" class=" bg-slate-100 input input-bordered w-full " />
+                        <input type="number" name="contactNumber" placeholder="+63×××××××××"   oninput="this.value = this.value.slice(0, 11);" class=" bg-slate-100 input input-bordered w-full [appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden" />
                     </label>
                 </div>
                 <div>

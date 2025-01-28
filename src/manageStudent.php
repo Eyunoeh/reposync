@@ -140,7 +140,9 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">Contact number</span>
                                 </div>
-                                <input type="number" min="0" required name="contactNumber" placeholder="09XXXXXXXXX" oninput="this.value = this.value.slice(0, 11)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="number" min="0" required name="contactNumber"
+                                       placeholder="09×××××××××" oninput="this.value = this.value.slice(0, 11)"
+                                       class="bg-slate-100 input input-bordered w-full max-w-xs [appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden" />
                             </label>
 
                             <label class="form-control w-full w-xs">
@@ -164,7 +166,8 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">Student number <span class="text-warning"> (Must be unique)</span></span>
                                 </div>
-                                <input type="number" min="0" required name="school_id" placeholder="XXXXXXXX" oninput="this.value = this.value.slice(0, 9)" class="bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="number" min="0" required name="school_id" placeholder="××××××××"
+                                       oninput="this.value = this.value.slice(0, 9)" class="[appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">

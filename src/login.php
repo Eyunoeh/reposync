@@ -82,13 +82,18 @@ if (isset($_SESSION['log_user_type'])){
                    class="inline-block mt-2 text-sm
                    text-slate-700
                    hover:text-blue-900
-                  transition-colors duration-300">
+                  transition-colors duration-300
+                  cursor-pointer
+">
                     Forgot Password?
                 </a>
-<!--                <button class="btn btn-sm btn-neutral btn-ghost text-slate-700">-->
-<!--                    <i class="fa-brands fa-google "></i>-->
-<!--                    <span>Sign in with Google</span>-->
-<!--                </button>-->
+                <a class="inline-block mt-2 text-sm
+                   text-info cursor-pointer
+                   hover:text-blue-900
+                  transition-colors duration-300" href="Account_Activation.php">
+
+                    <span>Account activation</span>
+                </a>
             </div>
 
 

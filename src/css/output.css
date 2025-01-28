@@ -5559,10 +5559,6 @@ details.collapse summary::-webkit-details-marker {
   padding-bottom: 0px;
 }
 
-.pb-2 {
-  padding-bottom: 0.5rem;
-}
-
 .pb-5 {
   padding-bottom: 1.25rem;
 }
@@ -5974,6 +5970,12 @@ details.collapse summary::-webkit-details-marker {
 
 .ease-out {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+.\[appearance\:textfield\] {
+  -webkit-appearance: textfield;
+     -moz-appearance: textfield;
+          appearance: textfield;
 }
 
 body{
@@ -6447,5 +6449,13 @@ body{
   .xl\:h-\[70vh\] {
     height: 70vh;
   }
+}
+
+.\[\&\:\:-webkit-inner-spin-button\]\:hidden::-webkit-inner-spin-button {
+  display: none;
+}
+
+.\[\&\:\:-webkit-outer-spin-button\]\:hidden::-webkit-outer-spin-button {
+  display: none;
 }
 
