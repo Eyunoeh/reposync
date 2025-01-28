@@ -43,7 +43,7 @@ document.addEventListener('submit', async function(e) {
 
             $('#verfication-code-input').html(otpInp);
         }else {
-            window.location.href = 'Account_Activation.php';
+            window.location.href = 'login.php';
         }
 
 
