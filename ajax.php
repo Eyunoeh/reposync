@@ -792,18 +792,7 @@ WHERE enrolled_stud_id = ?  and ay_sem.Curray_sem = 1;",
             }
 
 
- /*           // Send email notification
-            $subjectType = 'Insight Account';
-            $bodyMessage = "
-                <h1><b>Notification</b></h1><br><br>
-                Your email has been successfully registered!<br>
-                Use these credentials to log in:<br>
-                <h3>Account credentials</h3><br>
-                <b>Email:</b> $Acc_Email<br>
-                <b>Password:</b> $studuser_def_password<br><br>
-                <a href='http://localhost/ReposyncNarrativeManagementSystem/src/login.php'>
-                Insight: An online on-the-job training narrative report management system for Cavite State University - Carmona Campus</a>";
-            email_queuing($subjectType, $bodyMessage, $Acc_Email);*/
+
         }
 
         // Commit the transaction
@@ -820,6 +809,10 @@ WHERE enrolled_stud_id = ?  and ay_sem.Curray_sem = 1;",
         ]);
     }
 }
+
+
+
+
 
 
 if ($action == 'getStudentsList'){

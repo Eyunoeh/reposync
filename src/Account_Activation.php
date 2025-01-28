@@ -39,7 +39,7 @@ session_start();
                 <label for="email" class="block text-sm font-medium text-slate-700  mb-2">
                     Student Number
                 </label>
-                <input
+                <input oninput="this.value = this.value.slice(0, 9)"
                         type="number"
                         id="studNumber"
                         name="studNumber"
@@ -57,7 +57,7 @@ session_start();
                 <input
                         type="email"
                         id="email"
-                        name="log_email"
+                        name="email"
                         class="text-slate-700 shadow-sm rounded-lg w-full px-4 py-2.5 border border-gray-200 bg-slate-100
                         placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-slate-500
                       transition-all duration-300"
@@ -65,17 +65,17 @@ session_start();
                         required
                 >
             </div>
+            <div id="verfication-code-input" class="">
 
-
-
-
+            </div>
 
             <button
-                    id="login-btn-submit"
+                    id="verification-btn-submit"
                     type="submit"
                     class="w-full flex justify-center text-white
                      py-3 px-4 btn btn-success">
                 Verify Account
+<!--                <span class="loading loading-dots loading-lg"></span>-->
             </button>
             <a href="login.php" class="text-info w-full text-xs flex justify-center
                      text-center">
@@ -87,23 +87,9 @@ session_start();
 
 
 
+<div id="notifbox"  onclick="resetAlertBox(this.id)">
 
-
-
-
-<div id="loader" class="hidden absolute h-[100vh] w-full grid place-items-center bg-black bg-opacity-35">
-    <span class="loading loading-dots loading-lg text-white"></span>
 </div>
-<dialog id="loginWarning"  class="modal bg-black  bg-opacity-40 ">
-    <div class="card bg-warning w-[80vw] absolute top-10 sm:w-[30rem] max-h-[35rem]  flex flex-col text-slate-700">
-        <div  class=" card-title sticky justify-center">
-            <h3 class="font-bold text-center text-lg  p-5" id="loginNotiftext"></h3>
-        </div>
-        <div class="p-4 w-full flex justify-center">
-            <button class="btn  btn-neutral  w-1/4 " onclick="closeModalForm('loginWarning')">OK</button>
-        </div>
-    </div>
-</dialog>
 
 <style>
     @keyframes fadeIn {
@@ -119,7 +105,7 @@ session_start();
 </body>
 <script src="js/buttons_modal.js"></script>
 <script src="js/Users.js"></script>
-<script src="js/login.js">
+<script src="js/register.js">
 </script>
 
 <script>

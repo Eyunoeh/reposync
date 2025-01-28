@@ -1,84 +1,60 @@
-const roleSelect = document.querySelector('select[name="user_role"]');
-const programSelect = document.getElementById('program');
-const regFormInput = document.getElementById('reg_form');
-const form = document.getElementById('signup-form');
 
-roleSelect.addEventListener('change', function() {
-    if (roleSelect.value === "Adviser") {
-        programSelect.style.display = 'none';
-        regFormInput.classList.add('hidden');
-    } else {
-        programSelect.style.display = 'block';
-        regFormInput.classList.remove('hidden');
+document.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    let  endpoint = ''
+    if (formData.get('verificationCode') === null){
+        endpoint = '../accountActivationAjax.php?action=verifyStudentNum';
+    }else {
+        endpoint = '../accountActivationAjax.php?action=verifyOTP';
     }
-});
-
-document.getElementById('reg_img').addEventListener('click', function() {
-    window.location.href = 'index.php';
-});
-
-document.getElementById("sign-up-submit-btn").addEventListener("click", function(event) {
-    let formData = new FormData(document.getElementById("signup-form"));
-    let isValid = true;
-
-    formData.forEach(function(value, key) {
-        // Check if the value is a string before calling trim()
-        if (typeof value === 'string' && !value.trim()) {
-            isValid = false;
-            return;
-        }
+    const response = await $.ajax({
+        url: endpoint,
+        method: 'POST',
+        data: Object.fromEntries(formData.entries()),
+        dataType: 'json'
     });
+    let callResponse = response.response;
 
-    // Skip validation for reg_form input if the role is "Adviser"
-    if (roleSelect.value !== "Adviser") {
-        let fileInputs = document.querySelectorAll('input[type="file"]');
-        fileInputs.forEach(function(fileInput) {
-            if (!fileInput.files || fileInput.files.length === 0) {
-                isValid = false;
-            } else {
-                // Check file type
-                let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-                let uploadedFile = fileInput.files[0];
-                if (!allowedExtensions.exec(uploadedFile.name)) {
-                    isValid = false;
-                }
-            }
-        });
-    }
+    if (callResponse === 1){
 
-    if (!isValid) {
-        alert("Please fill in all fields and select JPEG or PNG files for both SchoolID and Registration Form.");
-        return;
-    }
+        Alert('notifbox', response.message, 'success')
 
-    if (formData.get('password') !== formData.get('conf_password')) {
-        alert("Passwords do not match.");
-        return;
-    }
 
-    $.ajax({
-        url: 'ajax.php?action=signUp',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            document.getElementById('loader').classList.remove('hidden');
-            if (response == 1) {
-                setTimeout(function() {
-                    document.getElementById('signup_modal').classList.remove('hidden');
-                    document.getElementById('loader').classList.add('hidden');
-                    // Show modal success
-                }, 2500);
-            } else {
-                console.log(response);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
+        if (response.message === 'OTP sent to your email'){
+            let otpInp = `    <label for="email" class="block text-sm font-medium text-slate-700  mb-2">
+                    Verification Code
+                </label>
+                <input oninput="this.value = this.value.slice(0, 6)"
+                        type="number"
+                        id="verificationCode"
+                        name="verificationCode"
+                        class="text-slate-700 shadow-sm rounded-lg w-full px-4 py-2.5 border border-gray-200 bg-slate-100
+         placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-slate-500
+         transition-all duration-300 [appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden"
+                        placeholder="Enter verification code"
+                        required
+                />`
+
+
+
+
+            $('#verfication-code-input').html(otpInp);
+        }else {
+            window.location.href = 'Account_Activation.php';
         }
-    });
-});
 
 
 
+    }else {
+        Alert('notifbox', response.message, 'error')
+
+        if (response.message !== 'Invalid OTP'){
+            window.location.href = 'Account_Activation.php';
+        }
+
+    }
+
+})
