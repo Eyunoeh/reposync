@@ -40,8 +40,8 @@ include '../DatabaseConn/databaseConn.php';
         </div>
         <div class="block  px-9 overflow-auto h-[70vh] xl:h-[70vh]">
             <table id="studListTbl" class="w-full my-0 b text-sm  border border-none table table-xs" >
-                <thead class="align-bottom z-20">
-                <tr class="font-bold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
+                <thead class="align-bottom z-10">
+                <tr class="font-bold text-[0.95rem] sticky top-0 z-10 text-secondary-dark bg-slate-200 rounded text-neutral" >
                     <th onclick="sortTable(0, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Student No.<span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(1, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Name<span class="sort-icon text-xs"></span></th>
                     <th onclick="sortTable(2, 'studListTbl')" class="p-3 text-start w-32 cursor-pointer">Program<span class="sort-icon text-xs"></span></th>

@@ -3,8 +3,8 @@
 
 
 
-<section class=" overflow-auto   bg-white pl-5 pb-5 pr-5 pt-0">
-    <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-50 justify-between ">
+<div class="  bg-white pl-5 pb-5 pr-5 pt-0">
+    <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded justify-between ">
         <div class="">
             <a href="manageAcadYear.php" class=" font-light btn btn-neutral ">
                 <u> Manage academic year</u>
@@ -17,7 +17,7 @@
         </div>
 
     </div>
-</section>
+</div>
 
 
 

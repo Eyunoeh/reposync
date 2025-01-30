@@ -25,8 +25,8 @@ include '../DatabaseConn/databaseConn.php';
         <div class="block py-8 pt-6 px-9">
             <div class="overflow-auto h-96">
                 <table id="AdvListTbl" class="w-full my-0 border-neutral-200 table" >
-                    <thead class="align-bottom z-20">
-                    <tr class="font-bold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
+                    <thead class="align-bottom z-10">
+                    <tr class="font-bold text-[0.95rem] sticky top-0 z-10 text-secondary-dark bg-slate-200 rounded text-neutral" >
                         <th onclick="sortTable(0, 'AdvListTbl')" class="p-3 text-start w-32 cursor-pointer">Name<span class="sort-icon text-xs"></th>
                         <th onclick="sortTable(1, 'AdvListTbl')" class="p-3 text-center w-32 cursor-pointer">Program<span class="sort-icon text-xs"></th>
                         <th onclick="sortTable(2, 'AdvListTbl')" class="p-3 text-center w-32 cursor-pointer">Year and Section<span class="sort-icon text-xs"></th>

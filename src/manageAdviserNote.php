@@ -9,8 +9,8 @@ session_start();
 ?>
 
 
-<section class="  overflow-auto   bg-white pl-5 pb-5 pr-5 pt-0 h-full rounded ">
-    <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-50 justify-between ">
+<div class="  overflow-auto   bg-white pl-5 pb-5 pr-5 pt-0 h-full rounded ">
+    <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-10 justify-between ">
         <div class="">
             <h1 class="font-bold text-2xl text-warning font-sans">Notes</h1>
         </div>
@@ -35,7 +35,7 @@ session_start();
         </div>-->
 
     </div>
-</section>
+</div>
 
 
 <dialog id="Notes" class="modal bg-black  bg-opacity-40">

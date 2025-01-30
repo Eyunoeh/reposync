@@ -28,7 +28,7 @@ session_start();
             <div class="overflow-auto h-screen">
                 <table id="NotesReqTbL" class="w-full my-0 border-neutral-200 text-sm" >
                     <thead class="align-bottom z-20 shadow-lg">
-                    <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral" >
+                    <tr class="font-semibold text-[0.95rem] sticky top-0 z-10 text-secondary-dark bg-slate-200 rounded text-neutral" >
                         <th class="p-3 text-start ">Adviser name</th>
                         <th class="p-3 text-start ">Title</th>
                         <th class="p-3 text-start ">Status</th>

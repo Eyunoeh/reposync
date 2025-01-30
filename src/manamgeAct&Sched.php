@@ -5,8 +5,8 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 }
 include '../DatabaseConn/databaseConn.php'
 ?>
-<section class="  overflow-auto   bg-white pl-5 pb-5 pr-5 pt-0 h-full">
-    <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-50 justify-between ">
+<div class="  overflow-auto   bg-white pl-5 pb-5 pr-5 pt-0 h-full">
+    <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-10 justify-between ">
         <div class="">
             <h1 class="font-bold text-2xl text-warning font-sans">Activities & Schedule</h1>
         </div>
@@ -20,7 +20,7 @@ include '../DatabaseConn/databaseConn.php'
         </div>
 
     </div>
-</section>
+</div>
 
 
 <dialog id="Act&shedModal" class="modal bg-black  bg-opacity-40">

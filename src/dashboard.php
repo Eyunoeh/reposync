@@ -33,8 +33,11 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
 <body  class="min-h-screen bg-white ">
 
 <main class="flex h-[100vh] ">
-    <div class="sidebar hidden sm:inline-block scroll-smooth  p-2 w-[300px] min-w-[300px] overflow-y-hidden hover:overflow-y-auto  text-center bg-green-700" >
+    <div class="sidebar sm:inline-block z-20 absolute sm:relative h-full scroll-smooth   p-2 w-[300px] min-w-[300px] overflow-y-hidden hover:overflow-y-auto  text-center bg-green-700" >
         <div class=" text-gray-100 text-xl bg-green-700 transition-all ">
+            <div onclick="" class="btn btn-ghost btn-circle btn-sm foc absolute sm:hidden  right-0 top-0 ">
+                <a href="#" class="grid place-items-center mt-1"><i class="fas fa-times"></i></a>
+            </div>
             <div class="p-2.5 mt-1 flex items-center">
                 <div class="w-8 ">
                     <img src="assets/cvsulogo-removebg-preview.png" />
@@ -176,6 +179,8 @@ if (!isset($_SESSION['log_user_type']) or $_SESSION['log_user_type'] == 'student
         </a>
 
     </div>
+    <button class=" btn btn-ghost sm:hidden inline-block   left-5 top-5">&#9776;</button>
+
     <section id="dashboard_main_content" class="flex gap-2 flex-col   w-full overflow-auto">
 
 

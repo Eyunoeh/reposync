@@ -25,7 +25,7 @@ session_start();
         <div class="m-5 h-[85vh] overflow-auto">
             <table id="narrativeReportsTable" class="
             w-full my-0 border-neutral-200 text-sm" >
-                <thead class="align-bottom  sticky top-0 z-20
+                <thead class="align-bottom  sticky top-0 z-10
             font-semibold text-[0.95rem]  text-secondary-dark bg-slate-200 rounded text-neutral">
                 <tr >
                     <th class="p-3 text-start ">Student No.</th>

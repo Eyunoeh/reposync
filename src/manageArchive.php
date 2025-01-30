@@ -11,7 +11,7 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 
 <div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
     <div class="relative flex flex-col min-w-0 break-words  h-full rounded-2xl border-stone-200 bg-light/30">
-        <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-50 justify-center ">
+        <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-10 justify-center ">
             <div class="">
                 <h1 class="font-bold text-2xl text-slate-700 font-sans">Archive list</h1>
             </div>
@@ -19,8 +19,8 @@ if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
         <div class="block py-8 pt-6 px-9">
             <div class="overflow-auto h-full">
                 <table id="narrativeReportsTable" class="w-full my-0 border-neutral-200 text-sm">
-                    <thead class="align-bottom z-20">
-                    <tr class="font-semibold text-[0.95rem] sticky top-0 z-20 text-secondary-dark bg-slate-200 rounded text-neutral">
+                    <thead class="align-bottom z-10">
+                    <tr class="font-semibold text-[0.95rem] sticky top-0 z-10 text-secondary-dark bg-slate-200 rounded text-neutral">
                         <th class="p-3 text-start"></th>
                         <th class="p-3 text-end">Total</th>
                         <th class="p-3 text-end">View</th>

@@ -16,7 +16,7 @@ session_start()
 <div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-2">
     <div class="relative flex flex-col min-w-0 break-words  h-full rounded-2xl border-stone-200 bg-light/30">
 
-        <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-50 justify-center ">
+        <div class=" flex items-center sticky top-0 p-5 bg-white shadow rounded z-10 justify-center ">
             <div class="">
                 <h1 class="font-bold text-2xl text-slate-700 font-sans">Narrative reports tree view</h1>
             </div>

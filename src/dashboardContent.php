@@ -7,17 +7,17 @@ session_start();
 ?>
 <?php if (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] === 'admin'):?>
 <center class="mb-5 mt-3">
-    <div class=" p-10 flex flex-col justify-center shadow rounded items-center w-[80%] flex-grow  max-h-[60vh]">
-        <canvas id="NarrativeReportChart" class="w-2/3 h-2/3"></canvas>
+    <div class=" p-10 flex flex-col justify-center shadow rounded items-center w-[80%] flex-grow max-h-full sm:max-h-[60vh]">
+        <canvas id="NarrativeReportChart" class="sm:w-2/3 sm:h-2/3 h-full w-full"></canvas>
     </div>
-    <div class=" p-10 shadow flex flex-col rounded justify-center items-center w-[80%] flex-grow  max-h-[60vh]">
-        <canvas id="UserChart" class="w-2/3 h-2/3"></canvas>
+    <div class=" p-10 shadow flex flex-col rounded justify-center items-center w-[80%] flex-grow max-h-full sm:max-h-[60vh]">
+        <canvas id="UserChart" class="sm:w-2/3 sm:h-2/3 h-full w-full"></canvas>
     </div>
 </center>
 
 <?php elseif ( (isset($_SESSION['log_user_type']) && $_SESSION['log_user_type'] === 'adviser')):?>
 
-    <div class="flex pt-3 gap-5 ml-3 h-full flex-wrap justify-center  text-slate-700">
+    <div class="flex pt-3 gap-5 ml-3  flex-wrap justify-center  text-slate-700">
 
         <div onclick="dashboard_tab(this.id)" id="pendingNarrativeReqCount" class="card rounded h-60 w-full sm:w-[15rem] min-w-32 transition duration-500 hover:cursor-pointer hover:bg-slate-300 bg-slate-100 text-center grid place-items-center shadow">
             <h1 class="font-bold font-sans text-[4rem]" id="pendingUploadNarrativeReport">
@@ -53,9 +53,9 @@ session_start();
         </div>
     </div>
     <center class="mb-5">
-        <div class="p-4 flex flex-col  justify-center shadow-lg rounded items-center w-[80%] flex-grow  max-h-[60vh]">
+        <div class="p-4 flex flex-col  justify-center shadow-lg rounded items-center w-[80%] flex-grow max-h-full sm:max-h-[60vh]">
 
-            <canvas id="NarrativeReportChart" class="w-2/3 h-2/3 "></canvas>
+            <canvas id="NarrativeReportChart" class="sm:w-2/3 sm:h-2/3 h-full w-full"></canvas>
         </div>
     </center>
 

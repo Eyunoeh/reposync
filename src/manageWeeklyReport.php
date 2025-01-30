@@ -39,7 +39,7 @@ session_start();
     </div>
     <div class="   mx-5 h-[90vh] overflow-auto">
         <table id="AdvisoryWeeklyReportTbl" class="w-full my-0 border-neutral-200 text-sm" >
-            <thead class="align-bottom  sticky top-0 z-20
+            <thead class="align-bottom  sticky top-0 z-10
             font-bold text-[0.95rem]  text-secondary-dark bg-slate-200 rounded text-neutral">
                 <tr class="" >
                     <th onclick="sortTable(0, 'AdvisoryWeeklyReportTbl')" class="p-3 text-start cursor-pointer">Student No. <span class="sort-icon text-xs"></span></th>
