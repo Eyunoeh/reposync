@@ -75,7 +75,7 @@ async function acadYearPrograms(ay_id, ayStarting, ayEnding, Semester) {
     programs.forEach(program => {
         htmlPrograms += `<li>
             <a href="dashboardViewnarrativeReports.php?ayStarting=${ayStarting}&ayEnding=${ayEnding}&Semester=${Semester}&program=${program.program_code}" 
-               class="link link-info">${program.program_code} </a>
+               class="link link-info">${program.program_code}<sup> (${program.totalNarrativeReport})</sup> </a>
         </li>`;
     });
     return htmlPrograms;

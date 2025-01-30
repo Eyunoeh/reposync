@@ -2400,7 +2400,23 @@ if ($action == 'acadyearPrograms'){
                                 WHERE  aysem.id = ?;";
     $result = mysqlQuery($getayPrograms, 'i', [$ay_id]);
 
+    foreach ($result as &$row) {
 
+        $narrativeCount = mysqlQuery(
+            "SELECT COUNT(*) AS totalNarrativeReport FROM narrativereports n
+    JOIN tbl_students s on n.enrolled_stud_id = s.enrolled_stud_id
+    JOIN tbl_studinfo sinfo on sinfo.enrolled_stud_id = s.enrolled_stud_id
+    JOIN program p on p.program_id = sinfo.program_id
+    JOIN tbl_aysem ay on ay.id = n.ay_sem_id
+    JOIN tbl_user_info ui on ui.user_id = s.user_id
+    WHERE n.convertStatus = 3 and n.ay_sem_id = ? and sinfo.program_id = ?;",
+            'ii',
+            [$ay_id, $row['program_id']]
+        );
+
+        $row['totalNarrativeReport'] = $narrativeCount[0]['totalNarrativeReport'] ?? 0;
+    }
+    unset($row); // Break reference
 
     echo json_encode(['response' => 1,
         'data' => $result]);
