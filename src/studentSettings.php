@@ -14,7 +14,8 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
 
     <div class="w-full max-w-7xl mx-auto p-5 rounded-lg shadow-lg bg-white min-h-[70vh]">
         <div class="flex justify-start">
-            <a onclick="changeProfileSettingForm()" class="h font-semibold btn btn-ghost" ><i class="fa-solid fa-right-left"></i>
+            <a onclick="changeProfileSettingForm()" class="btn-ghost  font-semibold btn  text-info underline" >
+                <i class="fa-solid fa-right-left"></i>
                 <span id="accountSettingbtN">Profile Information</span>
             </a>
         </div>
@@ -119,7 +120,18 @@ if (!isset($_SESSION['log_user_type']) || $_SESSION['log_user_type'] !== 'studen
             <input type="hidden" name="studInfo" >
 
 
+            <div id="" class=" mt-2 text-xs text-justify flex justify-center items-center">
+                <p class="max-w-lg font-sans">
+                    <span class="font-bold">Note: </span> The Cavite State University Carmona campus collects basic student information,
+                    including full name, student ID, email address,
+                    and contact details,
+                    along with the OJT center , OJT contact, OJT started and OJT ended.
+                    Only authorized school representatives will access this data for academic purposes,
+                    ensuring confidentiality and compliance with data privacy policies.
+                </p>
 
+
+            </div>
             <p id="profielSubmitLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
             <div id="profielSubmitbtnContainer" class="flex justify-center m-5">
                 <button id="profielSubmitbtn" class="btn btn-success btn-outline w-1/4" >Save</button>

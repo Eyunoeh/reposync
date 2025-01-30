@@ -140,6 +140,7 @@ include '../DatabaseConn/databaseConn.php';
                 <form id="NarrativeReportForm">
                     <div class="flex flex-col gap-8">
 
+
                         <div class="flex justify-center items-center flex-wrap sm:flex-nowrap">
                             <input name="narrativeReportPDF" required type="file"
                                    accept="application/pdf"
@@ -147,6 +148,8 @@ include '../DatabaseConn/databaseConn.php';
                                    file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold
                             file:bg-violet-50 file:text-slate-400 hover:file:bg-slate-200 transition-all" />
                         </div>
+
+
                         <input type="hidden" name="NarraActType" id="NarraActType">
                         <input type="hidden" name="narrative_id" id="narrative_id">
 
@@ -155,7 +158,18 @@ include '../DatabaseConn/databaseConn.php';
                         <p id="narrativeSubmitLoader" class="text-center hidden">Please wait<br><span class="loading loading-dots loading-md text-slate-700"></span></p>
                         <div id="NarrativeSubmit" class="flex justify-center w-full">
                             <button id="submit_btn" class="btn btn-neutral btn-outline w-1/2" >Submit</button>
+
+                            </div>
                         </div>
+                    <div id="" class=" mt-2 text-xs text-justify flex justify-center items-center">
+                        <p class="max-w-lg font-sans">
+                           <span class="font-bold">Note: </span>The uploaded narrative report must reflect the student's
+                            OJT experience. Only authorized Cavite state university Carmona campus representatives will
+                            access the files, ensuring confidentiality and compliance
+                            with data privacy policies. Submit in PDF format without
+                            sensitive company information unless permitted.
+                        </p>
+
 
                     </div>
                 </form>
