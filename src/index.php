@@ -19,6 +19,7 @@ session_start();
     <!--    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     -->
     <script src="jquery/jquery-3.7.1.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
