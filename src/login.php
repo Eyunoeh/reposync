@@ -78,7 +78,7 @@ if (isset($_SESSION['log_user_type'])){
 
             </div>
             <div class="flex justify-between">
-                <a href="#"
+                <a href="Account_Recovery.php"
                    class="inline-block mt-2 text-sm
                    text-slate-700
                    hover:text-blue-900
