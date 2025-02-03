@@ -42,6 +42,7 @@ document.addEventListener('submit', async function(e) {
 
 
             $('#verfication-code-input').html(otpInp);
+            $('#verification-btn-submit').html(`Verify code`);
         }else {
             window.location.href = 'login.php';
         }
