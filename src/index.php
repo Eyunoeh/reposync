@@ -26,7 +26,7 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
 
-    <title>Home</title>
+    <title id="pageTitle">Home</title>
 </head>
 <body  class="min-h-screen bg-slate-100">
 

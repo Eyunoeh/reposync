@@ -70,11 +70,20 @@ function updateActiveLink(page) {
     if (page === 'narratives') {
         narrativesLink?.classList.add('text-black', 'bg-gray-300', 'rounded');
         sideNarrativesLink?.classList.add('bg-gray-200', 'text-black');
+        document.title = 'Narrative Report';
+
     } else if (page === 'announcement') {
         announcement?.classList.add('text-black', 'bg-gray-300', 'rounded');
         sideAnnouncement?.classList.add('bg-gray-200', 'text-black');
+        document.title = 'Announcement';
+
     } else if (page === 'weeklyReports') {
         reportLink?.classList.add('text-black', 'bg-gray-300', 'rounded');
+        document.title = 'Weekly Journal';
+    }else if (page === 'studentSettings'){
+        document.title = 'Account Settings';
+    }else {
+        document.title = 'Home';
     }
 
 }
