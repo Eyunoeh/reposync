@@ -67,12 +67,7 @@ function pageWatermark($pdfPath, $watermarkImagePath)
 
 
 
-function sanitizeInput($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
+
 function isPDF($filename) {
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
     return strtolower($extension) === 'pdf';

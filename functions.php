@@ -5,6 +5,12 @@ function handleError($message) {
     echo json_encode(['response' => 0, 'message' => $message]);
     exit();
 }
+function sanitizeInput($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 function getPostData($field, $default = '') {
     return !empty($_POST[$field]) ? sanitizeInput($_POST[$field]) : $default;
 }

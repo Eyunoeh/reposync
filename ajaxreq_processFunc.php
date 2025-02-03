@@ -143,6 +143,7 @@ function update_password($user_id)
 
     if ($editUser_conf != $editUser_newPass){
         handleError('Password do not match');
+        exit();
     }
 
     $hashed_password = password_hash($editUser_newPass, PASSWORD_DEFAULT);
