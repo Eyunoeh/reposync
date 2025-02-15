@@ -1,6 +1,7 @@
 
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-<header class="bg-green-700 text-white sticky top-0 z-20">
+<header style="background-color: #1b651b;" class="text-white sticky top-0 z-20">
     <section class="max-w-6xl mx-auto p-2 flex lg:justify-between justify-center items-center">
         <div class="flex items-center justify-between border-accent gap-1">
             <div class="avatar">
@@ -8,8 +9,8 @@
                     <img class="object-scale-down" src="assets/cvsulogo-removebg-preview.png" />
                 </div>
             </div>
-            <div class="text-center font-bold  text-3xl text-white font-sans">
-                <h1><a href="#" id="homeLink" >INSIGHT</a></h1>
+            <div class="text-center text-l text-white font-sans">
+                <h1><a href="#" id="homeLink" >CvSU-INSIGHT</a></h1>
             </div>
         </div>
 
@@ -21,12 +22,11 @@
 
 
                 <a href="#" id="announcement" class="transition-all hover:cursor-pointer
-                hover:text-black hover:bg-gray-300 hover:rounded p-2">Announcement</a>
+                hover:text-black hover:bg-gray-300 font-bold hover:rounded p-2">Announcement</a>
                 <?php if (!isset($_SESSION['log_user_type'])):?>
 
                  <div class="dropdown dropdown-bottom dropdown-end flex  items-center gap-2">
-                     <a href=" login.php" tabindex="0" role="button" class="transition-all hover:cursor-pointer
-                hover:text-black hover:bg-gray-300  hover:rounded p-2 ">Login</a>
+                     <a href=" login.php" tabindex="0" role="button" class="focus:outline-none font-bold text-xl text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-1.5 mt-2 me-2 mb-2 dark:focus:ring-yellow-900">Login</a>
                  </div>
                 <?php else:?>
                     <a href="#" id="narrativesLink" class="transition-all hover:cursor-pointer
