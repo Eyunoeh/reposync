@@ -9,7 +9,7 @@
                     <img class="object-scale-down" src="assets/cvsulogo-removebg-preview.png" />
                 </div>
             </div>
-            <div class="text-center text-l text-white font-sans">
+            <div class="text-center text-l text-white">
                 <h1><a href="#" id="homeLink" >CvSU-INSIGHT</a></h1>
             </div>
         </div>
@@ -22,19 +22,19 @@
 
 
                 <a href="#" id="announcement" class="transition-all hover:cursor-pointer
-                hover:text-black hover:bg-gray-300 font-bold hover:rounded p-2">Announcement</a>
+                hover:text-black font-semibold hover:bg-gray-300 hover:rounded p-2">Announcement</a>
                 <?php if (!isset($_SESSION['log_user_type'])):?>
 
                  <div class="dropdown dropdown-bottom dropdown-end flex  items-center gap-2">
-                     <a href=" login.php" tabindex="0" role="button" class="focus:outline-none font-bold text-xl text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-1.5 mt-2 me-2 mb-2 dark:focus:ring-yellow-900">Login</a>
+                     <a href=" login.php" tabindex="0" role="button" class="focus:outline-none font-semibold text-xl text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-1.5 mt-2 me-2 mb-2 dark:focus:ring-yellow-900">Login</a>
                  </div>
                 <?php else:?>
                     <a href="#" id="narrativesLink" class="transition-all hover:cursor-pointer
-                hover:text-black hover:bg-gray-300  hover:rounded p-2 " >Narrative Reports</a>
+                hover:text-black hover:bg-gray-300 font-semibold hover:rounded p-2 " >Narrative Reports</a>
 
                     <?php if ($_SESSION['log_user_type'] == 'student' && $_SESSION['log_acc_stat'] === 'active') {?>
                         <a href="#" id="reportLink" class="transition-all hover:cursor-pointer
-                hover:text-black hover:bg-gray-300 hover:rounded p-2
+                hover:text-black font-semibold hover:bg-gray-300 hover:rounded p-2
                 ">Weekly Journal</a>
                    <?php
                     }?>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                    <p id="navName"  role="button" tabindex="0"
-                      class=" text-xs text-slate-50 font-sans font-semibold  max-w-24 break-words"></p>
+                      class=" text-xs text-slate-50 font-sans font-semibold max-w-24 break-words"></p>
                     <ul tabindex="0" class="absolute bg-slate-100 text-black right-0 dropdown-content z-[1] menu p-2 shadow  rounded w-52">
 
                         <?php echo $_SESSION['log_user_type'] != 'student'  && $_SESSION['log_acc_stat'] === 'active' ? '<li><a href="dashboard.php">Dashboard</a></li>': ''?>
@@ -87,20 +87,20 @@
                      <hr class="mx-auto bg-black  w-[80%]">
                  </div>
              <?php else:?>
-                 <div id="side-narrativesLink" class="h-16 hover:bg-gray-200  transition-all rounded hover:text-black">
-                     <h1 class="mt-6 text-xl  hover:opacity-90 "><a href="#"  >Narrative Report</a></h1>
+                 <div id="side-narrativesLink" class="h-16 hover:bg-gray-200 transition-all rounded hover:text-black">
+                     <h1 class="mt-6 text-xl font-semibold hover:opacity-90 "><a href="#"  >Narrative Report</a></h1>
                      <hr class="mx-auto  bg-black  w-[80%]">
                  </div>
                 <?php if ($_SESSION['log_user_type'] === 'student') :?>
 
 
-                 <div id="side-weeklyjournal" class="h-16 hover:bg-gray-200 transition-all rounded hover:text-black">
-                     <h1 class="text-xl  mt-6 hover:opacity-90 "><a href="#" >Weekly Journal</a></h1>
+                 <div id="side-weeklyjournal" class="h-16 hover:bg-gray-200 font-semibold transition-all rounded hover:text-black">
+                     <h1 class="text-xl font-semibold mt-6 hover:opacity-90 "><a href="#" >Weekly Journal</a></h1>
                      <hr class="mx-auto bg-black  w-[80%]">
                  </div>
                  <?php endif;?>
                  <div class="h-16 hover:bg-gray-200 transition-all rounded">
-                     <h1 class="text-xl  mt-6 hover:opacity-90 "><a href="logout.php">Logout</a></h1>
+                     <h1 class="text-xl font-semibold mt-6 hover:opacity-90 "><a href="logout.php">Logout</a></h1>
                      <hr class="mx-auto bg-black  w-[80%]">
                  </div>
              <?php endif;?>
