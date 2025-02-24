@@ -95,17 +95,8 @@ function updateBasicInfo($editUser_user_id, $edituser_type) {
 
 function updateAccEmail($user_id)
 {
-    $editUser_email = getPostData('user_Email');
-    $requiredFields = [
-        'User Email' => $editUser_email
-    ];
+    $editUser_email = getPostData('user_Email', null);
 
-    foreach ($requiredFields as $field => $value) {
-        if (empty($value)) {
-            handleError("Field $field is required.");
-            exit();
-        }
-    }
     try {
         $sql = "UPDATE tbl_accounts
                 SET 

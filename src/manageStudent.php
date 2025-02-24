@@ -10,8 +10,11 @@ include '../DatabaseConn/databaseConn.php';
     <?php if ($_SESSION['log_user_type'] === 'adviser'):?>
         <button onclick="printStudentOJTSummary()" class="btn btn-neutral bg-slate-500 border-none text-slate-100">Export OJT summary <i class="fa-solid fa-file-export"></i></button>
     <?php endif;?>
+    <div class="flex justify-center gap-5">
+        <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalForm'); resetStudentEditForm()">New Student form</button>
+        <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalFormxls');resetStudentEditForm()">Import excel <i class="fa-solid fa-download"></i></button>
+    </div>
 
-    <button class="btn btn-neutral bg-slate-500 border-none text-slate-100" onclick="openModalForm('manageStudModalFormxls');resetStudentEditForm()">Import excel <i class="fa-solid fa-download"></i></button>
 </div>
 
 
@@ -134,13 +137,13 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">Address</span>
                                 </div>
-                                <input type="text" required name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text"  name="user_address" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">Contact number</span>
                                 </div>
-                                <input type="number" min="0" required name="contactNumber"
+                                <input type="number" min="0"  name="contactNumber"
                                        placeholder="09×××××××××" oninput="this.value = this.value.slice(0, 11)"
                                        class="bg-slate-100 input input-bordered w-full max-w-xs [appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden" />
                             </label>
@@ -180,6 +183,7 @@ include '../DatabaseConn/databaseConn.php';
                                  FROM tbl_user_info ui
                                  INNER JOIN tbl_accounts acc ON ui.user_id = acc.user_id
                                  WHERE ui.user_type  = 'adviser' AND acc.status = 'active'";
+
                                     if ($_SESSION['log_user_type'] === 'adviser'){
                                         $adv_option_query.= ' AND ui.user_id = '.$_SESSION['log_user_id'];
                                     }
@@ -239,13 +243,13 @@ include '../DatabaseConn/databaseConn.php';
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT center</span>
                                 </div>
-                                <input type="text" name="stud_OJT_center" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text" name="stud_OJT_center" placeholder="Not yet started" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                             <label class="form-control w-full max-w-xs">
                                 <div class="label">
                                     <span class="label-text text-slate-700">OJT contact</span>
                                 </div>
-                                <input type="text" name="stud_ojtContact" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input type="text" name="stud_ojtContact" placeholder="Not yet started" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                             </label>
                         </div>
                         <div class="flex justify-start gap-2 flex-wrap sm:flex-nowrap" id>
@@ -257,7 +261,7 @@ include '../DatabaseConn/databaseConn.php';
                                        </span>
                                    </span>
                                 </div>
-                                <input name="user_Email" required type="email" placeholder="Type here" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
+                                <input name="user_Email"  type="email" placeholder="example123@cvsu.edu.ph" class=" bg-slate-100 input input-bordered w-full max-w-xs" />
                                 <span id="default_passIndicator">
 
                                 </span>

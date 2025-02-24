@@ -574,25 +574,23 @@ if ($action == 'newUser') {
     $user_sex = getPostData('user_Sex');
     $user_contact_number = (int) getPostData('contactNumber', 0);
     $user_address = getPostData('user_address');
-    $user_email = getPostData('user_Email');
+    $user_email = getPostData('user_Email', null);
     $user_type = getPostData('user_type');
 
     // Student specific fields
     $user_shc_id = getPostData('school_id');
     $user_program = getPostData('stud_Program');
     $user_yr_section = getPostData('stud_Section');
+    $course_code_id = getPostData('progCourse');
     $stud_adviser = getPostData('stud_adviser');
-    $studs_ojtCenter = getPostData('stud_OJT_center', 'N/A');
-    $stud_Ojtlocation = getPostData('stud_ojtLocation', 'N/A');
+    $studs_ojtCenter = getPostData('stud_OJT_center', 'Not yet started');
+    $stud_Ojtlocation = getPostData('stud_ojtLocation', 'Not yet started');
 
     // Validate required fields
     $requiredFields = [
         'First Name' => $user_first_name,
         'Last Name' => $user_last_name,
         'Sex' => $user_sex,
-        'Contact Number' => $user_contact_number,
-        'Address' => $user_address,
-        'Email' => $user_email,
         'User Type' => $user_type
     ];
 
@@ -603,29 +601,38 @@ if ($action == 'newUser') {
         }
     }
 
-
-    if (!is_int($user_contact_number) || strlen((string)$user_contact_number) < 10 || strlen((string)$user_contact_number) > 11) {
-        handleError('Invalid contact number format.');
+    if ($user_contact_number !==0){
+        if (!is_int($user_contact_number) || strlen((string)$user_contact_number) < 10 || strlen((string)$user_contact_number) > 11) {
+            handleError('Invalid contact number format.');
+        }
     }
 
+
     // Generate password based on user type
-    $user_password = ($user_type === 'student')
-        ? generatePassword($user_shc_id)
-        : 'CVSUOJT_' . strtoupper($user_type);
+    $user_password = ($user_type === 'student') ? null : 'CVSUOJT_' . strtoupper($user_type);
 
     try {
         $conn->begin_transaction();
 
 
-        $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
+        $hashed_password = ($user_password !== null) ? password_hash($user_password, PASSWORD_DEFAULT) : null;
 
-
-        $insert_sql = "INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number, sex, user_type) 
+        if ($user_type === 'student') {
+            $getstudexistingnumber = mysqlQuery(
+                "SELECT * FROM tbl_students WHERE enrolled_stud_id = ?", 'i', [$user_shc_id]);
+            if (count($getstudexistingnumber) === 0) {
+                $insert_sql = "INSERT INTO tbl_user_info (first_name, middle_name, last_name, address, contact_number, sex, user_type) 
                        VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($insert_sql);
-        $stmt->bind_param("sssssss", $user_first_name, $user_middle_name, $user_last_name, $user_address, $user_contact_number, $user_sex, $user_type);
-        $stmt->execute();
-        $user_id = $stmt->insert_id;
+                $stmt = $conn->prepare($insert_sql);
+                $stmt->bind_param("sssssss", $user_first_name, $user_middle_name, $user_last_name, $user_address, $user_contact_number, $user_sex, $user_type);
+                $stmt->execute();
+                $user_id = $stmt->insert_id;
+            }else{
+                $user_id = $getstudexistingnumber[0]['user_id'];
+            }
+        }
+
+
 
 
         $account_sql = "INSERT INTO tbl_accounts (user_id, email, password, status) VALUES (?, ?, ?, 'active')";
@@ -635,12 +642,24 @@ if ($action == 'newUser') {
 
         // Insert student-specific details if the user is a student
         if ($user_type === 'student') {
-            $student_sql = "INSERT INTO tbl_students (enrolled_stud_id, user_id, adv_id, program_id, year_sec_Id, ojt_center, ojt_location) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $student_sql = "INSERT INTO tbl_students (enrolled_stud_id, user_id) 
+                            VALUES (?, ?)";
             $stud_stmt = $conn->prepare($student_sql);
-            $stud_stmt->bind_param("iiiiiss", $user_shc_id, $user_id, $stud_adviser, $user_program,
-                $user_yr_section, $studs_ojtCenter, $stud_Ojtlocation);
+            $stud_stmt->bind_param("ii", $user_shc_id, $user_id);
             $stud_stmt->execute();
+
+            $currAcadYearSem= mysqlQuery("SELECT * FROM tbl_aysem WHERE Curray_sem = 1", '', []);
+            $aySemId = $currAcadYearSem[0]['id'];
+
+
+            $stundinfo = "INSERT INTO tbl_studinfo
+    (enrolled_stud_id, adv_id, program_id, year_sec_Id, course_code_id, ay_sem_id) 
+VALUES (?, ?, ?, ?, ?, ?)";
+            $stundinfoSTMT = $conn->prepare($stundinfo);
+            $stundinfoSTMT->bind_param("iiiiii", $user_shc_id, $stud_adviser,
+                $user_program, $user_yr_section, $course_code_id, $aySemId);
+            $stundinfoSTMT->execute();
+
         }
 
         $responseMessage = $responseMessages[$user_type] ?? 'User account has been created.';
@@ -667,7 +686,7 @@ if ($action == 'newUser') {
 
     } catch (mysqli_sql_exception $e) {
         $conn->rollback();
-        handleError($e->getCode() == 1062 ? 'Duplicate entry: ' . $e->getMessage() : $e->getMessage());
+        handleError($e->getCode() == 1062 ?  $e->getMessage() : $e->getMessage());
         exit();
     }
 
